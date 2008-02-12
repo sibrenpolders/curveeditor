@@ -39,7 +39,7 @@ Het project delen we, voorlopig dan toch, op in twee secties: \it{basis} \rm{en}
 \item \ldots
 \end{itemize}
 \end{itemize}
-
+Dit alles gaan we in Java implementeren, omdat wij ook wat ervaring wensen op te doen met grotere Java-projecten. Ook is dit een manier om de talrijke libraries wat beter te leren kennen.
 \section{Analyse}
 
 \subsection{Klassediagram}
@@ -61,7 +61,7 @@ Zoals in de bijgevoegde figuur te zien is, hebben we de applicatie opgedeeld in 
 \subsection{ADT's}
 Point en Point3D spreken voor zich: zij representeren punten in het vlak of in de ruimte voor door middel van de co\"ordinaten.
 
-Curve bevat enerzijds een Vector van Points, die de verzameling van de initi\"ele controlepunten voorstelt. Wij hebben voor een Vector gekozen, omdat de volgorde van die punten heel belangrijk is. Anderzijds bevat Curve een tweede Vector van Points, die de verzameling van de ge\"interpoleerde punten voorstelt; deze Vector wordt gevuld met behulp een functie van een Algorithm-instantie die de input-vector als parameter meekrijgt.
+Curve bevat enerzijds een Vector van Points, die de verzameling van de initi\"ele controlepunten voorstelt. Wij hebben voor een Vector gekozen, omdat de volgorde van die punten heel belangrijk is. Anderzijds bevat Curve een tweede Vector van Points, die de verzameling van de interpolerende punten voorstelt; deze Vector wordt gevuld met behulp een functie van een Algorithm-instantie die de input-vector als parameter meekrijgt.
 
 Algorithm is een abstracte klasse, daar de methode \it{calculate} \rm{in} de subklassen dient ge\"implementeerd te worden. Algorithms kunnen beschouwd worden als ADT's die curves cre\"eren aan de hand van een verzameling meegegeven punten.
 
@@ -82,7 +82,7 @@ Zij N het aantal punten tussen 0 en 1 dat we willen berekenen (N is het aantal t
 Initialiseer B met enkel 0-waarden.
 
 \begin{tabbing}
-from i \= = 0 to n do\ \textcolor{blue}{(1)}\\
+from i \= = 0 to n do\\
 \>from j \= = 1 to N do\\
 \> \>from k \= = 0 to n do\\
 \> \> \>B[i*N + j] += $(_k^n).P[k].(1-t)^{n-k}.t^k$\\
@@ -163,5 +163,21 @@ Hier kunnen we kort over zijn. Meer dan de op het moment van opslaan weergegeven
 
 \section{Taakverdeling en planning}
 Planning: 
+\begin{itemize}
+		\item week 7, 12/02: inleveren verslag en planning
+		\item week 7: opzoekwerk \it{Java}\rm{:} Swing, EventListeners, wait/notify
+		\item week 8: feedback afwachten + samenbrengen van de resultaten van het opzoekwerk
+		\item week 9, 26/02: feedback + ev. veranderingen aanbrengen, starten met implementeren: GUI + algoritmen
+		\item week 10-12: examens
+		\item week 13-14: algoritmen + GUI af, Save en Load idem
+		\item week 1-2: grondig testen van code + implementeren van de dan voor de hand liggende functies
+		\item week 3-4: basisfuncties compleet af + kijken naar de implementatiemogelijkheden van de extra's + bijsturen doelstellingen
+		\item week 5-6: implementeren van de gekozen extra's
+		\item week 7-8: afronden + testen
+		\item week 9-10: verder testen + presentatie voorbereiden + verslag schrijven
+\end{itemize}
+Taakverdeling: ieder \'e\'en algoritme, de GUI (\'e\'en iemand de DrawArea, de andere de rest) + de extra tools nog onder elkaar te verdelen (elk \'e\'en tool bijvoorbeeld, indien de tijd dat toelaat).
 
+\section{SVN-repository}
+De meest recente bronbestanden zijn steeds terug te vinden op:\newline \url{http://code.google.com/p/curveeditor/}
 \end{document}
