@@ -1,12 +1,77 @@
+\documentclass[a4paper,11pt,oneside, titlepage]{article}
+\author{Groep 13: Sibrand Staessens & Sibren Polders}
+\title{Trimesteroverschrijdend Project: Curve Editor}
+\date{Dinsdag 12 februari, 2008}
+\usepackage[dutch]{babel}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage[colorlinks,urlcolor=blue,filecolor=magenta]{hyperref}
+\usepackage{url}
+\parindent 0pt	
+\hyphenation{}
+\begin{document}
+\maketitle \newpage
+\section{Curve Editor: beschrijving}
+Het project delen we (voorlopig) op in de secties \it{basis} en \it{optioneel}
+\rm{De basis geeft de functionaliteit weer die zeker in het project verwerkt zal worden. Optioneel
+daarentegen zijn functies die pas ge\"implementeerd zullen worden als de basis grondig is 
+uitgewerkt.}
+\begin{itemize}
+\item \bf{Basis}
+\begin{itemize}
+\item \rm{Punten ingeven ( m.b.v. muis of keyboard )}
+\item Connectie van ingegeven punten ( Bezier, Hermite )
+\item Verschillende curvens met elkaar connecteren
+\item verplaatsen van punten ( m.b.v. muis of keyboard )
+\item mogelijkheid om verschillende kleuren en diktes te gebruiken
+\item Save \& load functies
+\end{itemize}
+\item \bf{Optioneel}
+\begin{itemize}
+\item \rm{Tools:}
+\begin{itemize}
+\item Soundmixer
+\item Transformer
+\item Curving
+\item \ldots
+\end{itemize}
+\item Oplichting aangeklikte curve/punt
+\item 3d curves
+\item \ldots
+\end{itemize}
+\end{itemize}
+\section{Algoritmes}
+\begin{itemize}
+\item \bf{Bezier:}\newline
+\begin{enumerate}
+\rm{ \item formule: $\sum_{i=0}^n (_i^n).P_i.(1-t)^{n-i}.t^i$}
+\item uitwerking:\newline
+\end{enumerate}
+\end{itemize}
+
+
+
 \section{Analyse}
 \subsection{Klassediagram}
 Zoals in de bijgevoegde figuur te zien is, hebben we de applicatie opgedeeld in vijf delen:
 	\begin{itemize}
-		\item de klassen Point, Point3D en Curve; dit zijn ADT's en houden dus specifieke eigenschappen bij en voorzien ook de functies om deze te veranderen. Meer hierover later.
+		\item de klassen Point, Point3D en Curve; dit zijn ADT's en houden dus specifieke eigenschappen bij en voorzien ook de functies om deze te veranderen. Meer hierover kan je iets verder lezen.
 		\item de abstracte klasse Algorithm en zijn subklassen Bezier en Hermite; deze vullen de outputvector van een meegegeven Curve-instantie m.b.v. de input-vector van die instantie. Elk soort algoritme berekent dit anders, uiteraard.
-		\item de abstracte klasse Tool en zijn subklassen; deze geven bijvoorbeeld een vector van curves terug indien een afbeelding werd meegegeven, spelen muziektonen af als een vector van curves werd meegegeven,... . Er zijn diverse mogelijkheden en gaandeweg de uitwerking van ons project zal duidelijk worden welke interactiemanier ons het meest optimaal lijkt.
-		\item het core-gedeelte: Editor en bijhorende klassen File, Situation en MonitorPool. Editor is het centraal orgaan van de applicatie en stuurt het dataverkeer tussen de verschillende applicatieonderdelen. Situation is een soort van hulpklasse, die bijhoudt welke curve momenteel actief staat, welk type algoritme en welke orde-grootte momenteel aangevinkt staat, welk punt is aangeklikt geweest, \ldots.
+		\item de abstracte klasse Tool en zijn subklassen; deze geven bijvoorbeeld een vector van curves terug indien een afbeelding werd meegegeven, spelen muziektonen af als een vector van curves werd meegegeven, \ldots . Er zijn diverse mogelijkheden en gaandeweg de uitwerking van ons project zal duidelijk worden welke interactiemanier ons het meest optimaal lijkt.
+		\item het core-gedeelte: Editor en bijhorende klassen File, Situation en MonitorPool. Editor is het centraal orgaan van de applicatie en stuurt het dataverkeer tussen de verschillende applicatieonderdelen, en bevat tevens de verzameling van reeds ingevoerde controlepunten en berekende curven. Situation is een soort van hulpklasse, die bijhoudt welke curve momenteel actief/geselecteerd staat, welk type algoritme en welke orde-grootte momenteel in het menu aangevinkt staat, welk punt is aangeklikt geweest, \ldots . E\'en instantie van Situation wordt dus m.b.v. read- en write-locks in verschillende klassen gelezen en aangepast. MonitorPool ondersteunt het gebruik van deze locks door objecten te leveren waarop het wait-notify-systeem kan gebruikt worden. Andere oplossingen zijn uiteraard ook mogelijk, maar deze structuur leek ons volledig en veilig, doch vrij simpel.
+		\item GUI, en DrawArea, ChoiceArea en Menu: deze klassen stellen duidelijk het grafische gedeelte van de applicatie voor. Met behulp van listeners in Editor kan de juiste functie aangeroepen worden; via Editor kan dan weer de nodige functie van DrawArea opgeroepen worden, gevolgd door bijvoorbeeld de nodige functie van een algoritme, \ldots .
  	\end{itemize}
+\subsection{ADT's}
+Point en Point3D spreken voor zich: zij representeren punten in het vlak of in de ruimte voor door middel van de co\"ordinaten.
+
+Curve bevat enerzijds een Vector van Points, die de verzameling van de initi\"ele controlepunten voorstelt. Wij hebben voor een Vector gekozen, omdat de volgorde van die punten heel belangrijk is. Anderzijds bevat Curve een tweede Vector van Points, die de verzameling van de ge\"interpoleerde punten voorstelt; deze Vector wordt gevuld met behulp een functie van een Algorithm-instantie die de input-vector als parameter meekrijgt.
+
+Algorithm is een abstracte klasse, daar de methode calculate in de subklassen dient ge\"implementeerd te worden. Algorithms kunnen beschouwd worden als ADT's die curves cre\"eren aan de hand van een verzameling meegegeven punten.
+
+In de centrale klasse Editor maken we gebruik van HashMaps voor het bijhouden van alle algoritmen en tools. Op deze manier kunnen we makkelijk en effici\"ent het nodige object vinden aan de hand van een String die de naam van de tool/algoritme voorstelt. Ook kunnen we met behulp van deze HashMaps eenvoudig de menu's aanmaken: gewoon voor elke key een menu-item aanmaken en dat item aan de overeenkomstige value koppelen.
+
+\subsection{Bestandstructuur}
+Hier kunnen we kort over zijn. Meer dan de op het moment van opslaan weergegeven curves moet er niet opgeslaan worden; deze kunnen we binair wegschrijven, of tekstueel om ze daarna te gaan parsen naar de juiste curve. Beide aanpakken vergen niet meer dan alle elementen van de Vector curves in de klasse Editor wegschrijven en terug inladen.
 
 
 \begin{figure}[hbp]
