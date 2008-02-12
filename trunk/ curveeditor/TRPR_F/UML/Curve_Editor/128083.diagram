@@ -2,18 +2,22 @@ format 46
 
 classcanvas 128083 class_ref 129619 // ChoiceArea
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumgreen
   xyz 335 18 2000
   end
 classcanvas 128211 class_ref 129875 // DrawArea
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumgreen
   xyz 9 2 2000
   end
 classcanvas 128339 class_ref 130003 // GUI
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumgreen
   xyz 335 251 2004
   end
 classcanvas 128723 class_ref 130387 // Menu
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumgreen
   xyz 23 250 3005
   end
 classcanvas 128979 class_ref 128723 // Editor
@@ -34,26 +38,32 @@ classcanvas 129747 class_ref 129363 // File
   end
 classcanvas 129875 class_ref 128339 // Curve
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightred
   xyz 700 296 2004
   end
 classcanvas 130259 class_ref 129235 // Point
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightred
   xyz 725 20 3005
   end
 classcanvas 130771 class_ref 129491 // Point3D
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightred
   xyz 954 8 3005
   end
 classcanvas 130899 class_ref 128211 // Algorithm
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumblue
   xyz 745 670 2000
   end
 classcanvas 131027 class_ref 128467 // Bezier
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumblue
   xyz 653 916 2000
   end
 classcanvas 131155 class_ref 128595 // Hermite
   draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  color lightmediumblue
   xyz 912 915 2000
   end
 relationcanvas 128467 relation_ref 130771 // <unidirectional association>
@@ -62,7 +72,7 @@ relationcanvas 128467 relation_ref 130771 // <unidirectional association>
   no_multiplicity_a no_multiplicity_b
 relationcanvas 128595 relation_ref 130899 // <unidirectional association>
   from ref 128339 z 1999 to ref 128211
-  role_a_pos 317 200 3000 no_role_b
+  role_a_pos 317 199 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 128851 relation_ref 131027 // <unidirectional association>
   from ref 128339 z 1999 to ref 128723
@@ -83,19 +93,19 @@ relationcanvas 129619 relation_ref 128595 // <unidirectional association>
   no_multiplicity_a no_multiplicity_b
 relationcanvas 130131 relation_ref 128979 // <unidirectional association>
   from ref 128979 z 1999 stereotype "<<List>>" xyz 621 513 3000 to ref 129875
-  role_a_pos 640 534 3000 no_role_b
+  role_a_pos 642 486 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 130515 relation_ref 129619 // <unidirectional association>
-  from ref 129875 z 1999 stereotype "<<Vector>>" xyz 759 207 3000 to ref 130259
-  role_a_pos 837 237 3000 no_role_b
+  from ref 129875 z 1999 stereotype "<<Vector>>" xyz 759 206 3000 to ref 130259
+  role_a_pos 840 206 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 130643 relation_ref 129747 // <unidirectional association>
-  from ref 129875 z 1999 stereotype "<<Vector>>" xyz 759 237 3000 to ref 130259
-  role_a_pos 833 210 3000 no_role_b
+  from ref 129875 z 1999 stereotype "<<Vector>>" xyz 759 236 3000 to ref 130259
+  role_a_pos 840 206 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 131411 relation_ref 128723 // <unidirectional association>
-  from ref 128979 z 1999 stereotype "<<HashMap>>" xyz 621 667 3000 to ref 130899
-  role_a_pos 654 694 3000 no_role_b
+  from ref 128979 z 1999 stereotype "<<HashMap>>" xyz 620 666 3000 to ref 130899
+  role_a_pos 661 697 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 131923 relation_ref 129875 // <generalisation>
   from ref 130771 z 3004 to ref 130259
