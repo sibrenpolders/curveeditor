@@ -1,0 +1,249 @@
+\documentclass[a4paper,11pt,oneside, titlepage]{article}
+\author{S. Polders, S. Staessens}
+\title{Project Object-ge\"ori\"enteerd programmeren: \newline Shogi}
+\date{dinsdag 27 november, 2007}
+\usepackage[dutch]{babel}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage[colorlinks,urlcolor=blue,filecolor=magenta]{hyperref}
+\usepackage{url}
+\parindent 0pt	
+\hyphenation{mo-ge-lijk-heid endif lijst gedefi-nieerd wijzigen signal implementatie-keuzes}
+
+\begin{document}
+\maketitle\newpage
+\section{Het spel}
+Het uiteindelijk resultaat van het project is de implementatie van het bordspel Shogi, met de volgende eigenschappen als meest belangrijke:
+\begin{itemize}
+ \item het spelbord is 9 bij 9 groot
+ \item het spel wordt gespeeld met twee spelers
+ \item elke speler beschikt bij aanvang over een aantal stukken op het bord, elk type heeft bepaalde eigenschappen
+	\begin{itemize}
+		\item stukken kunnen slechts op een aantal manieren op het bord bewegen
+		\item sommige stukken kunnen promoveren, dit zorgt ervoor dat ze op een andere manier op het bord kunnen bewegen
+		\item promotie kan enkel gebeuren in een specifieke promotiezone (de drie verst van de speler verwijderde rijen op het bord) en kan niet ongedaan gemaakt worden
+		\item stukken hebben geen hogere rang dan andere, bij een battle wint de attacker sowieso
+		\item geslagen stukken kunnen door de speler ongepromoveerd terug op het bord gezet worden (droppen) als zijnde zijn eigen stukken (bepaalde specifieke situaties uitgezonderd)
+ 	\end{itemize} 
+ \item het spel wordt gewonnen als de andere speler zijn koning schaakmat staat, als een speler 4 maal na elkaar dezelfde zet doet of als
+de speler een foute drop doet.
+ \end{itemize} 
+Voor een professionelere uitleg van de spelregels verwijzen we u naar: 
+	\begin{itemize}
+		\item \url{http://en.wikipedia.org/wiki/Shogi}
+		\item \url{http://www.ricoh.co.jp/SHOGI/rules/erules.html}
+		\item \url{http://shawnbrown.com/basement/shogi/shogi_rules_3.html}
+ 	\end{itemize}
+\newpage
+\section{De implementatie van het spel}
+De implementatie van het spel is in duidelijk van elkaar te onderscheiden lagen gebeurd:
+	\begin{itemize}
+		\item modules die de verschillende types van stukken voorstellen (Piece, Promotable, King, Pawn, \ldots)
+		\item een module die het spelbord voorstelt (Board), die eigenlijk een verzameling is van de op het spelbord geplaatste pionnen (vector van vectoren van Piece*'s als attribuut)
+		\item een module die een speler voorstelt (Player) en een vector van Piece*'s als container gebruikt om de verzameling van de door de speler geslagen stukken bij te houden
+		\item een module die het spel voorstelt (Game) en twee spelers en een bord als attribuut heeft
+		\item een module die de tekstuele interface van het programma verzorgt (TextGame), overervend van de module Game
+		\item een module die de grafische interface van het programma verzorgt (QtGame), overervend van de module Game en gebruik makend van instanties van zelf ge\"implementeerde Qt-Widgets (QtBoard, QtPlayField, \ldots)
+	\end{itemize}
+Op Figuur 1 ziet u een beknopt klassediagram, de algemene structuur van het programma voorstellend. In de volgende secties zullen de verschillende delen van het programma afzonderlijk besproken worden.
+\subsection{De spelelementen}
+\subsubsection{De stukken}
+Alle stukken erven over van de abstracte klasse Piece, die de algemene functionaliteiten van een stuk implementeert, zoals daar zijn: 
+	\begin{itemize}
+		\item het bijhouden van de huidige en de vorige positie op het bord (telkens incl. get- en set-functies uiteraard)
+		\item het bijhouden van de kleur van het stuk (idem)
+		\item het bijhouden van het type als char, om in andere klassen het type van het stuk te kunnen achterhalen of om eenvoudig het stuk te kunnen uitprinten
+		\item het controleren of een positie het resultaat kan zijn van een geldige zet van het stuk
+ 	\end{itemize}
+Specifiek aan het Shogi-spel is het feit dat er meerdere promoveerbare stukken zijn. Er zijn echter ook niet-promoveerbare stukken (Koning en Gouden Generaal) zodat deze functionaliteit niet volledig in Piece mocht ge\"implementeerd worden. Het was dan ook vrij logisch om voor deze functionaliteit een andere abstracte klasse (Promotable) te implementeren, waarvan de stukken die over deze functionaliteit moeten beschikken, naast Piece, ook van Promotable overerven. Promotable houdt het type waar het stuk naar promoveert als een char bij, en beschikt over een boolean die de status van het stuk voorstelt. Containers van Pieces en polymorfisme laten het echter niet toe objecten aangeroepen met een Piece-pointer, te casten naar objecten aangeroepen met een Promotable-pointer. Dit wordt opgevangen door in Piece enkele gelijknamige doch lege Promotable-functies te voorzien, die bij de promoveerbare stukken/klassen concreet ingevuld worden door de functie uit Promotable aan te roepen.
+
+In Shogi kunnen gepromoveerde stukken slechts \'e\'en van twee nieuwe bewegingsmogelijkheden krijgen: in gepromoveerde vorm mogen ze naast hun geldige bewegingen in ongepromoveerde status dan ook als een koning bewegen, OF mogen ze \'enkel zoals een Gouden Generaal bewegen. Dit gegeven gaf aanleiding tot het opslitsen van de stukken: die \'of Koning zijn \'of tot Koning promoveren erven over van MoveAsKing, die \'of Gouden Generaal zijn \'of tot Gouden Generaal promoveren erven over van MoveAsGold. Tot Koning of Gouden Generaal promoveren in voorgaande zin is uiteraard niet meer dan die extra bewegingsmogelijkheden krijgen na promotie: men kan een stuk NIET letterlijk tot Koning of Gouden Generaal promoveren.
+\newline \newline
+Laten we even het niet-promoveerbare King als voorbeeld nemen:
+	\begin{itemize}
+		\item King is niet-promoveerbaar en erft dus niet over van Promotable
+		\item King beweegt uiteraard als een Koning en erft dus over van MoveAsKing, alwaar al de bewegingsmogelijkheden van King gedefini\"eerd zijn
+		\item King erft via MoveAsKing over van de algemene klasse Piece
+ 	\end{itemize}
+Laten we hetzelfde doen voor het promoveerbare Silver (General):
+	\begin{itemize}
+		\item Silver is promoveerbaar en erft dus over van Promotable
+		\item Silver beweegt in gepromoveerde toestand als een Golden General en erft dus over van MoveAsGold, alwaar al de bewegingsmogelijkheden van een Golden General gedefini\"eerd zijn. In Silver is een hulpfunctie ge\"implementeerd die de bewegingsvrijheid van Silver in ongepromoveerde status defini\"eert.
+		\item King erft via MoveAsGold over van de algemene klasse Piece
+ 	\end{itemize}
+Dit alles is ook duidelijk in het UML-diagram in Figuur 2.
+\subsubsection{Het bord}
+Het bord stelt, zoals reeds eerder vermeld, de verzameling van de 'actieve' stukken voor; 'actieve' stukken zijn stukken die op het spelbord staan en verplaatst, gepromoveerd of geslagen kunnen worden. Deze stukken worden in een STL vector bijgehouden: enerzijds omdat het de implementatie een stuk vergemakkelijkt en anderzijds, maar ook voor\'al, omdat met vectoren een stuk op het bord in constante tijd kan benaderd worden. De []-notatie zorgt voor dit alles: het bord is 2-dimensionaal, waardoor we met een vector van vectoren werken en waardoor we met behulp van de notatie \emph{vector[rij][kolom]} de Piece-instantie op die plaats op het bord kunnen opvragen.
+
+We hebben overigens geopteerd om voor elke Piece-instantie telkens de pointer ernaar te gebruiken in plaats van altijd een referentie naar de instantie uit de vector te verkrijgen en een kopie van die instantie naar een andere plaats in de vector te kopi\"eren. Op die manier verkrijgen we minder overhead, en moeten we ook minder belang aan memory management hechten. Bij het initialiseren van het spel worden de stukken dus voor de eerste en de laatste keer aangemaakt; de pointers naar al die Piece-instanties worden dan in de 2-dimensionale vector gestoken om dan in de loop van het spel bij verplaatsingen/slagen/drops van de ene vector naar de andere verplaatst te worden zonder dat er aan het eigenlijke object iets verandert.
+
+Daar Board als een container van de 'actieve' stukken fungeert, is het ook logisch dat deze module de functionaliteit implementeert die verband houdt met de controle van alle mogelijke acties op het bord. Daar waar de modules van Piece en co. slechts de controlefuncties implementeren die voor Pieces z\'elf relevant zijn (Mag ik, als dit type pion, zo bewegen ?), implementeert Board de controles die rekening houden met de h\'ele opstelling op het spelbord (Mag die pion op die manier op het bord bewegen, rekening houdende met hoe de andere pionnen staan en hoe de pion z\'elf mag bewegen ?).
+
+Na elke uitgevoerde actie geeft de functie een waarde terug die de situatie op het bord na de actie voorstelt: schaak, schaakmat, ongeldig, \ldots. Elke methode die op een instantie van Board uitgevoerd wordt, geeft dus het resultaat van die actie terug \ldots en met dat resultaat kan men beslissen wat de volgende uit te voeren methode in de klasse, van waaruit de methode uitgevoerd geweest is, moet zijn. Dit alles is met behulp van \emph{static const chars} ge\"implementeerd.
+
+De 2-dimensionale vector die al de stukken op het bord omvat, is aanvankelijk met pointers naar een dummy-stuk gevuld. Ook wanneer in het verloop van het spel een vakje op het bord leeg komt te staan, wordt op die plaats in de 2-dimensionale vector een pointer naar het dummy-stuk geplaatst. De structuur van de vector en de []-notatie heeft ons hiertoe gedwongen: vragen we een element op, dan krijgen we een referentie naar de instantie op die plaats terug. Moesten we lege plaatsen met NULL voorstellen, dan zouden we dus telkens een referentie naar NULL terugkrijgen, en dat is niet hetzelfde als andere referenties naar NULL. Om zeker te zijn dat een plaats op het bord dus leeg is, gebruiken we een pointer naar een (in dit geval) King-instantie, waarvan het attribuut 'color' op 0 gezet is. Controle op dit attribuut zorgt er dus voor dat we kunnen te weten komen of de plaats al dan niet bezet is: de plaats is leeg, als (Piece*)-$>$GetColor() == 0, de plaats is bezet in alle andere gevallen.
+
+Een overzicht van al de functionaliteiten en controlefuncties van Board vind je terug in Figuur 3.
+\subsubsection{De speler}
+Deze module houdt de informatie van de speler bij en fungeert dus net zoals Board ook als een container van Piece-pointers. 
+Bijgehouden wordt met welke kleur de speler speelt, welke stukken er geslagen zijn door de speler (dit wordt dus in een vector$<$Piece*$>$ opgeslaan), maar ook de positie van de speler zijn koning wordt als een attribuut opgeslagen, zodat men niet telkens heel het bord moet doorlopen om te weten waar de speler zijn koning staat. Dit zorgt voor een niet onbelangrijke tijdswinst vermits bij bijna elke zet nagekeken moet worden of de koning al dan niet schaak(mat) staat. Andere speler-specifieke informatie die hier bijgehouden wordt, is het laatst gebruikte stuk. Met behulp van dit laatst gebruikte stuk kan men gemakkelijk berekenen of de gebruiker vier maal op rij dezelfde posities heeft betreden en de speler volgens de regels van het Shogi-spel het spel dus verloren heeft.
+
+Een overzicht van Player ziet u in Figuur 4.
+\subsubsection{Het spel}
+De klasse Game kan aanzien worden als het controlerend en regelend orgaan van het spel. De klasse is immers de extra laag die alle nodige spelelementen (een bord met stukken en twee spelers) samenbrengt en enkele elementaire public functies voorziet die al de mogelijke acties in het spel weergeven (switch speler, verplaats stuk van hier naar daar op het bord, promoveer stuk, drop stuk van een speler op die plaats op het bord, \ldots). Deze elementaire functies kunnen dan gemakkelijk gebruikt worden bij de interactie met de eindgebruikers. De input van een gebruiker leidt dan simpelweg tot het aanroepen van \'e\'en van de elementaire functies uit Game.
+
+Daar een spel niet gespeeld kan worden zonder interactie met de gebruiker hebben we besloten om van Game een abstracte klasse te maken. Klassen die een interface voorzien, erven dan over van deze klasse en kunnen dan gebruik maken van al de members van Game, incl. de elementaire functies uiteraard. Dit kan handig zijn wil men extra informatie-elementen in een interface voorzien. Het abstract maken van Game zorgt volgens ons niet voor een slechtere uitvoering van het Model-View principe, vermits eender welke van Game overervende UI-klasse kan ge\"implementeerd worden (gebruik makend van GTK, Qt, wxWidgets, FLTK, text-based, \ldots).
+
+Hoe zit de algemene structuur tussen interface en core nu in elkaar ?
+De User Interface zal informatie (bijvoorbeeld de x- en y-co\"ordinaat ten opzichte van het bord) bezorgen aan de klasse Game m.b.v. \'e\'en van de elementaire functies (al naargelang wat er in de user interface gekozen$/$gedaan werd). Game zal dan de juiste controle-, en indien nodig ook doe-functies van zijn attributen (Board, Player, Piece, \ldots) aanroepen. Met behulp van de door die functies teruggegeven waarden wordt in Game beslist of de spelsituatie moet veranderen (als gevolg van een geldige actie dus) of niet (als gevolg van een ongeldige actie dus). De elementaire functie die in Game werd aangeroepen gaat dan ook zelf een waarde teruggeven die het gevolg van de gedane aanroep voorstelt: ofwel een boolean, ofwel een static const char (WRONG\_OWNER, ILLEGAL\_MOVE, ILLEGAL\_PROMOTION). Naargelang de teruggegeven waarde kan dan in de van Game overervende klasse beslist worden wat er als reactie in de interface dient te gebeuren.
+
+De klasse Game zal ook nakijken of de speler al dan niet schaak(mat) staat. Dit gebeurt door eerst met behulp van methodes van het bord te controleren of de koning in een bepaalde richting schaak staat, en door daarna te controleren of er een stuk op het bord staat dat de schaak(mat)-situatie kan opheffen. Dit laatste doet hij door zijn eigen functie Move() en Check() eenmalig recursief aan te roepen. 
+
+Een overzicht van Game ziet u in Figuur 5.
+\subsection{De text-based user interface}
+Om een dergelijke interface te voorzien konden we uit twee mogelijke oplossingen kiezen:
+	\begin{itemize}
+		\item een klasse TextGame die een instantie van Game bevat, en connecties legt tussen hetgeen de gebruiker ingeeft en die Game-instantie 
+		\item een klasse TextGame die overerft van een abstracte klasse Game, en die als reactie op wat de gebruiker invoert zelf functies uitvoert
+ 	\end{itemize}
+We hebben gekozen voor optie 2, omdat bij optie 1 de afhankelijkheid van Game minder sterk naar voren komt in de klassestructuur. Een Game-instantie op zich hebben we dan ook onmogelijk gemaakt door de klasse abstract te maken: een Game-instantie op zich heeft immers geen nut zonder interactie met de eindgebruiker; \'e\'en of andere vorm van communicatie moet dus aanwezig zijn om het spel te spelen. Daarom is in de klasse Game een pure virtual functie StartGame() voorzien, die bij implementatie van zo'n gebruikersinterface ingevuld dient te worden om alzo het spel, en dus ook de interface, op te starten.
+
+Voor de tekstuele weergave wat op te smukken hebben we een template-klasse Color$<$T$>$ en een klasse AsciiArt ge\"implementeerd. Color$<$T$>$, met T een klasse waarop operator$<<$ correct werkt, is niet meer dan een klasse die met behulp van voorgedefini\"eerde waarden kleuren in de console laat weergeven. Die voorgedefini\"eerde waarden zijn \emph{static const chars} (ROOD, VET, ONZICHTBAAR, \ldots) die men in de constructor van een Color$<$T$>$-instantie kan meegeven. Met de aanroep van die constructor wordt de meegegeven instantie van T (meestal een char*) naar de console uitgeschreven, gebruik makend van escape sequences die met behulp van de meegegeven char-waarden (die gelijk zijn aan de waarde van \'e\'en van de \emph{static const chars}) bepaald worden. Omdat escape sequences in Windows standaard niet ondersteund worden, hebben we gebruik gemaakt van een "\#ifndef WIN32 \ldots \#ifdef WIN32 \ldots "-structuur zodat bij het compilen in een Windows-omgeving geen gebruik gemaakt wordt van die implementatie.
+
+De overerving van Game op TextGame is duidelijk te zien in Figuur 6.
+\subsection{De grafische user interface}
+Na voor TextGame de keuze gemaakt te hebben om die klasse te laten overerven van de klasse Game, was het logisch ook hetzelfde te doen voor QtGame om dezelfde redenen.
+
+QtGame maakt overigens gebruik van QtMenu, QtPlayField en QtPlayField \ldots widgets die we voor de eenvoud apart hebben gehouden omdat ze ook elk als een eigen onderdeel van de uiteindelijke GUI kunnen gezien worden. QtGame erft over van QGridLayout en plaatst de drie eerder vermelde GUI-onderdelen dus op een raster.
+
+Signals en slots worden op deze manier ook eenvoudig gehouden: een signal komt bijvoorbeeld van QtPlayField (bvb. PlayerSwitched(Player*)) en kan in QtGame verbonden worden aan een slot van QtDataField (Draw(Player*)). 
+
+QtMenu erft over van QMenuBar en doet niet meer dan bij het triggeren van een QAction een bijhorend signaal emitten. Deze signalen worden dan in QtGame geconnecteerd met de bijhorende slotfuncties. Meestal zijn dat slotfuncties van QtGame zelf, omdat we deze als een container aanzien hebben die al het verkeer regelt tussen zijn componenten, zijnde QtMenu, QtPlay- en QtDataField. Een slotfunctie uit QtGame emit dan zelf andere signalen waarop GUI-elementen kunnen reageren.
+
+QtDataField is een QVBoxLayout met daarin een QGridLayout en een QGroupBox als children. In de QGridLayout staat links een QPushButton om het Promote-signal te kunnen emitten indien de gebruiker dat wenst. Rechts staat een QGroupBox met daarin een QVBoxLayout, met bovenaan een QLabel met icon en onderaan een tekstuele QLabel \ldots deze QGroupBox laat dus de speler aan zet weergeven. Onder deze QGridLayout, de QGroupBox in de QVBoxLayout van QtDataField dus, ziet men de geschiedenis van de reeds gedane zetten/drops/... van beide spelers. Hiertoe is in de QGroupBox een QScrollArea met daarin een QLabel voorzien. Bij elke zet/drop/... wordt de inhoud van dit QLabel hernieuwd en uitgeschreven. De nodige tekst wordt geparsed uit de inhoud van de stack van de reeds gedane acties die bijgehouden wordt in de klasse Game.
+
+QtDialog is niet meer dan een klasse die specifieke dialoogvensters voordefini\"eert. Met behulp van de constructor wordt het gewenste dialoog weergegeven. Dit wordt bekomen door aan de constructor van QtDialog de gewenste tekst (indien nodig) en het gewenste type mee te geven. Het type moet gelijk zijn aan een in QtDialog gedefini\"eerde \emph{static const char} (ERROR, WARNING, SAVE, \ldots).
+
+QtPlayField omvat de weergave en de communicatie van het spelbord (QtBoard) en de containers van de door de spelers geslagen stukken (QtCatchedPieces). Er wordt gebruik gemaakt van het drag\&drop-systeem. Bij elke drag\&drop wordt een signaal ge-emit met als parameters bijvoorbeeld twee Positions 'from' en 'to' (of bijvoorbeeld \'e\'en Position 'from' als men wenst te promoveren). In QtGame wordt dit signaal opgevangen en verwerkt met behulp van \'e\'en van de elementaire functies uit Game. Afhankelijk van het resultaat van die basisfunctie wordt een ander signaal ge-emit, dat indien nodig aan een slot van QtPlayField en\\of QtDataField gekoppeld is (bijvoorbeeld indien de zet geldig was, moet het spelbord en de statische informatie hertekend worden). Eens te meer wordt de verkeerregelende functie van QtGame duidelijk.
+
+De overerving van Game op QtGame is duidelijk te zien in Figuur 7. Omwille van de sterke regelende functie van QtGame en de sterk doorgedreven gelaagdheid met QtGame als hoofdlaag, bekomen we echter wel veel signals en slots om \'e\'en enkele actie klaar te krijgen. Een actie in QtDataField (klikken op de Promote-button bijvoorbeeld) zorgt voor een signal dat in QtGame opgevangen wordt en daar aan een slot van QtPlayField verbonden wordt. QtPlayField reageert daarop door te wachten op de input van de gebruiker, waarna opnieuw een signal ge-emit wordt dat opgevangen wordt in QtGame (intern gaat er dan nog een signal een niveau lager naar QtBoard, en daarna ook weer eentje terug omhoog). Daarna wordt een controle- en$/$of doe-functie uit Game aangeroepen, waarna afhankelijk van het resultaat van die functie opnieuw een signaal ge-emit wordt dat aan slots in QtDataField en$/$of QtPlayField verbonden wordt.
+\newpage
+\section{Andere functionaliteiten en implementatiekeuzes}
+\subsection{Gevolgen van polymorfisme: ProtoPiece}
+Omdat gebruik gemaakt wordt van polymorfisme en we dus enkel met Piece-pointers werken, kunnen we bijvoorbeeld niet zomaar een default opstelling inladen en opslaan. Slaan we de 2-dimensionale vector op, dan kunnen we enkel de geslicede delen opslaan. Enkel de functionaliteit en attributen van Piece worden dus opgeslaan, de attributen van de afgeleide klassen gaan dan volledig verloren. Laden we de Pieces daarna terug in, dan zijn de oorspronkelijk Promotable stukken die functionaliteit dus kwijt.
+
+Om dit ongewenste effect op te lossen, maken we gebruik van de klasse ProtoPiece. Een instantie van deze klasse heeft als attributen char 'type', int 'x', int 'y', bool 'promoted' en char 'color'. Met deze attributen kunnen we makkelijk een instantie van de gewenste klasse reconstrueren. Afhankelijk van de waarde van 'type' hoeft dus enkel maar zo'n instantie aangemaakt te worden met behulp van de andere attributen.
+\subsection{Oneindige undo-functionaliteit}
+Hiervoor hebben een vector$<$Piece*$>$ 'stack' in de klasse Game voorzien. Na elke actie wordt een NULL-pointer op de stack geplaatst, zodat we weten wanneer we moeten stoppen met gegevens te poppen om een undo uit te voeren.
+
+Een drop wordt in de vector opgeslaan door de Piece te pushen met previous.x op -1 gezet. Een promotie wordt in de vector opgeslaan door de Piece te pushen met als attribuut previous gelijk aan attribuut current. Een move wordt in de vector opgeslaan door gewoonweg de Piece te pushen. Als een Piece gecaptured werd, wordt die voor de verplaatste Piece op de stack gepushed.
+
+Door deze structuur kunnen we makkelijk de vorige actie ongedaan maken.
+
+E\'en ding echter: op de stack moeten pointers naar kopie\"en van de Pieces gezet worden. Maar ook de functionaliteit van de basisklasse dient behouden te worden. Omdat copy constructors geen polymorfisme ondersteunen, is in de abstracte klasse Piece een functie "Piece* clone()" voorzien, die in elke niet-abstracte subklasse ge\"implementeerd dient te worden. Deze functie doet niet meer dan door middel van de copy constructor een kopie van het object van de subklasse aan te maken en daar een Piece-pointer van terug te geven. Voeren we clone() dus op een Piece-pointer uit, dan wordt door polymorfisme de clone()-functie uit de subklasse aangeroepen waardoor een volledige kopie van de instantie gecre\"eerd wordt.
+\subsection{Opslaan}
+Het opslaan begint bij de Save-functie in Game, alwaar de outputstream geopend wordt en de nodige getallen (aantal rijen en kolommen van het aantal pionnen op bord, aantal geslagen stukken van speler 1 en speler 2, \ldots) aan het begin uitgeschreven worden. Nadien wordt de outputstream doorgegeven aan de Save-functies van het bord en de twee spelers, die dan elk hun eigen nodige data wegschrijven. Daarna wordt weggeschreven wie aan zet was, om dan als laatste de stack van gedane acties weg te schrijven.
+
+Pieces worden weggeschreven als ProtoPieces, om dezelfde redenen als die voorheen werden gegeven. Omdat Pieces uit de stack van gedane acties ook hun beide Positions nodig hebben voor reconstructie, wordt na de overeenkomstige ProtoPiece ook de Position 'previous' weggeschreven. NULL-pointers uit de stack worden weggeschreven als ProtoPieces met als waarde voor color 0.
+
+We hebben voor deze manier van werken gekozen, omdat op die manier elk spelelement hun eigen op te slaan en in te laden datastructuur kan implementeren. We konden ook voor een afzonderlijke klasse IO gekozen hebben, maar met die manier van werken, zouden we constructoren (of toch zeker functies die de inhoud van de instantie veranderen) van Game, Board en Player voorzien moeten hebben die als parameter de nodige vectoren van Pieces meekrijgen. En dat wil zeggen dat naar de buitenwereld toe duidelijk is dat die klassen intern met vectoren werken, en dat is geen goede eigenschap voor ADT's.
+\subsection{Inladen}
+Het inladen van een spel gebeurt in dezelfde volgorde en op dezelfde manier als dat het spel opgeslaan werd. Dus ook hier wordt de inputstream gewoon vanuit de Load-functie in Game (impliciet) doorgegeven aan de Load-functies in Board en Player. Impliciet, omdat nu constructoren van Board en Player aangeroepen worden, die de inputstream als parameter meekrijgen. In elk van die constructor wordt dan, indien nodig, de Load- of -Initialize-functie aangeroepen.
+
+In elk van deze constructoren wordt een default waarde voor de inputstream gesteld, zodat bepaald kan worden wat te doen bij de initialisatie van een Game-instantie (wanneer er dus geen bestand ingeladen wordt). Bij Player gebeurt er dan niks en worden de attributen op de default waarden gelaten (en de vector van geslagen stukken dus leeg); bij Board echter, wordt na het met dummy's vullen van het bord een inputstream naar NormalShogi.shgi geopend die de default opstelling van het bord inlaadt.
+\newpage
+\section{Figuren}
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.40]{all.png}
+\caption{Beknopt UML-diagram van alle ge\"implementeerde modules}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.37]{pieces.png}
+\caption{UML-diagram van de modules die de verschillende soorten pionnen voorstellen}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.37]{board.png}
+\caption{UML-diagram van de modules die het bord voorstellen, incl. een beknopte voorstelling van de modules waarvan instanties als attribuut gebruikt worden}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.60]{player.png}
+\caption{UML-diagram van de modules die nodig zijn voor de implementatie van Player}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.5]{game.png}
+\caption{UML-diagram van de modules die nodig zijn voor de implementatie van Game}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.5]{txt.png}
+\caption{UML-diagram van de modules die nodig zijn voor de tekstuele variant van Shogi}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.38]{qt.png}
+\caption{UML-diagram van de modules die nodig zijn voor de implementatie van de grafische Shogi-variant}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.45]{default_opst.png}
+\caption{De default opstelling van Shogi, weergegeven in de Qt-variant}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\center
+\includegraphics[scale=0.65]{default_opst_txt.png}
+\caption{De default opstelling van Shogi, weergegeven in de text-variant}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\includegraphics[scale=0.45]{ndefault_opst.png}
+\caption{Een situatieweergave van Shogi, na enkele zetten}
+\end{figure}
+\clearpage
+
+\begin{figure}[hbp]
+\center
+\includegraphics[scale=0.65]{ndefault_opst_txt.png}
+\caption{Een situatieweergave van Shogi, na enkele zetten, in tekstvorm}
+\end{figure}
+\clearpage
+
+\section{Handleiding bij het programma}
+Voor Windows, ga naar de directory Windows:
+	\begin{itemize}
+		\item voor de tekstuele variant, voer uit: TxtShogi.exe
+		\item voor de grafische variant, voer uit: QtShogi.exe
+	 \end{itemize} 
+Voor Linux, ga naar de directory Linux:
+	\begin{itemize}
+		\item voor de tekstuele variant, voer uit: ./Shogi -t (in xterm, omdat er gebruik is gemaakt van escape sequences)
+		\item voor de grafische variant, voer uit: ./Shogi -g
+	 \end{itemize}
+Voor beide besturingssytemen dient NormalShogi.shgi in de map van de executable te staan. Standaard is dit het geval, maar dit bestand mag dus niet overschreven of verwijderd worden, of de standaardopstelling kan niet meer ingeladen worden. Beter zou geweest zijn om dat bestand statisch mee in de binary/executable te compileren, maar daar zijn we jammer genoeg niet in geslaagd.
+\section{Taakverdeling}
+Sibren Polders:
+	\begin{itemize}
+		\item ontwerp en uitwerking van Board, Player en Game, of met andere woorden: de core van het spel die de verschillende containers van stukken bevat
+		\item ontwerp en uitwerking van QtPlayField en de daarvoor benodigde klassen, of met andere woorden: het spelbord in Qt laten weergeven en de interactie met QtGame verzorgen
+	 \end{itemize} 
+Sibrand Staessens:
+	\begin{itemize}
+		\item ontwerp en uitwerking van de structuur tussen de verschillende types van stukken (Piece, Promotable, King, \ldots)
+		\item ontwerp en uitwerking van QtDataField, QtMenu en QtGame, of met andere woorden: de widget die de statische spelinformatie (history + speler aan zet) weergeeft implementeren, en het samenbrengen van al de verschillende GUI-elementen in \'e\'en geheel
+		\item verslag + UML (m.b.v. Dia en BOUML)
+	 \end{itemize} 
+\end{document}
