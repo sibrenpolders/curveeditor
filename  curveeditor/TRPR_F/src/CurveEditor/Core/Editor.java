@@ -12,8 +12,8 @@ public class Editor {
 
 	protected MonitorPool mp = new MonitorPool();
 	protected Situation currentSituation;
-	protected HashMap algorithms;
-	protected HashMap tools;
+	protected HashMap<String, Algorithm> algorithms;
+	protected HashMap<String, Tool> tools;
 	protected List<Curve> curves;
 
 	public Editor(String filename)
@@ -25,7 +25,7 @@ public class Editor {
 
 	}
 
-	protected HashMap getAlgorithms()
+	protected HashMap<String, Algorithm> getAlgorithms()
 	{
 		return algorithms;
 	}
@@ -47,18 +47,18 @@ public class Editor {
 		this.curves = curves;
 	}
 
-	protected HashMap getTools()
+	protected HashMap<String, Tool> getTools()
 	{
 		return tools;
 	}
 
 	public Tool getTool(String c)
 	{
-		return (Tool) algorithms.get(c);
+		return (Tool) tools.get(c);
 	}
 
 	public void addTool(Tool c){
-		algorithms.put(c.getType(), c);
+		tools.put(c.getType(), c);
 	}
 
 	public Curve searchCurve(Point p){
