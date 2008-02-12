@@ -1,0 +1,21 @@
+class DrawArea
+!!!137811.java!!!	DrawArea()
+
+!!!137939.java!!!	DrawArea(inout curves : Vector<Curve>)
+
+!!!138067.java!!!	drawPoint(inout p : Point) : void
+
+!!!138195.java!!!	drawCurve(inout c : Curve) : void
+
+!!!138323.java!!!	redrawAllCurves(inout curves : Vector<Curve>) : void
+
+!!!138451.java!!!	clearPoint(inout p : Point) : void
+
+!!!138579.java!!!	clearArea() : void
+
+!!!138707.java!!!	showImage(in filename : String) : void
+
+!!!138835.java!!!	retrievePoint() : Point
+		return null;
+!!!138963.java!!!	drawSelectedCurve(inout c : Curve) : void
+

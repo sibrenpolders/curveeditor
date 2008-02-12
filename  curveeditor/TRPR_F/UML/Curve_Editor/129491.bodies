@@ -1,0 +1,10 @@
+class Point3D
+!!!136531.java!!!	Point3D(in x : int, in y : int, in z : int)
+		super(x, y);
+		this.Z = z;
+!!!136659.java!!!	Z() : int
+		return Z;
+!!!136787.java!!!	setZ(in Z : int) : void
+		this.Z = Z;
+!!!136915.java!!!	toString() : String
+		return null;

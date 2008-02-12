@@ -1,0 +1,23 @@
+class GUI
+!!!139091.java!!!	GUI()
+
+!!!139219.java!!!	GUI(in filename : String)
+
+!!!139347.java!!!	menuCanceled(inout arg0 : MenuEvent) : void
+		// TODO Auto-generated method stub
+
+!!!139475.java!!!	menuDeselected(inout arg0 : MenuEvent) : void
+		// TODO Auto-generated method stub
+
+!!!139603.java!!!	menuSelected(inout arg0 : MenuEvent) : void
+
+!!!139731.java!!!	selectCurve() : void
+		currentSituation.setCurrentPoint(draw.retrievePoint());
+		currentSituation.setCurrentCurve(searchCurve(currentSituation.currentPoint()));
+		currentSituation.setCurrentDegree(currentSituation.currentCurve().getDegree());
+		currentSituation.setCurrentType(currentSituation.currentCurve().getType());
+
+		draw.drawSelectedCurve(currentSituation.currentCurve());
+		choice.refresh();
+
+		//message

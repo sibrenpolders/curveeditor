@@ -1,0 +1,31 @@
+format 46
+
+classcanvas 128083 class_ref 129619 // ChoiceArea
+  draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  xyz 335 18 2000
+  end
+classcanvas 128211 class_ref 129875 // DrawArea
+  draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  xyz 9 2 2000
+  end
+classcanvas 128339 class_ref 130003 // GUI
+  draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  xyz 366 231 2004
+  end
+classcanvas 128723 class_ref 130387 // Menu
+  draw_all_relations default hide_attributes no hide_operations no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode class drawing_language java show_context_mode uml auto_label_position default show_infonote default shadow default
+  xyz 23 250 3005
+  end
+relationcanvas 128467 relation_ref 130771 // <unidirectional association>
+  from ref 128339 z 1999 to ref 128083
+  role_a_pos 479 173 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 128595 relation_ref 130899 // <unidirectional association>
+  from ref 128339 z 1999 to ref 128211
+  role_a_pos 317 179 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 128851 relation_ref 131027 // <unidirectional association>
+  from ref 128339 z 1999 to ref 128723
+  role_a_pos 282 294 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end

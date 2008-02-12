@@ -1,0 +1,13 @@
+class Algorithm
+!!!128211.java!!!	Algorithm(inout c : Curve)
+		this.c = c;
+!!!128339.java!!!	getType() : String
+		return type;
+!!!128467.java!!!	setType(in type : String) : void
+		this.type = type;
+!!!128595.java!!!	getDegree() : short
+		return degree;
+!!!128723.java!!!	setDegree(in degree : short) : void
+		this.degree = degree;
+!!!128851.java!!!	toString() : String
+		return null;

@@ -1,0 +1,29 @@
+class Curve
+!!!133971.java!!!	Curve(in Type : char, in degree : short)
+
+!!!134099.java!!!	getInput() : Point
+		return input;
+!!!134227.java!!!	setInput(inout input : Vector<Point>) : void
+		this.input = input;
+!!!134355.java!!!	getOutput() : Point
+		return output;
+!!!134483.java!!!	setOutput(inout Output : Vector<Point>) : void
+		this.output = Output;
+!!!134611.java!!!	clearOutput() : void
+		this.output.clear();
+!!!134739.java!!!	addOutput(inout o : Point) : void
+		this.output.add(o);
+!!!134867.java!!!	removeInput(inout o : Point) : void
+		this.input.remove(o);
+!!!134995.java!!!	addInput(inout o : Point) : void
+		this.input.add(o);
+!!!135123.java!!!	getType() : String
+		return type;
+!!!135251.java!!!	getDegree() : short
+		return degree;
+!!!135379.java!!!	setType(in t : String) : void
+		this.type = t;
+!!!135507.java!!!	setDegree(in d : short) : void
+		this.degree = d;
+!!!135635.java!!!	toString() : String
+		return null;

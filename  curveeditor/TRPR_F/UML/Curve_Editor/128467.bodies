@@ -1,0 +1,5 @@
+class Bezier
+!!!129107.java!!!	Bezier(inout c : Curve)
+		super(c);
+!!!129235.java!!!	calculateCurve(inout c : Curve) : void
+

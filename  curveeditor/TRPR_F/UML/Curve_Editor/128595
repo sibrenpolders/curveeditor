@@ -1,0 +1,674 @@
+format 46
+"Core" // src::CurveEditor::Core
+  revision 1
+  modified_by 83 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/Core"
+  java_package "CurveEditor.Core"
+  classview 128595 "Core"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 128723 "Editor"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128467 // mp (<unidirectional association>)
+	relation 128467 --->
+	  a role_name "mp" init_value "=  new MonitorPool()" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 128467 // mp (<unidirectional association>)
+	  b parent class_ref 128851 // MonitorPool
+      end
+
+      classrelation 128595 // currentSituation (<unidirectional association>)
+	relation 128595 --->
+	  a role_name "currentSituation" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 128595 // currentSituation (<unidirectional association>)
+	  b parent class_ref 128979 // Situation
+      end
+
+      classrelation 128723 // algorithms (<unidirectional association>)
+	relation 128723 --->
+	  stereotype "HashMap"
+	  a role_name "algorithms" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<String, ${type}> ${name}${value};
+"
+	    classrelation_ref 128723 // algorithms (<unidirectional association>)
+	  b parent class_ref 128211 // Algorithm
+      end
+
+      classrelation 128851 // tools (<unidirectional association>)
+	relation 128851 --->
+	  stereotype "HashMap"
+	  a role_name "tools" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<String, ${type}> ${name}${value};
+"
+	    classrelation_ref 128851 // tools (<unidirectional association>)
+	  b parent class_ref 129107 // Tool
+      end
+
+      classrelation 128979 // curves (<unidirectional association>)
+	relation 128979 --->
+	  stereotype "List"
+	  a role_name "curves" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 128979 // curves (<unidirectional association>)
+	  b parent class_ref 128339 // Curve
+      end
+
+      operation 129619 "Editor"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "filename" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 129747 "Editor"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 129875 "getAlgorithms"
+	protected return_type class_ref 128211 // Algorithm
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}HashMap<String, ${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130003 "getAlgorithm"
+	public return_type class_ref 128211 // Algorithm
+	nparams 1
+	  param in name "c" explicit_type "char"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130131 "addAlgorithm"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128211 // Algorithm
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130259 "getCurves"
+	public return_type class_ref 128339 // Curve
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}List<${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130387 "setCurves"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "curves" explicit_type "List<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130515 "getTools"
+	protected return_type class_ref 129107 // Tool
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}HashMap<String, ${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130643 "getTool"
+	public return_type class_ref 129107 // Tool
+	nparams 1
+	  param in name "c" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130771 "addTool"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 129107 // Tool
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130899 "searchCurve"
+	public return_type class_ref 128339 // Curve
+	nparams 1
+	  param inout name "p" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131027 "selectCurve"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "p" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131155 "changeCurve"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "p" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 128851 "MonitorPool"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 128467 "v"
+	private explicit_type "Object"
+	stereotype "Vector"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 132179 "addObject"
+	public explicit_return_type "Object"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132307 "getObject"
+	public explicit_return_type "Object"
+	nparams 1
+	  param in name "i" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 128979 "Situation"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129107 // currentCurve (<unidirectional association>)
+	relation 129107 --->
+	  a role_name "currentCurve" init_value "=  null" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 129107 // currentCurve (<unidirectional association>)
+	  b parent class_ref 128339 // Curve
+      end
+
+      classrelation 129235 // currentPoint (<unidirectional association>)
+	relation 129235 --->
+	  a role_name "currentPoint" init_value "=  null" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 129235 // currentPoint (<unidirectional association>)
+	  b parent class_ref 129235 // Point
+      end
+
+      attribute 128595 "currentType"
+	private explicit_type "String"
+	init_value "=  null"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 128723 "currentDegree"
+	private explicit_type "short"
+	init_value "=  0"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      classrelation 129363 // currentAlgorithm (<unidirectional association>)
+	relation 129363 --->
+	  a role_name "currentAlgorithm" init_value "=  null" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 129363 // currentAlgorithm (<unidirectional association>)
+	  b parent class_ref 128211 // Algorithm
+      end
+
+      classrelation 129491 // currentTool (<unidirectional association>)
+	relation 129491 --->
+	  a role_name "currentTool" init_value "=  null" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 129491 // currentTool (<unidirectional association>)
+	  b parent class_ref 129107 // Tool
+      end
+
+      operation 132435 "currentCurve"
+	public return_type class_ref 128339 // Curve
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132563 "currentPoint"
+	public return_type class_ref 129235 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132691 "currentType"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132819 "currentDegree"
+	public explicit_return_type "short"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132947 "currentAlgorithm"
+	public return_type class_ref 128211 // Algorithm
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133075 "currentTool"
+	public return_type class_ref 129107 // Tool
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133203 "setCurrentCurve"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128339 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133331 "setCurrentPoint"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133459 "setCurrentType"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "c" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133587 "setCurrentDegree"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "c" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133715 "setCurrentAlgorithm"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128211 // Algorithm
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133843 "setCurrentTool"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 129107 // Tool
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 129363 "File"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "tekstueel opslaan: type | orde | controlepunt1 | controlepunt2 | ... | \\n"
+      attribute 128339 "currentFilename"
+	class_attribute private explicit_type "String"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 131283 "getCurrentFilename"
+	class_operation public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131411 "setCurrentFilename"
+	class_operation public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131539 "File"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131667 "File"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "filename" explicit_type "String"
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131795 "load"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "filename" explicit_type "String"
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131923 "saveAs"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "filename" explicit_type "String"
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132051 "save"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+  end
+
+  deploymentview 128339 "Core"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 128595 "Editor"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.HashMap;
+import java.util.List;
+import CurveEditor.Algorithms.Algorithm;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Tools.Tool;
+${definition}"
+      associated_classes
+	class_ref 128723 // Editor
+      end
+    end
+
+    artifact 128723 "File"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+${definition}"
+      associated_classes
+	class_ref 129363 // File
+      end
+    end
+
+    artifact 128851 "MonitorPool"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+${definition}"
+      associated_classes
+	class_ref 128851 // MonitorPool
+      end
+    end
+
+    artifact 128979 "Situation"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import CurveEditor.Algorithms.Algorithm;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Tools.Tool;
+${definition}"
+      associated_classes
+	class_ref 128979 // Situation
+      end
+    end
+  end
+end

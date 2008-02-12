@@ -1,0 +1,13 @@
+class File
+!!!131283.java!!!	getCurrentFilename() : String
+		return currentFilename;
+!!!131539.java!!!	File()
+
+!!!131667.java!!!	File(in filename : String, inout curves : Vector<Curve>)
+
+!!!131795.java!!!	load(in filename : String, inout curves : Vector<Curve>) : void
+
+!!!131923.java!!!	saveAs(in filename : String, inout curves : Vector<Curve>) : void
+
+!!!132051.java!!!	save(inout curves : Vector<Curve>) : void
+
