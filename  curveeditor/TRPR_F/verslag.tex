@@ -6,6 +6,7 @@
 \usepackage{verbatim}
 \usepackage{graphicx}
 \usepackage[colorlinks,urlcolor=blue,filecolor=magenta]{hyperref}
+\usepackage{color}
 \usepackage{url}
 \parindent 0pt	
 \hyphenation{}
@@ -44,8 +45,91 @@ uitgewerkt.}
 \begin{itemize}
 \item \bf{Bezier:}\newline
 \begin{enumerate}
-\rm{ \item formule: $\sum_{i=0}^n (_i^n).P_i.(1-t)^{n-i}.t^i$}
+\rm{ \item formule: $\sum_{i=0}^n (_i^n).P_i.(1-t)^{n-i}.t^i\ (\ t\ \epsilon\ [0,1]\ )$}
 \item uitwerking:\newline
+zij P een vector van controlepunten ( ingegeven punten ).\newline
+zij B een vector met berekende punten.\newline
+n het aantal ingegeven punten\newline
+N het aantal punten tussen 0 en 1 dat we willen berekenen ( == t )\newline
+
+initialiseer B met enkel 0-waarden.
+
+\begin{tabbing}
+from i \= = 0 to n do\ \textcolor{blue}{(1)}\\
+\>from j \= = 1 to N do\\
+\> \>from k \= = 0 to n do\\
+\> \> \>B[i*N + j] += $(_k^n).P[k].(1-t)^{n-k}.t^k$\\
+\\
+Het \=algoritme doet het volgende:\\
+\end{tabbing}
 \end{enumerate}
+\item \bf{Hermite}
+\rm{ \begin{enumerate}
+\item formule \& algoritme: \\
+\begin{tabbing}
+\\De vo\=lgende punten worden door de gebruik ingegeven:\\
+\>P1: Het startpunt van de curve\\
+\>T1: De richting waarin het beginpunt gaat ( de raaklijn van de curve in punt )\\
+\>P2: Het eindpunt van de curve\\
+\>T2: De richting waarin het eindpunt gaat ( de raaklijn van de curve in punt )\\
+\\
+Deze 4 punten worden dan vermenigvuldigd met de 4 basis functies van Hermite:\\
+\>$h1(s) =  2s^3 - 3s^2 + 1$\\
+\>$h2(s) = -2s^3 + 3s^2$\\
+\>$h3(s) =   s^3 - 2s^2 + s$\\
+\>$h4(s) =   s^3 -  s^2$\\
+\\
+Matrix S: Het interpolatie punt en zijn 3 machten\\
+Matrix C: De parameters van de Hermite curve\\
+Matrix h: De matrix notatie van de 4 Hermite functies\\ \\
+$ S = \left( \begin{array}{c}
+s^3 \\
+s^2\\
+s^1\\
+1\\
+\end{array} \right) $
+$ C = \left( \begin{array}{c}
+P1\\
+P2\\
+T1\\
+T2\\          
+\end{array} \right) $
+$h = \left( \begin{array}{cccc}
+2 & -2 & 1 & 1\\
+-3 & 3 & -2 & -2\\
+0 & 0 & 1 & 0\\
+1 & 0 & 0 & 0\\          
+\end{array} \right) $
+\\ \\
+Om een punt op de curve te berekenen stel je de vector S op, vermenigvuldig \\ je hem met de
+matrices h en C.\\
+$P = S * h * C$\\
+\\
+\end{tabbing}
+\end{enumerate}
+}
+\item \bf{Curve zoeken met behulp van een gegeven punt}
+\rm{}
+\begin{enumerate}
+\item Duid een punt aan op de curve die gezocht moet worden.
+\item Doe zolang de curve niet gevonden is, voor elke volgende curve in de vector:
+\item bereken voor elk punt in de curve de afstand tot dat punt
+\item indien afstand $<$ 0.01 ga naar 5 anders 2
+\item indien curve gevonden, ``Hoera!'', anders ``:-(``
+\end{enumerate}
+Mogelijke verfijning van het vorige algoritme:
+\begin{enumerate}
+\item Verdeel het tekengebied in N aantal gelijke rechtoeken
+\item Verdeel deze rechthoeken over een goedgekoze hashmap
+\item voeg een referenties van de curve toe bij de juist haskey
+\item Bereken de afstand van de oorsprong tot het ingegeven punt
+\item gebruik deze afstand om in de hasmap te zoeken welke curves punten hebben\\
+op deze afstand van de oorsprong
+\item ga met deze subset van curves naar stap 2 in het vorige algoritme
+\end{enumerate}
+Hierdoor zal het berekenen van een curve iets trager gaan ( de hasmap moet 
+in orde gebracht worden ). Het zoeken daarentegen zal sneller gaan. Normaal gezien
+is de gebruiker meer bereid om te wachten op een berekening dan te wachten 
+op het vinden van een curve. Dus dit zou een goed overwogen tradeoff zijn.
 \end{itemize}
 \end{document}
