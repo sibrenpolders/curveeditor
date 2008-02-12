@@ -93,15 +93,15 @@ relationcanvas 129619 relation_ref 128595 // <unidirectional association>
   no_multiplicity_a no_multiplicity_b
 relationcanvas 130131 relation_ref 128979 // <unidirectional association>
   from ref 128979 z 1999 stereotype "<<List>>" xyz 621 513 3000 to ref 129875
-  role_a_pos 642 486 3000 no_role_b
+  role_a_pos 651 533 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 130515 relation_ref 129619 // <unidirectional association>
   from ref 129875 z 1999 stereotype "<<Vector>>" xyz 759 206 3000 to ref 130259
-  role_a_pos 840 206 3000 no_role_b
+  role_a_pos 836 237 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 130643 relation_ref 129747 // <unidirectional association>
   from ref 129875 z 1999 stereotype "<<Vector>>" xyz 759 236 3000 to ref 130259
-  role_a_pos 840 206 3000 no_role_b
+  role_a_pos 833 207 3000 no_role_b
   no_multiplicity_a no_multiplicity_b
 relationcanvas 131411 relation_ref 128723 // <unidirectional association>
   from ref 128979 z 1999 stereotype "<<HashMap>>" xyz 620 666 3000 to ref 130899
