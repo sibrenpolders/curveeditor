@@ -1,0 +1,13 @@
+class ChoiceArea
+!!!137043.java!!!	ChoiceArea(inout v : Vector<Algorithm>)
+
+!!!137171.java!!!	addAlgorithm(inout a : Algorithm) : void
+
+!!!137299.java!!!	refresh() : void
+		
+!!!137427.java!!!	newPointInput() : Point
+		return null;
+!!!137555.java!!!	goToPoint() : Point
+		return null;
+!!!137683.java!!!	newPointClick() : Point
+		return null;

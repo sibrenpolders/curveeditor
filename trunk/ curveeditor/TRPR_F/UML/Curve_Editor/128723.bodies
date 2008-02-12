@@ -1,0 +1,33 @@
+class Editor
+!!!129619.java!!!	Editor(in filename : String)
+
+!!!129747.java!!!	Editor()
+
+!!!129875.java!!!	getAlgorithms() : Algorithm
+		return algorithms;
+!!!130003.java!!!	getAlgorithm(in c : char) : Algorithm
+		return (Algorithm) algorithms.get(c);
+!!!130131.java!!!	addAlgorithm(inout c : Algorithm) : void
+		algorithms.put(c.getType(), c);
+!!!130259.java!!!	getCurves() : Curve
+		return curves;
+!!!130387.java!!!	setCurves(inout curves : List<Curve>) : void
+		this.curves = curves;
+!!!130515.java!!!	getTools() : Tool
+		return tools;
+!!!130643.java!!!	getTool(in c : String) : Tool
+		return (Tool) tools.get(c);
+!!!130771.java!!!	addTool(inout c : Tool) : void
+		tools.put(c.getType(), c);
+!!!130899.java!!!	searchCurve(inout p : Point) : Curve
+		return null;
+!!!131027.java!!!	selectCurve(inout p : Point) : void
+		Curve c = searchCurve(p);
+		c.setDegree(currentSituation.currentDegree());
+		c.setType(currentSituation.currentType());		
+		currentSituation.setCurrentCurve(c);
+!!!131155.java!!!	changeCurve(inout p : Point) : void
+		Curve c = searchCurve(p);
+		c.setDegree(currentSituation.currentDegree());
+		c.setType(currentSituation.currentType());		
+		currentSituation.setCurrentCurve(c);

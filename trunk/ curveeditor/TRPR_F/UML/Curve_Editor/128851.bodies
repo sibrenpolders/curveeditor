@@ -1,0 +1,9 @@
+class MonitorPool
+!!!132179.java!!!	addObject() : Object
+		Object o;
+
+		v.add(o = new Object());
+
+		return 0;
+!!!132307.java!!!	getObject(in i : int) : Object
+		return v.elementAt(i);

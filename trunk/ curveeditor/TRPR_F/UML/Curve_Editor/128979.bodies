@@ -1,0 +1,25 @@
+class Situation
+!!!132435.java!!!	currentCurve() : Curve
+		return currentCurve;
+!!!132563.java!!!	currentPoint() : Point
+		return currentPoint;
+!!!132691.java!!!	currentType() : String
+		return currentType;
+!!!132819.java!!!	currentDegree() : short
+		return currentDegree;
+!!!132947.java!!!	currentAlgorithm() : Algorithm
+		return currentAlgorithm;
+!!!133075.java!!!	currentTool() : Tool
+		return currentTool;
+!!!133203.java!!!	setCurrentCurve(inout c : Curve) : void
+		currentCurve = c;
+!!!133331.java!!!	setCurrentPoint(inout c : Point) : void
+		currentPoint = c;
+!!!133459.java!!!	setCurrentType(in c : String) : void
+		currentType = c;
+!!!133587.java!!!	setCurrentDegree(in c : short) : void
+		currentDegree = c;
+!!!133715.java!!!	setCurrentAlgorithm(inout c : Algorithm) : void
+		currentAlgorithm = c;
+!!!133843.java!!!	setCurrentTool(inout c : Tool) : void
+		currentTool = c;

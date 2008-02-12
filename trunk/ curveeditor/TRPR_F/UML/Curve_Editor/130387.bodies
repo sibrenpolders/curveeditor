@@ -1,0 +1,11 @@
+class Menu
+!!!139859.java!!!	Menu()
+
+!!!139987.java!!!	Menu(inout algorithms : Vector<Algorithm>)
+
+!!!140115.java!!!	addAlgorithm(inout a : Algorithm) : void
+
+!!!140243.java!!!	addTool(inout t : Tool) : void
+
+!!!140371.java!!!	refresh() : void
+

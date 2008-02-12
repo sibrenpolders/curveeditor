@@ -1,0 +1,5 @@
+class Hermite
+!!!129363.java!!!	Hermite(inout c : Curve)
+		super(c);
+!!!129491.java!!!	calculateCurve(inout c : Curve) : void
+

@@ -1,0 +1,13 @@
+class Point
+!!!135763.java!!!	Point(in X : int, in Y : int)
+
+!!!135891.java!!!	X() : int
+		return X;
+!!!136019.java!!!	setX(in X : int) : void
+		this.X = X;
+!!!136147.java!!!	Y() : int
+		return Y;
+!!!136275.java!!!	setY(in Y : int) : void
+		this.Y = Y;
+!!!136403.java!!!	toString() : String
+		return null;

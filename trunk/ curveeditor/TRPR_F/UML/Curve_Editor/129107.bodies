@@ -1,0 +1,7 @@
+class Tool
+!!!140499.java!!!	getType() : String
+		return type;
+!!!140627.java!!!	setType(in type : String) : void
+		this.type = type;
+!!!140755.java!!!	run(inout algorithms : java.util.Vector, inout curves : java.util.Vector) : void
+

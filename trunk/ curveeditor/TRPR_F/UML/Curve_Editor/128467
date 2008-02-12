@@ -1,0 +1,483 @@
+format 46
+"Curves" // src::CurveEditor::Curves
+  revision 1
+  modified_by 83 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/Curves"
+  java_package "CurveEditor.Curves"
+  classview 128467 "Curves"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 128339 "Curve"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "interpolatiepunten worden berekend vanuit Editor"
+      classrelation 129619 // input (<unidirectional association>)
+	relation 129619 --->
+	  stereotype "Vector"
+	  a role_name "input" protected
+	    comment "de controlepunten, volgorde is belangrijk !!!
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129619 // input (<unidirectional association>)
+	  b parent class_ref 129235 // Point
+      end
+
+      classrelation 129747 // output (<unidirectional association>)
+	relation 129747 --->
+	  stereotype "Vector"
+	  a role_name "output" protected
+	    comment "de berekende tussenpunten
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129747 // output (<unidirectional association>)
+	  b parent class_ref 129235 // Point
+      end
+
+      attribute 128851 "type"
+	protected explicit_type "String"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment "identifier
+"
+      end
+
+      attribute 128979 "degree"
+	protected explicit_type "short"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment "de orde
+"
+      end
+
+      operation 133971 "Curve"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "Type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134099 "getInput"
+	public return_type class_ref 129235 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134227 "setInput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "input" explicit_type "Vector<Point>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134355 "getOutput"
+	public return_type class_ref 129235 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134483 "setOutput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "Output" explicit_type "Vector<Point>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134611 "clearOutput"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment "verwijder de interpolatiepunten"
+      end
+
+      operation 134739 "addOutput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "o" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134867 "removeInput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "o" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134995 "addInput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "o" type class_ref 129235 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135123 "getType"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135251 "getDegree"
+	public explicit_return_type "short"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135379 "setType"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "t" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135507 "setDegree"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "d" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135635 "toString"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 129235 "Point"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 129107 "X"
+	protected explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 129235 "Y"
+	protected explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 135763 "Point"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "X" explicit_type "int"
+	  param in name "Y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135891 "X"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136019 "setX"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "X" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136147 "Y"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136275 "setY"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "Y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136403 "toString"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 129491 "Point3D"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129875 // <generalisation>
+	relation 129875 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 129875 // <generalisation>
+	  b parent class_ref 129235 // Point
+      end
+
+      attribute 129363 "Z"
+	protected explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 136531 "Point3D"
+	public explicit_return_type ""
+	nparams 3
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	  param in name "z" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136659 "Z"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136787 "setZ"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "Z" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 136915 "toString"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+  end
+
+  deploymentview 128467 "Curves"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 129107 "Curve"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+${definition}"
+      associated_classes
+	class_ref 128339 // Curve
+      end
+    end
+
+    artifact 129235 "Point"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+${definition}"
+      associated_classes
+	class_ref 129235 // Point
+      end
+    end
+
+    artifact 129363 "Point3D"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+${definition}"
+      associated_classes
+	class_ref 129491 // Point3D
+      end
+    end
+  end
+end
