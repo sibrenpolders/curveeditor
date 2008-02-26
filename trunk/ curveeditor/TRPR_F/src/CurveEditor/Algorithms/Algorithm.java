@@ -6,7 +6,6 @@ import CurveEditor.Curves.Curve;
 public abstract class Algorithm {
 	protected Curve c;
 	protected String type;
-	protected short degree;
 
 	public Algorithm(Curve c)
 	{
@@ -20,14 +19,6 @@ public abstract class Algorithm {
 
 	protected void setType(String type ){
 		this.type = type;
-	}
-
-	public short getDegree(){
-		return degree;
-	}
-
-	protected void setDegree(short degree ){
-		this.degree = degree;
 	}
 
 	public String toString(){

@@ -68,7 +68,6 @@ public class Editor {
 	public void selectCurve(Point p)
 	{
 		Curve c = searchCurve(p);
-		c.setDegree(currentSituation.currentDegree());
 		c.setType(currentSituation.currentType());		
 		currentSituation.setCurrentCurve(c);
 	}
@@ -76,7 +75,6 @@ public class Editor {
 	public void changeCurve(Point p)
 	{
 		Curve c = searchCurve(p);
-		c.setDegree(currentSituation.currentDegree());
 		c.setType(currentSituation.currentType());		
 		currentSituation.setCurrentCurve(c);
 	}
