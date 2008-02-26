@@ -1,7 +1,10 @@
 package CurveEditor.GUI;
 
+import java.awt.Container;
 import java.util.EventListener;
-
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -12,12 +15,23 @@ public class GUI extends Editor implements EventListener, MenuListener{
 	protected DrawArea draw;
 	protected Menu menu;
 
-	public GUI(){
+	public GUI(){		
+		JFrame frame = new JFrame("Curve Editor");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        Container contentPane = frame.getContentPane();
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
+        JLabel label = new JLabel("Hello World");
+        contentPane.add(label);
+        draw = new DrawArea();
+        contentPane.add(draw);
+
+        frame.pack();
+        frame.setVisible(true);
 	}
 
 	public GUI(String filename){
-
+	
 	}
 
 	@Override
