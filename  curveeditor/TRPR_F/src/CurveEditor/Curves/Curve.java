@@ -13,7 +13,9 @@ public class Curve {
 	//identifier
 	protected String type;
 
-	public Curve(char Type){
+	protected short degree;
+
+	public Curve(char Type, short degree){
 	}
 
 	public Vector<Point> getInput(){
@@ -55,7 +57,11 @@ public class Curve {
 	}
 
 	public short getDegree(){
-		return (short) input.size();
+		return degree;
+	}
+
+	public void setDegree(short d){
+		degree = d;
 	}
 
 	public void setType(String t){
