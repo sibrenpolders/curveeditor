@@ -1,22 +1,24 @@
 package CurveEditor.GUI;
 
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
-
-import javax.swing.JFrame;
-
 import CurveEditor.Algorithms.Algorithm;
 import CurveEditor.Tools.Tool;
-
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 public class Menu extends JMenuBar {
-	private ContentPane pane;
 	private JMenu menu;
 	
 	public static String algos[];
 	public static String tools[];
 
-	public Menu( ContentPane pane ){
-		this.pane = pane;
+	public Menu(  ){
 		CreateMenuBar( );
 	}
 
@@ -36,31 +38,34 @@ public class Menu extends JMenuBar {
 
 	}
 	
+	// Zal de menuBar opstellen
 	private void CreateMenuBar( ) {
 		// Aanmaken van de menubar.
-		menuBar = new JMenuBar( );
-		makeFile( )
+		makeFile( );
 		makeEdit( );
 		makeTools( );
 		makeAlgorithms( );
 		makeHelp( );
 	}
 	
-	private void CreateMenu( String name, static int keyEvent, String description ) {
+	// maakt een JMenu object aan ( m.a.w. de categorienamen van de menubar )
+	private void CreateMenu( String name, int keyEvent, String description ) {
 		menu = new JMenu( name );
 		menu.setMnemonic( keyEvent );
 		menu.getAccessibleContext().setAccessibleDescription( description);
-		menuBar.add(menu);
+		this.add(menu);
 	
 	}
 	
-	private void CreateMenuItem( String name, static int keyEvent, String description ) {
+	// maakt een JMenuItem object aan. Deze stellen de verschillende keuzes voor die in de menubalk staan
+	private void CreateMenuItem( String name, int keyEvent, String description ) {
 		JMenuItem menuItem = new JMenuItem( name, keyEvent );
 		menuItem.setAccelerator(KeyStroke.getKeyStroke( keyEvent, ActionEvent.CTRL_MASK));
 		menuItem.getAccessibleContext().setAccessibleDescription( description );
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
+				// TODO functionaliteit aan toevoegen
 				System.out.println("New is pressed");
 			}
 		} );
@@ -68,39 +73,23 @@ public class Menu extends JMenuBar {
 	}
 	private void makeFile( ) {
 		// menu object aanmaken
-		CreateMenu( "FILE", KeyEvent.VK_N, "" );
+		CreateMenu( "FILE", KeyEvent.VK_F, "" );
 		CreateMenuItem( "New", KeyEvent.VK_N, "" );
 	}
 	
 	private void makeEdit( ) {
-		menu = new JMenu( "Edit" );
-		menu.setMnemonic(KeyEvent.VK_E);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"");
-		menuBar.add(menu);		
+		CreateMenu( "Edit", KeyEvent.VK_E, "" );	
 	}
 	
 	private void makeTools( ) {
-		menu = new JMenu( "Tools" );
-		menu.setMnemonic(KeyEvent.VK_T);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"");
-		menuBar.add(menu);
+		CreateMenu( "Tools", KeyEvent.VK_T, "" );	
 	}
 	
 	private void makeAlgorithms( ) {
-		menu = new JMenu( "Algorithms" );
-		menu.setMnemonic(KeyEvent.VK_A);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"");
-		menuBar.add(menu);
+		CreateMenu( "Algorithms", KeyEvent.VK_A, "" );				
 	}
 	
 	private void makeHelp( ) {
-		menu = new JMenu( "Help" );
-		menu.setMnemonic(KeyEvent.VK_H);
-		menu.getAccessibleContext().setAccessibleDescription(
-				"");
-		menuBar.add(menu);
+		CreateMenu( "Help", KeyEvent.VK_H, "" );
 	}	
 }

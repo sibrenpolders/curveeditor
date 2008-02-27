@@ -19,13 +19,14 @@ public class GUI extends Editor implements EventListener, MenuListener{
 		JFrame frame = new JFrame("Curve Editor");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-
-        JLabel label = new JLabel("Hello World");
-        contentPane.add(label);
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));       
+        
+        menu = new Menu();
+        contentPane.add( menu );
+        
         draw = new DrawArea();
         contentPane.add(draw);
-
+       
         frame.pack();
         frame.setVisible(true);
 	}
