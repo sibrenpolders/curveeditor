@@ -7,7 +7,7 @@ public class Curve {
 	//de controlepunten, volgorde is belangrijk !!!
 	protected Vector<Point> input;
 
-	//de berekende tussenpunten
+	//de berekende tussenpunten, incl. de controlepunten
 	protected Vector<Point> output;	
 
 	//identifier
