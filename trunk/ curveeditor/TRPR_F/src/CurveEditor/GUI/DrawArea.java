@@ -22,6 +22,9 @@ public class DrawArea extends JPanel implements MouseListener {
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setBackground(new Color(255, 255, 255));
 		addMouseListener(this);
+		
+		for (int i = 0; i < 20; ++i)
+			selected[i] = -1;
 	}
 
 	public DrawArea(Vector<Curve> curves) {
@@ -61,8 +64,8 @@ public class DrawArea extends JPanel implements MouseListener {
 				selected[j] = i;
 				finished = true;
 			}
-		
-		//repaint
+
+		// repaint
 	}
 
 	@Override
