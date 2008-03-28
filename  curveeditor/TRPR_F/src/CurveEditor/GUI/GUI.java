@@ -10,29 +10,31 @@ import javax.swing.event.MenuListener;
 
 import CurveEditor.Core.Editor;
 
-public class GUI extends Editor implements EventListener, MenuListener{
+public class GUI extends Editor implements EventListener, MenuListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	protected Menu menu;
 
-	public GUI(){		
+	public GUI() {
 		JFrame frame = new JFrame("Curve Editor");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-        Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));       
-        
-        menu = new Menu();
-        contentPane.add( menu );
-        
-        draw = new DrawArea();
-        contentPane.add(draw);
-       
-        frame.pack();
-        frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setTitle("Curve Editor");
+		Container contentPane = frame.getContentPane();
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+
+		menu = new Menu();
+		contentPane.add(menu);
+
+		draw = new DrawArea();
+		contentPane.add(draw);
+
+		frame.pack();
+		frame.setVisible(true);
 	}
 
-	public GUI(String filename){
-	
+	public GUI(String filename) {
+
 	}
 
 	@Override
@@ -51,15 +53,18 @@ public class GUI extends Editor implements EventListener, MenuListener{
 
 	}
 
-	public void selectCurve(){
+	public void selectCurve() {
 		currentSituation.setCurrentPoint(draw.retrievePoint());
-		currentSituation.setCurrentCurve(searchCurve(currentSituation.currentPoint()));
-		currentSituation.setCurrentDegree(currentSituation.currentCurve().getDegree());
-		currentSituation.setCurrentType(currentSituation.currentCurve().getType());
+		currentSituation.setCurrentCurve(searchCurve(currentSituation
+				.currentPoint()));
+		currentSituation.setCurrentDegree(currentSituation.currentCurve()
+				.getDegree());
+		currentSituation.setCurrentType(currentSituation.currentCurve()
+				.getType());
 
 		draw.drawSelectedCurve(currentSituation.currentCurve());
 		choice.refresh();
 
-		//message
-	}	
+		// message
+	}
 }
