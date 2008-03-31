@@ -3,9 +3,6 @@ package CurveEditor.GUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.Vector;
-import CurveEditor.Algorithms.Algorithm;
-import CurveEditor.Tools.Tool;
 
 import javax.swing.Box;
 import javax.swing.JMenuBar;
@@ -75,10 +72,12 @@ public class Menu extends JMenuBar {
 	}
 	
 	// maakt een JMenuItem object aan. Deze stellen de verschillende keuzes voor die in de menubalk staan
-	private void CreateMenuItem( String name, int keyEvent, String description ) {
+	private void CreateMenuItem( String name, int keyEvent, String description/*, String icon */) {
 		menuItem = new JMenuItem( name, keyEvent );
 		menuItem.setAccelerator(KeyStroke.getKeyStroke( keyEvent, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription( description );		
+		menuItem.getAccessibleContext().setAccessibleDescription( description );
+		/*if ( icon != null )
+			menuItem.setIcon( new ImageIcon( icon ) ); */
 		menu.add( menuItem );
 	}
 	private void makeFile( ) {
