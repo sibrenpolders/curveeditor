@@ -1,5 +1,4 @@
 package CurveEditor;
-import CurveEditor.*;
 
 public class Main {
 
