@@ -17,6 +17,9 @@ import javax.swing.KeyStroke;
 public class Menu extends JMenuBar {
 	/**
 	 * TODO wtf is dit?
+	 * 
+	 * Eclipse gaf er een warning voor... 
+	 * heb 't 'm zelf laten oplossen met deze bizarre regel als gevolg. :-D
 	 */
 	private static final long serialVersionUID = -2717014108067514961L;
 
@@ -31,6 +34,10 @@ public class Menu extends JMenuBar {
 
 	/*
 	 * TODO snap het nut van deze functies nog altijd niet. Het menu is toch niet dynamisch. Alles staat vast.
+	 * 
+	 * Da's correct natuurlijk, maar voor de programmeur is dat niet iets statisch. Als je bvb. een extra item
+	 * in de balk voegt, dan moet je ook ergens anders weer toevoegen. Dus dacht ik van: voeg da één keer toe in 
+	 * de vector, en 't is overal in orde. Maar je hebt gelijk, voor wat wij moeten doen is dat overkill.
 	 * 
 	 * public Menu(Vector<Algorithm> algorithms){
 	 *	
