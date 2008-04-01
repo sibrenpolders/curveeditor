@@ -40,7 +40,8 @@ public class DrawArea extends JPanel implements MouseListener {
 		for(int i = 0; i < data.size(); ++i)
 		{
 			for(int j = 0; j < data.get(i).size(); ++j)
-				g.drawRect(data.get(i).get(j).X(), data.get(i).get(j).Y(), 5, 5); 				
+				//g.drawRect(data.get(i).get(j).X(), data.get(i).get(j).Y(), 1, 1); 	
+			g.drawLine(data.get(i).get(j).X(), data.get(i).get(j).Y(), data.get(i).get(j).X(), data.get(i).get(j).Y());
 		}
 	}
 
