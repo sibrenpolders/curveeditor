@@ -13,89 +13,76 @@ import CurveEditor.Curves.Point;
 
 public class DrawArea extends JPanel implements MouseListener {
 
-	public void test(){
-		for(int i = 0; i < 7; ++i)
-		{
-			Vector<Point> t = new Vector<Point>();
-			for(int j = 0; j < 20; ++j)
-				t.add(new CurveEditor.Curves.Point((int)((double)Math.random()*(double)FRAME_WIDTH), (int)((double)Math.random()*(double)FRAME_HEIGHT)));
-			data.add(t);
-		}
-
-	}
-
-	public void tt(){
-
-		for(int i = 0; i < 500; ++i)
-		{
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Vector<Point> t = new Vector<Point>();
-			for(int j = 0; j < 350; ++j)
-				t.add(new CurveEditor.Curves.Point((int)((double)Math.random()*(double)FRAME_WIDTH), (int)((double)Math.random()*(double)FRAME_HEIGHT)));
-			data.add(t);
-			this.repaint();
-		}}
-
-	public void update(Graphics g){
-		paint(g);
-	}
-
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-
-		g.clipRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
-		g.setColor(Color.white);
-		g.fillRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
-		g.setColor(Color.red);
-		g.drawLine(50, 50, 100, 100); 	
-		g.drawLine(0, 0, 440, 100); 
-		for(int i = 0; i < data.size(); ++i)
-		{
-			for(int j = 0; j < data.get(i).size(); ++j)
-				//g.drawRect(data.get(i).get(j).X(), data.get(i).get(j).Y(), 1, 1); 	
-				g.drawLine(data.get(i).get(j).X(), data.get(i).get(j).Y(), data.get(i).get(j).X(), data.get(i).get(j).Y());
-		}
-	}
-
-
+	// Dimensies van het tekencanvas.
+	// Voorlopig vast gekozen, nadien kijken of dit at runtime correct kan
+	// veranderd worden
 	private static int FRAME_WIDTH = 600;
 	private static int FRAME_HEIGHT = 600;
 
-	//de vectoren met punten van de verschillende curves, een gedelete curve geeft gewoon een lege
-	//vector; anders overal indexen zitten aanpassen --> performance loss
+	// De verzameling van vectoren met punten van de verschillende curves, een
+	// gedelete curve geeft gewoon een lege vector.
+	// Anders overal indexen zitten aanpassen --> performance loss.
 	private Vector<Vector<Point>> data = new Vector<Vector<Point>>();
 
-	//de indexen van de geselecteerde curves in de Vector data
+	// De indexen van de geselecteerde curves in de Vector <data>.
 	private int[] selected = new int[20];
 
-	private void deselectAll(){
-		for(int i = 0; i < selected.length; ++i)
+	private void deselectAll() {
+		for (int i = 0; i < selected.length; ++i)
 			selected[i] = -1;
 	}
 
-	private void selectAll(){
+	private void selectAll() {
 		selected = new int[data.size()];
 
-		for(int i = 0; i < selected.length; ++i)
-			selected[i] = i;
+		for (int i = 0; i < selected.length; ++i)
+			if (data.get(i).size() > 0)
+				selected[i] = i;
+			else
+				selected[i] = -1;
 	}
 
+	public void update(Graphics g) {
+		paint(g);
+	}
+
+	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
+	// uitvoert.
+	// Dit hertekent het vollédige tekencanvas.
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		g.clipRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+		g.setColor(Color.white);
+		g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+		g.setColor(Color.black);
+		for (int i = 0; i < data.size(); ++i)
+			if (data.get(i).size() > 0)
+				for (int j = 0; j < data.get(i).size(); ++j)
+					g.drawLine(data.get(i).get(j).X(), data.get(i).get(j).Y(),
+							data.get(i).get(j).X(), data.get(i).get(j).Y());
+
+		g.setColor(Color.red);
+		for (int i = 0; i < selected.length; ++i)
+			if (selected[i] != -1 && data.get(selected[i]).size() > 0)
+				for (int j = 0; j < data.get(i).size(); ++j)
+					g.drawLine(data.get(i).get(j).X(), data.get(i).get(j).Y(),
+							data.get(i).get(j).X(), data.get(i).get(j).Y());
+	}
+
+	// Constructor.
 	public DrawArea() {
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setBackground(new Color(255, 255, 255));
-		addMouseListener(this);
+		addMouseListener(this); // nodig voor clickevents te kunnen opvangen
 
 		for (int i = 0; i < selected.length; ++i)
 			selected[i] = -1;
-		test();		
+
 		this.repaint();
 	}
 
+	// Constructor dat direct enkele ingeladen curves kan uittekenen.
 	public DrawArea(Vector<Curve> curves) {
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setBackground(new Color(255, 255, 255));
@@ -107,12 +94,13 @@ public class DrawArea extends JPanel implements MouseListener {
 		for (int i = 0; i < curves.size(); ++i)
 			data.add(curves.elementAt(i).getOutput());
 
-		// repaint
+		this.repaint();
 	}
 
+	// Teken een meegegeven curve uit.
 	public void drawCurve(Curve c) {
 		data.add(c.getOutput());
-		// repaint
+		this.repaint();
 	}
 
 	public Point retrievePoint() {
