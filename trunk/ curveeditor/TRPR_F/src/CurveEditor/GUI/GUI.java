@@ -31,6 +31,7 @@ public class GUI extends Editor implements EventListener, MenuListener {
 
 		frame.pack();
 		frame.setVisible(true);
+		draw.tt();
 	}
 
 	public GUI(String filename) {

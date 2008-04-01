@@ -23,7 +23,24 @@ public class DrawArea extends JPanel implements MouseListener {
 		}
 
 	}
-	
+
+	public void tt(){
+
+		for(int i = 0; i < 500; ++i)
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Vector<Point> t = new Vector<Point>();
+			for(int j = 0; j < 350; ++j)
+				t.add(new CurveEditor.Curves.Point((int)((double)Math.random()*(double)FRAME_WIDTH), (int)((double)Math.random()*(double)FRAME_HEIGHT)));
+			data.add(t);
+			this.repaint();
+		}}
+
 	public void update(Graphics g){
 		paint(g);
 	}
@@ -41,7 +58,7 @@ public class DrawArea extends JPanel implements MouseListener {
 		{
 			for(int j = 0; j < data.get(i).size(); ++j)
 				//g.drawRect(data.get(i).get(j).X(), data.get(i).get(j).Y(), 1, 1); 	
-			g.drawLine(data.get(i).get(j).X(), data.get(i).get(j).Y(), data.get(i).get(j).X(), data.get(i).get(j).Y());
+				g.drawLine(data.get(i).get(j).X(), data.get(i).get(j).Y(), data.get(i).get(j).X(), data.get(i).get(j).Y());
 		}
 	}
 
@@ -75,7 +92,7 @@ public class DrawArea extends JPanel implements MouseListener {
 
 		for (int i = 0; i < selected.length; ++i)
 			selected[i] = -1;
-		test();
+		test();		
 		this.repaint();
 	}
 
