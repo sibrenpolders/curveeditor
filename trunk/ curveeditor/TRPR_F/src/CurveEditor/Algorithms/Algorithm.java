@@ -2,26 +2,18 @@ package CurveEditor.Algorithms;
 
 import CurveEditor.Curves.Curve;
 
-
 public abstract class Algorithm {
-	protected Curve c;
-	protected String type;
+	protected final char type;
 
-	public Algorithm(Curve c)
-	{
-		this.c = c;
-	}
-
-	public String getType()
-	{
-		return type;
-	}
-
-	protected void setType(String type ){
+	public Algorithm(char type) {
 		this.type = type;
 	}
 
-	public String toString(){
+	public char getType() {
+		return type;
+	}
+
+	public String toString() {
 		return null;
 	}
 

@@ -16,8 +16,7 @@ import javax.swing.event.MenuListener;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements EventListener, MenuListener,
-MouseListener {
+public class GUI extends Editor implements MenuListener, MouseListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	protected Menu menu;
@@ -68,8 +67,7 @@ MouseListener {
 				.currentPoint()));
 		currentSituation.setCurrentDegree(currentSituation.currentCurve()
 				.getDegree());
-		currentSituation.setCurrentType(currentSituation.currentCurve()
-				.getType());
+		//currentSituation.setCurrentType(currentSituation.currentCurve().getType());
 
 		// draw.drawSelectedCurve(currentSituation.currentCurve());
 		choice.refresh();
@@ -79,7 +77,7 @@ MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		currentSituation.currentCurve().addInput(new Point(e.getX(),e.getY()));
+		//currentSituation.currentCurve().addInput(new Point(e.getX(), e.getY()));
 	}
 
 	@Override

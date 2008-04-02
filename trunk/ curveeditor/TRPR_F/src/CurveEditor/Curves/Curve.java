@@ -4,71 +4,77 @@ import java.util.Vector;
 
 //interpolatiepunten worden berekend vanuit Editor
 public class Curve {
-	//de controlepunten, volgorde is belangrijk !!!
+	// de controlepunten, volgorde is belangrijk !!!
 	protected Vector<Point> input;
 
-	//de berekende tussenpunten, incl. de controlepunten
-	protected Vector<Point> output;	
+	// de berekende tussenpunten
+	protected Vector<Point> output;
 
-	//identifier
-	protected String type;
+	// identifier
+	protected char type;
 
 	protected short degree;
 
-	public Curve(char Type, short degree){
+	public Curve(char Type, short degree) {
+		type = Type;
+		this.degree = degree;
+
+		input = new Vector<Point>();
+		output = new Vector<Point>();
 	}
 
-	public Vector<Point> getInput(){
+	public Vector<Point> getInput() {
 		return input;
 	}
 
-	public void setInput(Vector<Point> input ){
-		this.input = input;
-	}
-
-	public Vector<Point> getOutput(){
+	public Vector<Point> getOutput() {
 		return output;
 	}
 
-	public void setOutput(Vector<Point> Output ){
-		this.output = Output;
-	}
-
-	//verwijder de interpolatiepunten
-	public void clearOutput(){
+	// verwijder de interpolatiepunten
+	public void clearOutput() {
 		this.output.clear();
 	}
 
+	public void clearInput() {
+		this.input.clear();
+	}
 
-	public void addOutput(Point o){
+	public int getNbInputPoints() {
+		return input.size();
+	}
+
+	public void addOutput(Point o) {
 		this.output.add(o);
 	}
 
-	public void removeInput(Point o){
-		this.input.remove(o);
+	public void removeInput(Point o) {
+		for (int i = 0; i < getNbInputPoints(); ++i)
+			if (input.get(i).X() == o.X() && input.get(i).Y() == o.Y())
+				input.remove(i--);
 	}
 
-	public void addInput(Point o){
+	public void addInput(Point o) {
 		this.input.add(o);
 	}
 
-	public String getType(){
+	public char getType() {
 		return type;
 	}
 
-	public short getDegree(){
+	public short getDegree() {
 		return degree;
 	}
 
-	public void setDegree(short d){
+	public void setDegree(short d) {
 		degree = d;
 	}
 
-	public void setType(String t){
+	public void setType(char t) {
 		this.type = t;
 	}
 
-	public String toString(){
+	public String toString() {
 		return null;
 	}
 }

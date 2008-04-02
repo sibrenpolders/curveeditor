@@ -38,10 +38,6 @@ public class Editor implements WatchedObject {
 		return (Algorithm) algorithms.get(c);
 	}
 
-	public void addAlgorithm(Algorithm c) {
-		algorithms.put(c.getType(), c);
-	}
-
 	protected HashMap<String, Tool> getTools() {
 		return tools;
 	}
@@ -60,13 +56,13 @@ public class Editor implements WatchedObject {
 
 	public void selectCurve(Point p) {
 		Curve c = searchCurve(p);
-		c.setType(currentSituation.currentType());
+		//c.setType(currentSituation.currentType());
 		currentSituation.setCurrentCurve(c);
 	}
 
 	public void changeCurve(Point p) {
 		Curve c = searchCurve(p);
-		c.setType(currentSituation.currentType());
+		//c.setType(currentSituation.currentType());
 		currentSituation.setCurrentCurve(c);
 	}
 
