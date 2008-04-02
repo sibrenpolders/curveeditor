@@ -1,7 +1,12 @@
 package CurveEditor.GUI;
 
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.EventListener;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,8 +14,10 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import CurveEditor.Core.Editor;
+import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements EventListener, MenuListener {
+public class GUI extends Editor implements EventListener, MenuListener,
+MouseListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	protected Menu menu;
@@ -26,12 +33,13 @@ public class GUI extends Editor implements EventListener, MenuListener {
 		menu = new Menu();
 		contentPane.add(menu);
 
-		draw = new DrawArea();
+		draw = new DrawArea(this.curves, this.selectedCurves);
+		draw.addMouseListener(this);
+		this.addChangeListener(draw);
 		contentPane.add(draw);
 
 		frame.pack();
 		frame.setVisible(true);
-		//draw.tt();
 	}
 
 	public GUI(String filename) {
@@ -55,7 +63,7 @@ public class GUI extends Editor implements EventListener, MenuListener {
 	}
 
 	public void selectCurve() {
-		currentSituation.setCurrentPoint(draw.retrievePoint());
+		// currentSituation.setCurrentPoint(draw.retrievePoint());
 		currentSituation.setCurrentCurve(searchCurve(currentSituation
 				.currentPoint()));
 		currentSituation.setCurrentDegree(currentSituation.currentCurve()
@@ -63,9 +71,36 @@ public class GUI extends Editor implements EventListener, MenuListener {
 		currentSituation.setCurrentType(currentSituation.currentCurve()
 				.getType());
 
-		draw.drawSelectedCurve(currentSituation.currentCurve());
+		// draw.drawSelectedCurve(currentSituation.currentCurve());
 		choice.refresh();
 
 		// message
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		currentSituation.currentCurve().addInput(new Point(e.getX(),e.getY()));
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		draw.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		draw.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

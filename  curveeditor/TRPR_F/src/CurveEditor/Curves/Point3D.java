@@ -1,24 +1,23 @@
 package CurveEditor.Curves;
 
-
 public class Point3D extends Point {
 
-	protected int Z;	
+	protected int Z;
 
-	public Point3D(int x, int y, int z){
+	public Point3D(int x, int y, int z) {
 		super(x, y);
 		this.Z = z;
 	}
 
-	public int Z(){
+	public int Z() {
 		return Z;
 	}
 
-	public void setZ(int Z ){
+	public void setZ(int Z) {
 		this.Z = Z;
 	}
 
-	public String toString(){
-		return null;
+	public String toString() {
+		return super.toString() + ", Z: " + Z;
 	}
 }

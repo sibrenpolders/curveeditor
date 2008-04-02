@@ -5,7 +5,6 @@ import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 import CurveEditor.Tools.Tool;
 
-
 public class Situation {
 	private Curve currentCurve = null;
 	private Point currentPoint = null;
@@ -14,41 +13,51 @@ public class Situation {
 	private Algorithm currentAlgorithm = null;
 	private Tool currentTool = null;
 
-	public Curve currentCurve(){
+	public Curve currentCurve() {
 		return currentCurve;
 	}
-	public Point currentPoint(){
+
+	public Point currentPoint() {
 		return currentPoint;
 	}
-	public String currentType(){
+
+	public String currentType() {
 		return currentType;
 	}
-	public short currentDegree(){
+
+	public short currentDegree() {
 		return currentDegree;
 	}
-	public Algorithm currentAlgorithm(){
+
+	public Algorithm currentAlgorithm() {
 		return currentAlgorithm;
 	}
-	public Tool currentTool(){
+
+	public Tool currentTool() {
 		return currentTool;
 	}
 
-	public void setCurrentCurve(Curve c){
+	public void setCurrentCurve(Curve c) {
 		currentCurve = c;
 	}
-	public void setCurrentPoint(Point c){
+
+	public void setCurrentPoint(Point c) {
 		currentPoint = c;
 	}
-	public void setCurrentType(String c){
+
+	public void setCurrentType(String c) {
 		currentType = c;
 	}
-	public void setCurrentDegree(short c){
+
+	public void setCurrentDegree(short c) {
 		currentDegree = c;
 	}
-	public void setCurrentAlgorithm(Algorithm c){
+
+	public void setCurrentAlgorithm(Algorithm c) {
 		currentAlgorithm = c;
 	}
-	public void setCurrentTool(Tool c){
+
+	public void setCurrentTool(Tool c) {
 		currentTool = c;
 	}
 }
