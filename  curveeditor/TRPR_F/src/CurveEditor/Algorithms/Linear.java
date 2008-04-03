@@ -15,6 +15,7 @@ public class Linear extends Algorithm {
 
 		Vector<Point> input = c.getInput();
 		Vector<Point> output = c.getOutput();
+		c.clearOutput();
 
 		for (int i = 0; i < (c.getNbInputPoints() - 1); ++i) {
 			if (input.get(i).X() < input.get(i + 1).X()) {
