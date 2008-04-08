@@ -7,8 +7,8 @@ import CurveEditor.Curves.Point;
 
 public class Linear extends Algorithm {
 
-	public Linear() {
-		super('L');
+	public Linear(short degree) {
+		super('L', degree);
 	}
 
 	public void calculateCurve(Curve c) {
