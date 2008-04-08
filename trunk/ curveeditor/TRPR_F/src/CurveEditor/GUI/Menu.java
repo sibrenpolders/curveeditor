@@ -1,17 +1,25 @@
 package CurveEditor.GUI;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import sun.awt.X11.Screen;
 
 public class Menu extends JMenuBar {
 	/**
@@ -24,8 +32,9 @@ public class Menu extends JMenuBar {
 
 	private JMenu menu;
 	private JMenuItem menuItem;
-	public static String algos[];
-	public static String tools[];
+	/*public static String algos[];
+	public static String tools[];*/
+
 
 	public Menu(  ){
 		CreateMenuBar( );
@@ -205,22 +214,38 @@ public class Menu extends JMenuBar {
 	}	
 }
 
+/* 
+ * Deze class' zijn geschreven om te gebruiken in new ActionListener() { ..}.
+ * Vermits dit een inline gedefinieerde klasse is. Daardoor kan de klasse opgeroepen door het new commando geen functies aanroepen van 
+ * de klasse Menu. Daarom is het handig om voor de acties die moeten uitgevoerd worden aparte class' aan te maken zodat er een 
+ * hogere abstractie is. Hierdoor worden de functies individueel ook kleiner.  
+ */
 class New {
 	public New( ) {
 		System.out.println( "New is pressed" );
 	}
-	// TODO
 }
 
-class Open {
-	public Open( ) {
-		System.out.println( "Open is pressed" );
+class Open extends JFileChooser {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public Open(){
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"CurveEditor files (*.ce)", "ce");
+		setFileFilter(filter);
+		int returnVal = showOpenDialog(null);
+		if(returnVal == JFileChooser.APPROVE_OPTION) {
+			System.out.println("You chose to open this file: " +
+					getSelectedFile().getName());
+		}
 	}
-	// TODO
 }
 
 class Quit {
-	public Quit( ) {
+	public Quit() {
 		int n = JOptionPane.showConfirmDialog(
 				null,
 				"Do you really want to quit?",
@@ -230,14 +255,15 @@ class Quit {
 			System.exit(0);
 	}
 }
+
 class Undo {
-	public Undo( ) {
+public Undo() {
 		System.out.println( "undo is pressed" );
 	}
 }
 
 class Redo {
-	public Redo( ) {
+	public Redo() {
 		System.out.println( "redo is pressed" );
 	}
 }
@@ -255,7 +281,7 @@ class Bezier {
 }
 
 class Hermites {
-	public Hermites( ) {
+	public Hermites() {
 		System.out.println( "Hermites " );
 	}
 }
@@ -273,11 +299,20 @@ class Doc {
 }
 
 class About {
-	public About( ) {
-		JDialog aboutDialog = new JDialog( );
-		aboutDialog.setModal( true );
-		aboutDialog.setTitle( "CurveEditor - about" );
-
-		aboutDialog.setVisible( true );
+	public About() {
+		Box hbox = Box.createHorizontalBox();		
+		hbox.add( new JLabel( new ImageIcon( "src/CurveEditor/GUI/icons/about.jpg") ) );
+		hbox.add(new JLabel( "<html>" +
+				"<p style='font-family: arial;font-weight: bold;margin-left: 20px'>Coding and developing</p><br />" +
+				"<p style='font-family: arial;font-weight: lighter;margin-left: 20px'>" +
+				"Sibrand Staessens<br />" +
+				"Sibren Polders<br />" +
+				"</p><br />" +
+				"<p style='font-family: arial;font-weight: lighter;margin-left: 20px'>" +
+				"Thanks to: <br />" +
+				"William van Haevere (ofzo)" +
+				"</p>" +
+		"</html>" ) );
+		JOptionPane.showMessageDialog(null, hbox,"CurveEditor - about", JOptionPane.PLAIN_MESSAGE );
 	}
 }
