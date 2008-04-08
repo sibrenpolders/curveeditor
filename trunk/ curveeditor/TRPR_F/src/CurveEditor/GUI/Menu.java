@@ -91,7 +91,7 @@ public class Menu extends JMenuBar {
 	private void makeFile( ) {
 		// menu object aanmaken
 		CreateMenu( "FILE", KeyEvent.VK_F, "" );		
-		CreateMenuItem( "New", KeyEvent.VK_N, "Create a new file", "/home/sibren/school/TRPR/src/CurveEditor/GUI/icons/filenew.png" );
+		CreateMenuItem( "New", KeyEvent.VK_N, "Create a new file", "src/CurveEditor/GUI/icons/filenew.png" );
 		// java laat niet toe functies mee te geven als parameter. Dus moet de functie die aangeroepen moet worden manueel geset worden
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
@@ -100,7 +100,7 @@ public class Menu extends JMenuBar {
 			}
 		} );
 
-		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file", "/home/sibren/school/TRPR/src/CurveEditor/GUI/icons/fileopen.png");
+		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file", "src/CurveEditor/GUI/icons/fileopen.png");
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
@@ -109,7 +109,7 @@ public class Menu extends JMenuBar {
 		} );
 		menu.addSeparator();
 
-		CreateMenuItem( "Quit", KeyEvent.VK_Q, "Quit Curve Editor", "/home/sibren/school/TRPR/src/CurveEditor/GUI/icons/exit.png" );
+		CreateMenuItem( "Quit", KeyEvent.VK_Q, "Quit Curve Editor", "src/CurveEditor/GUI/icons/exit.png" );
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
@@ -121,7 +121,7 @@ public class Menu extends JMenuBar {
 	private void makeEdit( ) {
 		CreateMenu( "Edit", KeyEvent.VK_E, "" );
 
-		CreateMenuItem( "Undo", KeyEvent.VK_U, "Undo last action", "/home/sibren/school/TRPR/src/CurveEditor/GUI/icons/undo.png");
+		CreateMenuItem( "Undo", KeyEvent.VK_U, "Undo last action", "src/CurveEditor/GUI/icons/undo.png");
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
@@ -129,7 +129,7 @@ public class Menu extends JMenuBar {
 			}
 		} );
 
-		CreateMenuItem( "Redo", KeyEvent.VK_R, "Redolast action", "/home/sibren/school/TRPR/src/CurveEditor/GUI/icons/redo.png" );
+		CreateMenuItem( "Redo", KeyEvent.VK_R, "Redolast action", "src/CurveEditor/GUI/icons/redo.png" );
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
