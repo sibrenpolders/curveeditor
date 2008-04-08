@@ -54,8 +54,8 @@ public class DrawArea extends JPanel {
 						selectedCurves.get(i).getOutput().get(j).Y());
 
 			for (int j = 0; j < selectedCurves.get(i).getInput().size(); ++j) {
-				g.fillRect(selectedCurves.get(i).getInput().get(j).X(),
-						selectedCurves.get(i).getInput().get(j).Y(), 5, 5);
+				g.fillRect(selectedCurves.get(i).getInput().get(j).X() - 2,
+						selectedCurves.get(i).getInput().get(j).Y() - 2, 5, 5);
 				g.drawString(selectedCurves.get(i).getInput().get(j).X() + ", "
 						+ selectedCurves.get(i).getInput().get(j).Y(),
 						selectedCurves.get(i).getInput().get(j).X(),
