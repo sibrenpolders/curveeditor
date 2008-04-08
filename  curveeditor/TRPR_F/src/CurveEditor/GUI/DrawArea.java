@@ -6,11 +6,9 @@ import java.awt.Graphics;
 import java.util.List;
 import javax.swing.JPanel;
 
-import CurveEditor.Change.ChangeListener;
-import CurveEditor.Change.WatchedObject;
 import CurveEditor.Curves.Curve;
 
-public class DrawArea extends JPanel implements ChangeListener {
+public class DrawArea extends JPanel {
 
 	// Dimensies van het tekencanvas.
 	// Voorlopig vast gekozen, nadien kijken of dit at runtime correct kan
@@ -23,10 +21,6 @@ public class DrawArea extends JPanel implements ChangeListener {
 
 	public void update(Graphics g) {
 		paint(g);
-	}
-
-	public void contentsChanged(WatchedObject object) {
-		this.repaint();
 	}
 
 	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
