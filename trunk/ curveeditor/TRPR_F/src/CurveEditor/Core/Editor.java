@@ -1,69 +1,81 @@
 package CurveEditor.Core;
 
-import java.util.HashMap;
 import java.util.Vector;
 
-import CurveEditor.Algorithms.Algorithm;
-import CurveEditor.Change.ChangeListener;
-import CurveEditor.Change.WatchedObject;
-import CurveEditor.Curves.Curve;
-import CurveEditor.Curves.Point;
-import CurveEditor.Tools.Tool;
+import CurveEditor.Algorithms.*;
+import CurveEditor.Curves.*;
+import CurveEditor.Tools.*;
 
-public class Editor implements WatchedObject {
+public class Editor {
 
-	protected MonitorPool mp = new MonitorPool();
-	protected Situation currentSituation;
-	protected HashMap<String, Algorithm> algorithms;
-	protected HashMap<String, Tool> tools;
+	public static enum MODE {
+		NONE, ADD_INPUT, SELECT_CURVE, NEW_CURVE
+	};
+
+	protected MODE mode;
+	protected Vector<Algorithm> algorithms;
+	protected Vector<Tool> tools;
 	protected Vector<Curve> curves;
 	protected Vector<Curve> selectedCurves;
+	protected Algorithm currentAlgorithm;
+	protected Tool currentTool;
 
 	public Editor(String filename) {
-
+		init();
+		// bestand inladen a.h.v. filename
 	}
 
 	public Editor() {
-		listeners = new Vector<ChangeListener>();
+		init();
+	}
+
+	private void init() {
+		mode = MODE.NONE;
+		currentTool = null;
+
+		algorithms = new Vector<Algorithm>();
+		tools = new Vector<Tool>();
 		curves = new Vector<Curve>();
 		selectedCurves = new Vector<Curve>();
 
+		algorithms.add(new Linear());
+		algorithms.add(new Bezier());
+		algorithms.add(new Hermite());
+		currentAlgorithm = getAlgorithm('L');
 	}
 
-	protected HashMap<String, Algorithm> getAlgorithms() {
+	protected Vector<Algorithm> getAlgorithms() {
 		return algorithms;
 	}
 
-	public Algorithm getAlgorithm(char c) {
-		return (Algorithm) algorithms.get(c);
+	protected Algorithm getAlgorithm(char type) {
+		for (int i = 0; i < algorithms.size(); ++i)
+			if (algorithms.get(i).getType() == type)
+				return algorithms.get(i);
+		return null;
 	}
 
-	protected HashMap<String, Tool> getTools() {
+	protected void setCurrentAlgorithm(char type) {
+		currentAlgorithm = getAlgorithm(type);
+	}
+
+	protected Vector<Tool> getTools() {
 		return tools;
 	}
 
-	public Tool getTool(String c) {
-		return (Tool) tools.get(c);
+	public Tool getTool(char type) {
+		for (int i = 0; i < tools.size(); ++i)
+			if (tools.get(i).getType() == type)
+				return tools.get(i);
+		return null;
 	}
 
-	public void addTool(Tool c) {
-		tools.put(c.getType(), c);
+	protected void setCurrentTool(char type) {
+		currentTool = getTool(type);
 	}
 
 	public Curve searchCurve(Point p) {
 		return null;
-	}
-
-	public void selectCurve(Point p) {
-		Curve c = searchCurve(p);
-		//c.setType(currentSituation.currentType());
-		currentSituation.setCurrentCurve(c);
-	}
-
-	public void changeCurve(Point p) {
-		Curve c = searchCurve(p);
-		//c.setType(currentSituation.currentType());
-		currentSituation.setCurrentCurve(c);
 	}
 
 	public void deselectAllCurves() {
@@ -71,8 +83,6 @@ public class Editor implements WatchedObject {
 			curves.add(selectedCurves.get(i));
 
 		selectedCurves.clear();
-
-		notifyListeners();
 	}
 
 	public void selectAllCurves() {
@@ -80,8 +90,6 @@ public class Editor implements WatchedObject {
 			selectedCurves.add(curves.get(i));
 
 		curves.clear();
-
-		notifyListeners();
 	}
 
 	protected int findIndexCurve(Curve c) {
@@ -119,31 +127,21 @@ public class Editor implements WatchedObject {
 			curves.add(selectedCurves.get(index));
 			selectedCurves.remove(index);
 		}
-
-		notifyListeners();
 	}
 
 	public void selectCurve(Curve c) {
-		int index = findIndexSelectedCurve(c);
+		int index = findIndexCurve(c);
 
 		if (index != -1) {
 			selectedCurves.add(curves.get(index));
 			curves.remove(index);
 		}
-
-		notifyListeners();
 	}
 
-	protected Vector<ChangeListener> listeners;
-
-	@Override
-	public void addChangeListener(ChangeListener c) {
-		listeners.add(c);
-	}
-
-	@Override
-	public void notifyListeners() {
-		for (int i = 0; i < listeners.size(); ++i)
-			listeners.get(i).contentsChanged(this);
+	public void searchAndSelectCurve(Point p) {
+		Curve c = searchCurve(p);
+		if (c != null) {
+			selectCurve(c);
+		}
 	}
 }

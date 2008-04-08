@@ -15,14 +15,18 @@ public class DrawArea extends JPanel implements ChangeListener {
 	// Dimensies van het tekencanvas.
 	// Voorlopig vast gekozen, nadien kijken of dit at runtime correct kan
 	// veranderd worden
-	private static int FRAME_WIDTH = 600;
-	private static int FRAME_HEIGHT = 600;
+	public static int FRAME_WIDTH = 600;
+	public static int FRAME_HEIGHT = 600;
 
 	private List<Curve> curves;
 	private List<Curve> selectedCurves;
 
 	public void update(Graphics g) {
 		paint(g);
+	}
+
+	public void contentsChanged(WatchedObject object) {
+		this.repaint();
 	}
 
 	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
@@ -71,7 +75,17 @@ public class DrawArea extends JPanel implements ChangeListener {
 		this.repaint();
 	}
 
-	public void contentsChanged(WatchedObject object) {
-		this.repaint();
+	public void setSize(int x, int y) {
+		super.setSize(x, y);
+		FRAME_WIDTH = x;
+		FRAME_HEIGHT = y;
+	}
+
+	public int width() {
+		return this.getWidth();
+	}
+
+	public int height() {
+		return this.getHeight();
 	}
 }

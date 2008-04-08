@@ -2,21 +2,22 @@ package CurveEditor.Tools;
 
 import java.util.Vector;
 
-public abstract class Tool
-{
+import CurveEditor.Algorithms.Algorithm;
+import CurveEditor.Curves.Curve;
 
-	protected String type;
+public abstract class Tool {
 
-	public String getType()
-	{
-		return type;
-	}
+	protected final char type;
 
-	public void setType(String type ){
+	public Tool(char type) {
 		this.type = type;
 	}
 
-	public void run(java.util.Vector algorithms, java.util.Vector curves){
+	public char getType() {
+		return type;
+	}
+
+	public void run(Vector<Algorithm> algorithms, Vector<Curve> curves) {
 
 	}
 }

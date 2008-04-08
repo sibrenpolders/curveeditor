@@ -14,6 +14,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import CurveEditor.Core.Editor;
+import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class GUI extends Editor implements MenuListener, MouseListener {
@@ -67,7 +68,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				.currentPoint()));
 		currentSituation.setCurrentDegree(currentSituation.currentCurve()
 				.getDegree());
-		//currentSituation.setCurrentType(currentSituation.currentCurve().getType());
+		// currentSituation.setCurrentType(currentSituation.currentCurve().getType());
 
 		// draw.drawSelectedCurve(currentSituation.currentCurve());
 		choice.refresh();
@@ -77,7 +78,20 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//currentSituation.currentCurve().addInput(new Point(e.getX(), e.getY()));
+		if (Editor.mode == Editor.MODE.ADD_INPUT) {
+			for (int i = 0; i < selectedCurves.size(); ++i) {
+				selectedCurves.get(i).addInput(new Point(e.getX(), e.getY()));
+				this.getAlgorithm(selectedCurves.get(i).getType())
+						.calculateCurve(selectedCurves.get(i));
+			}
+
+			draw.repaint();
+		} else if (Editor.mode == Editor.MODE.SELECT_CURVE) {
+			// zoek curve en voeg toe, of zo
+		} else if (Editor.mode == Editor.MODE.NEW_CURVE) {
+			
+		}
+
 	}
 
 	@Override
@@ -93,6 +107,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		// kunnen we gebruiken voor curves te "slepen", bijvoorbeeld
 
 	}
 
