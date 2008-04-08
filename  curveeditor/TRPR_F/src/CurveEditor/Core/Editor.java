@@ -38,32 +38,37 @@ public class Editor {
 		curves = new Vector<Curve>();
 		selectedCurves = new Vector<Curve>();
 
-		algorithms.add(new Linear());
-		algorithms.add(new Bezier());
-		algorithms.add(new Hermite());
-		currentAlgorithm = getAlgorithm('L');
+		algorithms.add(new Linear((short) 1));
+		algorithms.add(new Bezier((short) 1));
+		algorithms.add(new Hermite((short) 1));
+		currentAlgorithm = getAlgorithm('L', (short) 1);
+	}
+
+	public void setMode(Editor.MODE m) {
+		this.mode = m;
 	}
 
 	protected Vector<Algorithm> getAlgorithms() {
 		return algorithms;
 	}
 
-	protected Algorithm getAlgorithm(char type) {
+	protected Algorithm getAlgorithm(char type, short degree) {
 		for (int i = 0; i < algorithms.size(); ++i)
-			if (algorithms.get(i).getType() == type)
+			if (algorithms.get(i).getType() == type
+					&& algorithms.get(i).getDegree() == degree)
 				return algorithms.get(i);
 		return null;
 	}
 
-	protected void setCurrentAlgorithm(char type) {
-		currentAlgorithm = getAlgorithm(type);
+	protected void setCurrentAlgorithm(char type, short degree) {
+		currentAlgorithm = getAlgorithm(type, degree);
 	}
 
 	protected Vector<Tool> getTools() {
 		return tools;
 	}
 
-	public Tool getTool(char type) {
+	protected Tool getTool(char type) {
 		for (int i = 0; i < tools.size(); ++i)
 			if (tools.get(i).getType() == type)
 				return tools.get(i);
@@ -74,18 +79,18 @@ public class Editor {
 		currentTool = getTool(type);
 	}
 
-	public Curve searchCurve(Point p) {
+	protected Curve searchCurve(Point p) {
 		return null;
 	}
 
-	public void deselectAllCurves() {
+	protected void deselectAllCurves() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
 			curves.add(selectedCurves.get(i));
 
 		selectedCurves.clear();
 	}
 
-	public void selectAllCurves() {
+	protected void selectAllCurves() {
 		for (int i = 0; i < curves.size(); ++i)
 			selectedCurves.add(curves.get(i));
 
@@ -120,7 +125,7 @@ public class Editor {
 			return -1;
 	}
 
-	public void deselectCurve(Curve c) {
+	protected void deselectCurve(Curve c) {
 		int index = findIndexSelectedCurve(c);
 
 		if (index != -1) {
@@ -129,7 +134,7 @@ public class Editor {
 		}
 	}
 
-	public void selectCurve(Curve c) {
+	protected void selectCurve(Curve c) {
 		int index = findIndexCurve(c);
 
 		if (index != -1) {
@@ -138,10 +143,16 @@ public class Editor {
 		}
 	}
 
-	public void searchAndSelectCurve(Point p) {
+	protected void searchAndSelectCurve(Point p) {
 		Curve c = searchCurve(p);
 		if (c != null) {
 			selectCurve(c);
 		}
+	}
+
+	protected void startNewCurve() {
+		deselectAllCurves();
+		selectedCurves.add(new Curve(currentAlgorithm.getType(),
+				currentAlgorithm.getDegree()));
 	}
 }

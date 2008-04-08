@@ -4,8 +4,8 @@ import CurveEditor.Curves.Curve;
 
 public class Bezier extends Algorithm {
 
-	public Bezier() {
-		super('B');
+	public Bezier(short degree) {
+		super('B', degree);
 	}
 
 	public void calculateCurve(Curve c) {

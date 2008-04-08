@@ -4,8 +4,8 @@ import CurveEditor.Curves.Curve;
 
 public class Hermite extends Algorithm {
 
-	public Hermite() {
-		super('H');
+	public Hermite(short degree) {
+		super('H', degree);
 	}
 
 	public void calculateCurve(Curve c) {
