@@ -41,6 +41,8 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 		frame.pack();
 		frame.setVisible(true);
+
+		testMethod();
 	}
 
 	public GUI(String filename) {
@@ -74,8 +76,10 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		getAlgorithm(selectedCurves.get(0).getType(),
 				selectedCurves.get(0).getDegree()).calculateCurve(
 				selectedCurves.get(0));
-		
+
 		draw.repaint();
+
+		setMode(MODE.ADD_INPUT);
 	}
 
 	public void menuCanceled(MenuEvent arg0) {
@@ -98,7 +102,6 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 						selectedCurves.get(i).getDegree()).calculateCurve(
 						selectedCurves.get(i));
 			}
-
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE) {
 			// zoek curve en voeg toe, of zo
