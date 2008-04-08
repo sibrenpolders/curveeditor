@@ -62,6 +62,10 @@ public class Curve {
 		return type;
 	}
 
+	public String getTypeAsString() {
+		return Character.toString(type);
+	}
+
 	public short getDegree() {
 		return degree;
 	}

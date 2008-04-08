@@ -18,7 +18,7 @@ public class Linear extends Algorithm {
 		c.clearOutput();
 
 		for (int i = 0; i < (c.getNbInputPoints() - 1); ++i) {
-			//eerste controlepunt ligt links van het tweede
+			// eerste controlepunt ligt links van het tweede
 			if (input.get(i).X() < input.get(i + 1).X()) {
 				for (int x = input.get(i).X(); x <= input.get(i + 1).X(); ++x) {
 					output
@@ -29,8 +29,9 @@ public class Linear extends Algorithm {
 													i + 1).Y() / (double) input
 													.get(i + 1).X()))));
 				}
-			} 
-			//eerste controlepunt ligt rechts van het tweede, dat niet op de Y-as ligt
+			}
+			// eerste controlepunt ligt rechts van het tweede, dat niet op de
+			// Y-as ligt
 			else if (input.get(i + 1).X() > 0) {
 				for (int x = input.get(i).X(); x >= input.get(i + 1).X(); --x) {
 					output
@@ -41,8 +42,8 @@ public class Linear extends Algorithm {
 													i + 1).Y() / (double) input
 													.get(i + 1).X()))));
 				}
-			} 
-			//ligt wél op de Y-as
+			}
+			// ligt wél op de Y-as
 			else {
 				for (int x = input.get(i).X(); x > 0; --x)
 					output.add(new Point(x, (int) (input.get(i + 1).Y() + input
@@ -52,7 +53,7 @@ public class Linear extends Algorithm {
 				output.add(new Point(0, input.get(i + 1).Y()));
 			}
 
-			//noch links, noch rechts
+			// noch links, noch rechts
 			if (input.get(i + 1).X() == input.get(i).X()
 					&& input.get(i).Y() != input.get(i + 1).Y()) {
 				int x = input.get(i + 1).X();
