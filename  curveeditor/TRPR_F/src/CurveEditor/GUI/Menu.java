@@ -16,43 +16,21 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu extends JMenuBar {
-	/**
-	 * TODO wtf is dit?
-	 * 
-	 * Eclipse gaf er een warning voor... 
-	 * heb 't 'm zelf laten oplossen met deze bizarre regel als gevolg. :-D
-	 */
 	private static final long serialVersionUID = -2717014108067514961L;
-
+	
 	private JMenu menu;
 	private JMenuItem menuItem;
-	/*public static String algos[];
-	public static String tools[];*/
+	private MenuItemPressed mip;
 
 
-	public Menu(  ){
+	public Menu(){
 		CreateMenuBar( );
 	}
-
-	/*
-	 * TODO snap het nut van deze functies nog altijd niet. Het menu is toch niet dynamisch. Alles staat vast.
-	 * 
-	 * Da's correct natuurlijk, maar voor de programmeur is dat niet iets statisch. Als je bvb. een extra item
-	 * in de balk voegt, dan moet je ook ergens anders weer toevoegen. Dus dacht ik van: voeg da één keer toe in 
-	 * de vector, en 't is overal in orde. Maar je hebt gelijk, voor wat wij moeten doen is dat overkill.
-	 * 
-	 * public Menu(Vector<Algorithm> algorithms){
-	 *	
-	 * }
-	 *
-	 * public void addAlgorithm(Algorithm a){
-	 *
-	 * }
-	 *
-	 * public void addTool(Tool t){
-	 *
-	 * }
-	 */
+	
+	public Menu(MenuItemPressed mip){
+		this.mip = mip;
+		CreateMenuBar( );
+	}
 	public void refresh(){
 
 	}
@@ -99,7 +77,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new New( );				
+				mip.toggleNewFile();
 			}
 		} );
 
