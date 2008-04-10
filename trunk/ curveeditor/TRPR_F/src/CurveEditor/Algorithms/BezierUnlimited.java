@@ -19,22 +19,23 @@ public class BezierUnlimited extends Algorithm {
 		this.steps = steps;
 	}
 
-	private Point linIntPol(Point a, Point b, float t) {
+	private Point linIntPol(Point a, Point b, double t) {
 		return new Point((int) Math.floor(a.X() + (b.X() - a.X()) * t + 0.5),
 				(int) Math.floor(a.Y() + (b.Y() - a.Y()) * t + 0.5));
 	}
 
-	private Point bezier(Vector<Point> input, float t) {
+	private Point bezier(Vector<Point> input, double t) {
 		Vector<Point> prev = input;
 		Vector<Point> temp = input;
-		
-		while(temp.size() > 1)
-		{
+
+		while (temp.size() > 1) {
 			temp = new Vector<Point>();
-			
-			for(int i = 0; i < prev.size() - 1; ++i)
-				temp.add(linIntPol(prev.elementAt(i), prev.elementAt(i + 1), t));
-			
+
+			for (int i = 0; i < prev.size() - 1; ++i)
+				temp
+						.add(linIntPol(prev.elementAt(i),
+								prev.elementAt(i + 1), t));
+
 			prev = temp;
 		}
 
@@ -50,5 +51,7 @@ public class BezierUnlimited extends Algorithm {
 			float t = (float) (j / (steps - 1.0));
 			output.add(bezier(input, t));
 		}
+
+		(new BezierSmoothing3(35)).smoothCurve(c, 0.33, BezierSmoothing3.MODE.OUTPUT);
 	}
 }
