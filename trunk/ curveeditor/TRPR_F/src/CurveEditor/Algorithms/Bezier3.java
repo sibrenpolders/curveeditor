@@ -25,12 +25,11 @@ public class Bezier3 extends Algorithm {
 	}
 
 	private Point bezier(Point a, Point b, Point c, Point d, float t) {
-		Point ab, bc, cd, abbc, bccd;
-		ab = linIntPol(a, b, t);
-		bc = linIntPol(b, c, t);
-		cd = linIntPol(c, d, t);
-		abbc = linIntPol(ab, bc, t);
-		bccd = linIntPol(bc, cd, t);
+		Point ab = linIntPol(a, b, t);
+		Point bc = linIntPol(b, c, t);
+		Point cd = linIntPol(c, d, t);
+		Point abbc = linIntPol(ab, bc, t);
+		Point bccd = linIntPol(bc, cd, t);
 
 		return linIntPol(abbc, bccd, t);
 	}
@@ -41,11 +40,11 @@ public class Bezier3 extends Algorithm {
 		output.clear();
 
 		for (int i = 0; i < input.size() - 3; i += 3) {
-			float step = (float) 1.0 / steps;
-			for (float j = (float) 0.0; j < 1.0; j += step)
+			for (int j = 0; j < steps; ++j) {
+				float t = (float) (j / (steps - 1.0));
 				output.add(bezier(input.elementAt(i), input.elementAt(i + 1),
-						input.elementAt(i + 2), input.elementAt(i + 3), j));
+						input.elementAt(i + 2), input.elementAt(i + 3), t));
+			}
 		}
 	}
-
 }
