@@ -65,6 +65,10 @@ public class DrawArea extends JPanel {
 	}
 
 	public DrawArea(List<Curve> curves, List<Curve> selectedCurves) {
+		reset(curves, selectedCurves);
+	}
+
+	public void reset(List<Curve> curves, List<Curve> selectedCurves) {
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setBackground(new Color(255, 255, 255));
 
@@ -73,7 +77,6 @@ public class DrawArea extends JPanel {
 
 		this.repaint();
 	}
-
 	public void setSize(int x, int y) {
 		super.setSize(x, y);
 		FRAME_WIDTH = x;

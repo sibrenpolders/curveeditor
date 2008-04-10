@@ -33,10 +33,7 @@ public class Editor {
 		mode = MODE.NONE;
 		currentTool = null;
 
-		algorithms = new Vector<Algorithm>();
-		tools = new Vector<Tool>();
-		curves = new Vector<Curve>();
-		selectedCurves = new Vector<Curve>();
+		reset( );
 
 		algorithms.add(new Linear((short) 1));
 		algorithms.add(new Bezier3((short) 3));
@@ -45,6 +42,13 @@ public class Editor {
 		currentAlgorithm = getAlgorithm('L', (short) 1);
 	}
 
+	protected void reset() {
+		algorithms = new Vector<Algorithm>();
+		tools = new Vector<Tool>();
+		curves = new Vector<Curve>();
+		selectedCurves = new Vector<Curve>();
+	}
+	
 	public void setMode(Editor.MODE m) {
 		this.mode = m;
 	}
