@@ -42,7 +42,7 @@ public class Editor {
 		algorithms.add(new Bezier3((short) 3));
 		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite((short) 1));
-		currentAlgorithm = getAlgorithm('B', (short) 0);
+		currentAlgorithm = getAlgorithm('L', (short) 1);
 	}
 
 	public void setMode(Editor.MODE m) {

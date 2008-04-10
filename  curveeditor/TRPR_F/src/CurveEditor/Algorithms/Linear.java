@@ -70,5 +70,7 @@ public class Linear extends Algorithm {
 				}
 			}
 		}
+		
+		new BezierSmoothing3(150).smoothCurve(c, 0.5, BezierSmoothing3.MODE.INPUT);
 	}
 }
