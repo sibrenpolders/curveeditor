@@ -12,7 +12,7 @@ public class BezierUnlimited extends Algorithm {
 	// orde = onbepaald --> alle controlepunten worden tegelijkertijd gebruikt
 	public BezierUnlimited(short degree) {
 		super('B', (short) 0);
-		steps = 1000;
+		steps = 100;
 	}
 
 	public void setSteps(int steps) {
