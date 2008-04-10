@@ -40,8 +40,9 @@ public class Editor {
 
 		algorithms.add(new Linear((short) 1));
 		algorithms.add(new Bezier3((short) 3));
+		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite((short) 1));
-		currentAlgorithm = getAlgorithm('B', (short) 3);
+		currentAlgorithm = getAlgorithm('B', (short) 0);
 	}
 
 	public void setMode(Editor.MODE m) {
