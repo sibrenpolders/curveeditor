@@ -156,13 +156,22 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 		while( true) {
 			synchronized (mip) {
 				mip.wait( );
-				if ( mip.isNewFile()) {
-					reset( );
-					draw.reset(curves, selectedCurves);
-					mip.toggleNewFile();
-				}
+				if ( mip.isNewFileSelected())
+					newSelected();
+				else if ( mip.isOpenSelected())
+					openSelected();
 			}
 		}
 		} catch( InterruptedException ie) {}
+	}
+	
+	private void newSelected( ) {
+		reset( );
+		draw.reset(curves, selectedCurves);
+		mip.toggleNewFileSelected();
+	}
+	
+	private void openSelected() {
+		System.out.println( mip.getFileName() );
 	}
 }
