@@ -77,26 +77,22 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				mip.toggleNewFile();
+				mip.toggleNewFileSelected();
 			}
 		} );
 
 		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file", "src/CurveEditor/GUI/icons/fileopen.png");
-		menuItem.addActionListener(new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				new Open( );				
-			}
-		} );
+		menuItem.addActionListener( new Open( mip ) );
 		menu.addSeparator();
 
+		CreateMenuItem("Save", KeyEvent.VK_S, "Save a file", "src/CurveEditor/GUI/icons/filesave.png");
+		menuItem.addActionListener(new Save( mip ) );
+		
+		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...", "src/CurveEditor/GUI/icons/filesaveas.png");
+		menuItem.addActionListener(new SaveAs( mip ) );
+		
 		CreateMenuItem( "Quit", KeyEvent.VK_Q, "Quit Curve Editor", "src/CurveEditor/GUI/icons/exit.png" );
-		menuItem.addActionListener(new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				new Quit( );				
-			}
-		} );
+		menuItem.addActionListener( new Quit( ) );
 	}
 
 	private void makeEdit( ) {
@@ -106,7 +102,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new Undo( );				
+				mip.toggleUndoSelected();				
 			}
 		} );
 
@@ -114,7 +110,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new Redo( );				
+				mip.toggleRedoSelected();		
 			}
 		} );
 
@@ -140,7 +136,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new Bezier( );				
+				mip.toggleBezierSelected();
 			}
 		} );
 
@@ -148,7 +144,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new Hermites( );				
+				mip.toggleHermitesSelected();
 			}
 		} );
 	}
@@ -183,7 +179,7 @@ public class Menu extends JMenuBar {
 				new About( );				
 			}
 		} );
-	}	
+	}		
 }
 
 /* 
@@ -192,32 +188,69 @@ public class Menu extends JMenuBar {
  * de klasse Menu. Daarom is het handig om voor de acties die moeten uitgevoerd worden aparte class' aan te maken zodat er een 
  * hogere abstractie is. Hierdoor worden de functies individueel ook kleiner.  
  */
-class New {
-	public New( ) {
-		System.out.println( "New is pressed" );
-	}
-}
 
-class Open extends JFileChooser {
+class Open extends JFileChooser implements ActionListener {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8210240788153180142L;
+	private MenuItemPressed mip;
+	
+	public Open( MenuItemPressed mip ) {
+		this.mip = mip;
+	}
 
-	public Open(){
+	public void actionPerformed(ActionEvent e) {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"CurveEditor files (*.ce)", "ce");
+		
 		setFileFilter(filter);
 		int returnVal = showOpenDialog(null);
-		if(returnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println("You chose to open this file: " +
-					getSelectedFile().getName());
-		}
+		if(returnVal == JFileChooser.APPROVE_OPTION)
+				mip.toggleOpenSelected( getSelectedFile().getName());
 	}
 }
 
-class Quit {
-	public Quit() {
+class SaveAs extends JFileChooser implements ActionListener {
+	private static final long serialVersionUID = -2814628877230702040L;
+	protected MenuItemPressed mip;
+	
+	public SaveAs( MenuItemPressed mip ) {
+		this.mip = mip;
+	}
+
+	protected void schowChooser() {
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"CurveEditor files (*.ce)", "ce");
+		
+		setFileFilter(filter);
+		
+		int returnVal = showSaveDialog(null);	
+		if(returnVal == JFileChooser.APPROVE_OPTION)
+			mip.toggleSaveSelected(getSelectedFile().getName() );
+	}
+	public void actionPerformed(ActionEvent e) {
+		schowChooser();
+	}
+}
+
+class Save extends SaveAs {
+	private static final long serialVersionUID = 303696639663548530L;
+
+	public Save( MenuItemPressed mip ) {
+		super( mip );
+	}
+	
+	public void actionPerformed( ActionEvent e ) {
+		if ( null != mip.getFileName()) // Er is reeds een fileName opgegeven, dus gewoon saven
+			mip.toggleSaveSelected();
+		else 
+			schowChooser();
+	}
+}
+
+class Quit implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
 		int n = JOptionPane.showConfirmDialog(
 				null,
 				"Do you really want to quit?",
