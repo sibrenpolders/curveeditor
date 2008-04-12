@@ -44,3 +44,17 @@ gestoken. Beetje goed zo?
  
  Komt van blijkbaar van DrawArea regel 53. Enig idee hoe het komt?
  *Zal verder hier en daar wel nog iets onbeduidend veranderd hebben.
+ 
+ -----------
+ 
+ *	Ahja, nie aan gedacht.
+ *	Ik zou orde 2,3,4 en 5 voorzien. Dan berekent 'ie een curve per groepje van 3,4,5 of 6 punten. 
+ 	Tuurlijk, je kan oneindig ver gaan, 't is niet eens zo moeilijk om te implementeren... maar 'k vind dat als je per groepjes werkt, 
+ 	groepjes van zes al groot genoeg is. 't Is niet de bedoeling dat de gebruiker dat tekenvlak supervol met controlepunten zet hé.
+ 	Naast die specifiek bepaalde ordes zou ik ook 'n optie "Unlimited" of zo voorzien: die berekent dan een curve a.h.v. ALLE invoerpunten.
+ *	DTD ziet er goed uit op het eerste zicht. Nu, 't zit ver weg bij mij, maar kan het zijn dat
+ 	<!ELEMENT curveEditor (curve*)> beter is ? En mss ook dit: <!ELEMENT curve (type,degree,point+)> ?
+ *	List is een interface in Java, daar kan je dus geen instantie van aanmaken. Had ik pas later door toen dat Eclipse daarover zat te klagen.
+ 	'k Had dan Vector gebruikt... maar 't kan zijn dat ik het niet overal heb aangepast.
+ *	Hmm, die fout is wel bizar... die zou die vector pas mogen uittekenen nadat 'ie gevuld is. Implementatie spreekt dan ook voor zich.
+ 	Ik vermoed dat Java zelf threadingoptimalisaties doorvoert en dat er dan zo'n dingen voorvallen.
