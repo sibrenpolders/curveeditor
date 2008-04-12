@@ -1,0 +1,46 @@
+*Heb File in FILEIO veranderd anders waren er wat problemen met FILE van java zelf...
+*Menu is operationeel ( whii ). Maar er moeten nog veel functies ingevuld worden + ik moet nog een
+degree aanvinker zetten voor bezier & hermites. Maar ge moet eens doorgeven hoe ge dat juist zou willen
+Gewoon een radiobutton met beperkte keuzens? een spinner? En welke opties moeten daar eventueel nog bijkomen?
+*Heb FileIO ook meteen ingevuld ( ik dacht kan nog rap zoiets kleins doen. Bleek meer werk dan ik dacht
+( zie de tijd ). Het plan was toch om daar een xml file voor te maken? Heb de dtd en een sample in Saves
+gestoken. Beetje goed zo? 
+ In principe werken Save en Load ( Load toch zeker ). Wel 1 probleem de Vector ja lees VECTOR:) van curves
+ is blijkbaar leeg? Ik weet het niet zeker maar ik gok dat het iets te maken heeft met het feit dat
+ gij die vector opvult als een lijst? ( vector is afgeleid van lijst, dacht ik toch, en dus zal
+ de cast wel werken maar de teller zal niet verhoogt worden zoiets dan. ) Waarom gebruikt ge daar trouwens opeens een
+ lijst? Is het niet beter van ofwel overal een vector te gebruiken ofwel overal een lijst?
+ *Krijg af en toe een fout? zeer raar. Maar af en toe krijg ik dit:
+ Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: Array index out of range: 66
+	at java.util.Vector.get(Vector.java:694)
+	at CurveEditor.GUI.DrawArea.paintComponent(DrawArea.java:53)
+	at javax.swing.JComponent.paint(JComponent.java:1027)
+	at javax.swing.JComponent.paintChildren(JComponent.java:864)
+	at javax.swing.JComponent.paint(JComponent.java:1036)
+	at javax.swing.JComponent.paintChildren(JComponent.java:864)
+	at javax.swing.JComponent.paint(JComponent.java:1036)
+	at javax.swing.JLayeredPane.paint(JLayeredPane.java:564)
+	at javax.swing.JComponent.paintChildren(JComponent.java:864)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5129)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:285)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1128)
+	at javax.swing.JComponent.paint(JComponent.java:1013)
+	at java.awt.GraphicsCallback$PaintCallback.run(GraphicsCallback.java:21)
+	at sun.awt.SunGraphicsCallback.runOneComponent(SunGraphicsCallback.java:60)
+	at sun.awt.SunGraphicsCallback.runComponents(SunGraphicsCallback.java:97)
+	at java.awt.Container.paint(Container.java:1797)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:734)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:679)
+	at javax.swing.RepaintManager.seqPaintDirtyRegions(RepaintManager.java:659)
+	at javax.swing.SystemEventQueueUtilities$ComponentWorkRequest.run(SystemEventQueueUtilities.java:128)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:597)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+ 
+ Komt van blijkbaar van DrawArea regel 53. Enig idee hoe het komt?
+ *Zal verder hier en daar wel nog iets onbeduidend veranderd hebben.
