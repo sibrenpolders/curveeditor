@@ -1,5 +1,5 @@
-<!ELEMENT curveEditor (curve,type,degree,point,x,y)>
-<!ELEMENT curve (type,degree,point+,x,y)>
+<!ELEMENT curveEditor (curve*,type,degree,point,x,y)>
+<!ELEMENT curve (type,degree,point+)>
 <!ELEMENT type (#PCDATA)>
 <!ELEMENT degree (#PCDATA)>
 <!ELEMENT point (x,y)>
