@@ -51,6 +51,11 @@ public class DrawArea extends JPanel {
 				g.drawLine(selectedCurves.get(i).getOutput().get(j).X(),
 						selectedCurves.get(i).getOutput().get(j).Y(),
 						selectedCurves.get(i).getOutput().get(j).X(), //--> regel 53, niks abnormaals in vgl. met vorige of volgende regel
+																	/* Zover was ik ook al:D. Ik krijg die fout af en toe eens.
+																	 * Direct na de start. Maar als gij hem nog niet gekregen hebt
+																	 * dan zal het wel een rariteit zijn zoals die gtk error van u.
+																	 * Verder geen zorgen over maken.
+																	 */
 						selectedCurves.get(i).getOutput().get(j).Y());
 
 			for (int j = 0; j < selectedCurves.get(i).getInput().size(); ++j) {
