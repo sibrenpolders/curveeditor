@@ -50,7 +50,7 @@ public class DrawArea extends JPanel {
 			for (int j = 0; j < selectedCurves.get(i).getOutput().size(); ++j)
 				g.drawLine(selectedCurves.get(i).getOutput().get(j).X(),
 						selectedCurves.get(i).getOutput().get(j).Y(),
-						selectedCurves.get(i).getOutput().get(j).X(),
+						selectedCurves.get(i).getOutput().get(j).X(), //--> regel 53, niks abnormaals in vgl. met vorige of volgende regel
 						selectedCurves.get(i).getOutput().get(j).Y());
 
 			for (int j = 0; j < selectedCurves.get(i).getInput().size(); ++j) {
@@ -77,6 +77,7 @@ public class DrawArea extends JPanel {
 
 		this.repaint();
 	}
+
 	public void setSize(int x, int y) {
 		super.setSize(x, y);
 		FRAME_WIDTH = x;

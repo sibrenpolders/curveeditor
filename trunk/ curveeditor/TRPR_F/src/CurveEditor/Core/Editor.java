@@ -20,7 +20,7 @@ public class Editor {
 	protected Algorithm currentAlgorithm;
 	protected Tool currentTool;
 	protected FileIO file;
-	
+
 	public Editor(String filename) {
 		init();
 		// bestand inladen a.h.v. filename
@@ -34,24 +34,30 @@ public class Editor {
 		mode = MODE.NONE;
 		currentTool = null;
 
-		reset( );
+		// reset( ); --> maakt nieuwe objecten aan, uh-oh, mag nie !
+
+		algorithms = new Vector<Algorithm>();
+		tools = new Vector<Tool>();
+		curves = new Vector<Curve>();
+		selectedCurves = new Vector<Curve>();
 
 		algorithms.add(new Linear((short) 1));
 		algorithms.add(new Bezier3((short) 3));
 		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite((short) 1));
 		currentAlgorithm = getAlgorithm('L', (short) 1);
-		
-		file = new FileIO( );
+
+		file = new FileIO();
 	}
 
 	protected void reset() {
-		algorithms = new Vector<Algorithm>();
-		tools = new Vector<Tool>();
-		curves = new Vector<Curve>();
-		selectedCurves = new Vector<Curve>();
+		algorithms.clear(); // new Vector<Algorithm>(); --> gewoon leegmaken of
+							// uw referenties elders gaan corrupt worden !
+		tools.clear();
+		curves.clear();
+		selectedCurves.clear();
 	}
-	
+
 	public void setMode(Editor.MODE m) {
 		this.mode = m;
 	}
@@ -162,5 +168,5 @@ public class Editor {
 		deselectAllCurves();
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
-	}	
+	}
 }
