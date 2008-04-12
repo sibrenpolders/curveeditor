@@ -58,15 +58,12 @@ public class Menu extends JMenuBar {
 	private void CreateMenuItem( String name, int keyEvent, String description, String icon) {
 		if ( icon != null ) {
 			ImageIcon a = new ImageIcon( icon );
-			System.out.println( icon + " " + a.getIconHeight() ); 
 			menuItem = new JMenuItem( name, a );
 		}
 		else
 			menuItem = new JMenuItem( name, keyEvent );
 		menuItem.setAccelerator(KeyStroke.getKeyStroke( keyEvent, ActionEvent.CTRL_MASK));
 		menuItem.getAccessibleContext().setAccessibleDescription( description );
-//		if ( icon != null )
-//		menuItem.setIcon( new ImageIcon( icon ) );
 		menu.add( menuItem );
 	}
 	private void makeFile( ) {
@@ -202,12 +199,12 @@ class Open extends JFileChooser implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.ce)", "ce");
+				"CurveEditor files (*.xml)", "xml");
 		
 		setFileFilter(filter);
 		int returnVal = showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION)
-				mip.toggleOpenSelected( getSelectedFile().getName());
+				mip.toggleOpenSelected( getSelectedFile().getAbsolutePath());
 	}
 }
 
@@ -221,13 +218,13 @@ class SaveAs extends JFileChooser implements ActionListener {
 
 	protected void schowChooser() {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.ce)", "ce");
+				"CurveEditor files (*.xml)", "xml");
 		
 		setFileFilter(filter);
 		
 		int returnVal = showSaveDialog(null);	
 		if(returnVal == JFileChooser.APPROVE_OPTION)
-			mip.toggleSaveSelected(getSelectedFile().getName() );
+			mip.toggleSaveSelected(getSelectedFile().getAbsolutePath());
 	}
 	public void actionPerformed(ActionEvent e) {
 		schowChooser();

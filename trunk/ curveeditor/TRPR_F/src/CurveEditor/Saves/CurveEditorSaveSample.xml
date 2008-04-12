@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE curveEditor SYSTEM "src/CurveEditor/Saves">
+<curveEditor>
+  <curve>
+    <type></type>
+    <degree></degree>
+    <point>
+    </point>
+  </curve>
+</curveEditor>

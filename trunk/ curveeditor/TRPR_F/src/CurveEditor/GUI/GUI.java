@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventListener;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -159,7 +160,17 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 				if ( mip.isNewFileSelected())
 					newSelected();
 				else if ( mip.isOpenSelected())
-					openSelected();
+					file.load(mip.getFileName(), curves);
+				else if ( mip.isSaveSelected() )
+					file.save( mip.getFileName(), curves );
+				else if ( mip.isUndoSelected() )
+					;// TODO
+				else if ( mip.isRedoSelected() )
+					; // TODO 
+				else if ( mip.isBezierSelected() )
+					; // TODO
+				else if ( mip.isHermitesSelected() )
+					; // TODO
 			}
 		}
 		} catch( InterruptedException ie) {}
@@ -169,9 +180,5 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 		reset( );
 		draw.reset(curves, selectedCurves);
 		mip.toggleNewFileSelected();
-	}
-	
-	private void openSelected() {
-		System.out.println( mip.getFileName() );
 	}
 }

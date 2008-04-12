@@ -15,6 +15,10 @@ public class MenuItemPressed {
 		newFileSelected = false;
 		openSelected = false;
 		saveSelected = false;
+		undoSelected = false;
+		redoSelected = false;
+		bezierSelected = false;
+		hermitesSelected = false;
 		fileName = null;
 	}
 
@@ -38,6 +42,10 @@ public class MenuItemPressed {
 			notifyAll();
 	}
 	
+	public synchronized boolean isSaveSelected() {
+		return saveSelected;
+	}
+	
 	public synchronized void toggleSaveSelected( String fileName ) {
 		this.fileName = fileName;
 		
@@ -50,7 +58,7 @@ public class MenuItemPressed {
 			if ( saveSelected = !saveSelected )
 			notifyAll();
 	}
-	
+		
 	public synchronized String getFileName( ) {
 		return fileName;
 	}
