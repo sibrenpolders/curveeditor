@@ -159,8 +159,12 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 				mip.wait( );
 				if ( mip.isNewFileSelected())
 					newSelected();
-				else if ( mip.isOpenSelected())
+				else if ( mip.isOpenSelected()) {
 					file.load(mip.getFileName(), curves);
+					Vector<Point> vp = curves.get(0).getInput();
+					for ( int i = 0; i < vp.size(); ++i )
+						System.out.println( vp.get(i).X());
+				}
 				else if ( mip.isSaveSelected() )
 					file.save( mip.getFileName(), curves );
 				else if ( mip.isUndoSelected() )

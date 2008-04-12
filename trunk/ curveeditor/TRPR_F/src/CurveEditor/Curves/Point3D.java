@@ -4,6 +4,10 @@ public class Point3D extends Point {
 
 	protected int Z;
 
+	public Point3D() {
+		Z = -1;
+	}
+	
 	public Point3D(int x, int y, int z) {
 		super(x, y);
 		this.Z = z;
