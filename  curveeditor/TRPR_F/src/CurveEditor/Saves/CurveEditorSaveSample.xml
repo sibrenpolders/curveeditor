@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE curveEditor SYSTEM "src/CurveEditor/Saves">
+<!DOCTYPE curveEditor SYSTEM "/home/sibren/school/TRPR/src/CurveEditor/Saves">
 <curveEditor>
   <curve>
-    <type></type>
-    <degree></degree>
+    <type>bezier</type>
+    <degree>2</degree>
     <point>
+      <x>1</x>
+      <y>2</y>
+    </point>    
+    <point>
+      <x>3</x>
+      <y>4</y>
+    </point>    
+    <point>
+      <x>5</x>
+      <y>6</y>
     </point>
   </curve>
 </curveEditor>

@@ -5,6 +5,11 @@ public class Point {
 	protected int X;
 	protected int Y;
 
+	public Point( ) {
+		X = -1;
+		Y = -1;
+	}
+	
 	public Point(int X, int Y) {
 		this.X = X;
 		this.Y = Y;

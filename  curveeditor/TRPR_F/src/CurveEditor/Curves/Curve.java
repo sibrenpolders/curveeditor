@@ -15,6 +15,13 @@ public class Curve {
 
 	protected short degree;
 
+	public Curve( ) {
+		type = 0;
+		degree = 0;
+		input = new Vector<Point>();
+		output = new Vector<Point>();
+	}
+	
 	public Curve(char Type, short degree) {
 		type = Type;
 		this.degree = degree;
