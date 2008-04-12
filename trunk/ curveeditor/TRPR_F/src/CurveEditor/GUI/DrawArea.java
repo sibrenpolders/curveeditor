@@ -3,7 +3,8 @@ package CurveEditor.GUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.List;
+import java.util.Vector;
+
 import javax.swing.JPanel;
 
 import CurveEditor.Curves.Curve;
@@ -16,8 +17,8 @@ public class DrawArea extends JPanel {
 	public static int FRAME_WIDTH = 600;
 	public static int FRAME_HEIGHT = 600;
 
-	private List<Curve> curves;
-	private List<Curve> selectedCurves;
+	private Vector<Curve> curves;
+	private Vector<Curve> selectedCurves;
 
 	public void update(Graphics g) {
 		paint(g);
@@ -69,11 +70,11 @@ public class DrawArea extends JPanel {
 		}
 	}
 
-	public DrawArea(List<Curve> curves, List<Curve> selectedCurves) {
+	public DrawArea(Vector<Curve> curves, Vector<Curve> selectedCurves) {
 		reset(curves, selectedCurves);
 	}
 
-	public void reset(List<Curve> curves, List<Curve> selectedCurves) {
+	public void reset(Vector<Curve> curves, Vector<Curve> selectedCurves) {
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setBackground(new Color(255, 255, 255));
 
