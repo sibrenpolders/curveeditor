@@ -58,3 +58,9 @@ gestoken. Beetje goed zo?
  	'k Had dan Vector gebruikt... maar 't kan zijn dat ik het niet overal heb aangepast.
  *	Hmm, die fout is wel bizar... die zou die vector pas mogen uittekenen nadat 'ie gevuld is. Implementatie spreekt dan ook voor zich.
  	Ik vermoed dat Java zelf threadingoptimalisaties doorvoert en dat er dan zo'n dingen voorvallen.
+ ----
+ 
+ *	DTD is aangepast ge had gelijk( het zit ook nog ver bij mij )
+ *	DrawArea zit vol lijsten:D. De constructor aanpassen moet het normaal oplossen. Ik wou het niet doen
+ 	omdat ge er misschien een goede reden voor had.
+ *  Ok momenteel geen andere opties dan de orde? Dan zal ik die al implementeren ( morgen of overmorgen )
