@@ -19,7 +19,8 @@ public class Editor {
 	protected Vector<Curve> selectedCurves;
 	protected Algorithm currentAlgorithm;
 	protected Tool currentTool;
-
+	protected FileIO file;
+	
 	public Editor(String filename) {
 		init();
 		// bestand inladen a.h.v. filename
@@ -40,6 +41,8 @@ public class Editor {
 		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite((short) 1));
 		currentAlgorithm = getAlgorithm('L', (short) 1);
+		
+		file = new FileIO( );
 	}
 
 	protected void reset() {
@@ -159,5 +162,5 @@ public class Editor {
 		deselectAllCurves();
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
-	}
+	}	
 }
