@@ -44,7 +44,9 @@ public class Editor {
 		algorithms.add(new Linear((short) 1));
 		algorithms.add(new Bezier3((short) 3));
 		algorithms.add(new BezierUnlimited((short) 0));
-		algorithms.add(new Hermite((short) 1));
+		algorithms.add(new Hermite('H', (short) 1));
+		algorithms.add(new HermiteCardinal( 'C', (short) 1));
+		algorithms.add(new HermiteCatmulRom( 'R', (short) 1));
 		currentAlgorithm = getAlgorithm('L', (short) 1);
 
 		file = new FileIO();
