@@ -9,12 +9,12 @@ import CurveEditor.Curves.Point;
 public class Hermite extends Algorithm {
 	int steps;
 	
-	public Hermite(short degree) {
-		super('H', degree);
+	public Hermite(char type, short degree) {
+		super(type, degree);
 		steps = 1000;
 	}
 
-	private Point hermite(Point a, Point b, Point c, Point d, double t, double m0, double m1 ) {
+	protected Point hermite(Point a, Point c, double t, double m0, double m1 ) {
 			double h00 = 2*Math.pow(t, 3) - 3*Math.pow(t, 2) + 1; // calculate basis function 1
 			double h10 = Math.pow(t, 3) - 2*Math.pow(t, 2) + t; // calculate basis function 3
 			double h01 = -2*Math.pow(t, 3) + 3*Math.pow(t, 2); // calculate basis function 2
@@ -23,7 +23,7 @@ public class Hermite extends Algorithm {
 			double y = h00*a.Y() + h10*m0 + h01*c.Y() + h11*m1;
 		
 		return new Point( (int) Math.floor(a.X() + (c.X() - a.X()) * t + 0.5), (int) Math.floor( y + .5 ) );
-	}
+	}	
 	
 	public void calculateCurve(Curve cv) {
 		Vector<Point> vip = cv.getInput();
@@ -39,7 +39,7 @@ public class Hermite extends Algorithm {
 			m1 = ((double)d.Y() - c.Y()) / (d.X()- c.X());
 			for (int j = 0; j < steps; ++j ) {				
 				t = (double) (j / (steps - 1.0));
-				vop.add(hermite(a, b, c, d, t, m0, m1));
+				vop.add(hermite(a, c, t, m0, m1));
 			}	
 		}
 	}
