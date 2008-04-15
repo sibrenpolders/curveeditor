@@ -3,6 +3,7 @@ package CurveEditor.GUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -34,13 +35,16 @@ public class DrawArea extends JPanel {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
 		g.setColor(Color.black);
+		
 		for (int i = 0; i < curves.size(); ++i) {
 			for (int j = 0; j < curves.get(i).getOutput().size(); ++j)
 				g.drawLine(curves.get(i).getOutput().get(j).X(), curves.get(i)
 						.getOutput().get(j).Y(), curves.get(i).getOutput().get(
 						j).X(), curves.get(i).getOutput().get(j).Y());
-
-			for (int j = 0; j < curves.get(i).getInput().size(); ++j)
+			
+			// tangens niet tekenen voor Hermite
+			int step = (curves.get(i).getType() == 'H')? 2 : 1; 
+			for (int j = 0; j < curves.get(i).getInput().size(); j += 1)
 				g.fillRect(curves.get(i).getInput().get(j).X(), curves.get(i)
 						.getInput().get(j).Y(), 2, 2);
 		}
@@ -59,13 +63,23 @@ public class DrawArea extends JPanel {
 																	 */
 						selectedCurves.get(i).getOutput().get(j).Y());
 
+			// tangens niet tekenen voor Hermite
+			int step = (selectedCurves.get(i).getType() == 'H')? 2 : 1;
 			for (int j = 0; j < selectedCurves.get(i).getInput().size(); ++j) {
+				if ( selectedCurves.get(i).getType() != 'H' || j % 2 == 0 ) {
 				g.fillRect(selectedCurves.get(i).getInput().get(j).X() - 2,
 						selectedCurves.get(i).getInput().get(j).Y() - 2, 5, 5);
 				g.drawString(selectedCurves.get(i).getInput().get(j).X() + ", "
 						+ selectedCurves.get(i).getInput().get(j).Y(),
 						selectedCurves.get(i).getInput().get(j).X(),
 						selectedCurves.get(i).getInput().get(j).Y());
+				}
+				else {
+					Vector<CurveEditor.Curves.Point> vip = selectedCurves.get(i).getInput();
+					g.setColor(Color.blue);
+					g.drawLine(vip.get(j-1).X(), vip.get(j-1).Y(), vip.get(j).X(), vip.get(j).Y());
+					g.setColor(Color.red);
+				}
 			}
 		}
 	}

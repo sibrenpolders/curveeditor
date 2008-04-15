@@ -4,31 +4,37 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.EventListener;
-import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements MenuListener, MouseListener, Runnable {
+public class GUI extends Editor implements MenuListener, MouseListener, ActionListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
-	protected Menu menu;
-	protected MenuItemPressed mip;
+	private JMenu menu;
+	private JMenuItem menuItem;
+	private JMenuBar menuBar;
 	
 	public GUI() {
 		super();
@@ -39,10 +45,8 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
-		mip = new MenuItemPressed();
-		menu = new Menu(mip);
-		menu.addMouseListener(this);
-		contentPane.add(menu);
+		CreateMenuBar();
+		contentPane.add(menuBar);
 
 		draw = new DrawArea(this.curves, this.selectedCurves);
 		draw.addMouseListener(this);
@@ -63,9 +67,8 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
-		menu = new Menu();
-//		menu.add
-		contentPane.add(menu);
+		CreateMenuBar();
+		contentPane.add(menuBar);
 
 		draw = new DrawArea(this.curves, this.selectedCurves);
 		draw.addMouseListener(this);
@@ -76,12 +79,15 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 	}
 
 	public void testMethod() {
+		setCurrentAlgorithm('H', (short)1);
+		
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
 		selectedCurves.get(0).addInput(new Point(0, 0));
 		selectedCurves.get(0).addInput(new Point(50, 50));
-		selectedCurves.get(0).addInput(new Point(99, 120));
-
+		selectedCurves.get(0).addInput(new Point(50, 120));
+		selectedCurves.get(0).addInput(new Point(100, 50));
+		
 		getAlgorithm(selectedCurves.get(0).getType(),
 				selectedCurves.get(0).getDegree()).calculateCurve(
 				selectedCurves.get(0));
@@ -106,10 +112,14 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 	public void mouseClicked(MouseEvent e) {
 		if (mode == Editor.MODE.ADD_INPUT) {
 			for (int i = 0; i < selectedCurves.size(); ++i) {
-				selectedCurves.get(i).addInput(new Point(e.getX(), e.getY()));
-				this.getAlgorithm(selectedCurves.get(i).getType(),
-						selectedCurves.get(i).getDegree()).calculateCurve(
-						selectedCurves.get(i));
+				Curve c = selectedCurves.get(i);
+				c.addInput(new Point(e.getX(), e.getY()));
+				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
+				// telkens de tangens. Dus er moet niet getekend worden voordat deze is ingegeven
+				if ( c.getType() != 'H' || c.getInput().size() % 2 == 0 )
+					this.getAlgorithm(selectedCurves.get(i).getType(),
+							selectedCurves.get(i).getDegree()).calculateCurve(
+									selectedCurves.get(i));
 			}
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE) {
@@ -142,47 +152,207 @@ public class GUI extends Editor implements MenuListener, MouseListener, Runnable
 		
 	}
 
-	// heb hiervooer en thread opgestart. Het probleem was dat ik maar geen goede listener vond
-	// om de gekozen opties door te geven van zodra er op een menuItem geklikt werd.
-	// een mewnu.add<eventlistener>( ) functie werkt niet omdat ik niet de events van 
-	// de klasse menu moet opvangen maar de event van de objecten menuItem die zich in de klasse
-	// menu zitten ( dus m.a.w. ik kan niet de techniek toepassen die gij gebruikt voor draw.
-	// verder werkt PropertyChangeListener enkel op Beans
-	// en ChangeListener werkt enkel voor JTab* en JSliders etc.
-	// Dus om verdere tijdverspilling tegenen te gaan heb ik een thread opgestart die
-	// gaat kijken of de gebruiker op een menuItem heeft geklikt en dan iets doet met het object
-	// Momenteel is enkel NewFile (slordig) geimplementeerd. Maar de bedoeling is duidelijk.
-	public void run() {
-		try {
-		while( true) {
-			synchronized (mip) {
-				mip.wait( );
-				if ( mip.isNewFileSelected())
-					newSelected();
-				else if ( mip.isOpenSelected()) {
-					file.load(mip.getFileName(), curves);
-					Vector<Point> vp = curves.get(0).getInput();
-					for ( int i = 0; i < vp.size(); ++i )
-						System.out.println( vp.get(i).X());
-				}
-				else if ( mip.isSaveSelected() )
-					file.save( mip.getFileName(), curves );
-				else if ( mip.isUndoSelected() )
-					;// TODO
-				else if ( mip.isRedoSelected() )
-					; // TODO 
-				else if ( mip.isBezierSelected() )
-					; // TODO
-				else if ( mip.isHermitesSelected() )
-					; // TODO
-			}
+	// Zal de menuBar opstellen
+	private void CreateMenuBar( ) {
+		// Aanmaken van de menubar.
+		menuBar = new JMenuBar();
+		makeFile( );
+		makeEdit( );
+		makeTools( );
+		makeAlgorithms( );
+		makeHelp( );
+	}
+
+	// maakt een JMenu object aan ( m.a.w. de categorienamen van de menubar )
+	private void CreateMenu( String name, int keyEvent, String description ) {
+		menu = new JMenu( name );
+		menu.setMnemonic( keyEvent );
+		menu.getAccessibleContext().setAccessibleDescription( description);
+		menuBar.add(menu);
+
+	}
+
+	// maakt een JMenuItem object aan. Deze stellen de verschillende keuzes voor die in de menubalk staan
+	private void CreateMenuItem( String name, int keyEvent, String description, String icon) {
+		if ( icon != null ) {
+			ImageIcon a = new ImageIcon( icon );
+			menuItem = new JMenuItem( name, a );
 		}
-		} catch( InterruptedException ie) {}
+		else
+			menuItem = new JMenuItem( name, keyEvent );
+		menuItem.setAccelerator(KeyStroke.getKeyStroke( keyEvent, ActionEvent.CTRL_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription( description );
+		menu.add( menuItem );
+	}
+	private void makeFile( ) {
+		// menu object aanmaken
+		CreateMenu( "FILE", KeyEvent.VK_F, "" );		
+		CreateMenuItem( "New", KeyEvent.VK_N, "Create a new file", "src/CurveEditor/GUI/icons/filenew.png" );
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				reset( );
+				draw.reset(curves, selectedCurves);	
+			}
+		} );
+
+		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file", "src/CurveEditor/GUI/icons/fileopen.png");
+		menuItem.addActionListener( this );
+		menu.addSeparator();
+
+		CreateMenuItem("Save", KeyEvent.VK_S, "Save a file", "src/CurveEditor/GUI/icons/filesave.png");
+		menuItem.addActionListener(this);
+		
+		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...", "src/CurveEditor/GUI/icons/filesaveas.png");
+		menuItem.addActionListener(this);
+		
+		CreateMenuItem( "Quit", KeyEvent.VK_Q, "Quit Curve Editor", "src/CurveEditor/GUI/icons/exit.png" );
+		menuItem.addActionListener( new ActionListener( ) {
+			public void actionPerformed(ActionEvent e) {
+				int n = JOptionPane.showConfirmDialog( null, "Do you really want to quit?", "Quit Curve Editor", JOptionPane.YES_NO_OPTION);
+				if ( n == 0 )
+					System.exit(0);
+			}
+			
+		});
+	}
+
+	private void makeEdit( ) {
+		CreateMenu( "Edit", KeyEvent.VK_E, "" );
+
+		CreateMenuItem( "Undo", KeyEvent.VK_U, "Undo last action", "src/CurveEditor/GUI/icons/undo.png");
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println( "Be gone** ");
+			}
+		} );
+
+		CreateMenuItem( "Redo", KeyEvent.VK_R, "Redolast action", "src/CurveEditor/GUI/icons/redo.png" );
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println( "Come back");
+			}
+		} );
+
+		menu.addSeparator();
+
+		CreateMenuItem( "Preferrences", KeyEvent.VK_P, "Make adjustments to Curve Editor", null );
+		menuItem.addActionListener(this);
+	}
+
+	private void makeTools( ) {
+		CreateMenu( "Tools", KeyEvent.VK_T, "" );	
+	}
+
+	private void makeAlgorithms( ) {
+		CreateMenu( "Algorithms", KeyEvent.VK_A, "" );
+
+		CreateMenuItem( "Bezier", KeyEvent.VK_B, "Use Bezier for curve calculation", null );
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Bezier");
+			}
+		} );
+
+		CreateMenuItem( "Hermite", KeyEvent.VK_H, "Use Hermite for curve calculation", null );
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println( "Hermite" );
+			}
+		} );
+	}
+
+	private void makeHelp( ) {
+		// een glue element toevoegen zorgt ervoor dat help rechts wordt uitgelijnd
+		menuBar.add( Box.createHorizontalGlue() );
+		CreateMenu( "Help", KeyEvent.VK_H, "" );
+
+		CreateMenuItem( "Quick howto's", KeyEvent.VK_H,"Learn the basics", null );
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Quick howto");
+			}
+		} );
+
+		CreateMenuItem( "Documentation", KeyEvent.VK_D,"Full guide to Curve Editor", null );
+		menuItem.addActionListener(new ActionListener( ){
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Doc");
+			}
+		} );
+
+		menu.addSeparator();
+
+		CreateMenuItem( "About", KeyEvent.VK_A,"About", null );
+		menuItem.addActionListener(this);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		String cmd = e.getActionCommand();
+		if ( cmd.equals("Open") )
+			open();
+		else if ( cmd.equals( "Save") )
+			save();
+		else if ( cmd.equals("Save As ...") )
+			saveAs();
+		else if ( cmd.equals("About") )
+			about();
+		else if ( cmd.equals("Preferrences") )
+			preferrences();
+	}		
+
+	private void open( ) {
+		JFileChooser jfc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"CurveEditor files (*.xml)", "xml");
+		
+		jfc.setFileFilter(filter);
+		if( JFileChooser.APPROVE_OPTION == jfc.showOpenDialog(draw) )
+				file.load( jfc.getSelectedFile().getAbsolutePath(), curves );
+}
+
+	private void save( ) {
+		// checken of er reeds een bestandsnaam gekent is waarnaar opgeslagen moet worden.
+		String fileName = file.getCurrentFilename();
+		
+		if ( null == fileName )
+			saveAs();
+		else
+			file.save( fileName, curves );
+	}
+
+	private void saveAs( ) {
+		JFileChooser jfc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter( "CurveEditor files (*.xml)", "xml" );
+		jfc.setFileFilter(filter);
+		if( JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw) )
+			file.save( jfc.getSelectedFile().getAbsolutePath(), curves );
 	}
 	
-	private void newSelected( ) {
-		reset( );
-		draw.reset(curves, selectedCurves);
-		mip.toggleNewFileSelected();
+	private void preferrences( ) {
+		System.out.println( "Preferrences is pressed" );
+	}
+
+	private void about() {
+		Box hbox = Box.createHorizontalBox();		
+		hbox.add( new JLabel( new ImageIcon( "src/CurveEditor/GUI/icons/about.jpg") ) );
+		hbox.add(new JLabel( "<html>" +
+				"<p style='font-family: arial;font-weight: bold;margin-left: 20px'>Coding and developing</p><br />" +
+				"<p style='font-family: arial;font-weight: lighter;margin-left: 20px'>" +
+				"Sibrand Staessens<br />" +
+				"Sibren Polders<br />" +
+				"</p><br />" +
+				"<p style='font-family: arial;font-weight: lighter;margin-left: 20px'>" +
+				"Thanks to: <br />" +
+				"William van Haevere (ofzo)" +
+				"</p>" +
+		"</html>" ) );
+		JOptionPane.showMessageDialog(null, hbox,"CurveEditor - about", JOptionPane.PLAIN_MESSAGE );
 	}
 }
