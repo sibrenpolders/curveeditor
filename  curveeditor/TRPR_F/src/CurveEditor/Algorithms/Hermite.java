@@ -15,14 +15,15 @@ public class Hermite extends Algorithm {
 	}
 
 	protected Point hermite(Point a, Point c, double t, double m0, double m1 ) {
-			double h00 = 2*Math.pow(t, 3) - 3*Math.pow(t, 2) + 1; // calculate basis function 1
-			double h10 = Math.pow(t, 3) - 2*Math.pow(t, 2) + t; // calculate basis function 3
-			double h01 = -2*Math.pow(t, 3) + 3*Math.pow(t, 2); // calculate basis function 2
-			double h11 = Math.pow(t, 3) - Math.pow(t, 2); // calculate basis function 4 
-		
-			double y = h00*a.Y() + h10*m0 + h01*c.Y() + h11*m1;
-		
-		return new Point( (int) Math.floor(a.X() + (c.X() - a.X()) * t + 0.5), (int) Math.floor( y + .5 ) );
+		double h00 = 2*Math.pow(t, 3) - 3*Math.pow(t, 2) + 1; // calculate basis function 1
+		double h10 = Math.pow(t, 3) - 2*Math.pow(t, 2) + t; // calculate basis function 3
+		double h01 = -2*Math.pow(t, 3) + 3*Math.pow(t, 2); // calculate basis function 2
+		double h11 = Math.pow(t, 3) - Math.pow(t, 2); // calculate basis function 4 
+			
+		double y = h00*a.Y() + h10*m0 + h01*c.Y() + h11*m1;
+		double x = h00*a.X() + h10*m0 + h01*c.X() + h11*m1;
+		// return new Point( (int) Math.floor(a.X() + (c.X() - a.X()) * t + .5 ), (int) Math.floor( y + .5 ) );
+		return new Point( (int) Math.floor( x + .5 ), (int) Math.floor( y + .5 ) );
 	}	
 	
 	public void calculateCurve(Curve cv) {
