@@ -29,8 +29,8 @@ import CurveEditor.Curves.Point;
 public class ChoiceArea extends JPanel implements ActionListener {
 
 	// private Vector<Algorithm> v;	
-	final static private String[] bezierAlgTypeNames = { "normal", "Smoothing 3", "Unlimited" };
-	final static private String[] hermiteAlgTypeNames = { "normal", "Cardinal", "Catmull Rom" };
+	final static private String[] bezierAlgTypeNames = { "Bezier normal", "Unlimited" };
+	final static private String[] hermiteAlgTypeNames = { "Hermite normal", "Cardinal", "Catmull Rom" };
 	private String currentAlgoritme;
 	private String[] currentAlgTypeNames;
 	private JComboBox type;
@@ -175,7 +175,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		return null;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ( e.getActionCommand().equals( "Bezier" ))
 			type.setModel( new DefaultComboBoxModel( bezierAlgTypeNames ));

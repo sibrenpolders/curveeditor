@@ -17,24 +17,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu extends JMenuBar {
 	private static final long serialVersionUID = -2717014108067514961L;
-	
 	private JMenu menu;
 	private JMenuItem menuItem;
-	private MenuItemPressed mip;
-
-
-	public Menu(){
-		CreateMenuBar( );
+	private ActionListener listener;
+	
+	public Menu( ActionListener listener ) {
+		this.listener = listener;
+		CreateMenuBar();
 	}
 	
-	public Menu(MenuItemPressed mip){
-		this.mip = mip;
-		CreateMenuBar( );
-	}
-	public void refresh(){
-
-	}
-
 	// Zal de menuBar opstellen
 	private void CreateMenuBar( ) {
 		// Aanmaken van de menubar.
@@ -50,7 +41,7 @@ public class Menu extends JMenuBar {
 		menu = new JMenu( name );
 		menu.setMnemonic( keyEvent );
 		menu.getAccessibleContext().setAccessibleDescription( description);
-		this.add(menu);
+		add(menu);
 
 	}
 
@@ -70,26 +61,34 @@ public class Menu extends JMenuBar {
 		// menu object aanmaken
 		CreateMenu( "FILE", KeyEvent.VK_F, "" );		
 		CreateMenuItem( "New", KeyEvent.VK_N, "Create a new file", "src/CurveEditor/GUI/icons/filenew.png" );
-		// java laat niet toe functies mee te geven als parameter. Dus moet de functie die aangeroepen moet worden manueel geset worden
-		menuItem.addActionListener(new ActionListener( ){
+		menuItem.addActionListener( listener );
+/*!!!!				new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				mip.toggleNewFileSelected();
+				reset( );
+				draw.reset(curves, selectedCurves);	
 			}
 		} );
-
+*/
 		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file", "src/CurveEditor/GUI/icons/fileopen.png");
-		menuItem.addActionListener( new Open( mip ) );
+		menuItem.addActionListener( listener );
 		menu.addSeparator();
 
 		CreateMenuItem("Save", KeyEvent.VK_S, "Save a file", "src/CurveEditor/GUI/icons/filesave.png");
-		menuItem.addActionListener(new Save( mip ) );
+		menuItem.addActionListener( listener );
 		
 		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...", "src/CurveEditor/GUI/icons/filesaveas.png");
-		menuItem.addActionListener(new SaveAs( mip ) );
+		menuItem.addActionListener( listener );
 		
 		CreateMenuItem( "Quit", KeyEvent.VK_Q, "Quit Curve Editor", "src/CurveEditor/GUI/icons/exit.png" );
-		menuItem.addActionListener( new Quit( ) );
+		menuItem.addActionListener( new ActionListener( ) {
+			public void actionPerformed(ActionEvent e) {
+				int n = JOptionPane.showConfirmDialog( null, "Do you really want to quit?", "Quit Curve Editor", JOptionPane.YES_NO_OPTION);
+				if ( n == 0 )
+					System.exit(0);
+			}
+			
+		});
 	}
 
 	private void makeEdit( ) {
@@ -99,7 +98,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				mip.toggleUndoSelected();				
+				System.out.println( "Be gone** ");
 			}
 		} );
 
@@ -107,19 +106,14 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				mip.toggleRedoSelected();		
+				System.out.println( "Come back");
 			}
 		} );
 
 		menu.addSeparator();
 
 		CreateMenuItem( "Preferrences", KeyEvent.VK_P, "Make adjustments to Curve Editor", null );
-		menuItem.addActionListener(new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				new Preferrences( );				
-			}
-		} );
+		menuItem.addActionListener( listener );
 	}
 
 	private void makeTools( ) {
@@ -130,20 +124,10 @@ public class Menu extends JMenuBar {
 		CreateMenu( "Algorithms", KeyEvent.VK_A, "" );
 
 		CreateMenuItem( "Bezier", KeyEvent.VK_B, "Use Bezier for curve calculation", null );
-		menuItem.addActionListener(new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				mip.toggleBezierSelected();
-			}
-		} );
+		menuItem.addActionListener( listener );
 
-		CreateMenuItem( "Hermites", KeyEvent.VK_H, "Use Hermites for curve calculation", null );
-		menuItem.addActionListener(new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				mip.toggleHermitesSelected();
-			}
-		} );
+		CreateMenuItem( "Hermite", KeyEvent.VK_H, "Use Hermite for curve calculation", null );
+		menuItem.addActionListener( listener );
 	}
 
 	private void makeHelp( ) {
@@ -155,7 +139,7 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new QuickHowto( );				
+				System.out.println("Quick howto");
 			}
 		} );
 
@@ -163,145 +147,22 @@ public class Menu extends JMenuBar {
 		menuItem.addActionListener(new ActionListener( ){
 			public void actionPerformed(ActionEvent e)
 			{
-				new Doc( );				
+				System.out.println("Doc");
 			}
 		} );
 
 		menu.addSeparator();
 
 		CreateMenuItem( "About", KeyEvent.VK_A,"About", null );
-		menuItem.addActionListener(new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				new About( );				
-			}
-		} );
-	}		
-}
-
-/* 
- * Deze class' zijn geschreven om te gebruiken in new ActionListener() { ..}.
- * Vermits dit een inline gedefinieerde klasse is. Daardoor kan de klasse opgeroepen door het new commando geen functies aanroepen van 
- * de klasse Menu. Daarom is het handig om voor de acties die moeten uitgevoerd worden aparte class' aan te maken zodat er een 
- * hogere abstractie is. Hierdoor worden de functies individueel ook kleiner.  
- */
-
-class Open extends JFileChooser implements ActionListener {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8210240788153180142L;
-	private MenuItemPressed mip;
-	
-	public Open( MenuItemPressed mip ) {
-		this.mip = mip;
+		menuItem.addActionListener( listener );
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.xml)", "xml");
-		
-		setFileFilter(filter);
-		int returnVal = showOpenDialog(null);
-		if(returnVal == JFileChooser.APPROVE_OPTION)
-				mip.toggleOpenSelected( getSelectedFile().getAbsolutePath());
-	}
-}
 
-class SaveAs extends JFileChooser implements ActionListener {
-	private static final long serialVersionUID = -2814628877230702040L;
-	protected MenuItemPressed mip;
-	
-	public SaveAs( MenuItemPressed mip ) {
-		this.mip = mip;
-	}
-
-	protected void schowChooser() {
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.xml)", "xml");
-		
-		setFileFilter(filter);
-		
-		int returnVal = showSaveDialog(null);	
-		if(returnVal == JFileChooser.APPROVE_OPTION)
-			mip.toggleSaveSelected(getSelectedFile().getAbsolutePath());
-	}
-	public void actionPerformed(ActionEvent e) {
-		schowChooser();
-	}
-}
-
-class Save extends SaveAs {
-	private static final long serialVersionUID = 303696639663548530L;
-
-	public Save( MenuItemPressed mip ) {
-		super( mip );
-	}
-	
-	public void actionPerformed( ActionEvent e ) {
-		if ( null != mip.getFileName()) // Er is reeds een fileName opgegeven, dus gewoon saven
-			mip.toggleSaveSelected();
-		else 
-			schowChooser();
-	}
-}
-
-class Quit implements ActionListener {
-	public void actionPerformed(ActionEvent e) {
-		int n = JOptionPane.showConfirmDialog(
-				null,
-				"Do you really want to quit?",
-				"Quit Curve Editor",
-				JOptionPane.YES_NO_OPTION);
-		if ( n == 0 )
-			System.exit(0);
-	}
-}
-
-class Undo {
-public Undo() {
-		System.out.println( "undo is pressed" );
-	}
-}
-
-class Redo {
-	public Redo() {
-		System.out.println( "redo is pressed" );
-	}
-}
-
-class Preferrences {
-	public Preferrences( ) {
+	private void preferrences( ) {
 		System.out.println( "Preferrences is pressed" );
 	}
-}
 
-class Bezier {
-	public Bezier( ) {
-		System.out.println( "Bezier" );
-	}
-}
-
-class Hermites {
-	public Hermites() {
-		System.out.println( "Hermites " );
-	}
-}
-
-class QuickHowto {
-	public QuickHowto( ) {
-		System.out.println( "Quick Howto's" );
-	}
-}
-
-class Doc {
-	public Doc( ) {
-		System.out.println( "doc" );
-	}
-}
-
-class About {
-	public About() {
+	private void about() {
 		Box hbox = Box.createHorizontalBox();		
 		hbox.add( new JLabel( new ImageIcon( "src/CurveEditor/GUI/icons/about.jpg") ) );
 		hbox.add(new JLabel( "<html>" +
@@ -317,4 +178,5 @@ class About {
 		"</html>" ) );
 		JOptionPane.showMessageDialog(null, hbox,"CurveEditor - about", JOptionPane.PLAIN_MESSAGE );
 	}
+
 }
