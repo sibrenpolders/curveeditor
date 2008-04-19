@@ -2,6 +2,7 @@ package CurveEditor.GUI;
 
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -47,10 +49,23 @@ public class GUI extends Editor implements MenuListener, MouseListener, ActionLi
 
 		CreateMenuBar();
 		contentPane.add(menuBar);
+		
+		JPanel screen = new JPanel();
+		screen.setLayout( new BoxLayout( screen, BoxLayout.X_AXIS ) );
 
+		screen.add( Box.createRigidArea( new Dimension( 10, 0 )));
+		
+		choice = new ChoiceArea( new ChoiceAreaListener( ) );
+		screen.add( choice );
+		
 		draw = new DrawArea(this.curves, this.selectedCurves);
-		draw.addMouseListener(this);
-		contentPane.add(draw);
+		draw.addMouseListener(this);		
+		screen.add(draw);			
+		
+		screen.add( Box.createRigidArea( new Dimension( 10, 0 )));
+		screen.add( Box.createHorizontalGlue() );
+		
+		contentPane.add( screen );
 		
 		frame.pack();
 		frame.setVisible(true);		
@@ -353,5 +368,16 @@ public class GUI extends Editor implements MenuListener, MouseListener, ActionLi
 				"</p>" +
 		"</html>" ) );
 		JOptionPane.showMessageDialog(null, hbox,"CurveEditor - about", JOptionPane.PLAIN_MESSAGE );
+	}
+
+	private class ChoiceAreaListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String actionCommand = e.getActionCommand();
+			
+			if ( actionCommand.equals( "Bezier" ))
+				currentAlgorithm = getAlgorithm('b', (short) 1);
+			else if ( actionCommand.equals( "Hermite" ))
+				currentAlgorithm = getAlgorithm('h', (short) 1);
+		}
 	}
 }

@@ -5,10 +5,10 @@ import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class HermiteCatmulRom extends HermiteCardinal {
+public class HermiteCatmullRom extends HermiteCardinal {
 	private final double d = 0.5;
 	
-	public HermiteCatmulRom(char type, short degree) {
+	public HermiteCatmullRom(char type, short degree) {
 		super(type, degree);
 		// TODO Auto-generated constructor stub
 	}
