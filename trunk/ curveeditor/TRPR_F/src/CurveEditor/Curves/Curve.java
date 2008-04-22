@@ -13,15 +13,16 @@ public class Curve {
 	// identifier
 	protected char type;
 
-	protected short degree;
+	protected short degree; // niet altijd nodig --> kunnen we bvb. in een
+							// interface voorzien, of zo
 
-	public Curve( ) {
+	public Curve() {
 		type = 0;
 		degree = 0;
 		input = new Vector<Point>();
 		output = new Vector<Point>();
 	}
-	
+
 	public Curve(char Type, short degree) {
 		type = Type;
 		this.degree = degree;

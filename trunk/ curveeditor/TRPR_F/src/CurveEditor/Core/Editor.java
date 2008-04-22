@@ -9,7 +9,7 @@ import CurveEditor.Tools.*;
 public class Editor {
 
 	public static enum MODE {
-		NONE, ADD_INPUT, SELECT_CURVE, NEW_CURVE
+		NONE, ADD_INPUT, SELECT_CURVE, NEW_CURVE, SELECT_CONTROL_POINT
 	};
 
 	protected MODE mode;
@@ -20,6 +20,7 @@ public class Editor {
 	protected Algorithm currentAlgorithm;
 	protected Tool currentTool;
 	protected FileIO file;
+	protected CurveMap map;
 
 	public Editor(String filename) {
 		init();
@@ -31,10 +32,8 @@ public class Editor {
 	}
 
 	private void init() {
-		mode = MODE.NONE;
+		mode = MODE.NEW_CURVE;
 		currentTool = null;
-
-		// reset( ); --> maakt nieuwe objecten aan, uh-oh, mag nie !
 
 		algorithms = new Vector<Algorithm>();
 		tools = new Vector<Tool>();
@@ -45,16 +44,17 @@ public class Editor {
 		algorithms.add(new Bezier3((short) 3));
 		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite('H', (short) 1));
-		algorithms.add(new HermiteCardinal( 'C', (short) 1));
-		algorithms.add(new HermiteCatmullRom( 'R', (short) 1));
+		algorithms.add(new HermiteCardinal('C', (short) 1));
+		algorithms.add(new HermiteCatmullRom('R', (short) 1));
+
 		currentAlgorithm = getAlgorithm('L', (short) 1);
 
 		file = new FileIO();
+		map = new CurveMap();
 	}
 
 	protected void reset() {
-		algorithms.clear(); // new Vector<Algorithm>(); --> gewoon leegmaken of
-							// uw referenties elders gaan corrupt worden !
+		algorithms.clear();
 		tools.clear();
 		curves.clear();
 		selectedCurves.clear();
@@ -77,7 +77,15 @@ public class Editor {
 	}
 
 	protected void setCurrentAlgorithm(char type, short degree) {
-		currentAlgorithm = getAlgorithm(type, degree);
+		currentAlgorithm = getAlgorithm(type, degree); // mag niet null zijn
+
+		// de geselecteerde curves naar dat type veranderen
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			selectedCurves.get(i).setType(type);
+			selectedCurves.get(i).setDegree(degree);
+			selectedCurves.get(i).clearOutput();
+			currentAlgorithm.calculateCurve(selectedCurves.get(i));
+		}
 	}
 
 	protected Vector<Tool> getTools() {
@@ -96,7 +104,12 @@ public class Editor {
 	}
 
 	protected Curve searchCurve(Point p) {
-		return null;
+		CurveMap.CurveAndPointContainer result = map.searchCurveByControlPoint(p);
+
+		if (result != null)
+			return result.c;
+		else
+			return map.searchCurveByCurvePoint(p).c;
 	}
 
 	protected void deselectAllCurves() {
