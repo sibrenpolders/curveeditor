@@ -8,7 +8,7 @@ import CurveEditor.Curves.Point;
 
 public class CurveMap2 {
 
-	public static int DEFAULT_SIZE = 50;
+	public static int DEFAULT_SIZE = 25;
 	private boolean[][] onCurve;
 
 	class Region {
@@ -22,10 +22,10 @@ public class CurveMap2 {
 		}
 
 		public Region(Point centrum) {
-			this.minx = centrum.X() - DEFAULT_SIZE / 2;
-			this.maxx = centrum.X() + DEFAULT_SIZE / 2;
-			this.miny = centrum.Y() - DEFAULT_SIZE / 2;
-			this.maxy = centrum.Y() + DEFAULT_SIZE / 2;
+			this.minx = centrum.X() - DEFAULT_SIZE;
+			this.maxx = centrum.X() + DEFAULT_SIZE;
+			this.miny = centrum.Y() - DEFAULT_SIZE;
+			this.maxy = centrum.Y() + DEFAULT_SIZE;
 		}
 
 		public boolean contains(Point p) {
