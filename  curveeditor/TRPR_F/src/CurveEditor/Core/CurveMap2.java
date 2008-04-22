@@ -1,6 +1,5 @@
 package CurveEditor.Core;
 
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -85,7 +84,7 @@ public class CurveMap2 {
 
 		for (int i = 0; i < c.getOutput().size(); ++i) {
 			currentPoint = c.getOutput().get(i);
-			if (last != null && !last.contains(currentPoint)) {
+			if (last == null || (last != null && !last.contains(currentPoint))) {
 				last = findRegion(last, c.getOutput(), i, currentPoint);
 				addRegion(c, last);
 			}
@@ -94,7 +93,38 @@ public class CurveMap2 {
 	}
 
 	private Region findRegion(Region r, Vector<Point> v, int index, Point p) {
+		int[] coordsLeft = findNearestLeftPoint(
+				(p.X() - 2 * DEFAULT_SIZE >= 0) ? p.X() - 2 * DEFAULT_SIZE : 0,
+				p);
+		int[] coordsRight = findNearestRightPoint(p.X() + 2 * DEFAULT_SIZE, p);
+		int[] coordsTop = findNearestTopPoint(p.Y() + 2 * DEFAULT_SIZE, p);
+		int[] coordsBottom = findNearestBottomPoint(
+				(p.Y() - 2 * DEFAULT_SIZE >= 0) ? p.Y() - 2 * DEFAULT_SIZE : 0,
+				p);
 
+		int xmin = 0, xmax = 0, ymin = 0, ymax = 0;
+
+		if (coordsLeft[0] == -1)
+			xmin = ((p.X() - DEFAULT_SIZE) >= 0) ? p.X() - DEFAULT_SIZE : 0;
+		else
+			xmin = p.X() - (p.X() - coordsLeft[0]) / 2;
+
+		if (coordsRight[0] == -1)
+			xmax = p.X() + DEFAULT_SIZE;
+		else
+			xmax = p.X() + (coordsRight[0] - p.X()) / 2;
+
+		if (coordsTop[1] == -1)
+			ymax = p.Y() + DEFAULT_SIZE;
+		else
+			ymax = p.Y() + (coordsTop[1] - p.Y()) / 2;
+
+		if (coordsBottom[1] == -1)
+			ymin = ((p.Y() - DEFAULT_SIZE) >= 0) ? p.Y() - DEFAULT_SIZE : 0;
+		else
+			ymin = p.Y() - (p.Y() - coordsBottom[1]) / 2;
+
+		return new Region(xmin, xmax, ymin, ymax);
 	}
 
 	private int[] findNearestLeftPoint(int xMin, Point p) {
