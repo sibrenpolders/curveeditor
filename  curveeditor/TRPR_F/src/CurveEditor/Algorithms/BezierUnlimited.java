@@ -52,6 +52,6 @@ public class BezierUnlimited extends Algorithm {
 			output.add(bezier(input, t));
 		}
 
-		(new BezierSmoothing3(35)).smoothCurve(c, 0.33, BezierSmoothing3.MODE.OUTPUT);
+		(new BezierSmoothing3(100)).smoothCurve(c, 0.33, BezierSmoothing3.MODE.OUTPUT);
 	}
 }

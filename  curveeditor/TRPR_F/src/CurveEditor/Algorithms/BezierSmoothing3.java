@@ -43,14 +43,14 @@ public class BezierSmoothing3 {
 
 	private Point[] findControlPoints(Point a, Point b, Point c, Point d,
 			double smoothFactor) {
-		int x0 = a.X();
-		int x1 = b.X();
-		int x2 = c.X();
-		int x3 = d.X();
-		int y0 = a.Y();
-		int y1 = b.Y();
-		int y2 = c.Y();
-		int y3 = d.Y();
+		double x0 = a.X();
+		double x1 = b.X();
+		double x2 = c.X();
+		double x3 = d.X();
+		double y0 = a.Y();
+		double y1 = b.Y();
+		double y2 = c.Y();
+		double y3 = d.Y();
 
 		double xc1 = (x0 + x1) / 2.0;
 		double yc1 = (y0 + y1) / 2.0;

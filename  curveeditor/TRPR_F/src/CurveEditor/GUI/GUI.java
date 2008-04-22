@@ -98,7 +98,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	}
 
 	public void testMethod() {
-		setCurrentAlgorithm('B', (short)3);
+		setCurrentAlgorithm('B', (short)0);
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
 		selectedCurves.get(0).addInput(new Point(0, 0));
