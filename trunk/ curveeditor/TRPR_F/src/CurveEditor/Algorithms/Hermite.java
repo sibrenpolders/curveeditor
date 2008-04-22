@@ -36,8 +36,8 @@ public class Hermite extends Algorithm {
 			Point b = vip.get( i+1 );
 			Point c = vip.get( i+2 );
 			Point d = vip.get( i+3 );
-			m0 = ((double)b.Y() - a.Y()) / (b.X()- a.X());
-			m1 = ((double)d.Y() - c.Y()) / (d.X()- c.X());
+			m0 = b.Y();// Math.abs( ((double)b.Y() - a.Y()) / (b.X()- a.X()) );
+			m1 = d.Y();// Math.abs( ((double)d.Y() - c.Y()) / (d.X()- c.X()) );
 			for (int j = 0; j < steps; ++j ) {				
 				t = (double) (j / (steps - 1.0));
 				vop.add(hermite(a, c, t, m0, m1));
