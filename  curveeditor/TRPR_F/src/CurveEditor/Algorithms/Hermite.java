@@ -14,14 +14,14 @@ public class Hermite extends Algorithm {
 		steps = 1000;
 	}
 
-	protected Point hermite(Point a, Point c, double t, double m0, double m1 ) {
+	protected Point hermite(Point p1, Point r1, Point p2, Point r2, double t ) {		
 		double h00 = 2*Math.pow(t, 3) - 3*Math.pow(t, 2) + 1; // calculate basis function 1
 		double h10 = Math.pow(t, 3) - 2*Math.pow(t, 2) + t; // calculate basis function 3
 		double h01 = -2*Math.pow(t, 3) + 3*Math.pow(t, 2); // calculate basis function 2
 		double h11 = Math.pow(t, 3) - Math.pow(t, 2); // calculate basis function 4 
 			
-		double y = h00*a.Y() + h10*m0 + h01*c.Y() + h11*m1;
-		double x = h00*a.X() + h10*m0 + h01*c.X() + h11*m1;
+		double y = h00*p1.Y() + h10*r1.Y() + h01*p2.Y() + h11*r2.Y();
+		double x = h00*p1.X() + h10*r1.X() + h01*p2.X() + h11*r2.X();
 		// return new Point( (int) Math.floor(a.X() + (c.X() - a.X()) * t + .5 ), (int) Math.floor( y + .5 ) );
 		return new Point( (int) Math.floor( x + .5 ), (int) Math.floor( y + .5 ) );
 	}	
@@ -36,11 +36,11 @@ public class Hermite extends Algorithm {
 			Point b = vip.get( i+1 );
 			Point c = vip.get( i+2 );
 			Point d = vip.get( i+3 );
-			m0 = b.Y();// Math.abs( ((double)b.Y() - a.Y()) / (b.X()- a.X()) );
-			m1 = d.Y();// Math.abs( ((double)d.Y() - c.Y()) / (d.X()- c.X()) );
+			Point r1 = new Point( b.X() - a.X(), b.Y() - a.Y() );
+			Point r2 = new Point( d.X() - c.X(), d.Y() - c.Y() );
 			for (int j = 0; j < steps; ++j ) {				
 				t = (double) (j / (steps - 1.0));
-				vop.add(hermite(a, c, t, m0, m1));
+				vop.add(hermite(a, r1, c, r2, t));
 			}	
 		}
 	}
