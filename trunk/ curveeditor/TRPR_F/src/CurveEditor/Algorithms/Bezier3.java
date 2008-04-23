@@ -1,9 +1,6 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
-
-import CurveEditor.Algorithms.BezierSmoothing3.MODE;
-import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class Bezier3 extends Algorithm {

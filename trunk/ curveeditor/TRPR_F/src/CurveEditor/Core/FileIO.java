@@ -3,46 +3,26 @@ package CurveEditor.Core;
 import CurveEditor.Curves.Point;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point3D;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Stack;
 import java.util.Vector;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.AttributesImpl;
-
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-import com.sun.xml.internal.stream.events.AttributeImpl;
-
-import CurveEditor.Curves.Curve;
 
 //tekstueel opslaan: type | orde | controlepunt1 | controlepunt2 | ... | \n
 public class FileIO extends DefaultHandler {
