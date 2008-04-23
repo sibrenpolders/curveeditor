@@ -20,21 +20,20 @@ public class DrawArea extends JPanel {
 
 	private Vector<Curve> curves;
 	private Vector<Curve> selectedCurves;
-
-	public void update(Graphics g) {
+	private Graphics g;
+	
+	public void update( ) {
 		paint(g);
 	}
 
 	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
 	// uitvoert.
 	// Dit hertekent het vollédige tekencanvas.
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		g.clipRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
-		g.setColor(Color.white);
-		g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
-		g.setColor(Color.black);
+	public void paintComponent( Graphics g ) {
+		this.g = g;
+		super.paintComponent(g);		
+		
+		emptyField( );
 		
 		for (int i = 0; i < curves.size(); ++i) {
 			for (int j = 0; j < curves.get(i).getOutput().size(); ++j)
@@ -110,5 +109,12 @@ public class DrawArea extends JPanel {
 
 	public int height() {
 		return this.getHeight();
+	}
+	
+	public void emptyField( ) {
+		g.clipRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+		g.setColor(Color.white);
+		g.fillRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+		g.setColor(Color.black);
 	}
 }

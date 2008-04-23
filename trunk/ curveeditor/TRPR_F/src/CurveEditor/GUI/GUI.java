@@ -98,7 +98,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	}
 
 	public void testMethod() {
-		setCurrentAlgorithm('R', (short)1);
+		setCurrentAlgorithm('B', (short)0);
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
 		selectedCurves.get(0).addInput(new Point(0, 0));
@@ -135,9 +135,10 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat deze is ingegeven
 				if ( c.getType() != 'H' || c.getInput().size() % 2 == 0 )
-					this.getAlgorithm(selectedCurves.get(i).getType(),
-							selectedCurves.get(i).getDegree()).calculateCurve(
-									selectedCurves.get(i));
+					currentAlgorithm.calculateCurve( selectedCurves.get(i) );
+//					this.getAlgorithm(selectedCurves.get(i).getType(),
+//							selectedCurves.get(i).getDegree()).calculateCurve(
+//									selectedCurves.get(i));
 			}
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE) {
@@ -237,12 +238,14 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 			
 			for (int i = 0; i < selectedCurves.size(); ++i) {
 				Curve c = selectedCurves.get(i);
+				c.setType( currentAlgorithm.getType() );
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat deze is ingegeven
 				if ( c.getType() != 'H' || c.getInput().size() % 2 == 0 )
 					currentAlgorithm.calculateCurve(
 									selectedCurves.get(i));
 			}
+			draw.emptyField( );			
 			draw.repaint();							
 		}
 	}
