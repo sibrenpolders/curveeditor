@@ -1,2 +1,11 @@
 Het omzetten van de ene curve naar de andere lukt wel ( indien ge een mooie niet te uitgestrekte bezier curve hebt.
 Maar het is duidelijk nog niet optimaal. Zal er zo snel mogelijk eens hene zien..
+
+Correctie niets werkt meer hier.
+Er zijn een paar functies bijgekomen etc ect? Ik heb maar geen commit gedaan vermits ik nu wel een error-vrije code
+heb maar niks meer kan tekenen...
+
+Ik had nog rap de wissel goed gezet van bezier naar hermite en visa versa. Maar werkt voor geen meter meer:).
+btw met matrices werken is ruimte verspilling! Die matrices dienen eigenlijk alleen om het wiskundige makkelijk te 
+kunnen berekenen. Maar zo'n vaste formule kunt ge beter in 1 regel zetten. Er is geen nood aan een matrices in het
+algoritme. De code zal zonder ook een stuk korter worden...
