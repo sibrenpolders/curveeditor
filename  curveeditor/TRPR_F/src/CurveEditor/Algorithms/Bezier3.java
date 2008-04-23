@@ -11,7 +11,7 @@ public class Bezier3 extends Algorithm {
 	private double[][] matrix;
 	private double[][] controlPtsMatrix;
 	private double[] parameterMatrix;
-	boolean G1Continuity = false;
+	boolean C1Continuity = true;
 
 	// orde = 3 --> per 4 controlepunten de dingen berekenen dus
 	public Bezier3(short degree) {
@@ -24,8 +24,8 @@ public class Bezier3 extends Algorithm {
 		createMatrix();
 	}
 
-	public void toggleContinuity() {
-		G1Continuity = !G1Continuity;
+	public void toggleC1Continuity() {
+		C1Continuity = !C1Continuity;
 	}
 
 	private void createMatrix() {
@@ -134,10 +134,10 @@ public class Bezier3 extends Algorithm {
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		output.clear();
 
-		if (!G1Continuity)
+		if (!C1Continuity)
 			calculateNoCont(input, output);
 		else
-			calculateCont(input, output);
+			calculateContC1(input, output);
 
 		// de output-vector lineair interpoleren
 		Linear smoothing = new Linear();
@@ -153,18 +153,21 @@ public class Bezier3 extends Algorithm {
 	private void calculateNoCont(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
-			int steps = 2 * (int) Math.sqrt(Math.pow((double) Math.abs(input
-					.elementAt(i).X()
-					- input.elementAt(i + 3).X()), 2.0)
+			int steps = (int) (2.5 * (int) Math.sqrt(Math.pow((double) Math
+					.abs(input.elementAt(i).X() - input.elementAt(i + 3).X()),
+					2.0)
 					+ Math.pow((double) Math.abs(input.elementAt(i).Y()
-							- input.elementAt(i + 3).Y()), 2.0));
+							- input.elementAt(i + 3).Y()), 2.0)));
 
 			interpolate(input.elementAt(i), input.elementAt(i + 1), input
 					.elementAt(i + 2), input.elementAt(i + 3), steps, output);
 		}
 	}
 
-	private void calculateCont(Vector<Point> input, Vector<Point> output) {
+	// de raakvector in een punt hangt af van het vorige en volgende
+	// controlepunt
+	// --> gemiddelde van die twee vectoren is de nieuwe raakvector
+	private void calculateContC1(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * (int) Math.sqrt(Math.pow((double) Math.abs(input
@@ -172,8 +175,14 @@ public class Bezier3 extends Algorithm {
 					- input.elementAt(i + 3).X()), 2.0)
 					+ Math.pow((double) Math.abs(input.elementAt(i).Y()
 							- input.elementAt(i + 3).Y()), 2.0));
+			Point temp;
+			if (i > 0)
+				temp = input.elementAt(i).times(2.0).minus(
+						input.elementAt(i - 1));
+			else
+				temp = input.elementAt(i + 1);
 
-			interpolate(input.elementAt(i), input.elementAt(i + 1), input
+			interpolate(input.elementAt(i), temp, input
 					.elementAt(i + 2), input.elementAt(i + 3), steps, output);
 		}
 	}
