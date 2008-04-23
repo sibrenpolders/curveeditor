@@ -14,8 +14,8 @@ public class HermiteCardinal extends Hermite {
 	protected Point hermiteCard( Point a, Point b, Point c, double d, double t ) {
 		double m0 = d * (b.Y() - a.Y());
 		double m1 = d * (c.Y() - b.Y());
-		
-		return hermite(b, c, t, m0, m1);
+		return null;
+		//return hermite(b, c, t, m0, m1);
 	}
 	
 	public void calculateCurve(Curve cv) {
