@@ -12,9 +12,7 @@ public class Curve {
 
 	// identifier
 	protected char type;
-
-	protected short degree; // niet altijd nodig --> kunnen we bvb. in een
-							// interface voorzien, of zo
+	protected short degree;
 
 	public Curve() {
 		type = 0;
@@ -52,6 +50,10 @@ public class Curve {
 		return input.size();
 	}
 
+	public int getNbOutputPoints() {
+		return output.size();
+	}
+
 	public void addOutput(Point o) {
 		this.output.add(o);
 	}
@@ -84,9 +86,5 @@ public class Curve {
 
 	public void setType(char t) {
 		this.type = t;
-	}
-
-	public String toString() {
-		return null;
 	}
 }

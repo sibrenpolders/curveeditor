@@ -5,72 +5,96 @@ import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
+//Lineair --> tussen elk paar punten een lijnstuk tekenen
 public class Linear extends Algorithm {
 
 	public Linear(short degree) {
-		super('L', degree);
+		super('L', (short) 1);
 	}
 
-	private int findYForX(int x, int x0, int y0, int x1, int y1) {
-		return (int) ((double) y0 + (x - (double) x0)
-				* ((y1 - y0) / ((double) x1 - x0)));
+	public Linear() {
+		super('L', (short) 1);
 	}
 
-	private int findXForY(int y, int x0, int y0, int x1, int y1) {
-		return (int) ((double) x0 + (y - (double) y0)
-				* ((x1 - x0) / ((double) y1 - y0)));
-	}
-
-	public void calculateCurve(Curve c) {
-
-		Vector<Point> input = c.getInput();
-		Vector<Point> output = c.getOutput();
+	public void calculate(Vector<Point> input, Vector<Point> output) {
 		output.clear();
 
-		for (int i = 0; i < (c.getNbInputPoints() - 1); ++i) {
-			int diff1 = (input.get(i).X() < input.get(i + 1).X()) ? input.get(
-					i + 1).X()
-					- input.get(i).X() : input.get(i).X()
-					- input.get(i + 1).X();
-			int diff2 = (input.get(i).Y() < input.get(i + 1).Y()) ? input.get(
-					i + 1).Y()
-					- input.get(i).Y() : input.get(i).Y()
-					- input.get(i + 1).Y();
+		for (int i = 0; i < input.size() - 1; ++i)
+			interpolate(input.elementAt(i), input.elementAt(i + 1), output);
+	}
 
-			if (diff1 > diff2) {
-				// eerste controlepunt ligt links van het tweede
-				if (input.get(i).X() < input.get(i + 1).X()) {
-					for (int x = input.get(i).X(); x <= input.get(i + 1).X(); ++x) {
-						output.add(new Point(x, findYForX(x, input.get(i).X(),
-								input.get(i).Y(), input.get(i + 1).X(), input
-										.get(i + 1).Y())));
-					}
-				}
-				// eerste controlepunt ligt rechts van het tweede
-				else {
-					for (int x = input.get(i).X(); x >= input.get(i + 1).X(); --x) {
-						output.add(new Point(x, findYForX(x, input.get(i).X(),
-								input.get(i).Y(), input.get(i + 1).X(), input
-										.get(i + 1).Y())));
-					}
+	// output wordt gevuld met interpolatiepunten tussen start en end
+	public void interpolate(Point start, Point end, Vector<Point> output) {
+		int x0 = start.X();
+		int y0 = start.Y();
+		int x1 = end.X();
+		int y1 = end.Y();
+		boolean vertical = false;
+
+		double dy = 0.0, dx = 0.0, m = 0.0;
+
+		if (x0 < x1) {
+			dy = y1 - y0;
+			dx = x1 - x0;
+			m = dy / dx;
+		} else if (x0 > x1) {
+			dy = y0 - y1;
+			dx = x0 - x1;
+			m = dy / dx;
+		} else
+			vertical = true;
+
+		// voor elke x-waarde, de y-waarde bepalen
+		if (m >= -1 && m <= 1 && !vertical) {
+			double y;
+
+			if (x0 <= x1) {
+				y = y0;
+				for (int x = x0; x <= x1; ++x) {
+					output.add(new Point(x, (int) Math.floor(y + 0.5)));
+					y += m;
 				}
 			} else {
-				if (input.get(i).Y() < input.get(i + 1).Y()) {
-					for (int y = input.get(i).Y(); y <= input.get(i + 1).Y(); ++y) {
-						output.add(new Point(findXForY(y, input.get(i).X(),
-								input.get(i).Y(), input.get(i + 1).X(), input
-										.get(i + 1).Y()), y));
-					}
-				} else {
-					for (int y = input.get(i).Y(); y >= input.get(i + 1).Y(); --y) {
-						output.add(new Point(findXForY(y, input.get(i).X(),
-								input.get(i).Y(), input.get(i + 1).X(), input
-										.get(i + 1).Y()), y));
-					}
+				y = y1;
+				for (int x = x1; x <= x0; ++x) {
+					output.add(new Point(x, (int) Math.floor(y + 0.5)));
+					y += m;
 				}
 			}
 		}
-		
-		new BezierSmoothing3(150).smoothCurve(c, 0.5, BezierSmoothing3.MODE.INPUT);
+
+		// voor elke y-waarde, de x-waarde bepalen
+		else if (!vertical) {
+			double x, m2 = dx / dy;
+
+			if (y0 <= y1) {
+				x = x0;
+				for (int y = y0; y <= y1; ++y) {
+					output.add((new Point((int) Math.floor(x + 0.5), y)));
+					x += m2;
+				}
+			} else {
+				x = x1;
+				for (int y = y1; y <= y0; ++y) {
+					output.add(new Point((int) Math.floor(x + 0.5), y));
+					x += m2;
+				}
+
+			}
+		}
+
+		// verticale (m kan dan niet berekend worden)
+		else {
+			if (y0 <= y1) {
+				for (int y = y0; y <= y1; ++y) {
+					output.add(new Point(x0, y));
+				}
+			} else {
+				for (int y = y1; y <= y0; ++y) {
+					output.add(new Point(x0, y));
+				}
+
+			}
+		}
 	}
 }

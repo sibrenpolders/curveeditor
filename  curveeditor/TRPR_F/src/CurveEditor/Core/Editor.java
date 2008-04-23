@@ -84,7 +84,7 @@ public class Editor {
 			selectedCurves.get(i).setType(type);
 			selectedCurves.get(i).setDegree(degree);
 			selectedCurves.get(i).clearOutput();
-			currentAlgorithm.calculateCurve(selectedCurves.get(i));
+			currentAlgorithm.calculate(selectedCurves.get(i));
 		}
 	}
 

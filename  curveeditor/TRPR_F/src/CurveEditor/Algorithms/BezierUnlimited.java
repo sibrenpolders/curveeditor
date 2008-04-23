@@ -42,7 +42,7 @@ public class BezierUnlimited extends Algorithm {
 		return temp.get(0);
 	}
 
-	public void calculateCurve(Curve c) {
+	public void calculate(Curve c) {
 		Vector<Point> input = c.getInput();
 		Vector<Point> output = c.getOutput();
 		output.clear();
@@ -53,5 +53,11 @@ public class BezierUnlimited extends Algorithm {
 		}
 
 		(new BezierSmoothing3(100)).smoothCurve(c, 0.33, BezierSmoothing3.MODE.OUTPUT);
+	}
+
+	@Override
+	public void calculate(Vector<Point> input, Vector<Point> output) {
+		// TODO Auto-generated method stub
+		
 	}
 }
