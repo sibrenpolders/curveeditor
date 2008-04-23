@@ -46,4 +46,17 @@ public class Point {
 	public int hashCode() {
 		return toString().hashCode();
 	}
+
+	public Point minus(Point other) {
+		return new Point(X - other.X, Y - other.Y);
+	}
+
+	public Point plus(Point other) {
+		return new Point(X + other.X, Y + other.Y);
+	}
+
+	public Point times(double d) {
+		return new Point((int) Math.floor(X * d + 0.5), (int) Math.floor(Y * d
+				+ 0.5));
+	}
 }
