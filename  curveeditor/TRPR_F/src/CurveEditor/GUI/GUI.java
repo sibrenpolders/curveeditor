@@ -3,32 +3,20 @@ package CurveEditor.GUI;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
-import java.util.Vector;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -38,9 +26,9 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	protected DrawArea draw;
 	private Menu menu;
 	private Listener listener;
-	
+
 	public GUI() {
-		super();		
+		super();
 		JFrame frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -48,30 +36,30 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
-		listener = new Listener( );
-		menu = new Menu( listener );
+		listener = new Listener();
+		menu = new Menu(listener);
 		menu.setVisible(true);
-		contentPane.add( menu );
-		
-		JPanel screen = new JPanel();
-		screen.setLayout( new BoxLayout( screen, BoxLayout.X_AXIS ) );
+		contentPane.add(menu);
 
-		screen.add( Box.createRigidArea( new Dimension( 10, 0 )));
-		
-		choice = new ChoiceArea( listener );
-		screen.add( choice );
-		
+		JPanel screen = new JPanel();
+		screen.setLayout(new BoxLayout(screen, BoxLayout.X_AXIS));
+
+		screen.add(Box.createRigidArea(new Dimension(10, 0)));
+
+		choice = new ChoiceArea(listener);
+		screen.add(choice);
+
 		draw = new DrawArea(this.curves, this.selectedCurves);
-		draw.addMouseListener(this);		
-		screen.add(draw);			
-		
-		screen.add( Box.createRigidArea( new Dimension( 10, 0 )));
-		screen.add( Box.createHorizontalGlue() );
-		
-		contentPane.add( screen );
-		
+		draw.addMouseListener(this);
+		screen.add(draw);
+
+		screen.add(Box.createRigidArea(new Dimension(10, 0)));
+		screen.add(Box.createHorizontalGlue());
+
+		contentPane.add(screen);
+
 		frame.pack();
-		frame.setVisible(true);		
+		frame.setVisible(true);
 		testMethod();
 	}
 
@@ -85,10 +73,10 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
-		listener = new Listener( );
-		menu = new Menu( listener );
-		contentPane.add( menu );
-		
+		listener = new Listener();
+		menu = new Menu(listener);
+		contentPane.add(menu);
+
 		draw = new DrawArea(this.curves, this.selectedCurves);
 		draw.addMouseListener(this);
 		contentPane.add(draw);
@@ -98,16 +86,16 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	}
 
 	public void testMethod() {
-		setCurrentAlgorithm('B', (short)0);
+		setCurrentAlgorithm('B', (short) 3);
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
 		selectedCurves.get(0).addInput(new Point(0, 0));
 		selectedCurves.get(0).addInput(new Point(50, 50));
 		selectedCurves.get(0).addInput(new Point(50, 120));
 		selectedCurves.get(0).addInput(new Point(100, 50));
-		
+
 		getAlgorithm(selectedCurves.get(0).getType(),
-				selectedCurves.get(0).getDegree()).calculateCurve(
+				selectedCurves.get(0).getDegree()).calculate(
 				selectedCurves.get(0));
 
 		draw.repaint();
@@ -133,12 +121,15 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				Curve c = selectedCurves.get(i);
 				c.addInput(new Point(e.getX(), e.getY()));
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
-				// telkens de tangens. Dus er moet niet getekend worden voordat deze is ingegeven
-				if ( c.getType() != 'H' || c.getInput().size() % 2 == 0 )
-					currentAlgorithm.calculateCurve( selectedCurves.get(i) );
-//					this.getAlgorithm(selectedCurves.get(i).getType(),
-//							selectedCurves.get(i).getDegree()).calculateCurve(
-//									selectedCurves.get(i));
+				// telkens de tangens. Dus er moet niet getekend worden voordat
+				// deze is ingegeven
+				if (c.getType() != 'H' || c.getInput().size() % 2 == 0)
+
+					currentAlgorithm.calculate(selectedCurves.get(i));
+				// this.getAlgorithm(selectedCurves.get(i).getType(),
+				// selectedCurves.get(i).getDegree()).calculateCurve(
+				// selectedCurves.get(i));
+
 			}
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE) {
@@ -168,85 +159,87 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		
+
 	}
-	
-	private void open( ) {
+
+	private void open() {
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"CurveEditor files (*.xml)", "xml");
-		
-		jfc.setFileFilter(filter);
-		if( JFileChooser.APPROVE_OPTION == jfc.showOpenDialog( draw ) )
-				file.load( jfc.getSelectedFile().getAbsolutePath(), curves );
-}
 
-	private void save( ) {
-		// checken of er reeds een bestandsnaam gekent is waarnaar opgeslagen moet worden.
+		jfc.setFileFilter(filter);
+		if (JFileChooser.APPROVE_OPTION == jfc.showOpenDialog(draw))
+			file.load(jfc.getSelectedFile().getAbsolutePath(), curves);
+	}
+
+	private void save() {
+		// checken of er reeds een bestandsnaam gekent is waarnaar opgeslagen
+		// moet worden.
 		String fileName = file.getCurrentFilename();
-		
-		if ( null == fileName )
+
+		if (null == fileName)
 			saveAs();
 		else
-			file.save( fileName, curves );
+			file.save(fileName, curves);
 	}
 
-	private void saveAs( ) {
+	private void saveAs() {
 		JFileChooser jfc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter( "CurveEditor files (*.xml)", "xml" );
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"CurveEditor files (*.xml)", "xml");
 		jfc.setFileFilter(filter);
-		if( JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw) )
-			file.save( jfc.getSelectedFile().getAbsolutePath(), curves );
+		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw))
+			file.save(jfc.getSelectedFile().getAbsolutePath(), curves);
 	}
-	
+
 	private void newFile() {
-		reset( );
-		draw.reset(curves, selectedCurves);	
+		reset();
+		draw.reset(curves, selectedCurves);
 	}
-	
+
 	private class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String actionCommand = e.getActionCommand();
-						
-			System.out.println( e );
-			if ( actionCommand.equals( "Bezier" ))
+
+			System.out.println(e);
+			if (actionCommand.equals("Bezier"))
 				currentAlgorithm = getAlgorithm('B', (short) 3);
-			else if ( actionCommand.equals( "Hermite" ))
+			else if (actionCommand.equals("Hermite"))
 				currentAlgorithm = getAlgorithm('H', (short) 1);
-			else if ( actionCommand.equals( "comboBoxChanged" )) {
-				String item = (String)((JComboBox) e.getSource()).getSelectedItem();
-				
-				if ( item.equals( "Bezier normal" ) )
+			else if (actionCommand.equals("comboBoxChanged")) {
+				String item = (String) ((JComboBox) e.getSource())
+						.getSelectedItem();
+
+				if (item.equals("Bezier normal"))
 					currentAlgorithm = getAlgorithm('B', (short) 3);
-				else if ( item.equals( "Unlimited 3" ) )
-					currentAlgorithm = getAlgorithm( 'B', (short) 0);
-				else if ( item.equals( "Hermite normal" ))
-					currentAlgorithm = getAlgorithm( 'H', (short) 1);
-				else if ( item.equals( "Cardinal" ))
-					currentAlgorithm = getAlgorithm( 'C', (short) 1);
-				else if ( item.equals( "Catmull Rom" ))
-					currentAlgorithm = getAlgorithm( 'R', (short) 1);
-			}
-			else	if ( actionCommand.equals("Open") )
+				else if (item.equals("Unlimited 3"))
+					currentAlgorithm = getAlgorithm('B', (short) 0);
+				else if (item.equals("Hermite normal"))
+					currentAlgorithm = getAlgorithm('H', (short) 1);
+				else if (item.equals("Cardinal"))
+					currentAlgorithm = getAlgorithm('C', (short) 1);
+				else if (item.equals("Catmull Rom"))
+					currentAlgorithm = getAlgorithm('R', (short) 1);
+			} else if (actionCommand.equals("Open"))
 				open();
-			else if ( actionCommand.equals( "Save") )
+			else if (actionCommand.equals("Save"))
 				save();
-			else if ( actionCommand.equals("Save As ...") )
+			else if (actionCommand.equals("Save As ..."))
 				saveAs();
-			else if ( actionCommand.equals( "New" ))
+			else if (actionCommand.equals("New"))
 				newFile();
-			
+
 			for (int i = 0; i < selectedCurves.size(); ++i) {
 				Curve c = selectedCurves.get(i);
-				c.setType( currentAlgorithm.getType() );
+				c.setType(currentAlgorithm.getType());
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
-				// telkens de tangens. Dus er moet niet getekend worden voordat deze is ingegeven
-				if ( c.getType() != 'H' || c.getInput().size() % 2 == 0 )
-					currentAlgorithm.calculateCurve(
-									selectedCurves.get(i));
+				// telkens de tangens. Dus er moet niet getekend worden voordat
+				// deze is ingegeven
+				if (c.getType() != 'H' || c.getInput().size() % 2 == 0)
+					currentAlgorithm.calculate(selectedCurves.get(i));
 			}
-			draw.emptyField( );			
-			draw.repaint();							
+			draw.emptyField();
+			draw.repaint();
 		}
 	}
 }

@@ -1,8 +1,6 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
-
-import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 //Lineair --> tussen elk paar punten een lijnstuk tekenen
