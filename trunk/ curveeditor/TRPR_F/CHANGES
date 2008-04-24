@@ -23,3 +23,13 @@ nu maar moet doen voor die gemiddeld 100 t-waarden te bekomen. Matrixvermenigvul
 
 Vanavond me ook bezig gehouden met G1 en C1 continu maken van Beziercurves. 
 Maar 't is nog niet geheel juist, morgen wa verder zien.
+
+----------------
+Net ff de klasse DrawArea omgegooid. Deze code laat meer keuzeinstellingen van de gebruiker toe e.d.
+En jawel, double buffering wordt bij een JPanel standaard gebruikt. Kijk maar 's op de API.
+
+Wil je mss wel nog 's kijken naar uwe Hermite ? 'k Krijg rare dingen en heb niks aan uw klasse veranderd... .
+Ik kan toch maar uittekenen wat ik kan uittekenen hé.
+
+Mijn C1-continuiteit ziet er netjes uit vinnek, staat nu standaard enabled. Kundet direct zien.
+G1 geeft soms bizarre dingen... zeer vreemd want C1 is eigenlijk gewoon een fijnere vorm van G1.
