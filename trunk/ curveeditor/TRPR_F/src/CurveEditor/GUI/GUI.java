@@ -20,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
+import CurveEditor.Algorithms.*;
 
 public class GUI extends Editor implements MenuListener, MouseListener {
 	protected ChoiceArea choice;
@@ -90,9 +91,6 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
 		selectedCurves.get(0).addInput(new Point(0, 0));
-		selectedCurves.get(0).addInput(new Point(50, 50));
-		selectedCurves.get(0).addInput(new Point(50, 120));
-		selectedCurves.get(0).addInput(new Point(100, 50));
 
 		getAlgorithm(selectedCurves.get(0).getType(),
 				selectedCurves.get(0).getDegree()).calculate(
@@ -233,15 +231,11 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				Curve c = selectedCurves.get(i);
 				c.setType(currentAlgorithm.getType());
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
-				// telkens de tangens. Dus er moet niet getekend worden voordat deze is ingegeven
-				if ( c.getType() != 'H' || c.getInput().size() % 2 == 0 )
-				{
+				// telkens de tangens. Dus er moet niet getekend worden voordat
+				// deze is ingegeven
 					c.clearOutput();
-					currentAlgorithm.calculateCurveComplete (
-									selectedCurves.get(i));
-				}
+					currentAlgorithm.calculateComplete(selectedCurves.get(i));
 			}
-			draw.emptyField();
 			draw.repaint();
 		}
 	}

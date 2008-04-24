@@ -51,13 +51,17 @@ public class BezierUnlimited extends Algorithm {
 			float t = (float) (j / (steps - 1.0));
 			output.add(bezier(input, t));
 		}
-
-		(new BezierSmoothing3(100)).smoothCurve(c, 0.33, BezierSmoothing3.MODE.OUTPUT);
 	}
 
 	@Override
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void calculateComplete(Curve c) {
+		calculate(c);
 		
 	}
 }

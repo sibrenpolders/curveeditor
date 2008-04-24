@@ -33,6 +33,8 @@ public abstract class Algorithm {
 	public void calculate(Curve c) {
 		calculate(c.getInput(), c.getOutput());
 	}
+	
+	public abstract void calculateComplete(Curve c);
 
 	public abstract void calculate(Vector<Point> input, Vector<Point> output);
 }
