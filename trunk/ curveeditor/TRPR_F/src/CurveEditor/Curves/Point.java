@@ -14,6 +14,11 @@ public class Point {
 		this.Y = Y;
 	}
 
+	public static int distance(Point a, Point b) {
+		return (int) Math.sqrt(Math.pow((double) Math.abs(a.X() - b.X()), 2.0)
+				+ Math.pow((double) Math.abs(a.Y() - b.Y()), 2.0));
+	}
+
 	public int X() {
 		return X;
 	}
