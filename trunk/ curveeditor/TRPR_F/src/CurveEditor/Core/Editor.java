@@ -17,6 +17,8 @@ public class Editor {
 	protected Vector<Tool> tools;
 	protected Vector<Curve> curves;
 	protected Vector<Curve> selectedCurves;
+	protected Vector<Curve> hooveredCurves;
+	protected Vector<Point> selectedPoints;
 	protected Algorithm currentAlgorithm;
 	protected Tool currentTool;
 	protected FileIO file;
@@ -39,6 +41,8 @@ public class Editor {
 		tools = new Vector<Tool>();
 		curves = new Vector<Curve>();
 		selectedCurves = new Vector<Curve>();
+		hooveredCurves = new Vector<Curve>();
+		selectedPoints = new Vector<Point>();
 
 		algorithms.add(new Linear((short) 1));
 		algorithms.add(new Bezier3((short) 3));
