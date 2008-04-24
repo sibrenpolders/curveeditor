@@ -4,10 +4,10 @@ import java.util.Vector;
 import CurveEditor.Curves.Point;
 
 public class Bezier3 extends Algorithm {
-
 	private double[][] matrix;
 	private double[][] controlPtsMatrix;
 	private double[] parameterMatrix;
+	boolean G1Continuity = true;
 	boolean C1Continuity = true;
 
 	// orde = 3 --> per 4 controlepunten de dingen berekenen dus
@@ -23,6 +23,11 @@ public class Bezier3 extends Algorithm {
 
 	public void toggleC1Continuity() {
 		C1Continuity = !C1Continuity;
+		G1Continuity = C1Continuity;
+	}
+
+	public void toggleG1Continuity() {
+		G1Continuity = !G1Continuity;
 	}
 
 	private void createMatrix() {
@@ -131,10 +136,14 @@ public class Bezier3 extends Algorithm {
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		output.clear();
 
-		if (!C1Continuity)
-			calculateNoCont(input, output);
-		else
-			calculateContC1(input, output);
+//		if (C1Continuity)
+//			calculateContC1_(input, output);
+//		else if (G1Continuity)
+//			calculateContG1(input, output);
+//		else
+//			calculateNoCont(input, output);
+		
+		calculateContG1(input, output);
 
 		// de output-vector lineair interpoleren
 		Linear smoothing = new Linear();
@@ -161,9 +170,8 @@ public class Bezier3 extends Algorithm {
 		}
 	}
 
-	// de raakvector in een punt hangt af van het vorige en volgende
-	// controlepunt
-	// --> gemiddelde van die twee vectoren is de nieuwe raakvector
+	// de raakvector in het eerste controlepunt wordt berekend uit het vorige
+	// vier-tal controlepunten
 	private void calculateContC1(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
@@ -179,8 +187,124 @@ public class Bezier3 extends Algorithm {
 			else
 				temp = input.elementAt(i + 1);
 
-			interpolate(input.elementAt(i), temp, input
-					.elementAt(i + 2), input.elementAt(i + 3), steps, output);
+			interpolate(input.elementAt(i), temp, input.elementAt(i + 2), input
+					.elementAt(i + 3), steps, output);
 		}
+	}
+
+	private void calculateContG1(Vector<Point> input, Vector<Point> output) {
+		for (int i = 0; i <= input.size() - 4; i = i + 3) {
+			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
+			int steps = 2 * (int) Math.sqrt(Math.pow((double) Math.abs(input
+					.elementAt(i).X()
+					- input.elementAt(i + 3).X()), 2.0)
+					+ Math.pow((double) Math.abs(input.elementAt(i).Y()
+							- input.elementAt(i + 3).Y()), 2.0));
+
+			Point first;
+
+			if (i > 0)
+				first = firstCtlPointForG1(input.elementAt(i - 1), input
+						.elementAt(i), input.elementAt(i + 1));
+			else
+				first = input.elementAt(i + 1);
+
+			Point second;
+
+			if (i <= input.size() - 7)
+				second = secondCtlPointForG1(input.elementAt(i + 2), input
+						.elementAt(i + 3), input.elementAt(i + 4));
+			else
+				second = input.elementAt(i + 2);
+
+			interpolate(input.elementAt(i), first, second, input
+					.elementAt(i + 3), steps, output);
+		}
+	}
+
+	private void calculateContC1_(Vector<Point> input, Vector<Point> output) {
+		for (int i = 0; i <= input.size() - 4; i = i + 3) {
+			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
+			int steps = 2 * (int) Math.sqrt(Math.pow((double) Math.abs(input
+					.elementAt(i).X()
+					- input.elementAt(i + 3).X()), 2.0)
+					+ Math.pow((double) Math.abs(input.elementAt(i).Y()
+							- input.elementAt(i + 3).Y()), 2.0));
+
+			Point first;
+
+			if (i > 0)
+				first = firstCtlPointForC1(input.elementAt(i - 1), input
+						.elementAt(i), input.elementAt(i + 1));
+			else
+				first = input.elementAt(i + 1);
+
+			Point second;
+
+			if (i <= input.size() - 7)
+				second = secondCtlPointForC1(input.elementAt(i + 2), input
+						.elementAt(i + 3), input.elementAt(i + 4));
+			else
+				second = input.elementAt(i + 2);
+
+			interpolate(input.elementAt(i), first, second, input
+					.elementAt(i + 3), steps, output);
+		}
+	}
+
+	private Point secondCtlPointForG1(Point a, Point b, Point c) {
+		Point temp = c.minus(a);
+		double rico = temp.Y() / temp.X();
+
+		double d1 = b.X() - a.X();
+
+		int x = (int) Math.floor(-d1);
+		int y = (int) Math.floor(-rico * d1);
+
+		temp = new Point(x, y).plus(b);
+
+		return temp;
+	}
+
+	private Point firstCtlPointForG1(Point a, Point b, Point c) {
+		Point temp = c.minus(a);
+		double rico = temp.Y() / temp.X();
+
+		double d2 = c.X() - b.X();
+
+		int x = (int) Math.floor(d2);
+		int y = (int) Math.floor(rico * d2);
+
+		temp = new Point(x, y).plus(b);
+
+		return temp;
+	}
+
+	private Point secondCtlPointForC1(Point a, Point b, Point c) {
+		Point temp = c.minus(a);
+		double rico = temp.Y() / temp.X();
+
+		double d1 = (c.X() - a.X()) / 2;
+
+		int x = (int) Math.floor(-d1);
+		int y = (int) Math.floor(-rico * d1);
+
+		temp = new Point(x, y).plus(b);
+
+		return temp;
+	}
+
+	private Point firstCtlPointForC1(Point a, Point b, Point c) {
+		Point temp = c.minus(a);
+		double rico = temp.Y() / temp.X();
+
+		double d2 = (c.X() - a.X()) / 2;
+
+		int x = (int) Math.floor(d2);
+		int y = (int) Math.floor(rico * d2);
+
+		temp = new Point(x, y).plus(b);
+
+		return temp;
 	}
 }

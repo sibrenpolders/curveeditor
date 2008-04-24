@@ -9,3 +9,17 @@ Ik had nog rap de wissel goed gezet van bezier naar hermite en visa versa. Maar 
 btw met matrices werken is ruimte verspilling! Die matrices dienen eigenlijk alleen om het wiskundige makkelijk te 
 kunnen berekenen. Maar zo'n vaste formule kunt ge beter in 1 regel zetten. Er is geen nood aan een matrices in het
 algoritme. De code zal zonder ook een stuk korter worden...
+
+
+-----------------
+
+Ik heb bij algorithm een extra abstracte functie gezet, mss dat je die nog erbij moet zetten ?
+Anders geeft die fout als je 'm niet implementeert hé.
+Maar voor de rest heb 'k niets veranderd wat je code corrupt zou kunnen maken.
+
+Ik hou nu een matrix bij om met die voorwaartse differentie te kunnen werken. 
+Die, pakt 20, vermenigvuldigingen om die differentieoperators te initialiseren zijn peanuts met die paar optellingen die ik 
+nu maar moet doen voor die gemiddeld 100 t-waarden te bekomen. Matrixvermenigvuldiging is veel overhead ja, maar dat doe ik dan ook niet.
+
+Vanavond me ook bezig gehouden met G1 en C1 continu maken van Beziercurves. 
+Maar 't is nog niet geheel juist, morgen wa verder zien.
