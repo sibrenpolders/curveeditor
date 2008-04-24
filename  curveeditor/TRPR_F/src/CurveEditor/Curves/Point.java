@@ -18,6 +18,10 @@ public class Point {
 		return X;
 	}
 
+	public int length() {
+		return (int) Math.sqrt((double) X * X + Y * Y);
+	}
+
 	public void setX(int X) {
 		this.X = X;
 	}

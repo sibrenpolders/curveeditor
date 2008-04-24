@@ -1,6 +1,8 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
+
+import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class Bezier3 extends Algorithm {
@@ -136,14 +138,14 @@ public class Bezier3 extends Algorithm {
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		output.clear();
 
-//		if (C1Continuity)
-//			calculateContC1_(input, output);
-//		else if (G1Continuity)
-//			calculateContG1(input, output);
-//		else
-//			calculateNoCont(input, output);
-		
-		calculateContG1(input, output);
+		// if (C1Continuity)
+		// calculateContC1_(input, output);
+		// else if (G1Continuity)
+		// calculateContG1(input, output);
+		// else
+		// calculateNoCont(input, output);
+
+		calculateContC1_(input, output);
 
 		// de output-vector lineair interpoleren
 		Linear smoothing = new Linear();
@@ -253,58 +255,356 @@ public class Bezier3 extends Algorithm {
 	}
 
 	private Point secondCtlPointForG1(Point a, Point b, Point c) {
-		Point temp = c.minus(a);
-		double rico = temp.Y() / temp.X();
+		if (a.X() < b.X() && c.X() > b.X()) {
+			Point temp = c.minus(a);
+			double rico = temp.Y() / temp.X();
 
-		double d1 = b.X() - a.X();
+			double d1 = b.X() - a.X();
 
-		int x = (int) Math.floor(-d1);
-		int y = (int) Math.floor(-rico * d1);
+			int x = (int) Math.floor(-d1);
+			int y = (int) Math.floor(-rico * d1 + 0.5);
 
-		temp = new Point(x, y).plus(b);
+			temp = new Point(x, y).plus(b);
 
-		return temp;
+			return temp;
+		} else if (a.X() > b.X() && c.X() < b.X()) {
+			Point temp = a.minus(c);
+			double rico = temp.Y() / temp.X();
+
+			double d1 = a.X() - b.X();
+
+			int x = (int) Math.floor(d1);
+			int y = (int) Math.floor(rico * d1 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() > b.Y() && c.Y() < b.Y()) {
+			Point temp = a.minus(c);
+			double ricoInv = temp.X() / temp.Y();
+
+			double d1 = a.Y() - b.Y();
+
+			int y = (int) Math.floor(d1);
+			int x = (int) Math.floor(ricoInv * d1 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() < b.Y() && c.Y() > b.Y()) {
+			Point temp = c.minus(a);
+			double ricoInv = temp.X() / temp.Y();
+
+			double d1 = b.Y() - a.Y();
+
+			int y = (int) Math.floor(-d1);
+			int x = (int) Math.floor(-ricoInv * d1 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else {
+			if (a.Y() > c.Y() && a.Y() <= b.Y()) {
+				Point temp = a.minus(c);
+				double factor = (b.Y() - a.Y()) / (b.Y() - c.Y());
+
+				int y = (int) Math.floor(temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (a.Y() > c.Y() && c.Y() >= b.Y()) {
+				Point temp = a.minus(c);
+				double factor = 1.0 - (c.Y() - b.Y()) / (a.Y() - b.Y());
+
+				int y = (int) Math.floor(temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && a.Y() >= b.Y()) {
+				Point temp = c.minus(a);
+				double factor = (a.Y() - b.Y()) / (c.Y() - b.Y());
+
+				int y = (int) Math.floor(-temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(-temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && c.Y() <= b.Y()) {
+				Point temp = c.minus(a);
+				double factor = 1.0 - (b.Y() - c.Y()) / (b.Y() - c.Y());
+
+				int y = (int) Math.floor(-temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(-temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			}
+		}
+		return c;
 	}
 
 	private Point firstCtlPointForG1(Point a, Point b, Point c) {
-		Point temp = c.minus(a);
-		double rico = temp.Y() / temp.X();
+		if (a.X() < b.X() && c.X() > b.X()) {
+			Point temp = c.minus(a);
+			double rico = temp.Y() / temp.X();
 
-		double d2 = c.X() - b.X();
+			double d1 = c.X() - b.X();
 
-		int x = (int) Math.floor(d2);
-		int y = (int) Math.floor(rico * d2);
+			int x = (int) Math.floor(d1);
+			int y = (int) Math.floor(rico * d1 + 0.5);
 
-		temp = new Point(x, y).plus(b);
+			temp = new Point(x, y).plus(b);
 
-		return temp;
+			return temp;
+		} else if (a.X() > b.X() && c.X() < b.X()) {
+			Point temp = a.minus(c);
+			double rico = temp.Y() / temp.X();
+
+			double d1 = b.X() - c.X();
+
+			int x = (int) Math.floor(-d1);
+			int y = (int) Math.floor(-rico * d1 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() > b.Y() && c.Y() < b.Y()) {
+			Point temp = a.minus(c);
+			double ricoInv = temp.X() / temp.Y();
+
+			double d1 = b.Y() - c.Y();
+
+			int y = (int) Math.floor(-d1);
+			int x = (int) Math.floor(-ricoInv * d1 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() < b.Y() && c.Y() > b.Y()) {
+			Point temp = c.minus(a);
+			double ricoInv = temp.X() / temp.Y();
+
+			double d1 = c.Y() - b.Y();
+
+			int y = (int) Math.floor(d1);
+			int x = (int) Math.floor(ricoInv * d1 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else {
+			if (a.Y() > c.Y() && a.Y() <= b.Y()) {
+				Point temp = a.minus(c);
+				double factor = 1.0 - (b.Y() - a.Y()) / (b.Y() - c.Y());
+
+				int y = (int) Math.floor(-temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(-temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (a.Y() > c.Y() && c.Y() >= b.Y()) {
+				Point temp = a.minus(c);
+				double factor = (c.Y() - b.Y()) / (a.Y() - b.Y());
+
+				int y = (int) Math.floor(-temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(-temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && a.Y() >= b.Y()) {
+				Point temp = c.minus(a);
+				double factor = 1.0 - (a.Y() - b.Y()) / (c.Y() - b.Y());
+
+				int y = (int) Math.floor(temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && c.Y() <= b.Y()) {
+				Point temp = c.minus(a);
+				double factor = (b.Y() - c.Y()) / (b.Y() - c.Y());
+
+				int y = (int) Math.floor(temp.Y() * factor + 0.5);
+				int x = (int) Math.floor(temp.X() * factor + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			}
+		}
+		return c;
 	}
 
 	private Point secondCtlPointForC1(Point a, Point b, Point c) {
-		Point temp = c.minus(a);
-		double rico = temp.Y() / temp.X();
+		if (a.X() < b.X() && c.X() > b.X()) {
+			Point temp = c.minus(a);
 
-		double d1 = (c.X() - a.X()) / 2;
+			int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
 
-		int x = (int) Math.floor(-d1);
-		int y = (int) Math.floor(-rico * d1);
+			temp = new Point(x, y).plus(b);
 
-		temp = new Point(x, y).plus(b);
+			return temp;
+		} else if (a.X() > b.X() && c.X() < b.X()) {
+			Point temp = a.minus(c);
 
-		return temp;
+			int x = (int) Math.floor(temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() > b.Y() && c.Y() < b.Y()) {
+			Point temp = a.minus(c);
+
+			int x = (int) Math.floor(temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() < b.Y() && c.Y() > b.Y()) {
+			Point temp = c.minus(a);
+
+			int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else {
+			if (a.Y() > c.Y() && a.Y() <= b.Y()) {
+				Point temp = a.minus(c);
+
+				int x = (int) Math.floor(temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (a.Y() > c.Y() && c.Y() >= b.Y()) {
+				Point temp = a.minus(c);
+
+				int x = (int) Math.floor(temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && a.Y() >= b.Y()) {
+				Point temp = c.minus(a);
+
+				int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && c.Y() <= b.Y()) {
+				Point temp = c.minus(a);
+
+				int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			}
+		}
+		return c;
 	}
 
 	private Point firstCtlPointForC1(Point a, Point b, Point c) {
-		Point temp = c.minus(a);
-		double rico = temp.Y() / temp.X();
+		if (a.X() < b.X() && c.X() > b.X()) {
+			Point temp = c.minus(a);
 
-		double d2 = (c.X() - a.X()) / 2;
+			int x = (int) Math.floor(temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(temp.Y() / 2 + 0.5);
 
-		int x = (int) Math.floor(d2);
-		int y = (int) Math.floor(rico * d2);
+			temp = new Point(x, y).plus(b);
 
-		temp = new Point(x, y).plus(b);
+			return temp;
+		} else if (a.X() > b.X() && c.X() < b.X()) {
+			Point temp = a.minus(c);
 
-		return temp;
+			int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() > b.Y() && c.Y() < b.Y()) {
+			Point temp = a.minus(c);
+
+			int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else if (a.Y() < b.Y() && c.Y() > b.Y()) {
+			Point temp = c.minus(a);
+
+			int x = (int) Math.floor(temp.X() / 2 + 0.5);
+			int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+			temp = new Point(x, y).plus(b);
+
+			return temp;
+		} else {
+			if (a.Y() > c.Y() && a.Y() <= b.Y()) {
+				Point temp = a.minus(c);
+
+				int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (a.Y() > c.Y() && c.Y() >= b.Y()) {
+				Point temp = a.minus(c);
+
+				int x = (int) Math.floor(-temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(-temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && a.Y() >= b.Y()) {
+				Point temp = c.minus(a);
+
+				int x = (int) Math.floor(temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			} else if (c.Y() > a.Y() && c.Y() <= b.Y()) {
+				Point temp = c.minus(a);
+
+				int x = (int) Math.floor(temp.X() / 2 + 0.5);
+				int y = (int) Math.floor(temp.Y() / 2 + 0.5);
+
+				temp = new Point(x, y).plus(b);
+
+				return temp;
+			}
+		}
+		return c;
+	}
+
+	@Override
+	public void calculateComplete(Curve c) {
+		calculate(c);
+
 	}
 }

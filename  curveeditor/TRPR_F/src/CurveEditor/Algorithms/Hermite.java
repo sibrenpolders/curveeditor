@@ -10,7 +10,7 @@ public class Hermite extends Algorithm {
 
 	public Hermite(char type, short degree) {
 		super(type, degree);
-		steps = 10000;
+		steps = 1000;
 	}
 
 	protected Point hermite(Point p1, Point r1, Point p2, Point r2, float t) {
@@ -62,5 +62,35 @@ public class Hermite extends Algorithm {
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void calculateComplete(Curve cv) {
+		Vector<Point> vip = cv.getInput();
+		Vector<Point> vop = cv.getOutput();
+		float t;
+
+		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
+		int size = vip.size();
+		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
+		// uitvoeren
+		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
+		// interpolleren
+		// en Ri, Rj de tangens zijn van de kromme in respectievelijk Pi, Pj
+		for(int i =0; i < size - 4; ++i) {
+			// enkel de interpolatie tussen het laatste en het voorlaatste punt
+			// moet berekend worden
+			Point a = vip.get(i );
+			Point b = vip.get(i + 1);
+			Point c = vip.get(i + 2);
+			Point d = vip.get(i + 3);
+			Point r1 = new Point(b.X() - a.X(), b.Y() - a.Y());
+			Point r2 = new Point(d.X() - c.X(), d.Y() - c.Y());
+			for (int j = 0; j < steps; ++j) {
+				t = (float) (j / (steps - 1.0));
+				vop.add(hermite(a, r1, c, r2, t));
+			}
+		}
+		
 	}
 }
