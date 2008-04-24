@@ -10,7 +10,7 @@ public class Bezier3 extends Algorithm {
 	private double[][] controlPtsMatrix;
 	private double[] parameterMatrix;
 	boolean G1Continuity = true;
-	boolean C1Continuity = false;
+	boolean C1Continuity = true;
 
 	// orde = 3 --> per 4 controlepunten de dingen berekenen dus
 	public Bezier3(short degree) {

@@ -20,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
-import CurveEditor.Algorithms.*;
 
 public class GUI extends Editor implements MenuListener, MouseListener {
 	protected ChoiceArea choice;
@@ -50,7 +49,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		choice = new ChoiceArea(listener);
 		screen.add(choice);
 
-		draw = new DrawArea(this.curves, this.selectedCurves);
+		draw = new DrawArea(this.curves, this.selectedCurves, this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
 		screen.add(draw);
 
@@ -78,7 +77,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		menu = new Menu(listener);
 		contentPane.add(menu);
 
-		draw = new DrawArea(this.curves, this.selectedCurves);
+		draw = new DrawArea(this.curves, this.selectedCurves, this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
 		contentPane.add(draw);
 
@@ -192,7 +191,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 	private void newFile() {
 		reset();
-		draw.reset(curves, selectedCurves);
+		draw.reset(curves, selectedCurves, hooveredCurves, selectedPoints, true, true, true);
 	}
 
 	private class Listener implements ActionListener {
