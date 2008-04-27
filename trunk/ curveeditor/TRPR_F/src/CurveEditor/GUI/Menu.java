@@ -1,24 +1,32 @@
 package CurveEditor.GUI;
 
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
 
 public class Menu extends JMenuBar {
 	private static final long serialVersionUID = -2717014108067514961L;
 	private JMenu menu;
 	private JMenuItem menuItem;
+	private ButtonGroup group;
 	private ActionListener listener;
-	
+
 	public Menu( ActionListener listener ) {
 		this.listener = listener;
 		CreateMenuBar();
@@ -60,16 +68,10 @@ public class Menu extends JMenuBar {
 		CreateMenu( "FILE", KeyEvent.VK_F, "" );		
 		CreateMenuItem( "New", KeyEvent.VK_N, "Create a new file", "src/CurveEditor/GUI/icons/filenew.png" );
 		menuItem.addActionListener( listener );
-/*!!!!				new ActionListener( ){
-			public void actionPerformed(ActionEvent e)
-			{
-				reset( );
-				draw.reset(curves, selectedCurves);	
-			}
-		} );
-*/
+
 		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file", "src/CurveEditor/GUI/icons/fileopen.png");
 		menuItem.addActionListener( listener );
+		
 		menu.addSeparator();
 
 		CreateMenuItem("Save", KeyEvent.VK_S, "Save a file", "src/CurveEditor/GUI/icons/filesave.png");
@@ -77,6 +79,13 @@ public class Menu extends JMenuBar {
 		
 		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...", "src/CurveEditor/GUI/icons/filesaveas.png");
 		menuItem.addActionListener( listener );
+		
+		menu.addSeparator();
+		
+		CreateMenuItem( "New Curve", KeyEvent.VK_C, "Start a new curve", "src/CurveEditor/GUI/icons/curvenew.png" );
+		menuItem.addActionListener( listener );
+		
+		menu.addSeparator();
 		
 		CreateMenuItem( "Quit", KeyEvent.VK_Q, "Quit Curve Editor", "src/CurveEditor/GUI/icons/exit.png" );
 		menuItem.addActionListener( new ActionListener( ) {
@@ -120,14 +129,71 @@ public class Menu extends JMenuBar {
 
 	private void makeAlgorithms( ) {
 		CreateMenu( "Algorithms", KeyEvent.VK_A, "" );
-
-		CreateMenuItem( "Bezier", KeyEvent.VK_B, "Use Bezier for curve calculation", null );
-		menuItem.addActionListener( listener );
-
-		CreateMenuItem( "Hermite", KeyEvent.VK_H, "Use Hermite for curve calculation", null );
-		menuItem.addActionListener( listener );
+		group = new ButtonGroup();
+		
+		JMenu menu2 = new JMenu( "Bezier" );
+		menu2.setMnemonic( KeyEvent.VK_B );
+		menu2.getAccessibleContext().setAccessibleDescription( "" );
+		menu.add( menu2 );		
+		createBezierPanel( menu2 );
+		
+		menu2 = new JMenu( "Hermite");
+		menu2.setMnemonic( KeyEvent.VK_H );
+		menu2.getAccessibleContext().setAccessibleDescription( "" );
+		menu.add( menu2 );
+		createHermitePanel( menu2 );
 	}
 
+	private void createBezierPanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
+		
+		JRadioButton algName = new JRadioButton( "normal" );
+		algName.setSelected( true );
+		algName.addActionListener( listener) ;
+		
+		group.add( algName );
+		radioPanel.add( algName );
+		
+		algName = new JRadioButton( "Unlimeted" );
+		algName.setSelected( false );
+		algName.addActionListener( listener ) ;
+		
+		group.add( algName );
+		
+		radioPanel.add( algName );		
+		
+		menu.add( radioPanel );			
+	}
+	
+	private void createHermitePanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
+		
+		JRadioButton algName = new JRadioButton( "normal" );
+		algName.setSelected( true );
+		algName.addActionListener( listener) ;
+		
+		group.add( algName );
+		radioPanel.add( algName );
+		
+		algName = new JRadioButton( "Cardinal" );
+		algName.setSelected( false );
+		algName.addActionListener( listener ) ;
+		
+		group.add( algName );
+		radioPanel.add( algName );
+		
+		algName = new JRadioButton( "CatmullRom" );
+		algName.setSelected( false );
+		algName.addActionListener( listener ) ;
+		
+		group.add( algName );
+		radioPanel.add( algName );		
+		
+		menu.add( radioPanel );
+	}
+	
 	private void makeHelp( ) {
 		// een glue element toevoegen zorgt ervoor dat help rechts wordt uitgelijnd
 		add( Box.createHorizontalGlue() );
