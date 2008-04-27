@@ -12,4 +12,8 @@ public class HermiteCatmullRom extends HermiteCardinal {
 	public void calculate(Curve cv) {
 		cardinal(cv, (float) .5);
 	}
+	
+	public void calculateComplete(Curve cv) {
+		cardinalComplet(cv, (float)0.5);
+	}
 }
