@@ -8,8 +8,11 @@ import CurveEditor.Curves.Point;
 
 public class CurveMap2 {
 
-	public static int DEFAULT_SIZE = 25;
-	private boolean[][] onCurve;
+	private static int DEFAULT_SIZE = 25; // lengte van een halve zijde van
+	// een default rechthoekje
+	private boolean[][] onCurve; // houdt bij of een x,y-punt op een curve
+
+	// ligt
 
 	class Region {
 		private int minx, maxx, miny, maxy;
@@ -28,6 +31,7 @@ public class CurveMap2 {
 			this.maxy = centrum.Y() + DEFAULT_SIZE;
 		}
 
+		// controleren of punt p in het rechthoekje ligt
 		public boolean contains(Point p) {
 			return p.X() >= minx && p.X() <= maxx && p.Y() >= miny
 					&& p.Y() <= maxy;
@@ -61,6 +65,26 @@ public class CurveMap2 {
 		curves = new HashMap<Region, Curve>();
 		onCurve = new boolean[Maxx][Maxy];
 
+		for (int x = 0; x < Maxx; ++x)
+			for (int y = 0; y < Maxy; ++y) {
+				regions.put(new Point(x, y), null);
+				onCurve[x][y] = false;
+			}
+
+		curves.put(null, null);
+	}
+
+	public void reset(int Maxx, int Maxy) {
+		Curve[] prevCurves;
+		if (curves != null)
+			prevCurves = (Curve[]) curves.values().toArray();
+		else
+			prevCurves = null;
+
+		regions = new HashMap<Point, Region>();
+		curves = new HashMap<Region, Curve>();
+		onCurve = new boolean[Maxx][Maxy];
+
 		for (int x = 0; x <= Maxx; ++x)
 			for (int y = 0; y <= Maxy; ++y) {
 				regions.put(new Point(x, y), null);
@@ -68,6 +92,12 @@ public class CurveMap2 {
 			}
 
 		curves.put(null, null);
+
+		if (prevCurves != null) {
+			for (int i = 0; i < prevCurves.length; ++i)
+				addCurve(prevCurves[i]);
+		}
+
 	}
 
 	private void addRegion(Curve c, Region r) {
@@ -89,6 +119,20 @@ public class CurveMap2 {
 				addRegion(c, last);
 			}
 			onCurve[currentPoint.X()][currentPoint.Y()] = true;
+		}
+	}
+
+	public void deleteCurve(Curve c) {
+		Point currentPoint = null;
+
+		for (int i = 0; i < c.getOutput().size(); ++i) {
+			currentPoint = c.getOutput().get(i);
+			Region temp = regions.get(currentPoint);
+			if (temp != null && curves.containsKey(temp))
+				curves.remove(temp);
+
+			onCurve[currentPoint.X()][currentPoint.Y()] = false;
+			regions.put(new Point(currentPoint.X(), currentPoint.Y()), null);
 		}
 	}
 
@@ -212,6 +256,10 @@ public class CurveMap2 {
 	}
 
 	public Curve searchCurve(Point p) {
-		return curves.get(regions.get(p));
+		Curve result = curves.get(regions.get(p));
+
+		System.out.println(result.getType() + " was picked.\n");
+
+		return result;
 	}
 }

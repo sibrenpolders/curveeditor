@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import CurveEditor.Algorithms.Algorithm;
+import CurveEditor.Core.CurveMap2;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -27,7 +30,8 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	private Menu menu;
 	private Toolbar toolbar;
 	private Listener listener;
-	
+	private CurveMap2 selectionTool;
+
 	public GUI() {
 		super();
 		JFrame frame = new JFrame("Curve Editor");
@@ -38,12 +42,12 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
 		listener = new Listener();
-		menu = new Menu(listener);		
+		menu = new Menu(listener);
 		contentPane.add(menu);
 
-		toolbar = new Toolbar( listener );
-		contentPane.add( toolbar );
-		
+		toolbar = new Toolbar(listener);
+		contentPane.add(toolbar);
+
 		JPanel screen = new JPanel();
 		screen.setLayout(new BoxLayout(screen, BoxLayout.X_AXIS));
 
@@ -52,9 +56,11 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		choice = new ChoiceArea(listener);
 		screen.add(choice);
 
-		draw = new DrawArea(this.curves, this.selectedCurves, this.hooveredCurves, this.selectedPoints);
+		draw = new DrawArea(this.curves, this.selectedCurves,
+				this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
 		screen.add(draw);
+		selectionTool = new CurveMap2(draw.getWidth(), draw.getHeight());
 
 		screen.add(Box.createRigidArea(new Dimension(10, 0)));
 		screen.add(Box.createHorizontalGlue());
@@ -80,9 +86,11 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		menu = new Menu(listener);
 		contentPane.add(menu);
 
-		draw = new DrawArea(this.curves, this.selectedCurves, this.hooveredCurves, this.selectedPoints);
+		draw = new DrawArea(this.curves, this.selectedCurves,
+				this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
 		contentPane.add(draw);
+		selectionTool = new CurveMap2(draw.getWidth(), draw.getHeight());
 
 		frame.pack();
 		frame.setVisible(true);
@@ -100,7 +108,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 		draw.repaint();
 
-		setMode(MODE.ADD_INPUT);
+		changeMode(MODE.ADD_INPUT);
 	}
 
 	public void menuCanceled(MenuEvent arg0) {
@@ -117,27 +125,28 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 	public void mouseClicked(MouseEvent e) {
 		if (mode == Editor.MODE.ADD_INPUT) {
+			Algorithm prev = currentAlgorithm;
 			for (int i = 0; i < selectedCurves.size(); ++i) {
 				Curve c = selectedCurves.get(i);
 				c.addInput(new Point(e.getX(), e.getY()));
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat
 				// deze is ingegeven
-				if (c.getType() != 'H' || c.getInput().size() % 2 == 0)
-
-					currentAlgorithm.calculate(selectedCurves.get(i));
-				// this.getAlgorithm(selectedCurves.get(i).getType(),
-				// selectedCurves.get(i).getDegree()).calculateCurve(
-				// selectedCurves.get(i));
+				if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
+					this.getAlgorithm(selectedCurves.get(i).getType(),
+							selectedCurves.get(i).getDegree()).calculate(
+							selectedCurves.get(i));
+				}
 
 			}
+			currentAlgorithm = prev;
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE) {
 			// zoek curve en voeg toe, of zo
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
 			selectedCurves.get(0).addInput(new Point(e.getX(), e.getY()));
-			setMode(MODE.ADD_INPUT);
+			changeMode(MODE.ADD_INPUT);
 			draw.repaint();
 		}
 	}
@@ -194,7 +203,8 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 	private void newFile() {
 		reset();
-		draw.reset(curves, selectedCurves, hooveredCurves, selectedPoints, true, true, true);
+		draw.reset(curves, selectedCurves, hooveredCurves, selectedPoints,
+				true, true, true);
 	}
 
 	private class Listener implements ActionListener {
@@ -235,8 +245,8 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat
 				// deze is ingegeven
-					c.clearOutput();
-					currentAlgorithm.calculateComplete(selectedCurves.get(i));
+				c.clearOutput();
+				currentAlgorithm.calculateComplete(selectedCurves.get(i));
 			}
 			draw.repaint();
 		}

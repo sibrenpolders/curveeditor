@@ -12,7 +12,7 @@ public class BezierUnlimited extends Algorithm {
 	// orde = onbepaald --> alle controlepunten worden tegelijkertijd gebruikt
 	public BezierUnlimited(short degree) {
 		super('B', (short) 0);
-		steps = 100;
+		steps = 2000;
 	}
 
 	public void setSteps(int steps) {
@@ -51,6 +51,15 @@ public class BezierUnlimited extends Algorithm {
 			float t = (float) (j / (steps - 1.0));
 			output.add(bezier(input, t));
 		}
+		
+		Linear smoothing = new Linear();
+		Vector<Point> temp = new Vector<Point>();
+		for (int i = 0; i < output.size() - 1; ++i)
+			smoothing.interpolate(output.elementAt(i), output.elementAt(i + 1),
+					temp);
+
+		output.clear();
+		output.addAll(temp);
 	}
 
 	@Override

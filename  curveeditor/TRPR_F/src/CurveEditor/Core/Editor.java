@@ -8,21 +8,30 @@ import CurveEditor.Tools.*;
 
 public class Editor {
 
-	public static enum MODE {
-		NONE, ADD_INPUT, SELECT_CURVE, NEW_CURVE, SELECT_CONTROL_POINT
+	protected static enum MODE {
+		NONE, ADD_INPUT, SELECT_CURVE, SELECT_CONTROL_POINT, DESELECT_CURVE, DESELECT_CONTROL_POINT, DESELECT_ALL, NEW_CURVE
 	};
 
 	protected MODE mode;
 	protected Vector<Algorithm> algorithms;
-	protected Vector<Tool> tools;
-	protected Vector<Curve> curves;
+	protected Vector<Tool> tools; // voorlopig niet gebruiken
+	protected Vector<Curve> curves; // ongeselecteerde curves
+	// geselecteerde curves --> hier worden de bewerkingen op gedaan
 	protected Vector<Curve> selectedCurves;
+	// curves die onder de cursor staan; moeten ook in curves of selectedCurves
+	// staan
 	protected Vector<Curve> hooveredCurves;
+	// geselecteerde controlepunten --> kunnen verplaatst worden; curves die dit
+	// punt als controlepunt gebruiken, moeten in selectedCurves staan
 	protected Vector<Point> selectedPoints;
+	// algorithm dat momenteel geselecteerd is; verandert men dit, dan wordt dit
+	// autom. verandert voor elke selectedCurve
 	protected Algorithm currentAlgorithm;
 	protected Tool currentTool;
 	protected FileIO file;
-	protected CurveMap map;
+	// datastructuur die kan gebruikt worden om na te gaan op welke curve
+	// geklikt is
+	protected CurveMap2 selectionTool;
 
 	public Editor(String filename) {
 		init();
@@ -33,8 +42,8 @@ public class Editor {
 		init();
 	}
 
-	private void init() {
-		mode = MODE.NEW_CURVE;
+	protected void init() {
+		mode = MODE.NONE;
 		currentTool = null;
 
 		algorithms = new Vector<Algorithm>();
@@ -44,8 +53,10 @@ public class Editor {
 		hooveredCurves = new Vector<Curve>();
 		selectedPoints = new Vector<Point>();
 
-		algorithms.add(new Linear((short) 1));
-		algorithms.add(new Bezier3((short) 3));
+		// Hier moeten alle geïmplementeerde algoritmes ingegeven worden.
+		algorithms.add(new Linear((short) 1)); // 'L'
+		algorithms.add(new Bezier2((short) 2)); // 'B'
+		algorithms.add(new Bezier3((short) 3)); // 'B'
 		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite('H', (short) 1));
 		algorithms.add(new HermiteCardinal('C', (short) 1));
@@ -54,7 +65,9 @@ public class Editor {
 		currentAlgorithm = getAlgorithm('L', (short) 1);
 
 		file = new FileIO();
-		map = new CurveMap();
+		// afmetingen van het canvas zijn nodig om een datastructuur aan te
+		// maken --> aanmaken in een subklasse
+		selectionTool = null;
 	}
 
 	protected void reset() {
@@ -62,16 +75,11 @@ public class Editor {
 		tools.clear();
 		curves.clear();
 		selectedCurves.clear();
+		hooveredCurves.clear();
+		selectedPoints.clear();
 	}
 
-	public void setMode(Editor.MODE m) {
-		this.mode = m;
-	}
-
-	protected Vector<Algorithm> getAlgorithms() {
-		return algorithms;
-	}
-
+	// algoritme zoeken a.h.v. het type en de orde
 	protected Algorithm getAlgorithm(char type, short degree) {
 		for (int i = 0; i < algorithms.size(); ++i)
 			if (algorithms.get(i).getType() == type
@@ -81,19 +89,18 @@ public class Editor {
 	}
 
 	protected void setCurrentAlgorithm(char type, short degree) {
-		currentAlgorithm = getAlgorithm(type, degree); // mag niet null zijn
+		Algorithm temp = getAlgorithm(type, degree);
 
-		// de geselecteerde curves naar dat type veranderen
-		for (int i = 0; i < selectedCurves.size(); ++i) {
-			selectedCurves.get(i).setType(type);
-			selectedCurves.get(i).setDegree(degree);
-			selectedCurves.get(i).clearOutput();
-			currentAlgorithm.calculate(selectedCurves.get(i));
+		if (temp != null) {
+			currentAlgorithm = temp;
+			// de op dat moment geselecteerde curves naar dat type veranderen
+			for (int i = 0; i < selectedCurves.size(); ++i) {
+				selectedCurves.get(i).setType(type);
+				selectedCurves.get(i).setDegree(degree);
+				selectedCurves.get(i).clearOutput();
+				currentAlgorithm.calculate(selectedCurves.get(i));
+			}
 		}
-	}
-
-	protected Vector<Tool> getTools() {
-		return tools;
 	}
 
 	protected Tool getTool(char type) {
@@ -104,17 +111,49 @@ public class Editor {
 	}
 
 	protected void setCurrentTool(char type) {
-		currentTool = getTool(type);
+
+		Tool temp = getTool(type);
+
+		if (temp != null)
+			currentTool = temp;
 	}
 
-	protected Curve searchCurve(Point p) {
-		CurveMap.CurveAndPointContainer result = map.searchCurveByControlPoint(p);
+	public void changeMode(Editor.MODE m) {
+		if (m == MODE.NONE)
+			deselectAll();
+		else if (m == MODE.NEW_CURVE)
+			startNewCurve();
+		else if(m == MODE.DESELECT_ALL)
+			deselectAll();
+		else if(m == MODE.ADD_INPUT)
+			selectedPoints.clear();
 
-		if (result != null)
-			return result.c;
-		else
-			return map.searchCurveByCurvePoint(p).c;
+		this.mode = m;
 	}
+
+	protected void deselectAll() {
+		for (int i = 0; i < selectedCurves.size(); ++i)
+			curves.add(selectedCurves.get(i));
+
+		selectedCurves.clear();
+		selectedPoints.clear();
+	}
+
+	protected void startNewCurve() {
+		deselectAll();
+		selectedCurves.add(new Curve(currentAlgorithm.getType(),
+				currentAlgorithm.getDegree()));
+	}
+
+//	protected Curve searchCurve(Point p) {
+//		CurveMap.CurveAndPointContainer result = map
+//				.searchCurveByControlPoint(p);
+//
+//		if (result != null)
+//			return result.c;
+//		else
+//			return map.searchCurveByCurvePoint(p).c;
+//	}
 
 	protected void deselectAllCurves() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
@@ -174,18 +213,5 @@ public class Editor {
 			selectedCurves.add(curves.get(index));
 			curves.remove(index);
 		}
-	}
-
-	protected void searchAndSelectCurve(Point p) {
-		Curve c = searchCurve(p);
-		if (c != null) {
-			selectCurve(c);
-		}
-	}
-
-	protected void startNewCurve() {
-		deselectAllCurves();
-		selectedCurves.add(new Curve(currentAlgorithm.getType(),
-				currentAlgorithm.getDegree()));
 	}
 }
