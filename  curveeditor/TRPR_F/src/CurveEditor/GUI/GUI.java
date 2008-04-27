@@ -25,8 +25,9 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	private Menu menu;
+	private Toolbar toolbar;
 	private Listener listener;
-
+	
 	public GUI() {
 		super();
 		JFrame frame = new JFrame("Curve Editor");
@@ -37,10 +38,12 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
 		listener = new Listener();
-		menu = new Menu(listener);
-		menu.setVisible(true);
+		menu = new Menu(listener);		
 		contentPane.add(menu);
 
+		toolbar = new Toolbar( listener );
+		contentPane.add( toolbar );
+		
 		JPanel screen = new JPanel();
 		screen.setLayout(new BoxLayout(screen, BoxLayout.X_AXIS));
 
