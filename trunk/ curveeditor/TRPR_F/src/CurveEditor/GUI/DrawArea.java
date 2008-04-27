@@ -125,7 +125,7 @@ public class DrawArea extends JPanel {
 					g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(j + 1)
 							.X(), vip.get(j + 1).Y());
 				}
-			} else if (curves.get(i).getType() == 'B') {
+			} else if (curves.get(i).getType() == 'B' && curves.get(i).getDegree() == 3) {
 				for (int j = 0; j < vip.size(); j = j + 3) {
 					if (j + 1 < vip.size())
 					g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(j + 1)
