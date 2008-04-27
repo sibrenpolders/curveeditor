@@ -64,7 +64,6 @@ public class Hermite extends Algorithm {
 
 	}
 
-	@Override
 	public void calculateComplete(Curve cv) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
@@ -77,7 +76,7 @@ public class Hermite extends Algorithm {
 		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
 		// interpolleren
 		// en Ri, Rj de tangens zijn van de kromme in respectievelijk Pi, Pj
-		for(int i =0; i < size - 4; ++i) {
+		for(int i =0; i < size - 4; i += 2 ) {
 			// enkel de interpolatie tussen het laatste en het voorlaatste punt
 			// moet berekend worden
 			Point a = vip.get(i );
