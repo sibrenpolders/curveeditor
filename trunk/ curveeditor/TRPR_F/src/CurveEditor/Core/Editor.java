@@ -31,7 +31,8 @@ public class Editor {
 	protected FileIO file;
 	// datastructuur die kan gebruikt worden om na te gaan op welke curve
 	// geklikt is
-	protected CurveMap selectionTool;
+	protected CurveHashMap selectionTool;
+	protected Curve2DArray selectionTool2;
 
 	public Editor(String filename) {
 		init();
@@ -66,6 +67,7 @@ public class Editor {
 		// afmetingen van het canvas zijn nodig om een datastructuur aan te
 		// maken --> aanmaken in een subklasse
 		selectionTool = null;
+		selectionTool2 = null;
 	}
 
 	protected void reset() {
@@ -219,7 +221,7 @@ public class Editor {
 	}
 
 	protected Curve pickCurve(Point p) {
-		Curve c = this.selectionTool.searchCurve(p);
+		Curve c = this.selectionTool2.searchCurve(p);
 
 		if (c == null)
 			return null;

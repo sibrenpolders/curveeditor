@@ -41,3 +41,12 @@ vergeten wat er juist in moest...dus heb dat nog niet kunnen afwerken. Zou ik mo
 meekrijgen waar ge het had opgeschreven? Dan werk ik dat verder af. Ik ga sebiet nog wat doen. 
 Mijn code is wel nog niet echt "clean", Maar daar wordt natuurlijk nog aan gewerkt he! inclusief de
 commentaar enzo....:D:D.
+
+
+------------------
+
+Vandaag ewa bezig geweest. 
+Selectiontool m.b.v. hashmap werkte niet zoals ik had verwacht: af en toe krijg ik threading errors, 
+wss de call-stack of zo die te vol is geworden. Geen goesting om daar naar te zien. :ashamed:
+Ik heb nu gewoon een 2D-array geïmplementeerd, en die werkt fucking vlug, vind ik. Je moet 't maar 's testen nu.
+Ik ga nu nog wa zien naar hoovering en zo, en dan slapen.

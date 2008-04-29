@@ -6,9 +6,9 @@ import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class CurveMap {
+public class CurveHashMap {
 
-	private static int DEFAULT_SIZE = 25; // lengte van een halve zijde van
+	private static int DEFAULT_SIZE = 5; // lengte van een halve zijde van
 	// een default rechthoekje
 	private boolean[][] onCurve; // houdt bij of een x,y-punt op een curve
 	// ligt
@@ -59,7 +59,7 @@ public class CurveMap {
 	private HashMap<Point, Region> regions;
 	private HashMap<Region, Curve> curves;
 
-	public CurveMap(int Maxx, int Maxy) {
+	public CurveHashMap(int Maxx, int Maxy) {
 		regions = new HashMap<Point, Region>();
 		curves = new HashMap<Region, Curve>();
 		onCurve = new boolean[Maxx][Maxy];
