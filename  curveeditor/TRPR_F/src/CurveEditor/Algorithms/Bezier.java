@@ -5,7 +5,7 @@ import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class Bezier3 extends Algorithm {
+public class Bezier extends Algorithm {
 	private double[][] matrix;
 	private double[][] controlPtsMatrix;
 	private double[] parameterMatrix;
@@ -13,12 +13,12 @@ public class Bezier3 extends Algorithm {
 	boolean C1Continuity = true;
 
 	// orde = 3 --> per 4 controlepunten de dingen berekenen dus
-	public Bezier3(short degree) {
+	public Bezier(short degree) {
 		super('B', (short) 3);
 		createMatrix();
 	}
 
-	public Bezier3() {
+	public Bezier() {
 		super('B', (short) 3);
 		createMatrix();
 	}
