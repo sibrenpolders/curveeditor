@@ -1,67 +1,264 @@
 package CurveEditor.Core;
 
 import java.util.HashMap;
+import java.util.Vector;
+
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class CurveMap {
-	private static int DEFAULT_RANGE = 2;
 
-	private HashMap<Point, Curve> hashOutput;
-	private HashMap<Point, Curve> hashControlPoint;
-	private int range;// de straal die bekeken wordt rond een gegeven punt
+	private static int DEFAULT_SIZE = 25; // lengte van een halve zijde van
+	// een default rechthoekje
+	private boolean[][] onCurve; // houdt bij of een x,y-punt op een curve
+	// ligt
 
-	public CurveMap(int range) {
-		hashOutput = new HashMap<Point, Curve>();
-		hashControlPoint = new HashMap<Point, Curve>();
-		this.range = range;
-	}
+	class Region {
+		private int minx, maxx, miny, maxy;
 
-	public CurveMap() {
-		hashOutput = new HashMap<Point, Curve>();
-		hashControlPoint = new HashMap<Point, Curve>();
-		this.range = DEFAULT_RANGE;
-	}
+		public Region(int minx, int maxx, int miny, int maxy) {
+			this.minx = minx;
+			this.maxx = maxx;
+			this.miny = miny;
+			this.maxy = maxy;
+		}
 
-	public void addCurve(Curve c) {
-		for (int i = 0; i < c.getNbInputPoints(); ++i)
-			// oude waarde wordt vervangen
-			hashControlPoint.put(c.getInput().elementAt(i), c);
+		public Region(Point centrum) {
+			this.minx = centrum.X() - DEFAULT_SIZE;
+			this.maxx = centrum.X() + DEFAULT_SIZE;
+			this.miny = centrum.Y() - DEFAULT_SIZE;
+			this.maxy = centrum.Y() + DEFAULT_SIZE;
+		}
 
-		for (int i = 0; i < c.getOutput().size(); ++i)
-			// oude waarde wordt vervangen
-			hashOutput.put(c.getOutput().elementAt(i), c);
-	}
+		// controleren of punt p in het rechthoekje ligt
+		public boolean contains(Point p) {
+			return p.X() >= minx && p.X() <= maxx && p.Y() >= miny
+					&& p.Y() <= maxy;
+		}
 
-	public class CurveAndPointContainer {
-		public Curve c;
-		public Point p;
+		public String toString() {
+			return "MinX: " + minx + ", MinY: " + miny + ", MaxX: " + maxx
+					+ ", MaxY: " + maxy;
+		}
 
-		public CurveAndPointContainer(Curve c, Point p) {
-			this.c = c;
-			this.p = p;
+		public boolean equals(Object obj) {
+			if (obj instanceof Region) {
+				Region p = (Region) obj;
+				return (this.minx == p.minx && this.miny == p.miny
+						&& this.maxx == p.maxx && this.maxy == p.maxy);
+			} else {
+				return false;
+			}
+		}
+
+		public int hashCode() {
+			return toString().hashCode();
 		}
 	}
 
-	public CurveAndPointContainer searchCurveByControlPoint(Point p) {
-		Curve result = null;
-		Point resultP = null;
+	private HashMap<Point, Region> regions;
+	private HashMap<Region, Curve> curves;
 
-		for (int x = p.X() - range; x <= p.X() + range && result != null; ++x)
-			for (int y = p.Y() - range; y <= p.Y() + range && result != null; ++y)
-				result = hashControlPoint.get(resultP = new Point(x, y));
+	public CurveMap(int Maxx, int Maxy) {
+		regions = new HashMap<Point, Region>();
+		curves = new HashMap<Region, Curve>();
+		onCurve = new boolean[Maxx][Maxy];
 
-		return new CurveAndPointContainer(result, resultP); // null indien niet
-															// gevonden
+		for (int x = 0; x < Maxx; ++x)
+			for (int y = 0; y < Maxy; ++y) {
+				regions.put(new Point(x, y), null);
+				onCurve[x][y] = false;
+			}
+
+		curves.put(null, null);
 	}
 
-	public CurveAndPointContainer searchCurveByCurvePoint(Point p) {
-		Curve result = null;
+	public void reset(int Maxx, int Maxy) {
+		Curve[] prevCurves;
+		if (curves != null)
+			prevCurves = (Curve[]) curves.values().toArray();
+		else
+			prevCurves = null;
 
-		for (int x = p.X() - range; x <= p.X() + range && result != null; ++x)
-			for (int y = p.Y() - range; y <= p.Y() + range && result != null; ++y)
-				result = hashOutput.get(new Point(x, y));
+		regions = new HashMap<Point, Region>();
+		curves = new HashMap<Region, Curve>();
+		onCurve = new boolean[Maxx][Maxy];
 
-		return new CurveAndPointContainer(result, null); // null indien niet gevonden
+		for (int x = 0; x <= Maxx; ++x)
+			for (int y = 0; y <= Maxy; ++y) {
+				regions.put(new Point(x, y), null);
+				onCurve[x][y] = false;
+			}
+
+		curves.put(null, null);
+
+		if (prevCurves != null) {
+			for (int i = 0; i < prevCurves.length; ++i)
+				addCurve(prevCurves[i]);
+		}
+
+	}
+
+	private void addRegion(Curve c, Region r) {
+		for (int x = r.minx; x <= r.maxx; ++x)
+			for (int y = r.miny; y <= r.maxy; ++y)
+				regions.put(new Point(x, y), r);
+
+		curves.put(r, c);
+	}
+
+	public void addCurve(Curve c) {
+		Region last = null;
+		Point currentPoint = null;
+
+		for (int i = 0; i < c.getOutput().size(); ++i) {
+			currentPoint = c.getOutput().get(i);
+			if (last == null || (last != null && !last.contains(currentPoint))) {
+				last = findRegion(last, c.getOutput(), i, currentPoint);
+				addRegion(c, last);
+			}
+			onCurve[currentPoint.X()][currentPoint.Y()] = true;
+		}
+	}
+
+	public void deleteCurve(Curve c) {
+		Point currentPoint = null;
+
+		for (int i = 0; i < c.getOutput().size(); ++i) {
+			currentPoint = c.getOutput().get(i);
+			Region temp = regions.get(currentPoint);
+			if (temp != null && curves.containsKey(temp))
+				curves.remove(temp);
+
+			onCurve[currentPoint.X()][currentPoint.Y()] = false;
+			regions.put(new Point(currentPoint.X(), currentPoint.Y()), null);
+		}
+	}
+
+	private Region findRegion(Region r, Vector<Point> v, int index, Point p) {
+		int[] coordsLeft = findNearestLeftPoint(
+				(p.X() - 2 * DEFAULT_SIZE >= 0) ? p.X() - 2 * DEFAULT_SIZE : 0,
+				p);
+		int[] coordsRight = findNearestRightPoint(p.X() + 2 * DEFAULT_SIZE, p);
+		int[] coordsTop = findNearestTopPoint(p.Y() + 2 * DEFAULT_SIZE, p);
+		int[] coordsBottom = findNearestBottomPoint(
+				(p.Y() - 2 * DEFAULT_SIZE >= 0) ? p.Y() - 2 * DEFAULT_SIZE : 0,
+				p);
+
+		int xmin = 0, xmax = 0, ymin = 0, ymax = 0;
+
+		if (coordsLeft[0] == -1)
+			xmin = ((p.X() - DEFAULT_SIZE) >= 0) ? p.X() - DEFAULT_SIZE : 0;
+		else
+			xmin = p.X() - (p.X() - coordsLeft[0]) / 2;
+
+		if (coordsRight[0] == -1)
+			xmax = p.X() + DEFAULT_SIZE;
+		else
+			xmax = p.X() + (coordsRight[0] - p.X()) / 2;
+
+		if (coordsTop[1] == -1)
+			ymax = p.Y() + DEFAULT_SIZE;
+		else
+			ymax = p.Y() + (coordsTop[1] - p.Y()) / 2;
+
+		if (coordsBottom[1] == -1)
+			ymin = ((p.Y() - DEFAULT_SIZE) >= 0) ? p.Y() - DEFAULT_SIZE : 0;
+		else
+			ymin = p.Y() - (p.Y() - coordsBottom[1]) / 2;
+
+		return new Region(xmin, xmax, ymin, ymax);
+	}
+
+	private int[] findNearestLeftPoint(int xMin, Point p) {
+		int[] coords = new int[2];
+		coords[0] = -1;
+		coords[1] = -1;
+		boolean found = false;
+
+		for (int i = p.X() - 1; i >= xMin && !found; --i) {
+			for (int crement = 1; crement <= 2 * DEFAULT_SIZE && !found; ++crement)
+				if (onCurve[i][p.Y() + crement]) {
+					coords[0] = i;
+					coords[1] = p.Y() + crement;
+					found = true;
+				} else if (onCurve[i][p.Y() - crement]) {
+					coords[0] = i;
+					coords[1] = p.Y() - crement;
+					found = true;
+				}
+		}
+		return coords;
+	}
+
+	private int[] findNearestRightPoint(int xMax, Point p) {
+		int[] coords = new int[2];
+		coords[0] = -1;
+		coords[1] = -1;
+		boolean found = false;
+
+		for (int i = p.X() + 1; i <= xMax && !found; ++i) {
+			for (int crement = 1; crement <= 2 * DEFAULT_SIZE && !found; ++crement)
+				if (onCurve[i][p.Y() + crement]) {
+					coords[0] = i;
+					coords[1] = p.Y() + crement;
+					found = true;
+				} else if (onCurve[i][p.Y() - crement]) {
+					coords[0] = i;
+					coords[1] = p.Y() - crement;
+					found = true;
+				}
+		}
+		return coords;
+	}
+
+	private int[] findNearestTopPoint(int yMax, Point p) {
+		int[] coords = new int[2];
+		coords[0] = -1;
+		coords[1] = -1;
+		boolean found = false;
+
+		for (int i = p.Y() + 1; i <= yMax && !found; ++i) {
+			for (int crement = 1; crement <= 2 * DEFAULT_SIZE && !found; ++crement)
+				if (onCurve[p.X() + crement][i]) {
+					coords[0] = p.X() + crement;
+					coords[1] = i;
+					found = true;
+				} else if (onCurve[p.X() - crement][i]) {
+					coords[0] = p.X() - crement;
+					coords[1] = i;
+					found = true;
+				}
+		}
+		return coords;
+	}
+
+	private int[] findNearestBottomPoint(int yMin, Point p) {
+		int[] coords = new int[2];
+		coords[0] = -1;
+		coords[1] = -1;
+		boolean found = false;
+
+		for (int i = p.Y() - 1; i >= yMin && !found; --i) {
+			for (int crement = 1; crement <= 2 * DEFAULT_SIZE && !found; ++crement)
+				if (onCurve[p.X() + crement][i]) {
+					coords[0] = p.X() + crement;
+					coords[1] = i;
+					found = true;
+				} else if (onCurve[p.X() - crement][i]) {
+					coords[0] = p.X() - crement;
+					coords[1] = i;
+					found = true;
+				}
+		}
+		return coords;
+	}
+
+	public Curve searchCurve(Point p) {
+		Curve result = curves.get(regions.get(p));
+
+		System.out.println(result.getType() + " was picked.\n");
+
+		return result;
 	}
 }

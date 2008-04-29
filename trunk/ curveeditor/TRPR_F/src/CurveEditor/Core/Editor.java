@@ -31,7 +31,7 @@ public class Editor {
 	protected FileIO file;
 	// datastructuur die kan gebruikt worden om na te gaan op welke curve
 	// geklikt is
-	protected CurveMap2 selectionTool;
+	protected CurveMap selectionTool;
 
 	public Editor(String filename) {
 		init();
@@ -55,12 +55,12 @@ public class Editor {
 
 		// Hier moeten alle geïmplementeerde algoritmes ingegeven worden.
 		algorithms.add(new Linear((short) 1)); // 'L'
-		algorithms.add(new Bezier3((short) 3)); // 'B'
+		algorithms.add(new Bezier((short) 3)); // 'B'
 		algorithms.add(new Hermite('H', (short) 1));
 		algorithms.add(new HermiteCardinal('C', (short) 1));
 		algorithms.add(new HermiteCatmullRom('R', (short) 1));
 
-		currentAlgorithm = getAlgorithm('L', (short) 1);
+		currentAlgorithm = getAlgorithm('B', (short) 3);
 
 		file = new FileIO();
 		// afmetingen van het canvas zijn nodig om een datastructuur aan te
