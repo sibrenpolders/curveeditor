@@ -127,7 +127,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Algorithm prev = currentAlgorithm;
 			for (int i = 0; i < selectedCurves.size(); ++i) {
-				Curve c = selectedCurves.get(i);
+				Curve c = selectedCurves.elementAt(i);
 				c.addInput(new Point(e.getX(), e.getY()));
 				// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat

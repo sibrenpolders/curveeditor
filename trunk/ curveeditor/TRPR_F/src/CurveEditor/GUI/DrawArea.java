@@ -100,6 +100,8 @@ public class DrawArea extends JPanel {
 		}
 		this.g.setColor(Color.magenta);
 		drawOutput(hooveredCurves, coords, nrs);
+		this.g.setColor(Color.GREEN);
+		drawSelectedPoints(selectedPoints);
 	}
 
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
@@ -148,6 +150,12 @@ public class DrawArea extends JPanel {
 								.get(j).X(), vip.get(j).Y());
 				}
 			}
+		}
+	}
+
+	private void drawSelectedPoints(Vector<Point> v) {
+		for (int j = 0; j < v.size(); ++j) {
+			g.fillRect(v.get(j).X() - 3, v.get(j).Y() - 3, 7, 7);
 		}
 	}
 
