@@ -151,8 +151,8 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CONTROL_POINT
 				|| mode == Editor.MODE.DESELECT_CONTROL_POINT) {
-			if (pickControlPoint(new Point(e.getX(), e.getY())) != null)
-				draw.repaint();
+			pickControlPoint(new Point(e.getX(), e.getY()));
+			draw.repaint();
 		}
 	}
 
@@ -263,15 +263,15 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 			else if (actionCommand.equals("Select Point"))
 				changeMode(MODE.SELECT_CONTROL_POINT);
 
-//			for (int i = 0; i < selectedCurves.size(); ++i) {
-//				Curve c = selectedCurves.get(i);
-//				c.setType(currentAlgorithm.getType());
-//				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
-//				// telkens de tangens. Dus er moet niet getekend worden voordat
-//				// deze is ingegeven
-//				c.clearOutput();
-//				currentAlgorithm.calculateComplete(selectedCurves.get(i));
-//			}
+			// for (int i = 0; i < selectedCurves.size(); ++i) {
+			// Curve c = selectedCurves.get(i);
+			// c.setType(currentAlgorithm.getType());
+			// // Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
+			// // telkens de tangens. Dus er moet niet getekend worden voordat
+			// // deze is ingegeven
+			// c.clearOutput();
+			// currentAlgorithm.calculateComplete(selectedCurves.get(i));
+			// }
 			draw.repaint();
 		}
 	}

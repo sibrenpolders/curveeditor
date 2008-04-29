@@ -193,23 +193,24 @@ public class Editor {
 			deselectControlPoint(p);
 			return p;
 		} else {
-			Point result = null, temp;
+			boolean ok = false;
 
 			for (int i = 0; i < curves.size(); ++i)
-				if ((temp = curves.elementAt(i).containsInputPoint(p)) != null) {
-					result = temp;
+				if (curves.elementAt(i).containsInputPoint(p) != null) {
+					ok = true;
 					selectedCurves.add(curves.elementAt(i));
 					curves.remove(i--);
 				}
 
 			for (int i = 0; i < selectedCurves.size(); ++i)
-				if ((temp = selectedCurves.elementAt(i).containsInputPoint(p)) != null)
-					result = temp;
+				if (selectedCurves.elementAt(i).containsInputPoint(p) != null)
+					ok = true;
 
-			if (result != null)
-				selectedPoints.add(result);
-
-			return result;
+			if (ok) {
+				selectedPoints.add(p);
+				return p;
+			} else
+				return null;
 		}
 	}
 
@@ -252,10 +253,9 @@ public class Editor {
 
 	protected int nbSelectedControlPoints(Curve c) {
 		int result = 0;
-		for (int i = 0; i < c.getNbInputPoints(); ++i)
-			for (int j = 0; j < selectedPoints.size(); ++j)
-				if (c.containsInputPoint(selectedPoints.elementAt(j)) != null)
-					++result;
+		for (int j = 0; j < selectedPoints.size(); ++j)
+			if (c.containsInputPoint(selectedPoints.elementAt(j)) != null)
+				++result;
 
 		return result;
 	}
