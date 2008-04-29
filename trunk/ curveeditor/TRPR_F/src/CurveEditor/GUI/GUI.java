@@ -129,7 +129,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 			for (int i = 0; i < selectedCurves.size(); ++i) {
 				Curve c = selectedCurves.get(i);
 				c.addInput(new Point(e.getX(), e.getY()));
-				// Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
+				// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat
 				// deze is ingegeven
 				if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
@@ -141,13 +141,18 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 			}
 			currentAlgorithm = prev;
 			draw.repaint();
-		} else if (mode == Editor.MODE.SELECT_CURVE) {
-			// zoek curve en voeg toe, of zo
+		} else if (mode == Editor.MODE.SELECT_CURVE
+				|| mode == Editor.MODE.DESELECT_CURVE) {
+			Curve c = pickCurve(new Point(e.getX(), e.getY()));
+			if (c != null)
+				draw.repaint();
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
-			selectedCurves.get(0).addInput(new Point(e.getX(), e.getY()));
-			changeMode(MODE.ADD_INPUT);
 			draw.repaint();
+		} else if (mode == Editor.MODE.SELECT_CONTROL_POINT
+				|| mode == Editor.MODE.DESELECT_CONTROL_POINT) {
+			if (pickControlPoint(new Point(e.getX(), e.getY())) != null)
+				draw.repaint();
 		}
 	}
 

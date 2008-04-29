@@ -117,13 +117,18 @@ public class Editor {
 	}
 
 	public void changeMode(Editor.MODE m) {
-		if (m == MODE.NONE)
+		if (m == MODE.NONE) {
 			deselectAll();
-		else if (m == MODE.NEW_CURVE)
+			this.mode = m;
+		} else if (m == MODE.NEW_CURVE)
 			startNewCurve();
-		else if (m == MODE.DESELECT_ALL)
+		else if (m == MODE.DESELECT_ALL) {
 			deselectAll();
-		else if (m == MODE.ADD_INPUT)
+			if (mode != MODE.SELECT_CURVE && mode != MODE.SELECT_CONTROL_POINT
+					&& mode != MODE.DESELECT_CONTROL_POINT
+					&& mode != MODE.DESELECT_CURVE)
+				this.mode = MODE.NONE;
+		} else if (m == MODE.ADD_INPUT)
 			selectedPoints.clear();
 
 		this.mode = m;
@@ -155,6 +160,19 @@ public class Editor {
 		}
 	}
 
+	protected void hooverCurve(Curve c) {
+		int index = findIndexCurve(c);
+
+		if (index != -1)
+			hooveredCurves.add(curves.get(index));
+	}
+
+	protected void dehooverCurve(Curve c) {
+		for (int i = 0; i < hooveredCurves.size(); ++i)
+			if (hooveredCurves.elementAt(i).equals(c))
+				hooveredCurves.remove(i--);
+	}
+
 	protected Point pickControlPoint(Point p) {
 		if (isSelectedControlPoint(p)) {
 			for (int i = 0; i < selectedCurves.size(); ++i)
@@ -164,7 +182,7 @@ public class Editor {
 				}
 
 			deselectControlPoint(p);
-			return null;
+			return p;
 		} else {
 			Point result = null, temp;
 
@@ -184,6 +202,28 @@ public class Editor {
 
 			return result;
 		}
+	}
+
+	protected Curve pickCurve(Point p) {
+		Curve c = this.selectionTool.searchCurve(p);
+
+		if (c == null)
+			return null;
+		else {
+			if (isSelectedCurve(c))
+				deselectCurve(c);
+			else
+				selectCurve(c);
+
+			return c;
+		}
+	}
+
+	protected boolean isSelectedCurve(Curve c) {
+		for (int j = 0; j < selectedCurves.size(); ++j)
+			if (selectedCurves.elementAt(j).equals(c))
+				return true;
+		return false;
 	}
 
 	protected void deselectControlPoint(Point p) {
