@@ -97,7 +97,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	}
 
 	public void testMethod() {
-		setCurrentAlgorithm('B', (short) 3);
+		setCurrentAlgorithm('H', (short) 1);
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
 		selectedCurves.get(0).addInput(new Point(0, 0));
@@ -205,6 +205,21 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		reset();
 		draw.reset(curves, selectedCurves, hooveredCurves, selectedPoints,
 				true, true, true);
+	}
+
+	private boolean toggleCoords() {
+		draw.toggleCoords();
+		return draw.coords();
+	}
+
+	private boolean toggleNrs() {
+		draw.toggleNrs();
+		return draw.nrs();
+	}
+
+	private boolean toggleTangents() {
+		draw.toggleTangents();
+		return draw.tangents();
 	}
 
 	private class Listener implements ActionListener {

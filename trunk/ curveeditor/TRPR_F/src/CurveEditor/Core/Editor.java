@@ -55,9 +55,7 @@ public class Editor {
 
 		// Hier moeten alle geïmplementeerde algoritmes ingegeven worden.
 		algorithms.add(new Linear((short) 1)); // 'L'
-		algorithms.add(new Bezier2((short) 2)); // 'B'
 		algorithms.add(new Bezier3((short) 3)); // 'B'
-		algorithms.add(new BezierUnlimited((short) 0));
 		algorithms.add(new Hermite('H', (short) 1));
 		algorithms.add(new HermiteCardinal('C', (short) 1));
 		algorithms.add(new HermiteCatmullRom('R', (short) 1));
@@ -123,9 +121,9 @@ public class Editor {
 			deselectAll();
 		else if (m == MODE.NEW_CURVE)
 			startNewCurve();
-		else if(m == MODE.DESELECT_ALL)
+		else if (m == MODE.DESELECT_ALL)
 			deselectAll();
-		else if(m == MODE.ADD_INPUT)
+		else if (m == MODE.ADD_INPUT)
 			selectedPoints.clear();
 
 		this.mode = m;
@@ -143,17 +141,8 @@ public class Editor {
 		deselectAll();
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
 				currentAlgorithm.getDegree()));
+		this.mode = MODE.ADD_INPUT;
 	}
-
-//	protected Curve searchCurve(Point p) {
-//		CurveMap.CurveAndPointContainer result = map
-//				.searchCurveByControlPoint(p);
-//
-//		if (result != null)
-//			return result.c;
-//		else
-//			return map.searchCurveByCurvePoint(p).c;
-//	}
 
 	protected void deselectAllCurves() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
@@ -206,6 +195,8 @@ public class Editor {
 		}
 	}
 
+	// haalt curve uit de ene vector en plaatst 'm in de andere
+	// het zoeken zelf gebeurt hier dus _niet_
 	protected void selectCurve(Curve c) {
 		int index = findIndexCurve(c);
 
