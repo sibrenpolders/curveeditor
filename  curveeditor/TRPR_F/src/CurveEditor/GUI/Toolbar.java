@@ -35,7 +35,7 @@ public class Toolbar extends JToolBar {
 
 		group = new ButtonGroup( );
 		makeToggleButton("normal", "Draw a curve or select a point", "src/CurveEditor/GUI/icons/ganttSelect.png", true );
-		makeToggleButton("Select", "select a point or a group of points", "src/CurveEditor/GUI/icons/ganttSelecttask.png", false );
+		makeButton("Select Point", "Select a point.", "src/CurveEditor/GUI/icons/ganttSelecttask.png");
 		
 		addSeparator( );
 		
@@ -46,6 +46,7 @@ public class Toolbar extends JToolBar {
 
 	private void makeToggleButton(String name, String tooltip, String icon, boolean selected ) {
 		toggleButton = new JToggleButton( new ImageIcon( icon ), selected );
+		toggleButton.setName(name);
 		toggleButton.addActionListener( listener );
 		toggleButton.setToolTipText( tooltip );
 		group.add( toggleButton );
