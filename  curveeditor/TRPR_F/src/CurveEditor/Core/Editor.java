@@ -128,10 +128,12 @@ public class Editor {
 					&& mode != MODE.DESELECT_CONTROL_POINT
 					&& mode != MODE.DESELECT_CURVE)
 				this.mode = MODE.NONE;
-		} else if (m == MODE.ADD_INPUT)
+		} else if (m == MODE.ADD_INPUT) {
 			selectedPoints.clear();
-
-		this.mode = m;
+			this.mode = m;
+		} else {
+			this.mode = m;
+		}
 	}
 
 	protected void deselectAll() {
@@ -174,9 +176,16 @@ public class Editor {
 	}
 
 	protected Point pickControlPoint(Point p) {
+		for (int i = 0; i < selectedCurves.size(); ++i)
+			if (nbSelectedControlPoints(selectedCurves.elementAt(i)) == 0) {
+				curves.add(selectedCurves.elementAt(i));
+				selectedCurves.remove(i--);
+			}
+
 		if (isSelectedControlPoint(p)) {
 			for (int i = 0; i < selectedCurves.size(); ++i)
-				if (nbSelectedControlPoints(selectedCurves.elementAt(i)) <= 1) {
+				if (nbSelectedControlPoints(selectedCurves.elementAt(i)) <= 1
+						&& selectedCurves.elementAt(i).containsInputPoint(p) != null) {
 					curves.add(selectedCurves.elementAt(i));
 					selectedCurves.remove(i--);
 				}
