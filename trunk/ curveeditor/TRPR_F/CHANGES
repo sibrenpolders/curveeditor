@@ -50,3 +50,10 @@ Selectiontool m.b.v. hashmap werkte niet zoals ik had verwacht: af en toe krijg 
 wss de call-stack of zo die te vol is geworden. Geen goesting om daar naar te zien. :ashamed:
 Ik heb nu gewoon een 2D-array geïmplementeerd, en die werkt fucking vlug, vind ik. Je moet 't maar 's testen nu.
 Ik ga nu nog wa zien naar hoovering en zo, en dan slapen.
+
+------------------
+
+Hoovering werkt nu ook vrij netjes, vind ik.
+Maar als ik op de rechterrand van het canvas wat met de muis beweeg, krijg ik arrayoutofbounce-
+exceptions en ik snap écht niet hoe dat kan gebeuren. Ik controleer daar zelfs twee keer op.
+Nah ja, 't schiet toch mooi op nu, het project. :-D

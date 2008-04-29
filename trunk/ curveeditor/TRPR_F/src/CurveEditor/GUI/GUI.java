@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,7 +26,8 @@ import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements MenuListener, MouseListener {
+public class GUI extends Editor implements MenuListener, MouseListener,
+		MouseMotionListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	private Menu menu;
@@ -59,6 +61,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 		draw = new DrawArea(this.curves, this.selectedCurves,
 				this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
+		draw.addMouseMotionListener(this);
 		screen.add(draw);
 		screen.add(Box.createRigidArea(new Dimension(10, 0)));
 		screen.add(Box.createHorizontalGlue());
@@ -128,6 +131,7 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
+		hooveredCurves.clear();
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Algorithm prev = currentAlgorithm;
 			for (int i = 0; i < selectedCurves.size(); ++i) {
@@ -272,16 +276,35 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 			else if (actionCommand.equals("Select Curve"))
 				changeMode(MODE.SELECT_CURVE);
 
-			// for (int i = 0; i < selectedCurves.size(); ++i) {
-			// Curve c = selectedCurves.get(i);
-			// c.setType(currentAlgorithm.getType());
-			// // Bij Hermiet ( type == 'H' ) is het 2de ingegeven punt
-			// // telkens de tangens. Dus er moet niet getekend worden voordat
-			// // deze is ingegeven
-			// c.clearOutput();
-			// currentAlgorithm.calculateComplete(selectedCurves.get(i));
-			// }
 			draw.repaint();
+		}
+	}
+
+	public void mouseDragged(MouseEvent e) {
+
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
+			boolean repaint = false;
+			if (hooveredCurves.size() > 0) {
+				hooveredCurves.clear();
+				repaint = true;
+			}
+
+			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
+					&& e.getX() < selectionTool2.maxX
+					&& e.getY() < selectionTool2.maxY) {
+				Curve c = this.selectionTool2.searchCurve(new Point(e.getX(), e
+						.getY()));
+				if (c != null) {
+					repaint = true;
+					hooveredCurves.add(c);
+				}
+			}
+
+			if (repaint)
+				draw.repaint();
 		}
 	}
 }
