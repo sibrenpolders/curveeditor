@@ -34,7 +34,10 @@ public class Toolbar extends JToolBar {
 		addSeparator();
 
 		group = new ButtonGroup( );
-		makeToggleButton("normal", "Draw a curve or select a point", "src/CurveEditor/GUI/icons/ganttSelect.png", true );
+		
+		//makeToggleButton("normal", "Draw a curve or select a point", "src/CurveEditor/GUI/icons/ganttSelect.png", true );
+		
+		makeButton("Select Curve", "Select a curve.", "src/CurveEditor/GUI/icons/ganttSelect.png");
 		makeButton("Select Point", "Select a point.", "src/CurveEditor/GUI/icons/ganttSelecttask.png");
 		
 		addSeparator( );

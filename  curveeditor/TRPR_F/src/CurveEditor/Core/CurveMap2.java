@@ -11,7 +11,6 @@ public class CurveMap2 {
 	private static int DEFAULT_SIZE = 25; // lengte van een halve zijde van
 	// een default rechthoekje
 	private boolean[][] onCurve; // houdt bij of een x,y-punt op een curve
-
 	// ligt
 
 	class Region {

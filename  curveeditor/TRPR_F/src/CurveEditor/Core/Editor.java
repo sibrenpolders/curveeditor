@@ -131,6 +131,10 @@ public class Editor {
 		} else if (m == MODE.ADD_INPUT) {
 			selectedPoints.clear();
 			this.mode = m;
+		} else if (m == MODE.SELECT_CURVE || m == MODE.DESELECT_CURVE
+				|| m == MODE.SELECT_CONTROL_POINT || m == MODE.SELECT_CURVE) {
+			deselectAll();
+			this.mode = m;
 		} else {
 			this.mode = m;
 		}

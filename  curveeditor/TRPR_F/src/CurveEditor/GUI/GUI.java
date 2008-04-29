@@ -30,7 +30,6 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 	private Menu menu;
 	private Toolbar toolbar;
 	private Listener listener;
-	private CurveMap2 selectionTool;
 
 	public GUI() {
 		super();
@@ -60,8 +59,6 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
 		screen.add(draw);
-		selectionTool = new CurveMap2(draw.getWidth(), draw.getHeight());
-
 		screen.add(Box.createRigidArea(new Dimension(10, 0)));
 		screen.add(Box.createHorizontalGlue());
 
@@ -69,7 +66,10 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 
 		frame.pack();
 		frame.setVisible(true);
-		testMethod();
+		// testMethod();
+
+		selectionTool = new CurveMap2(600,600);
+
 	}
 
 	public GUI(String filename) {
@@ -90,10 +90,11 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				this.hooveredCurves, this.selectedPoints);
 		draw.addMouseListener(this);
 		contentPane.add(draw);
-		selectionTool = new CurveMap2(draw.getWidth(), draw.getHeight());
 
 		frame.pack();
 		frame.setVisible(true);
+
+		selectionTool = new CurveMap2(draw.getWidth(), draw.getHeight());
 	}
 
 	public void testMethod() {
@@ -136,6 +137,9 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 					this.getAlgorithm(selectedCurves.get(i).getType(),
 							selectedCurves.get(i).getDegree()).calculate(
 							selectedCurves.get(i));
+
+					selectionTool.deleteCurve(c);
+					selectionTool.addCurve(c);
 				}
 
 			}
@@ -262,6 +266,8 @@ public class GUI extends Editor implements MenuListener, MouseListener {
 				changeMode(MODE.NEW_CURVE);
 			else if (actionCommand.equals("Select Point"))
 				changeMode(MODE.SELECT_CONTROL_POINT);
+			else if (actionCommand.equals("Select Curve"))
+				changeMode(MODE.SELECT_CURVE);
 
 			// for (int i = 0; i < selectedCurves.size(); ++i) {
 			// Curve c = selectedCurves.get(i);
