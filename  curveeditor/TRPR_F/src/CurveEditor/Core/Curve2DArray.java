@@ -11,7 +11,7 @@ public class Curve2DArray {
 
 	// houdt bij of een x,y-punt op een curve ligt
 	private Curve[][] curves;
-	private int maxX, maxY;
+	public int maxX, maxY;
 
 	public Curve2DArray(int Maxx, int Maxy) {
 		this.maxX = Maxx;
@@ -31,8 +31,8 @@ public class Curve2DArray {
 		Curve[][] prevCurves = curves;
 		curves = new Curve[Maxx][Maxy];
 
-		for (int x = 0; x <= Maxx; ++x)
-			for (int y = 0; y <= Maxy; ++y)
+		for (int x = 0; x < Maxx; ++x)
+			for (int y = 0; y < Maxy; ++y)
 				curves[x][y] = prevCurves[x][y];
 	}
 
@@ -53,16 +53,15 @@ public class Curve2DArray {
 	}
 
 	public Curve searchCurve(Point p) {
-		for (int i = 0; i <= 3; ++i)
-			for (int j = 0; j <= 3; ++j)
-				if (curves[p.X() + i][p.Y() + j] != null)
-					return curves[p.X() + i][p.Y() + j];
-				else if (curves[p.X() - i][p.Y() + j] != null)
-					return curves[p.X() - i][p.Y() + j];
-				else if (curves[p.X() - i][p.Y() - j] != null)
-					return curves[p.X() - i][p.Y() - j];
-				else if (curves[p.X() - i][p.Y() + j] != null)
-					return curves[p.X() - i][p.Y() + j];
+		int max_x = p.X() + 3 < maxX ? p.X() + 3 : maxX;
+		int min_x = p.X() - 3 >= 0 ? p.X() - 3 : 0;
+		int max_y = p.Y() + 3 < maxY ? p.Y() + 3 : maxY;
+		int min_y = p.Y() - 3 >= 0 ? p.Y() - 3 : 0;
+
+		for (int i = min_x; i <= max_x; ++i)
+			for (int j = min_y; j <= max_y; ++j)
+				if (curves[i][j] != null)
+					return curves[i][j];
 
 		return null;
 	}

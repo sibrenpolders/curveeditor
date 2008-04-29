@@ -102,6 +102,7 @@ public class DrawArea extends JPanel {
 		drawOutput(hooveredCurves, coords, nrs);
 		this.g.setColor(Color.GREEN);
 		drawSelectedPoints(selectedPoints);
+		this.g.setColor(Color.black);
 	}
 
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
