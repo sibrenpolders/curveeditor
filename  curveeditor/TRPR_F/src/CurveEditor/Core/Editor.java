@@ -144,6 +144,87 @@ public class Editor {
 		this.mode = MODE.ADD_INPUT;
 	}
 
+	// haalt curve uit de ene vector en plaatst 'm in de andere
+	// het zoeken zelf gebeurt hier dus _niet_
+	protected void selectCurve(Curve c) {
+		int index = findIndexCurve(c);
+
+		if (index != -1) {
+			selectedCurves.add(curves.get(index));
+			curves.remove(index);
+		}
+	}
+
+	protected Point pickControlPoint(Point p) {
+		if (isSelectedControlPoint(p)) {
+			for (int i = 0; i < selectedCurves.size(); ++i)
+				if (nbSelectedControlPoints(selectedCurves.elementAt(i)) <= 1) {
+					curves.add(selectedCurves.elementAt(i));
+					selectedCurves.remove(i--);
+				}
+
+			deselectControlPoint(p);
+			return null;
+		} else {
+			Point result = null, temp;
+
+			for (int i = 0; i < curves.size(); ++i)
+				if ((temp = curves.elementAt(i).containsInputPoint(p)) != null) {
+					result = temp;
+					selectedCurves.add(curves.elementAt(i));
+					curves.remove(i--);
+				}
+
+			for (int i = 0; i < selectedCurves.size(); ++i)
+				if ((temp = selectedCurves.elementAt(i).containsInputPoint(p)) != null)
+					result = temp;
+
+			if (result != null)
+				selectedPoints.add(result);
+
+			return result;
+		}
+	}
+
+	protected void deselectControlPoint(Point p) {
+		for (int j = 0; j < selectedPoints.size(); ++j)
+			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
+					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
+				selectedPoints.remove(j--);
+	}
+
+	protected boolean isSelectedControlPoint(Point p) {
+		for (int j = 0; j < selectedPoints.size(); ++j)
+			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
+					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
+				return true;
+		return false;
+	}
+
+	protected int nbSelectedControlPoints(Curve c) {
+		int result = 0;
+		for (int i = 0; i < c.getNbInputPoints(); ++i)
+			for (int j = 0; j < selectedPoints.size(); ++j)
+				if (c.containsInputPoint(selectedPoints.elementAt(j)) != null)
+					++result;
+
+		return result;
+	}
+
+	protected void translateSelectedControlPoints(int x, int y) {
+		int index;
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			for (int j = 0; j < selectedPoints.size(); ++j)
+				if ((index = selectedCurves.elementAt(i).containsInputPointi(
+						selectedPoints.elementAt(j))) != -1) {
+					selectedCurves.elementAt(i).getInput().elementAt(index)
+							.setX(x);
+					selectedCurves.elementAt(i).getInput().elementAt(index)
+							.setY(y);
+				}
+		}
+	}
+
 	protected void deselectAllCurves() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
 			curves.add(selectedCurves.get(i));
@@ -192,17 +273,6 @@ public class Editor {
 		if (index != -1) {
 			curves.add(selectedCurves.get(index));
 			selectedCurves.remove(index);
-		}
-	}
-
-	// haalt curve uit de ene vector en plaatst 'm in de andere
-	// het zoeken zelf gebeurt hier dus _niet_
-	protected void selectCurve(Curve c) {
-		int index = findIndexCurve(c);
-
-		if (index != -1) {
-			selectedCurves.add(curves.get(index));
-			curves.remove(index);
 		}
 	}
 }

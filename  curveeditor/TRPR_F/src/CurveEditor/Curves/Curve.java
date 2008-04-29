@@ -93,12 +93,20 @@ public class Curve {
 
 	// lineair zoeken --> normaal gebruik: niet al teveel inputpunten, dus niet
 	// zó van belang
-	public boolean containsInputPoint(Point p) {
+	public Point containsInputPoint(Point p) {
 		for (int i = 0; i < input.size(); ++i)
 			if (Math.abs(input.elementAt(i).X() - p.X()) <= 3
 					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= 3)
-				return true;
-		return false;
+				return input.elementAt(i);
+		return null;
+	}
+	
+	public int containsInputPointi(Point p) {
+		for (int i = 0; i < input.size(); ++i)
+			if (Math.abs(input.elementAt(i).X() - p.X()) <= 3
+					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= 3)
+				return i;
+		return -1;
 	}
 
 	// de aangemaakte curve krijgt de eigenschappen van de eerste curve en AL de
