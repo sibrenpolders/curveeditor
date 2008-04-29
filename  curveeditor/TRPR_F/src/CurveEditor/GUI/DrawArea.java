@@ -29,6 +29,18 @@ public class DrawArea extends JPanel {
 	private Vector<Point> selectedPoints;
 	private Graphics g;
 
+	public boolean coords() {
+		return coords;
+	}
+
+	public boolean nrs() {
+		return nrs;
+	}
+
+	public boolean tangents() {
+		return tangents;
+	}
+
 	public DrawArea(Vector<Curve> curves, Vector<Curve> selectedCurves,
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints) {
 		reset(curves, selectedCurves, hooveredCurves, selectedPoints, true,
@@ -125,13 +137,14 @@ public class DrawArea extends JPanel {
 					g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(j + 1)
 							.X(), vip.get(j + 1).Y());
 				}
-			} else if (curves.get(i).getType() == 'B' && curves.get(i).getDegree() == 3) {
+			} else if (curves.get(i).getType() == 'B'
+					&& curves.get(i).getDegree() == 3) {
 				for (int j = 0; j < vip.size(); j = j + 3) {
 					if (j + 1 < vip.size())
-					g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(j + 1)
-							.X(), vip.get(j + 1).Y());
-					if (j -1 >= 0)
-						g.drawLine(vip.get(j -1).X(), vip.get(j -1).Y(), vip
+						g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(
+								j + 1).X(), vip.get(j + 1).Y());
+					if (j - 1 >= 0)
+						g.drawLine(vip.get(j - 1).X(), vip.get(j - 1).Y(), vip
 								.get(j).X(), vip.get(j).Y());
 				}
 			}

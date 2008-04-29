@@ -2,7 +2,6 @@ package CurveEditor.Core;
 
 import CurveEditor.Curves.Point;
 import CurveEditor.Curves.Curve;
-import CurveEditor.Curves.Point3D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,8 +31,8 @@ public class FileIO extends DefaultHandler {
 	private String tempVal;
 	private Vector<Curve> curves;
 	private Curve curve;
-	private Point3D point;
 	private int dimension;
+	private Point point;
 	
 	public String getCurrentFilename(){
 		return currentFilename;
@@ -162,7 +161,7 @@ public class FileIO extends DefaultHandler {
 			curve = new Curve();			
 		}
 		else if ( qName.equalsIgnoreCase("Point") ) {
-			point = new Point3D();
+			point = new Point();
 			dimension = (2 == Integer.parseInt(attributes.getValue("dim")))? 2 : 3;
 		}
 	}
@@ -200,8 +199,8 @@ public class FileIO extends DefaultHandler {
 		else if (qName.equalsIgnoreCase("Y"))
 			point.setY(Integer.parseInt(tempVal));
 		
-		else if (qName.equalsIgnoreCase("Z"))
-			point.setZ(Integer.parseInt(tempVal));
+//		else if (qName.equalsIgnoreCase("Z"))
+//			point.setZ(Integer.parseInt(tempVal));
 	}
 	
 	

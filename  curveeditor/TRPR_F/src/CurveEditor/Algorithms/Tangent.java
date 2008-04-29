@@ -265,7 +265,7 @@ public class Tangent {
 
 	// ab = raakvector 1, b = controlepunt
 	// result = punt voor geldige raakvector 2 voor C1
-	private Point tangent2C1_(Point a, Point b) {
+	public Point tangent2C1_(Point a, Point b) {
 		Point temp = b.times(2.0);
 		temp = temp.minus(a);
 

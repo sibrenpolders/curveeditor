@@ -2,6 +2,9 @@ package CurveEditor.Curves;
 
 import java.util.Vector;
 
+import CurveEditor.Algorithms.Algorithm;
+import CurveEditor.Algorithms.Tangent;
+
 //interpolatiepunten worden berekend vanuit Editor
 public class Curve {
 	// de controlepunten, volgorde is belangrijk !!!
@@ -86,5 +89,93 @@ public class Curve {
 
 	public void setType(char t) {
 		this.type = t;
+	}
+
+	// lineair zoeken --> normaal gebruik: niet al teveel inputpunten, dus niet
+	// zó van belang
+	public boolean containsInputPoint(Point p) {
+		for (int i = 0; i < input.size(); ++i)
+			if (Math.abs(input.elementAt(i).X() - p.X()) <= 3
+					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= 3)
+				return true;
+		return false;
+	}
+
+	// de aangemaakte curve krijgt de eigenschappen van de eerste curve en AL de
+	// inputpunten van de twee curves; zeer basic en dus niet echt goed
+	public static Curve connectNoExtraPoint(Curve c1, Curve c2) {
+		Curve result = new Curve(c1.getType(), c1.getDegree());
+		result.input.addAll(c1.input);
+		result.input.addAll(c2.input);
+
+		return result;
+	}
+
+	// de aangemaakte curve krijgt de eigenschappen van de eerste curve en de
+	// inputpunten van de twee curves, laatste van c1 en eerste van c2 vallen
+	// samen, c2 wordt richting c1 verschoven
+	public static Curve connectC0(Curve c1, Curve c2) {
+		Curve result = new Curve(c1.getType(), c1.getDegree());
+
+		if (c1.type == 'B') {
+			for (int i = 0; i + 3 < c1.input.size(); i += 3) {
+				if (i == 0)
+					result.addInput(c1.input.elementAt(i));
+				result.addInput(c1.input.elementAt(i + 1));
+				result.addInput(c1.input.elementAt(i + 2));
+				result.addInput(c1.input.elementAt(i + 3));
+			}
+
+			Point prevCtrl = result.input.lastElement();
+			Point prevTngnt = result.input.elementAt(result.input.size() - 2);
+
+			Point first;
+			int diffX = 0, diffY = 0;
+			for (int i = 0; i < c2.getNbInputPoints(); ++i) {
+				if (i == 0) {
+					first = c2.input.elementAt(i);
+					diffX = prevCtrl.X() - first.X();
+					diffY = prevCtrl.Y() - first.Y();
+
+					Point nextTngnt = new Tangent().tangent2C1_(prevTngnt,
+							prevCtrl);
+					result.addInput(nextTngnt);
+					++i;
+				}
+
+				if (i < c2.getNbInputPoints())
+					result.addInput(new Point(
+							c2.input.elementAt(i).X() - diffX, c2.input
+									.elementAt(i).Y()
+									- diffY));
+
+			}
+
+		} else {
+			for (int i = 0; i + 1 < c2.input.size(); i += 2) {
+				result.addInput(c1.input.elementAt(i));
+				result.addInput(c1.input.elementAt(i + 1));
+			}
+
+			Point prevCtrl = result.input.elementAt(result.input.size() - 2);
+			Point first;
+			int diffX = 0, diffY = 0;
+
+			for (int i = 0; i < c2.getNbInputPoints(); ++i) {
+				if (i == 0) {
+					first = c2.input.elementAt(i);
+					diffX = prevCtrl.X() - first.X();
+					diffY = prevCtrl.Y() - first.Y();
+					i += 2;
+				}
+				if (i < c2.getNbInputPoints())
+					result.addInput(new Point(
+							c2.input.elementAt(i).X() - diffX, c2.input
+									.elementAt(i).Y()
+									- diffY));
+			}
+		}
+
+		return result;
 	}
 }
