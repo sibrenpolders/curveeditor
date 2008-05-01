@@ -39,7 +39,9 @@ public class Curve2DArray {
 	public void addCurve(Curve c) {
 		for (int i = 0; i < c.getOutput().size(); ++i)
 			if (c.getOutput().elementAt(i).X() < maxX
-					&& c.getOutput().elementAt(i).Y() < maxY)
+					&& c.getOutput().elementAt(i).Y() < maxY
+					&& c.getOutput().elementAt(i).Y() >= 0
+					&& c.getOutput().elementAt(i).X() >= 0)
 				curves[c.getOutput().elementAt(i).X()][c.getOutput().elementAt(
 						i).Y()] = c;
 	}
@@ -47,7 +49,9 @@ public class Curve2DArray {
 	public void deleteCurve(Curve c) {
 		for (int i = 0; i < c.getOutput().size(); ++i)
 			if (c.getOutput().elementAt(i).X() < maxX
-					&& c.getOutput().elementAt(i).Y() < maxY)
+					&& c.getOutput().elementAt(i).Y() < maxY
+					&& c.getOutput().elementAt(i).Y() >= 0
+					&& c.getOutput().elementAt(i).X() >= 0)
 				curves[c.getOutput().elementAt(i).X()][c.getOutput().elementAt(
 						i).Y()] = null;
 	}
