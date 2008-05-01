@@ -157,6 +157,11 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 	public void mouseExited(MouseEvent arg0) {
 		draw.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
+			hooveredCurves.clear();
+			hooveredPoints.clear();
+			draw.repaint();
+		}
 	}
 
 	public void mousePressed(MouseEvent e) {
