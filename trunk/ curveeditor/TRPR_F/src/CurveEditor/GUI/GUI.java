@@ -59,7 +59,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		screen.add(choice);
 
 		draw = new DrawArea(this.curves, this.selectedCurves,
-				this.hooveredCurves, this.selectedPoints);
+				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
 		draw.addMouseMotionListener(this);
 		screen.add(draw);
@@ -70,10 +70,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 		frame.pack();
 		frame.setVisible(true);
-		// testMethod();
 
-		selectionTool = new CurveHashMap(600, 600);
-		selectionTool2 = new Curve2DArray(600, 600);
+		selectionTool = new Curve2DArray(600, 600);
 
 	}
 
@@ -92,30 +90,14 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		contentPane.add(menu);
 
 		draw = new DrawArea(this.curves, this.selectedCurves,
-				this.hooveredCurves, this.selectedPoints);
+				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
 		contentPane.add(draw);
 
 		frame.pack();
 		frame.setVisible(true);
 
-		selectionTool = new CurveHashMap(draw.getWidth(), draw.getHeight());
-		selectionTool2 = new Curve2DArray(600, 600);
-	}
-
-	public void testMethod() {
-		setCurrentAlgorithm('H', (short) 1);
-		selectedCurves.add(new Curve(currentAlgorithm.getType(),
-				currentAlgorithm.getDegree()));
-		selectedCurves.get(0).addInput(new Point(0, 0));
-
-		getAlgorithm(selectedCurves.get(0).getType(),
-				selectedCurves.get(0).getDegree()).calculate(
-				selectedCurves.get(0));
-
-		draw.repaint();
-
-		changeMode(MODE.ADD_INPUT);
+		selectionTool = new Curve2DArray(600, 600);
 	}
 
 	public void menuCanceled(MenuEvent arg0) {
@@ -132,6 +114,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 	public void mouseClicked(MouseEvent e) {
 		hooveredCurves.clear();
+		hooveredPoints.clear();
+
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Algorithm prev = currentAlgorithm;
 			for (int i = 0; i < selectedCurves.size(); ++i) {
@@ -145,8 +129,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 							selectedCurves.get(i).getDegree()).calculate(
 							selectedCurves.get(i));
 
-					selectionTool2.deleteCurve(c);
-					selectionTool2.addCurve(c);
+					selectionTool.deleteCurve(c);
+					selectionTool.addCurve(c);
 				}
 
 			}
@@ -181,6 +165,54 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 	public void mouseReleased(MouseEvent e) {
 
+	}
+
+	public void mouseDragged(MouseEvent e) {
+
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
+			boolean repaint = false;
+			if (hooveredCurves.size() > 0) {
+				hooveredCurves.clear();
+				repaint = true;
+			}
+
+			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
+					&& e.getX() < selectionTool.maxX
+					&& e.getY() < selectionTool.maxY) {
+				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e
+						.getY()));
+				if (c != null) {
+					repaint = true;
+					hooveredCurves.add(c);
+				}
+			}
+
+			if (repaint)
+				draw.repaint();
+		} else if (mode == MODE.DESELECT_CONTROL_POINT
+				|| mode == MODE.SELECT_CONTROL_POINT) {
+			boolean repaint = false;
+			if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
+				hooveredCurves.clear();
+				hooveredPoints.clear();
+				repaint = true;
+			}
+
+			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
+					&& e.getX() < selectionTool.maxX
+					&& e.getY() < selectionTool.maxY) {
+				Point p = hooverPoint(new Point(e.getX(), e.getY()));
+				if (p != null) {
+					repaint = true;
+				}
+			}
+
+			if (repaint)
+				draw.repaint();
+		}
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -219,8 +251,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 	private void newFile() {
 		reset();
-		draw.reset(curves, selectedCurves, hooveredCurves, selectedPoints,
-				true, true, true);
+		draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
+				hooveredPoints, true, true, true);
 	}
 
 	private boolean toggleCoords() {
@@ -277,34 +309,6 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				changeMode(MODE.SELECT_CURVE);
 
 			draw.repaint();
-		}
-	}
-
-	public void mouseDragged(MouseEvent e) {
-
-	}
-
-	public void mouseMoved(MouseEvent e) {
-		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
-			boolean repaint = false;
-			if (hooveredCurves.size() > 0) {
-				hooveredCurves.clear();
-				repaint = true;
-			}
-
-			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
-					&& e.getX() < selectionTool2.maxX
-					&& e.getY() < selectionTool2.maxY) {
-				Curve c = this.selectionTool2.searchCurve(new Point(e.getX(), e
-						.getY()));
-				if (c != null) {
-					repaint = true;
-					hooveredCurves.add(c);
-				}
-			}
-
-			if (repaint)
-				draw.repaint();
 		}
 	}
 }

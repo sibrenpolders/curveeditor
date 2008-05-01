@@ -24,6 +24,8 @@ public class Editor {
 	// geselecteerde controlepunten --> kunnen verplaatst worden; curves die dit
 	// punt als controlepunt gebruiken, moeten in selectedCurves staan
 	protected Vector<Point> selectedPoints;
+	// punten die onder de cursor staan
+	protected Vector<Point> hooveredPoints;
 	// algorithm dat momenteel geselecteerd is; verandert men dit, dan wordt dit
 	// autom. verandert voor elke selectedCurve
 	protected Algorithm currentAlgorithm;
@@ -31,8 +33,7 @@ public class Editor {
 	protected FileIO file;
 	// datastructuur die kan gebruikt worden om na te gaan op welke curve
 	// geklikt is
-	protected CurveHashMap selectionTool;
-	protected Curve2DArray selectionTool2;
+	protected Curve2DArray selectionTool;
 
 	public Editor(String filename) {
 		init();
@@ -53,6 +54,7 @@ public class Editor {
 		selectedCurves = new Vector<Curve>();
 		hooveredCurves = new Vector<Curve>();
 		selectedPoints = new Vector<Point>();
+		hooveredPoints = new Vector<Point>();
 
 		// Hier moeten alle geïmplementeerde algoritmes ingegeven worden.
 		algorithms.add(new Linear((short) 1)); // 'L'
@@ -67,7 +69,6 @@ public class Editor {
 		// afmetingen van het canvas zijn nodig om een datastructuur aan te
 		// maken --> aanmaken in een subklasse
 		selectionTool = null;
-		selectionTool2 = null;
 	}
 
 	protected void reset() {
@@ -77,6 +78,7 @@ public class Editor {
 		selectedCurves.clear();
 		hooveredCurves.clear();
 		selectedPoints.clear();
+		hooveredPoints.clear();
 	}
 
 	// algoritme zoeken a.h.v. het type en de orde
@@ -142,19 +144,19 @@ public class Editor {
 		}
 	}
 
+	protected void startNewCurve() {
+		deselectAll();
+		selectedCurves.add(new Curve(currentAlgorithm.getType(),
+				currentAlgorithm.getDegree()));
+		this.mode = MODE.ADD_INPUT;
+	}
+
 	protected void deselectAll() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
 			curves.add(selectedCurves.get(i));
 
 		selectedCurves.clear();
 		selectedPoints.clear();
-	}
-
-	protected void startNewCurve() {
-		deselectAll();
-		selectedCurves.add(new Curve(currentAlgorithm.getType(),
-				currentAlgorithm.getDegree()));
-		this.mode = MODE.ADD_INPUT;
 	}
 
 	// haalt curve uit de ene vector en plaatst 'm in de andere
@@ -165,6 +167,15 @@ public class Editor {
 		if (index != -1) {
 			selectedCurves.add(curves.get(index));
 			curves.remove(index);
+		}
+	}
+
+	protected void deselectCurve(Curve c) {
+		int index = findIndexSelectedCurve(c);
+
+		if (index != -1) {
+			curves.add(selectedCurves.get(index));
+			selectedCurves.remove(index);
 		}
 	}
 
@@ -179,6 +190,52 @@ public class Editor {
 		for (int i = 0; i < hooveredCurves.size(); ++i)
 			if (hooveredCurves.elementAt(i).equals(c))
 				hooveredCurves.remove(i--);
+	}
+
+	protected Point hooverPoint(Point p) {
+		boolean ok = false;
+
+		for (int i = 0; i < curves.size(); ++i)
+			if (curves.elementAt(i).containsInputPoint(p) != null) {
+				ok = true;
+				hooveredCurves.add(curves.elementAt(i));
+			}
+
+		for (int i = 0; i < selectedCurves.size(); ++i)
+			if (selectedCurves.elementAt(i).containsInputPoint(p) != null) {
+				ok = true;
+				hooveredCurves.add(selectedCurves.elementAt(i));
+			}
+
+		if (ok) {
+			hooveredPoints.add(p);
+			return p;
+		} else
+			return null;
+	}
+
+	protected void deselectControlPoint(Point p) {
+		for (int j = 0; j < selectedPoints.size(); ++j)
+			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
+					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
+				selectedPoints.remove(j--);
+	}
+
+	protected boolean isSelectedControlPoint(Point p) {
+		for (int j = 0; j < selectedPoints.size(); ++j)
+			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
+					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
+				return true;
+		return false;
+	}
+
+	protected int nbSelectedControlPoints(Curve c) {
+		int result = 0;
+		for (int j = 0; j < selectedPoints.size(); ++j)
+			if (c.containsInputPoint(selectedPoints.elementAt(j)) != null)
+				++result;
+
+		return result;
 	}
 
 	protected Point pickControlPoint(Point p) {
@@ -221,7 +278,7 @@ public class Editor {
 	}
 
 	protected Curve pickCurve(Point p) {
-		Curve c = this.selectionTool2.searchCurve(p);
+		Curve c = this.selectionTool.searchCurve(p);
 
 		if (c == null)
 			return null;
@@ -240,30 +297,6 @@ public class Editor {
 			if (selectedCurves.elementAt(j).equals(c))
 				return true;
 		return false;
-	}
-
-	protected void deselectControlPoint(Point p) {
-		for (int j = 0; j < selectedPoints.size(); ++j)
-			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
-					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
-				selectedPoints.remove(j--);
-	}
-
-	protected boolean isSelectedControlPoint(Point p) {
-		for (int j = 0; j < selectedPoints.size(); ++j)
-			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
-					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
-				return true;
-		return false;
-	}
-
-	protected int nbSelectedControlPoints(Curve c) {
-		int result = 0;
-		for (int j = 0; j < selectedPoints.size(); ++j)
-			if (c.containsInputPoint(selectedPoints.elementAt(j)) != null)
-				++result;
-
-		return result;
 	}
 
 	protected void translateSelectedControlPoints(int x, int y) {
@@ -320,14 +353,5 @@ public class Editor {
 			return --index;
 		else
 			return -1;
-	}
-
-	protected void deselectCurve(Curve c) {
-		int index = findIndexSelectedCurve(c);
-
-		if (index != -1) {
-			curves.add(selectedCurves.get(index));
-			selectedCurves.remove(index);
-		}
 	}
 }
