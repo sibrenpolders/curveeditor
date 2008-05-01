@@ -4,22 +4,26 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Vector;
-
 import javax.swing.JPanel;
-
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class DrawArea extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 
 	// Dimensies van het tekencanvas.
 	// Voorlopig vast gekozen, nadien kijken of dit at runtime correct kan
 	// veranderd worden
 	private static int FRAMEWIDTH = 600;
 	private static int FRAMEHEIGHT = 600;
+	private static int CONTROLPOINTWIDTH = 2;
+	private static int HOOVEREDCURVEWIDTH = 1;
+	private static int DEFAULTCURVEWIDTH = 0;
 
 	private int frameWidth = FRAMEWIDTH;
 	private int frameHeight = FRAMEHEIGHT;
+	private int curveWidth = DEFAULTCURVEWIDTH;
 	private boolean coords;
 	private boolean nrs;
 	private boolean tangents;
@@ -27,7 +31,35 @@ public class DrawArea extends JPanel {
 	private Vector<Curve> selectedCurves;
 	private Vector<Curve> hooveredCurves;
 	private Vector<Point> selectedPoints;
+	private Vector<Point> hooveredPoints;
 	private Graphics g;
+
+	public DrawArea(Vector<Curve> curves, Vector<Curve> selectedCurves,
+			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
+			Vector<Point> hooveredPoints) {
+		init(curves, selectedCurves, hooveredCurves, selectedPoints,
+				hooveredPoints, true, true, true);
+	}
+
+	public void init(Vector<Curve> curves, Vector<Curve> selectedCurves,
+			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
+			Vector<Point> hooveredPoints, boolean coords, boolean nrs,
+			boolean tangents) {
+		setPreferredSize(new Dimension(FRAMEWIDTH, FRAMEHEIGHT));
+		setBackground(new Color(255, 255, 255));
+
+		this.curves = curves;
+		this.selectedCurves = selectedCurves;
+		this.hooveredCurves = hooveredCurves;
+		this.selectedPoints = selectedPoints;
+		this.hooveredPoints = hooveredPoints;
+
+		this.coords = coords;
+		this.nrs = nrs;
+		this.tangents = tangents;
+
+		this.repaint();
+	}
 
 	public boolean coords() {
 		return coords;
@@ -39,30 +71,6 @@ public class DrawArea extends JPanel {
 
 	public boolean tangents() {
 		return tangents;
-	}
-
-	public DrawArea(Vector<Curve> curves, Vector<Curve> selectedCurves,
-			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints) {
-		reset(curves, selectedCurves, hooveredCurves, selectedPoints, true,
-				true, true);
-	}
-
-	public void reset(Vector<Curve> curves, Vector<Curve> selectedCurves,
-			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
-			boolean coords, boolean nrs, boolean tangents) {
-		setPreferredSize(new Dimension(FRAMEWIDTH, FRAMEHEIGHT));
-		setBackground(new Color(255, 255, 255));
-
-		this.curves = curves;
-		this.selectedCurves = selectedCurves;
-		this.hooveredCurves = hooveredCurves;
-		this.selectedPoints = selectedPoints;
-
-		this.coords = coords;
-		this.nrs = nrs;
-		this.tangents = tangents;
-
-		this.repaint();
 	}
 
 	public void toggleCoords() {
@@ -89,34 +97,65 @@ public class DrawArea extends JPanel {
 
 		emptyField();
 
-		this.g.setColor(Color.black);
+		this.g.setColor(Color.BLACK);
 		this.drawOutput(curves, false, false);
-		this.g.setColor(Color.red);
+		this.g.setColor(Color.RED);
 		drawOutput(selectedCurves, coords, nrs);
 		if (tangents) {
-			this.g.setColor(Color.blue);
+			this.g.setColor(Color.BLUE);
 			drawTangents(selectedCurves);
-			drawTangents(hooveredCurves);
 		}
-		this.g.setColor(Color.magenta);
-		drawOutput(hooveredCurves, coords, nrs);
+
 		this.g.setColor(Color.GREEN);
 		drawSelectedPoints(selectedPoints);
-		this.g.setColor(Color.black);
+		this.g.setColor(Color.BLACK);
+
+		this.g.setColor(Color.magenta);
+		this.curveWidth = HOOVEREDCURVEWIDTH;
+		drawOutput(hooveredCurves, false, false);
+		this.curveWidth = DEFAULTCURVEWIDTH;
+
+		this.g.setColor(Color.YELLOW);
+		drawSelectedPoints(hooveredPoints);
+		this.g.setColor(Color.BLACK);
+	}
+
+	public void emptyField() {
+		g.clipRect(0, 0, frameWidth, frameHeight);
+		g.setColor(Color.white);
+		g.fillRect(0, 0, frameWidth, frameHeight);
+		g.setColor(Color.black);
 	}
 
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
 		for (int i = 0; i < curves.size(); ++i) {
 			// de outputpunten uittekenen
-			for (int j = 0; j < curves.get(i).getOutput().size(); ++j)
+			for (int j = 0; j < curves.get(i).getOutput().size(); ++j) {
 				g.drawLine(curves.get(i).getOutput().get(j).X(), curves.get(i)
 						.getOutput().get(j).Y(), curves.get(i).getOutput().get(
 						j).X(), curves.get(i).getOutput().get(j).Y());
 
+				if (curveWidth != 0) {
+					for (int k = 1; k <= curveWidth; ++k) {
+						g.drawLine(curves.get(i).getOutput().get(j).X(), curves
+								.get(i).getOutput().get(j).Y()
+								+ k, curves.get(i).getOutput().get(j).X(),
+								curves.get(i).getOutput().get(j).Y() + k);
+						g.drawLine(curves.get(i).getOutput().get(j).X(), curves
+								.get(i).getOutput().get(j).Y()
+								- k, curves.get(i).getOutput().get(j).X(),
+								curves.get(i).getOutput().get(j).Y() - k);
+					}
+				}
+			}
+
 			// de controlepunten uittekenen
 			for (int j = 0; j < curves.get(i).getInput().size(); ++j) {
-				g.fillRect(curves.get(i).getInput().get(j).X() - 2, curves.get(
-						i).getInput().get(j).Y() - 2, 5, 5);
+				g.fillRect(curves.get(i).getInput().get(j).X()
+						- CONTROLPOINTWIDTH, curves.get(i).getInput().get(j)
+						.Y()
+						- CONTROLPOINTWIDTH, 2 * CONTROLPOINTWIDTH + 1,
+						2 * CONTROLPOINTWIDTH + 1);
 
 				if (coords)
 					g.drawString(curves.get(i).getInput().get(j).X() + ", "
@@ -156,7 +195,9 @@ public class DrawArea extends JPanel {
 
 	private void drawSelectedPoints(Vector<Point> v) {
 		for (int j = 0; j < v.size(); ++j) {
-			g.fillRect(v.get(j).X() - 3, v.get(j).Y() - 3, 7, 7);
+			g.fillRect(v.get(j).X() - (CONTROLPOINTWIDTH + 1), v.get(j).Y()
+					- (CONTROLPOINTWIDTH + 1), 2 * (CONTROLPOINTWIDTH + 1) + 1,
+					2 * (CONTROLPOINTWIDTH + 1) + 1);
 		}
 	}
 
@@ -172,12 +213,5 @@ public class DrawArea extends JPanel {
 
 	public int height() {
 		return this.getHeight();
-	}
-
-	public void emptyField() {
-		g.clipRect(0, 0, frameWidth, frameHeight);
-		g.setColor(Color.white);
-		g.fillRect(0, 0, frameWidth, frameHeight);
-		g.setColor(Color.black);
 	}
 }
