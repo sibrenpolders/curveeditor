@@ -65,6 +65,7 @@ Werkt nog niet fatsoenlijk, en de gewone click-events zijn nu ook niet meer zo g
 ga der dus nog wat aan moeten tunen.
 
 ------------------
+
 Tweede versie werkt _ietsje_ vlotter, 't is vooral bij controlepuntselectie dat het ding hapert.
 Ik heb al een datastructuur ineengebokst dat dat wat zou moeten opvangen, en dat gaat wel iets vlotter, maar 't is nog
 altijd niet zoals het hoort.
@@ -78,6 +79,7 @@ Ah ja, kun je 't 's misschien testen op vlotheid bij u ?
 Enkel curveselectie hé, controlepunten werkt zelfs bij mij niet goed, dus ja... .
 
 ------------------
+
 Who's tha man ! I'm tha man ! :party:
 
 ControlPointSlection met dragging werkt nu ook lekker vlotjes bij mij. 
@@ -86,3 +88,19 @@ En 't toevoegen van nieuwe controlepunten is niet merkbaar trager geworden hier.
 Kun jij 't dan ook eens testen ?
 
 Nu alleen nog de click-selectie terug tegoei zien te krijgen.
+
+-------------------
+
+Code debuggen die met hooveren te maken heeft is NIE simpel ! :-p
+Als je u geroepen voelt, mag je van mij de fout proberen te zoeken.
+
+'t Zit zo, je hoovert wat rond en als je boven een curve/controlepunt komt, licht dat ding op.
+Leuk allemaal, maar ik wil als ik dan klik die curve/controlepunt ook selecteren. En dat lukt niet,
+ik moet immers twee keer klikken.
+Ergens tussen het mousemove- en mouseclicked-event wordt die curve of controlepunt in de vector
+selectedCurves gezet, dat heb ik al kunnen vinden. Eenmaal klikken deselecteert die curve dan
+natuurlijk, met als gevolg dat er eigenlijk niks verandert. De curve zou juist in selectedCurves
+moeten geplaatst i.p.v. eruit gehaald worden. 
+Maar ik heb tot nu toe nog niet gevonden waar in de code die curve in die vector wordt gestoken.
+
+Nu ff wat ander dingen implementeren, ben dat selectiontooltje 'n beetje kotsbeu gezien. :-p

@@ -271,8 +271,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 							for (int i = 0; i < temp2.size(); ++i) {
 								boolean found = false;
 								for (int k = 0; k < hooveredCurves.size(); ++k) {
-									if (hooveredCurves.elementAt(i).equals(
-											temp2.elementAt(k)))
+									if (hooveredCurves.elementAt(k).equals(
+											temp2.elementAt(i)))
 										found = true;
 								}
 

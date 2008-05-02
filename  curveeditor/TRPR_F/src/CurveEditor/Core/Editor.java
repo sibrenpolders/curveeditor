@@ -12,6 +12,8 @@ public class Editor {
 		NONE, ADD_INPUT, SELECT_CURVE, SELECT_CONTROL_POINT, DESELECT_CURVE, DESELECT_CONTROL_POINT, DESELECT_ALL, NEW_CURVE
 	};
 
+	protected static short SEARCH_RANGE = 3;
+
 	protected MODE mode;
 	protected Vector<Algorithm> algorithms;
 	protected Vector<Tool> tools; // voorlopig niet gebruiken
@@ -193,38 +195,41 @@ public class Editor {
 	}
 
 	protected Point hooverPoint(Point p) {
-		boolean ok = false;
+		Vector<Point> temp = selectionTool.searchControlPoint(p);
+		if (temp != null && temp.size() > 0) {
+			for (int i = 0; i < temp.size(); ++i) {
+				hooveredPoints.add(temp.elementAt(i));
+				Vector<Curve> temp2 = selectionTool
+						.searchCurvesByControlPoint(temp.elementAt(i));
+				for (int j = 0; j < temp2.size(); ++j) {
+					boolean found = false;
+					for (int k = 0; k < hooveredCurves.size(); ++k) {
+						if (hooveredCurves.elementAt(k).equals(
+								temp2.elementAt(j)))
+							found = true;
+					}
 
-		for (int i = 0; i < curves.size(); ++i)
-			if (curves.elementAt(i).containsInputPoint(p) != null) {
-				ok = true;
-				hooveredCurves.add(curves.elementAt(i));
+					if (!found)
+						hooveredCurves.add(temp2.elementAt(i));
+
+				}
 			}
-
-		for (int i = 0; i < selectedCurves.size(); ++i)
-			if (selectedCurves.elementAt(i).containsInputPoint(p) != null) {
-				ok = true;
-				hooveredCurves.add(selectedCurves.elementAt(i));
-			}
-
-		if (ok) {
-			hooveredPoints.add(p);
-			return p;
+			return temp.elementAt(0);
 		} else
 			return null;
 	}
 
 	protected void deselectControlPoint(Point p) {
 		for (int j = 0; j < selectedPoints.size(); ++j)
-			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
-					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
+			if (selectedPoints.elementAt(j).X() == p.X()
+					&& selectedPoints.elementAt(j).Y() == p.Y())
 				selectedPoints.remove(j--);
 	}
 
 	protected boolean isSelectedControlPoint(Point p) {
 		for (int j = 0; j < selectedPoints.size(); ++j)
-			if (Math.abs(selectedPoints.elementAt(j).X() - p.X()) <= 3
-					&& Math.abs(selectedPoints.elementAt(j).Y() - p.Y()) <= 3)
+			if (selectedPoints.elementAt(j).X() == p.X()
+					&& selectedPoints.elementAt(j).Y() == p.Y())
 				return true;
 		return false;
 	}
@@ -239,42 +244,32 @@ public class Editor {
 	}
 
 	protected Point pickControlPoint(Point p) {
+		Point result = null;
+
+		Vector<Point> temp = selectionTool.searchControlPoint(p);
+		for (int i = 0; i < temp.size(); ++i) {
+			result = temp.elementAt(0);
+
+			if (isSelectedControlPoint(temp.elementAt(i)))
+				deselectControlPoint(temp.elementAt(i));
+			else {
+				selectedPoints.add(temp.elementAt(i));
+				for (int j = 0; j < curves.size(); ++j)
+					if (curves.elementAt(j).containsInputPoint(
+							temp.elementAt(i)) != null) {
+						selectedCurves.add(curves.elementAt(j));
+						curves.remove(j--);
+					}
+			}
+		}
+
 		for (int i = 0; i < selectedCurves.size(); ++i)
 			if (nbSelectedControlPoints(selectedCurves.elementAt(i)) == 0) {
 				curves.add(selectedCurves.elementAt(i));
 				selectedCurves.remove(i--);
 			}
 
-		if (isSelectedControlPoint(p)) {
-			for (int i = 0; i < selectedCurves.size(); ++i)
-				if (nbSelectedControlPoints(selectedCurves.elementAt(i)) <= 1
-						&& selectedCurves.elementAt(i).containsInputPoint(p) != null) {
-					curves.add(selectedCurves.elementAt(i));
-					selectedCurves.remove(i--);
-				}
-
-			deselectControlPoint(p);
-			return p;
-		} else {
-			boolean ok = false;
-
-			for (int i = 0; i < curves.size(); ++i)
-				if (curves.elementAt(i).containsInputPoint(p) != null) {
-					ok = true;
-					selectedCurves.add(curves.elementAt(i));
-					curves.remove(i--);
-				}
-
-			for (int i = 0; i < selectedCurves.size(); ++i)
-				if (selectedCurves.elementAt(i).containsInputPoint(p) != null)
-					ok = true;
-
-			if (ok) {
-				selectedPoints.add(p);
-				return p;
-			} else
-				return null;
-		}
+		return result;
 	}
 
 	protected Curve pickCurve(Point p) {

@@ -6,7 +6,7 @@ import CurveEditor.Curves.Point;
 
 public class CurveContainer {
 
-	public static short SEARCH_RANGE = 3;
+	private static short SEARCH_RANGE = 3;
 	// houdt bij of een x,y-punt op een curve ligt
 	private Curve[][] curves;
 	private Vector<Curve>[][] controlPoints;
