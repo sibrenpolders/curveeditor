@@ -3,13 +3,13 @@ package CurveEditor.Core;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class Curve2DArray {
+public final class CurveContainer2D {
 
 	// houdt bij of een x,y-punt op een curve ligt
 	private Curve[][] curves;
 	public int maxX, maxY;
 
-	public Curve2DArray(int Maxx, int Maxy) {
+	public CurveContainer2D(int Maxx, int Maxy) {
 		this.maxX = Maxx;
 		this.maxY = Maxy;
 
