@@ -17,51 +17,70 @@ public class Toolbar extends JToolBar {
 	private JButton button;
 	private JToggleButton toggleButton;
 	private ButtonGroup group;
-	
-	public Toolbar( ActionListener listener ) {
-		setFloatable( false );
+
+	public Toolbar(ActionListener listener) {
+		setFloatable(false);
 		this.listener = listener;
-		setBorder( BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK ));
-		setRollover( true );
-		addButtons( );
+		setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
+		setRollover(true);
+		addButtons();
 	}
 
-	private void addButtons( ) {
-		makeButton( "New", "Create a new file", "src/CurveEditor/GUI/icons/filenew.png" );
-		makeButton( "Open", "Open a file", "src/CurveEditor/GUI/icons/fileopen.png" );
-		makeButton( "Save", "Save a file", "src/CurveEditor/GUI/icons/filesave.png" );
-		
+	private void addButtons() {
+		makeButton("New", "Create a new file",
+				"src/CurveEditor/GUI/icons/filenew.png");
+		makeButton("Open", "Open a file",
+				"src/CurveEditor/GUI/icons/fileopen.png");
+		makeButton("Save", "Save a file",
+				"src/CurveEditor/GUI/icons/filesave.png");
+
 		addSeparator();
 
-		group = new ButtonGroup( );
-		
-		//makeToggleButton("normal", "Draw a curve or select a point", "src/CurveEditor/GUI/icons/ganttSelect.png", true );
-		
-		makeButton("Select Curve", "Select a curve.", "src/CurveEditor/GUI/icons/ganttSelect.png");
-		makeButton("Select Point", "Select a point.", "src/CurveEditor/GUI/icons/ganttSelecttask.png");
-		
-		addSeparator( );
-		
-		makeButton( "New Curve", "Start a new curve", "src/CurveEditor/GUI/icons/curvenew.png" );
-		makeButton( "Delete ctlpts", "Delete selected control points", "src/CurveEditor/GUI/icons/curvenew.png" );
-		makeButton( "Delete curves", "Delete selected curves", "src/CurveEditor/GUI/icons/curvenew.png" );
-		
-		add( Box.createHorizontalGlue() );
+		group = new ButtonGroup();
+
+		// makeToggleButton("normal", "Draw a curve or select a point",
+		// "src/CurveEditor/GUI/icons/ganttSelect.png", true );
+
+		makeButton("Select C", "Select a curve.",
+				"src/CurveEditor/GUI/icons/ganttSelect.png");
+		makeButton("Select P", "Select a point.",
+				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
+
+		addSeparator();
+
+		makeButton("Move P", "Move selected control points",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Move C", "Move selected curves",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+
+		addSeparator();
+
+		makeButton("Delete P", "Delete selected control points",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Delete C", "Delete selected curves",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+		addSeparator();
+
+		makeButton("New C", "Start a new curve",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+
+		add(Box.createHorizontalGlue());
 	}
 
-	private void makeToggleButton(String name, String tooltip, String icon, boolean selected ) {
-		toggleButton = new JToggleButton( new ImageIcon( icon ), selected );
+	private void makeToggleButton(String name, String tooltip, String icon,
+			boolean selected) {
+		toggleButton = new JToggleButton(new ImageIcon(icon), selected);
 		toggleButton.setName(name);
-		toggleButton.addActionListener( listener );
-		toggleButton.setToolTipText( tooltip );
-		group.add( toggleButton );
-		add( toggleButton );
+		toggleButton.addActionListener(listener);
+		toggleButton.setToolTipText(tooltip);
+		group.add(toggleButton);
+		add(toggleButton);
 	}
 
-	private void makeButton( String name, String tooltip, String icon ) {
-		button = new JButton( name, new ImageIcon( icon ) );
-		button.addActionListener( listener );
-		button.setToolTipText( tooltip );
-		add( button );
+	private void makeButton(String name, String tooltip, String icon) {
+		button = new JButton(name, new ImageIcon(icon));
+		button.addActionListener(listener);
+		button.setToolTipText(tooltip);
+		add(button);
 	}
 }
