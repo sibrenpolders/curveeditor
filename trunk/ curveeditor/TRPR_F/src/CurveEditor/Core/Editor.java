@@ -9,7 +9,7 @@ import CurveEditor.Tools.*;
 public class Editor {
 
 	protected static enum MODE {
-		NONE, ADD_INPUT, SELECT_CURVE, SELECT_CONTROL_POINT, DESELECT_CURVE, DESELECT_CONTROL_POINT, DESELECT_ALL, NEW_CURVE
+		NONE, ADD_INPUT, SELECT_CURVE, SELECT_CONTROL_POINT, DESELECT_CURVE, DESELECT_CONTROL_POINT, DESELECT_ALL, NEW_CURVE, MOVE_CURVES, MOVE_CONTROL_POINTS
 	};
 
 	protected static short SEARCH_RANGE = 3;
@@ -325,20 +325,6 @@ public class Editor {
 		return false;
 	}
 
-	protected void translateSelectedControlPoints(int x, int y) {
-		int index;
-		for (int i = 0; i < selectedCurves.size(); ++i) {
-			for (int j = 0; j < selectedPoints.size(); ++j)
-				if ((index = selectedCurves.elementAt(i).containsInputPointi(
-						selectedPoints.elementAt(j))) != -1) {
-					selectedCurves.elementAt(i).getInput().elementAt(index)
-							.setX(x);
-					selectedCurves.elementAt(i).getInput().elementAt(index)
-							.setY(y);
-				}
-		}
-	}
-
 	protected void deselectAllCurves() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
 			curves.add(selectedCurves.get(i));
@@ -408,5 +394,33 @@ public class Editor {
 		}
 
 		currentAlgorithm = prev;
+	}
+
+	protected void translateSelectedControlPoints(int x, int y) {
+		int index;
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			for (int j = 0; j < selectedPoints.size(); ++j)
+				if ((index = selectedCurves.elementAt(i).containsInputPointi(
+						selectedPoints.elementAt(j))) != -1) {
+					selectedCurves.elementAt(i).getInput().elementAt(index)
+							.increaseX(x);
+					selectedCurves.elementAt(i).getInput().elementAt(index)
+							.increaseY(y);
+				}
+		}
+
+		for (int i = 0; i < selectedPoints.size(); ++i) {
+			selectedPoints.elementAt(i).increaseX(x);
+			selectedPoints.elementAt(i).increaseY(y);
+		}
+
+		recalculateSelectedCurves();
+	}
+
+	protected void translateSelectedCurves(int x, int y) {
+		for (int i = 0; i < selectedCurves.size(); ++i)
+			selectedCurves.elementAt(i).translate(x, y);
+
+		recalculateSelectedCurves();
 	}
 }

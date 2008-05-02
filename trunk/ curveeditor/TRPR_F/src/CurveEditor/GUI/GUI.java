@@ -39,6 +39,15 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 	public GUI() {
 		super();
+		loadComponents();
+	}
+
+	public GUI(String filename) {
+		super(filename);
+		loadComponents();
+	}
+
+	private void loadComponents() {
 		JFrame frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -70,32 +79,6 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		screen.add(Box.createHorizontalGlue());
 
 		contentPane.add(screen);
-
-		frame.pack();
-		frame.setVisible(true);
-
-		selectionTool = new CurveContainer(600, 600);
-	}
-
-	public GUI(String filename) {
-		super(filename);
-
-		JFrame frame = new JFrame("Curve Editor");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setTitle("Curve Editor");
-		Container contentPane = frame.getContentPane();
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-
-		listener = new Listener();
-		menu = new Menu(listener);
-		contentPane.add(menu);
-
-		draw = new DrawArea(this.curves, this.selectedCurves,
-				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
-		draw.addMouseListener(this);
-		draw.addMouseMotionListener(this);
-		contentPane.add(draw);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -420,16 +403,16 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				saveAs();
 			else if (actionCommand.equals("New"))
 				newFile();
-			else if (actionCommand.equals("New Curve"))
+			else if (actionCommand.equals("New C"))
 				changeMode(MODE.NEW_CURVE);
-			else if (actionCommand.equals("Select Point"))
+			else if (actionCommand.equals("Select P"))
 				changeMode(MODE.SELECT_CONTROL_POINT);
-			else if (actionCommand.equals("Select Curve"))
+			else if (actionCommand.equals("Select C"))
 				changeMode(MODE.SELECT_CURVE);
-			else if (actionCommand.equals("Delete ctlpts")) {
+			else if (actionCommand.equals("Delete P")) {
 				deleteSelectedControlPoints();
 				recalculateCurves();
-			} else if (actionCommand.equals("Delete curves")) {
+			} else if (actionCommand.equals("Delete C")) {
 				deleteSelectedCurves();
 				recalculateSelectedCurves();
 			}
