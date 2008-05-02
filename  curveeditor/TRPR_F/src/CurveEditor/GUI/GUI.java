@@ -263,26 +263,22 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 						.max(xEnd, xBegin); ++x)
 					for (int y = Math.min(yEnd, yBegin); y <= Math.max(yEnd,
 							yBegin); ++y) {
-						Vector<Point> temp = selectionTool
-								.findPointsForControlPoint(x, y, (short) 0);
-						if (temp != null) {
-							hooveredPoints.addAll(temp);
-							for (int j = 0; j < hooveredPoints.size(); ++j) {
-								Vector<Curve> temp2 = selectionTool
-										.findCurvesForControlPoint(x, y,
-												(short) 0);
-								for (int i = 0; i < temp2.size(); ++i) {
-									boolean found = false;
-									for (int k = 0; k < hooveredCurves.size(); ++k) {
-										if (hooveredCurves.elementAt(i).equals(
-												temp2.elementAt(k)))
-											found = true;
-									}
-
-									if (!found)
-										hooveredCurves.add(temp2.elementAt(i));
-
+						Point temp = new Point(x, y);
+						if (selectionTool.isControlPoint(temp)) {
+							hooveredPoints.add(temp);
+							Vector<Curve> temp2 = selectionTool
+									.searchCurvesByControlPoint(temp, (short) 0);
+							for (int i = 0; i < temp2.size(); ++i) {
+								boolean found = false;
+								for (int k = 0; k < hooveredCurves.size(); ++k) {
+									if (hooveredCurves.elementAt(i).equals(
+											temp2.elementAt(k)))
+										found = true;
 								}
+
+								if (!found)
+									hooveredCurves.add(temp2.elementAt(i));
+
 							}
 						}
 					}

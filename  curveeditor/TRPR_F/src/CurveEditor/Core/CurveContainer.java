@@ -9,7 +9,7 @@ public class CurveContainer {
 	public static short SEARCH_RANGE = 3;
 	// houdt bij of een x,y-punt op een curve ligt
 	private Curve[][] curves;
-	private Vector<ControlPointNode> controlPoints;
+	private Vector<Curve>[][] controlPoints;
 	public int maxX, maxY;
 
 	public CurveContainer(int Maxx, int Maxy) {
@@ -17,23 +17,39 @@ public class CurveContainer {
 		this.maxY = Maxy;
 
 		curves = new Curve[Maxx][Maxy];
-		controlPoints = new Vector<ControlPointNode>();
+		controlPoints = new Vector[Maxx][Maxy];
 
 		for (int x = 0; x < Maxx; ++x)
-			for (int y = 0; y < Maxy; ++y)
+			for (int y = 0; y < Maxy; ++y) {
 				curves[x][y] = null;
+				controlPoints[x][y] = new Vector<Curve>();
+			}
 	}
 
 	public final void reset(int Maxx, int Maxy) {
-		this.maxX = Maxx;
-		this.maxY = Maxy;
-
 		Curve[][] prevCurves = curves;
+		Vector<Curve>[][] prevControlPoints = controlPoints;
+
 		curves = new Curve[Maxx][Maxy];
+		controlPoints = new Vector[Maxx][Maxy];
+
+		int max_x = (Maxx > maxX) ? maxX : Maxx;
+		int max_y = (Maxy > maxY) ? maxY : Maxy;
 
 		for (int x = 0; x < Maxx; ++x)
-			for (int y = 0; y < Maxy; ++y)
+			for (int y = 0; y < Maxy; ++y) {
+				curves[x][y] = null;
+				controlPoints[x][y] = new Vector<Curve>();
+			}
+
+		for (int x = 0; x < max_x; ++x)
+			for (int y = 0; y < max_y; ++y) {
 				curves[x][y] = prevCurves[x][y];
+				controlPoints[x][y].addAll(prevControlPoints[x][y]);
+			}
+
+		this.maxX = Maxx;
+		this.maxY = Maxy;
 	}
 
 	public void addCurve(Curve c) {
@@ -59,13 +75,19 @@ public class CurveContainer {
 	}
 
 	public Curve searchCurve(Point p) {
+		return searchCurve_(p, SEARCH_RANGE);
+	}
+
+	public Curve searchCurve(Point p, short range) {
+		return searchCurve_(p, range);
+	}
+
+	private Curve searchCurve_(Point p, short range) {
 		if (isValidPoint(p)) {
-			int max_x = p.X() + SEARCH_RANGE < maxX ? p.X() + SEARCH_RANGE
-					: maxX - 1;
-			int min_x = p.X() - SEARCH_RANGE >= 0 ? p.X() - SEARCH_RANGE : 0;
-			int max_y = p.Y() + SEARCH_RANGE < maxY ? p.Y() + SEARCH_RANGE
-					: maxY - 1;
-			int min_y = p.Y() - SEARCH_RANGE >= 0 ? p.Y() - SEARCH_RANGE : 0;
+			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
+			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
+			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
+			int min_y = p.Y() - range >= 0 ? p.Y() - range : 0;
 
 			for (int i = min_x; i <= max_x; ++i)
 				for (int j = min_y; j <= max_y; ++j)
@@ -76,134 +98,89 @@ public class CurveContainer {
 		return null;
 	}
 
-	private final class ControlPointNode {
-		ControlPointNode next;
-		int x, y;
-		Vector<Curve> curves;
-
-		ControlPointNode(Point p, Curve c) {
-			curves = new Vector<Curve>();
-			curves.add(c);
-			x = p.X();
-			y = p.Y();
-			next = null;
-		}
-
-		public boolean equals(Object obj) {
-			if (obj instanceof Point) {
-				return (Math.abs(x - ((Point) obj).X()) <= SEARCH_RANGE && Math
-						.abs(y - ((Point) obj).Y()) <= SEARCH_RANGE);
-			} else if (obj instanceof ControlPointNode) {
-				return (Math.abs(x - ((ControlPointNode) obj).x) <= SEARCH_RANGE && Math
-						.abs(y - ((ControlPointNode) obj).y) <= SEARCH_RANGE);
-			} else
-				return false;
-		}
-
-		public boolean containsCurve(Curve c) {
-			for (int i = 0; i < curves.size(); ++i)
-				if (curves.elementAt(i).equals(c))
-					return true;
-			return false;
-		}
-
-		public int getNbCurves() {
-			return curves.size();
-		}
-
-		public void deleteCurve(Curve c) {
-			for (int i = 0; i < curves.size(); ++i)
-				if (curves.elementAt(i).equals(c))
-					curves.remove(i--);
-		}
-
-		public void addCurve(Curve c) {
-			curves.add(c);
-		}
-	}
-
 	private void addControlPoints(Curve c) {
-		Point temp;
-
 		for (int i = 0; i < c.getNbInputPoints(); ++i) {
-			temp = c.getInput().elementAt(i);
-			addControlPoint(temp, c);
+			if (isValidPoint(c.getInput().elementAt(i)))
+				controlPoints[c.getInput().elementAt(i).X()][c.getInput()
+						.elementAt(i).Y()].add(c);
+
 		}
-	}
-
-	private void addControlPoint(Point p, Curve c) {
-		boolean added = false;
-
-		for (int i = 0; i < controlPoints.size() && !added; ++i) {
-			if (controlPoints.elementAt(i).equals(p)) {
-				controlPoints.elementAt(i).addCurve(c);
-				added = true;
-			}
-		}
-
-		if (!added)
-			controlPoints.add(new ControlPointNode(p, c));
 	}
 
 	private void deleteControlPoints(Curve c) {
-		Point temp;
-
 		for (int i = 0; i < c.getNbInputPoints(); ++i) {
-			temp = c.getInput().elementAt(i);
-			deleteControlPoint(temp, c);
+			if (isValidPoint(c.getInput().elementAt(i)))
+				while (controlPoints[c.getInput().elementAt(i).X()][c
+						.getInput().elementAt(i).Y()].remove(c))
+					;
+
 		}
 	}
 
-	private void deleteControlPoint(Point p, Curve c) {
-		for (int i = 0; i < controlPoints.size(); ++i) {
-			if (controlPoints.elementAt(i).equals(p)) {
-				controlPoints.elementAt(i).deleteCurve(c);
-				if (controlPoints.elementAt(i).getNbCurves() == 0)
-					controlPoints.remove(i--);
-			}
-		}
+	public Vector<Curve> searchCurvesByControlPoint(Point p, short range) {
+		return searchCurvesByControlPoint_(p, range);
+
 	}
 
-	public Vector<Curve> findCurvesForControlPoint(int x, int y,
-			short searchRange) {
-		Vector<Curve> result = null;
-
-		if (isValidPoint(new Point(x, y))) {
-
-			result = new Vector<Curve>();
-			ControlPointNode temp;
-
-			for (int i = 0; i < controlPoints.size(); ++i) {
-				temp = controlPoints.elementAt(i);
-				if (Math.abs(temp.x - x) <= searchRange
-						&& Math.abs(temp.y - y) <= searchRange) {
-					for (int j = 0; j < temp.curves.size(); ++j)
-						result.add(temp.curves.elementAt(j));
-				}
-			}
-		}
-
-		return result;
+	public Vector<Curve> searchCurvesByControlPoint(Point p) {
+		return searchCurvesByControlPoint_(p, SEARCH_RANGE);
 	}
 
-	public Vector<Point> findPointsForControlPoint(int x, int y,
-			short searchRange) {
-		Vector<Point> result = null;
+	private Vector<Curve> searchCurvesByControlPoint_(Point p, short range) {
+		if (isValidPoint(p)) {
+			Vector<Curve> result = new Vector<Curve>();
 
-		if (isValidPoint(new Point(x, y))) {
+			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
+			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
+			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
+			int min_y = p.Y() - range >= 0 ? p.Y() - range : 0;
 
-			result = new Vector<Point>();
-			ControlPointNode temp;
+			for (int i = min_x; i <= max_x; ++i)
+				for (int j = min_y; j <= max_y; ++j)
+					if (controlPoints[i][j].size() > 0)
+						result.addAll(controlPoints[i][j]);
+			if (result.size() > 0)
+				return result;
+			else
+				return null;
+		} else
+			return null;
+	}
 
-			for (int i = 0; i < controlPoints.size(); ++i) {
-				temp = controlPoints.elementAt(i);
-				if (Math.abs(temp.x - x) <= searchRange
-						&& Math.abs(temp.y - y) <= searchRange)
-					result.add(new Point(temp.x, temp.y));
+	public Vector<Point> searchControlPoint(Point p, short range) {
+		return searchControlPoint_(p, range);
 
-			}
-		}
+	}
 
-		return result;
+	public Vector<Point> searchControlPoint(Point p) {
+		return searchControlPoint_(p, SEARCH_RANGE);
+	}
+
+	private Vector<Point> searchControlPoint_(Point p, short range) {
+		if (isValidPoint(p)) {
+			Vector<Point> result = new Vector<Point>();
+
+			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
+			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
+			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
+			int min_y = p.Y() - range >= 0 ? p.Y() - range : 0;
+
+			for (int i = min_x; i <= max_x; ++i)
+				for (int j = min_y; j <= max_y; ++j)
+					if (controlPoints[i][j].size() > 0)
+						result.add(new Point(i, j));
+			if (result.size() > 0)
+				return result;
+			else
+				return null;
+		} else
+			return null;
+	}
+
+	public boolean isControlPoint(Point p) {
+		if (isValidPoint(p))
+			return controlPoints[p.X()][p.Y()].size() > 0;
+		else
+			return false;
 	}
 }
