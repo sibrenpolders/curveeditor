@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
+import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -18,10 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import CurveEditor.Algorithms.Algorithm;
 import CurveEditor.Core.CurveContainer;
-import CurveEditor.Core.CurveHashMap;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -230,7 +229,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 			int xBegin = draw.getXBegin();
 			int yBegin = draw.getYBegin();
 			int xEnd = (e.getX() < 0) ? 0 : e.getX();
-			xEnd = (xEnd > selectionTool.maxX) ? selectionTool.maxX - 1: xEnd;
+			xEnd = (xEnd > selectionTool.maxX) ? selectionTool.maxX - 1 : xEnd;
 			int yEnd = (e.getY() < 0) ? 0 : e.getY();
 			yEnd = (yEnd > selectionTool.maxY) ? selectionTool.maxY - 1 : yEnd;
 
@@ -240,8 +239,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				if (hooveredCurves.size() > 0)
 					hooveredCurves.clear();
 
-				for (int x = Math.min(xEnd, xBegin); x < Math
-						.max(xEnd, xBegin); ++x)
+				for (int x = Math.min(xEnd, xBegin); x < Math.max(xEnd, xBegin); ++x)
 					for (int y = Math.min(yEnd, yBegin); y < Math.max(yEnd,
 							yBegin); ++y) {
 						Curve c = this.selectionTool
@@ -267,8 +265,15 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 						.max(xEnd, xBegin); ++x)
 					for (int y = Math.min(yEnd, yBegin); y <= Math.max(yEnd,
 							yBegin); ++y) {
-						Point p = hooverPoint(new Point(x, y));
-
+						Vector<Point> temp = selectionTool
+								.findPointsForControlPoint(x, y, (short) 0);
+						if (temp != null) {
+							hooveredPoints.addAll(temp);
+							for (int j = 0; j < hooveredPoints.size(); ++j)
+								hooveredCurves.addAll(selectionTool
+										.findCurvesForControlPoint(x, y,
+												(short) 0));
+						}
 					}
 			}
 		}
