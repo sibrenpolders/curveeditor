@@ -100,13 +100,23 @@ public class Curve {
 				return input.elementAt(i);
 		return null;
 	}
-	
+
+	// geeft de index terug als het punt een controlepunt is
 	public int containsInputPointi(Point p) {
 		for (int i = 0; i < input.size(); ++i)
 			if (Math.abs(input.elementAt(i).X() - p.X()) <= 3
 					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= 3)
 				return i;
 		return -1;
+	}
+
+	// verschuiving over een afstand x,y --> alle controlepunten verschuiven
+	public void translate(int x, int y) {
+		output.clear();
+		for (int i = 0; i < input.size(); ++i) {
+			input.elementAt(i).increaseX(x);
+			input.elementAt(i).increaseY(y);
+		}
 	}
 
 	// de aangemaakte curve krijgt de eigenschappen van de eerste curve en AL de

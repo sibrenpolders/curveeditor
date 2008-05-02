@@ -14,6 +14,10 @@ public class Point {
 		this.Y = Y;
 	}
 
+	public int length() {
+		return (int) Math.sqrt((double) X * X + Y * Y);
+	}
+
 	public static int distance(Point a, Point b) {
 		return (int) Math.sqrt(Math.pow((double) Math.abs(a.X() - b.X()), 2.0)
 				+ Math.pow((double) Math.abs(a.Y() - b.Y()), 2.0));
@@ -23,12 +27,12 @@ public class Point {
 		return X;
 	}
 
-	public int length() {
-		return (int) Math.sqrt((double) X * X + Y * Y);
-	}
-
 	public void setX(int X) {
 		this.X = X;
+	}
+
+	public void increaseX(int x) {
+		this.X += x;
 	}
 
 	public int Y() {
@@ -37,6 +41,10 @@ public class Point {
 
 	public void setY(int Y) {
 		this.Y = Y;
+	}
+
+	public void increaseY(int y) {
+		this.Y += y;
 	}
 
 	public String toString() {
