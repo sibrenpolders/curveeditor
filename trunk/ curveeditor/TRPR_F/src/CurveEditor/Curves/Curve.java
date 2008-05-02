@@ -5,6 +5,8 @@ import CurveEditor.Algorithms.Tangent;
 
 //interpolatiepunten worden berekend vanuit Editor
 public final class Curve {
+	private static short SEARCH_RANGE = 3;
+
 	// de controlepunten, volgorde is belangrijk !!!
 	protected Vector<Point> input;
 
@@ -98,8 +100,8 @@ public final class Curve {
 	// zó van belang
 	public Point containsInputPoint(Point p) {
 		for (int i = 0; i < input.size(); ++i)
-			if (Math.abs(input.elementAt(i).X() - p.X()) <= 3
-					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= 3)
+			if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
+					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
 				return input.elementAt(i);
 		return null;
 	}
@@ -107,8 +109,8 @@ public final class Curve {
 	// geeft de index terug als het punt een controlepunt is
 	public int containsInputPointi(Point p) {
 		for (int i = 0; i < input.size(); ++i)
-			if (Math.abs(input.elementAt(i).X() - p.X()) <= 3
-					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= 3)
+			if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
+					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
 				return i;
 		return -1;
 	}
