@@ -444,20 +444,25 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				newFile();
 			else if (actionCommand.equals("New C"))
 				changeMode(MODE.NEW_CURVE);
-			else if (actionCommand.equals("Select P"))
+			else if (actionCommand.equals("Sel P"))
 				changeMode(MODE.SELECT_CONTROL_POINT);
-			else if (actionCommand.equals("Select C"))
+			else if (actionCommand.equals("Sel C"))
 				changeMode(MODE.SELECT_CURVE);
-			else if (actionCommand.equals("Move P"))
+			else if (actionCommand.equals("Mov P"))
 				changeMode(MODE.MOVE_CONTROL_POINTS);
-			else if (actionCommand.equals("Move C"))
+			else if (actionCommand.equals("Mov C"))
 				changeMode(MODE.MOVE_CURVES);
-			else if (actionCommand.equals("Delete P")) {
+			else if (actionCommand.equals("Del P")) {
 				deleteSelectedControlPoints();
 				recalculateCurves();
-			} else if (actionCommand.equals("Delete C")) {
+			} else if (actionCommand.equals("Del C")) {
 				deleteSelectedCurves();
 				recalculateSelectedCurves();
+			} else if (actionCommand.equals("Add P"))
+				changeMode(MODE.ADD_INPUT);
+			else if (actionCommand.equals("Clr")) {
+				changeMode(MODE.NONE);
+				reset();
 			}
 
 			draw.repaint();
