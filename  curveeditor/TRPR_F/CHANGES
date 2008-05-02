@@ -63,3 +63,16 @@ Nah ja, 't schiet toch mooi op nu, het project. :-D
 Eerste versie van selectionRectangle is geïmplementeerd.
 Werkt nog niet fatsoenlijk, en de gewone click-events zijn nu ook niet meer zo goed... 
 ga der dus nog wat aan moeten tunen.
+
+------------------
+Tweede versie werkt _ietsje_ vlotter, 't is vooral bij controlepuntselectie dat het ding hapert.
+Ik heb al een datastructuur ineengebokst dat dat wat zou moeten opvangen, en dat gaat wel iets vlotter, maar 't is nog
+altijd niet zoals het hoort.
+
+Ik zal 't mss analoog doen aan de datastructuur die ik voor de outputpunten heb gepakt ?
+Maar ik vind 't verspilling van geheugenruimte om eerlijk te zijn.... een matrix van een miljoen elementen of zo,
+en er worden er mss maar max. 100 van opgevuld... . Nah ja, ik zal zien wat 't geeft.
+
+
+Ah ja, kun je 't 's misschien testen op vlotheid bij u ?
+Enkel curveselectie hé, controlepunten werkt zelfs bij mij niet goed, dus ja... .
