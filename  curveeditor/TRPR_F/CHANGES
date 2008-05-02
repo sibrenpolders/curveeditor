@@ -57,3 +57,9 @@ Hoovering werkt nu ook vrij netjes, vind ik.
 Maar als ik op de rechterrand van het canvas wat met de muis beweeg, krijg ik arrayoutofbounce-
 exceptions en ik snap écht niet hoe dat kan gebeuren. Ik controleer daar zelfs twee keer op.
 Nah ja, 't schiet toch mooi op nu, het project. :-D
+
+------------------
+
+Eerste versie van selectionRectangle is geïmplementeerd.
+Werkt nog niet fatsoenlijk, en de gewone click-events zijn nu ook niet meer zo goed... 
+ga der dus nog wat aan moeten tunen.

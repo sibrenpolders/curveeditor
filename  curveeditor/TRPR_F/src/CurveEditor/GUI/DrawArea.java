@@ -34,6 +34,9 @@ public class DrawArea extends JPanel {
 	private Vector<Point> hooveredPoints;
 	private Graphics g;
 
+	// variabelen voor selectierechthoekje
+	private int xBegin = -1, yBegin = -1, xEnd = -1, yEnd = -1;
+
 	public DrawArea(Vector<Curve> curves, Vector<Curve> selectedCurves,
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
 			Vector<Point> hooveredPoints) {
@@ -97,6 +100,9 @@ public class DrawArea extends JPanel {
 
 		emptyField();
 
+		this.g.setColor(Color.LIGHT_GRAY);
+		this.drawSelectionRectangle();
+
 		this.g.setColor(Color.BLACK);
 		this.drawOutput(curves, false, false);
 		this.g.setColor(Color.RED);
@@ -125,6 +131,48 @@ public class DrawArea extends JPanel {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, frameWidth, frameHeight);
 		g.setColor(Color.black);
+	}
+
+	private void drawSelectionRectangle() {
+		if (xBegin != -1 && yBegin != -1 && xEnd != -1 && yEnd != -1) {
+			int rectWidth = Math.abs(xBegin - xEnd);
+			int rectHeigth = Math.abs(yBegin - yEnd);
+			int yStart = (yBegin > yEnd) ? yEnd : yBegin;
+			int xStart = (xBegin > xEnd) ? xEnd : xBegin;
+
+			g.fillRect(xStart, yStart, rectWidth, rectHeigth);
+		}
+	}
+
+	public void resetSelectionRectangle() {
+		xBegin = -1;
+		yBegin = -1;
+		xEnd = -1;
+		yEnd = -1;
+	}
+
+	public void beginSelectionRectangle(int x, int y) {
+		xBegin = x;
+		yBegin = y;
+		xEnd = x;
+		yEnd = y;
+	}
+
+	public void updateSelectionRectangle(int x, int y) {
+		xEnd = x;
+		yEnd = y;
+	}
+
+	public boolean selectionRectangleStarted() {
+		return xBegin != -1 && yBegin != -1;
+	}
+
+	public int getXBegin() {
+		return xBegin;
+	}
+
+	public int getYBegin() {
+		return yBegin;
 	}
 
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
