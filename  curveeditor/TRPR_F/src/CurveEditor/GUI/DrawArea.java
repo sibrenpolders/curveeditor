@@ -27,6 +27,7 @@ public class DrawArea extends JPanel {
 	private boolean coords;
 	private boolean nrs;
 	private boolean tangents;
+	private boolean drawRectangle;
 	private Vector<Curve> curves;
 	private Vector<Curve> selectedCurves;
 	private Vector<Curve> hooveredCurves;
@@ -60,6 +61,7 @@ public class DrawArea extends JPanel {
 		this.coords = coords;
 		this.nrs = nrs;
 		this.tangents = tangents;
+		this.drawRectangle = true;
 
 		this.repaint();
 	}
@@ -101,7 +103,10 @@ public class DrawArea extends JPanel {
 		emptyField();
 
 		this.g.setColor(Color.LIGHT_GRAY);
-		this.drawSelectionRectangle();
+		if (drawRectangle)
+			this.drawSelectionRectangle();
+		else
+			this.drawArrow();
 
 		this.g.setColor(Color.BLACK);
 		this.drawOutput(curves, false, false);
@@ -144,11 +149,20 @@ public class DrawArea extends JPanel {
 		}
 	}
 
-	public void resetSelectionRectangle() {
+	private void drawArrow() {
+		if (xBegin != -1 && yBegin != -1 && xEnd != -1 && yEnd != -1) {
+			g.drawLine(xBegin, yBegin, xEnd, yEnd);
+			g.drawLine(xBegin, yBegin + 1, xEnd, yEnd + 1);
+			g.drawLine(xBegin, yBegin - 1, xEnd, yEnd - 1);
+		}
+	}
+
+	public void resetDragging() {
 		xBegin = -1;
 		yBegin = -1;
 		xEnd = -1;
 		yEnd = -1;
+		drawRectangle = true;
 	}
 
 	public void beginSelectionRectangle(int x, int y) {
@@ -156,14 +170,23 @@ public class DrawArea extends JPanel {
 		yBegin = y;
 		xEnd = x;
 		yEnd = y;
+		drawRectangle = true;
 	}
 
-	public void updateSelectionRectangle(int x, int y) {
+	public void beginMovingArrow(int x, int y) {
+		xBegin = x;
+		yBegin = y;
+		xEnd = x;
+		yEnd = y;
+		drawRectangle = false;
+	}
+
+	public void updateDragging(int x, int y) {
 		xEnd = x;
 		yEnd = y;
 	}
 
-	public boolean selectionRectangleStarted() {
+	public boolean draggingStarted() {
 		return xBegin != -1 && yBegin != -1;
 	}
 
@@ -173,6 +196,14 @@ public class DrawArea extends JPanel {
 
 	public int getYBegin() {
 		return yBegin;
+	}
+
+	public int getXEnd() {
+		return xEnd;
+	}
+
+	public int getYEnd() {
+		return yEnd;
 	}
 
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {

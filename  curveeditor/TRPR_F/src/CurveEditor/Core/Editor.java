@@ -173,7 +173,6 @@ public class Editor {
 
 		curves.addAll(selectedCurves);
 		selectedCurves.clear();
-
 		selectedPoints.clear();
 	}
 
@@ -182,6 +181,7 @@ public class Editor {
 			selectionTool.deleteCurve(selectedCurves.elementAt(j));
 
 		selectedCurves.clear();
+		selectedPoints.clear();
 	}
 
 	protected void deselectAll() {
@@ -371,11 +371,11 @@ public class Editor {
 		Algorithm prev = currentAlgorithm;
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			Curve c = selectedCurves.elementAt(i);
+			selectionTool.deleteCurve(c);
 			this.getAlgorithm(selectedCurves.get(i).getType(),
 					selectedCurves.get(i).getDegree()).calculate(
 					selectedCurves.get(i));
 
-			selectionTool.deleteCurve(c);
 			selectionTool.addCurve(c);
 		}
 
@@ -386,10 +386,10 @@ public class Editor {
 		Algorithm prev = currentAlgorithm;
 		for (int i = 0; i < curves.size(); ++i) {
 			Curve c = curves.elementAt(i);
+			selectionTool.deleteCurve(c);
 			this.getAlgorithm(curves.get(i).getType(),
 					curves.get(i).getDegree()).calculate(curves.get(i));
 
-			selectionTool.deleteCurve(c);
 			selectionTool.addCurve(c);
 		}
 
@@ -399,6 +399,9 @@ public class Editor {
 	protected void translateSelectedControlPoints(int x, int y) {
 		int index;
 		for (int i = 0; i < selectedCurves.size(); ++i) {
+			selectionTool.deleteCurve(selectedCurves.elementAt(i));
+			selectedCurves.elementAt(i).clearOutput();
+
 			for (int j = 0; j < selectedPoints.size(); ++j)
 				if ((index = selectedCurves.elementAt(i).containsInputPointi(
 						selectedPoints.elementAt(j))) != -1) {
@@ -418,8 +421,16 @@ public class Editor {
 	}
 
 	protected void translateSelectedCurves(int x, int y) {
-		for (int i = 0; i < selectedCurves.size(); ++i)
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			selectionTool.deleteCurve(selectedCurves.elementAt(i));
+			selectedCurves.elementAt(i).clearOutput();
 			selectedCurves.elementAt(i).translate(x, y);
+		}
+
+		for (int i = 0; i < selectedPoints.size(); ++i) {
+			selectedPoints.elementAt(i).increaseX(x);
+			selectedPoints.elementAt(i).increaseY(y);
+		}
 
 		recalculateSelectedCurves();
 	}

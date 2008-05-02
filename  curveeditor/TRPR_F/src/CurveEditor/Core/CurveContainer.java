@@ -111,7 +111,7 @@ public class CurveContainer {
 		for (int i = 0; i < c.getNbInputPoints(); ++i) {
 			if (isValidPoint(c.getInput().elementAt(i)))
 				while (controlPoints[c.getInput().elementAt(i).X()][c
-						.getInput().elementAt(i).Y()].remove(c))
+						.getInput().elementAt(i).Y()].removeElement(c))
 					;
 
 		}
