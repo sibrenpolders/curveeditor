@@ -43,6 +43,8 @@ public class Toolbar extends JToolBar {
 		addSeparator( );
 		
 		makeButton( "New Curve", "Start a new curve", "src/CurveEditor/GUI/icons/curvenew.png" );
+		makeButton( "Delete ctlpts", "Delete selected control points", "src/CurveEditor/GUI/icons/curvenew.png" );
+		makeButton( "Delete curves", "Delete selected curves", "src/CurveEditor/GUI/icons/curvenew.png" );
 		
 		add( Box.createHorizontalGlue() );
 	}
