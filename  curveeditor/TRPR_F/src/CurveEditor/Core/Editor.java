@@ -33,7 +33,7 @@ public class Editor {
 	protected FileIO file;
 	// datastructuur die kan gebruikt worden om na te gaan op welke curve
 	// geklikt is
-	protected Curve2DArray selectionTool;
+	protected CurveContainer2D selectionTool;
 
 	public Editor(String filename) {
 		init();
