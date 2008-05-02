@@ -74,8 +74,8 @@ public class Editor {
 	}
 
 	protected void reset() {
-		algorithms.clear();
-		tools.clear();
+		// algorithms.clear();
+		// tools.clear();
 		curves.clear();
 		selectedCurves.clear();
 		hooveredCurves.clear();

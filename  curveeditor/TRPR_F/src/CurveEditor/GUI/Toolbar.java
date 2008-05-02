@@ -41,27 +41,31 @@ public class Toolbar extends JToolBar {
 		// makeToggleButton("normal", "Draw a curve or select a point",
 		// "src/CurveEditor/GUI/icons/ganttSelect.png", true );
 
-		makeButton("Select C", "Select a curve.",
+		makeButton("Sel C", "Select a curve.",
 				"src/CurveEditor/GUI/icons/ganttSelect.png");
-		makeButton("Select P", "Select a point.",
+		makeButton("Sel P", "Select a point.",
 				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
 
 		addSeparator();
 
-		makeButton("Move P", "Move selected control points",
+		makeButton("Mov P", "Move selected control points",
 				"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("Move C", "Move selected curves",
+		makeButton("Mov C", "Move selected curves",
 				"src/CurveEditor/GUI/icons/curvenew.png");
 
 		addSeparator();
 
-		makeButton("Delete P", "Delete selected control points",
+		makeButton("Del P", "Delete selected control points",
 				"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("Delete C", "Delete selected curves",
+		makeButton("Del C", "Delete selected curves",
 				"src/CurveEditor/GUI/icons/curvenew.png");
 		addSeparator();
 
 		makeButton("New C", "Start a new curve",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Add P", "Add a control point to all the selected curves",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Clr", "Remove all curves",
 				"src/CurveEditor/GUI/icons/curvenew.png");
 
 		add(Box.createHorizontalGlue());
