@@ -256,10 +256,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 					}
 			} else if (mode == MODE.DESELECT_CONTROL_POINT
 					|| mode == MODE.SELECT_CONTROL_POINT) {
-				if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
-					hooveredCurves.clear();
-					hooveredPoints.clear();
-				}
+				hooveredCurves.clear();
+				hooveredPoints.clear();
 
 				for (int x = Math.min(xEnd, xBegin); x <= Math
 						.max(xEnd, xBegin); ++x)
@@ -269,10 +267,23 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 								.findPointsForControlPoint(x, y, (short) 0);
 						if (temp != null) {
 							hooveredPoints.addAll(temp);
-							for (int j = 0; j < hooveredPoints.size(); ++j)
-								hooveredCurves.addAll(selectionTool
+							for (int j = 0; j < hooveredPoints.size(); ++j) {
+								Vector<Curve> temp2 = selectionTool
 										.findCurvesForControlPoint(x, y,
-												(short) 0));
+												(short) 0);
+								for (int i = 0; i < temp2.size(); ++i) {
+									boolean found = false;
+									for (int k = 0; k < hooveredCurves.size(); ++k) {
+										if (hooveredCurves.elementAt(i).equals(
+												temp2.elementAt(k)))
+											found = true;
+									}
+
+									if (!found)
+										hooveredCurves.add(temp2.elementAt(i));
+
+								}
+							}
 						}
 					}
 			}
