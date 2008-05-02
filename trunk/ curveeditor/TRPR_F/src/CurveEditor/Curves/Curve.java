@@ -1,12 +1,10 @@
 package CurveEditor.Curves;
 
 import java.util.Vector;
-
-import CurveEditor.Algorithms.Algorithm;
 import CurveEditor.Algorithms.Tangent;
 
 //interpolatiepunten worden berekend vanuit Editor
-public class Curve {
+public final class Curve {
 	// de controlepunten, volgorde is belangrijk !!!
 	protected Vector<Point> input;
 
@@ -65,6 +63,11 @@ public class Curve {
 		for (int i = 0; i < getNbInputPoints(); ++i)
 			if (input.get(i).X() == o.X() && input.get(i).Y() == o.Y())
 				input.remove(i--);
+	}
+
+	// i is de index in de vector
+	public void removeInput(int i) {
+		input.remove(i);
 	}
 
 	public void addInput(Point o) {

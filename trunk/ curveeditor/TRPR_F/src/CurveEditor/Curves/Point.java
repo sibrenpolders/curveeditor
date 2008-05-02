@@ -23,27 +23,27 @@ public class Point {
 				+ Math.pow((double) Math.abs(a.Y() - b.Y()), 2.0));
 	}
 
-	public int X() {
+	public final int X() {
 		return X;
 	}
 
-	public void setX(int X) {
+	public final void setX(int X) {
 		this.X = X;
 	}
 
-	public void increaseX(int x) {
+	public final void increaseX(int x) {
 		this.X += x;
 	}
 
-	public int Y() {
+	public final int Y() {
 		return Y;
 	}
 
-	public void setY(int Y) {
+	public final void setY(int Y) {
 		this.Y = Y;
 	}
 
-	public void increaseY(int y) {
+	public final void increaseY(int y) {
 		this.Y += y;
 	}
 
@@ -60,7 +60,7 @@ public class Point {
 		}
 	}
 
-	public int hashCode() {
+	public final int hashCode() {
 		return toString().hashCode();
 	}
 

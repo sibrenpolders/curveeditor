@@ -23,16 +23,16 @@ public class Bezier extends Algorithm {
 		createMatrix();
 	}
 
-	public void toggleC1Continuity() {
+	public final void toggleC1Continuity() {
 		C1Continuity = !C1Continuity;
 		G1Continuity = C1Continuity;
 	}
 
-	public void toggleG1Continuity() {
+	public final void toggleG1Continuity() {
 		G1Continuity = !G1Continuity;
 	}
 
-	private void createMatrix() {
+	private final void createMatrix() {
 		matrix = new double[4][4];
 		matrix[0][0] = -1.0;
 		matrix[0][1] = 3.0;
@@ -52,7 +52,8 @@ public class Bezier extends Algorithm {
 		matrix[3][3] = 0.0;
 	}
 
-	private void fillControlPointsMatrix(Point a, Point b, Point c, Point d) {
+	private final void fillControlPointsMatrix(Point a, Point b, Point c,
+			Point d) {
 		controlPtsMatrix = new double[2][4];
 		controlPtsMatrix[0][0] = a.X();
 		controlPtsMatrix[0][1] = b.X();
@@ -65,7 +66,7 @@ public class Bezier extends Algorithm {
 		controlPtsMatrix[1][3] = d.Y();
 	}
 
-	private void fillParameterMatrix(double t) {
+	private final void fillParameterMatrix(double t) {
 		parameterMatrix = new double[4];
 
 		parameterMatrix[3] = 1;
@@ -74,8 +75,8 @@ public class Bezier extends Algorithm {
 		parameterMatrix[0] = parameterMatrix[1] * t;
 	}
 
-	public void interpolate(Point aa, Point bb, Point cc, Point dd, int steps,
-			Vector<Point> out) {
+	public final void interpolate(Point aa, Point bb, Point cc, Point dd,
+			int steps, Vector<Point> out) {
 		double d = 1.0 / steps;
 		double d2 = d * d;
 		double d3 = d2 * d;
@@ -145,18 +146,18 @@ public class Bezier extends Algorithm {
 		else
 			calculateC0(input, output);
 
-		// de output-vector lineair interpoleren
-		Linear smoothing = new Linear();
-		Vector<Point> temp = new Vector<Point>();
-		for (int i = 0; i < output.size() - 1; ++i)
-			smoothing.interpolate(output.elementAt(i), output.elementAt(i + 1),
-					temp);
-
-		output.clear();
-		output.addAll(temp);
+		// // de output-vector lineair interpoleren
+		// Linear smoothing = new Linear();
+		// Vector<Point> temp = new Vector<Point>();
+		// for (int i = 0; i < output.size() - 1; ++i)
+		// smoothing.interpolate(output.elementAt(i), output.elementAt(i + 1),
+		// temp);
+		//
+		// output.clear();
+		// output.addAll(temp);
 	}
 
-	private void calculateC0(Vector<Point> input, Vector<Point> output) {
+	private final void calculateC0(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * Point.distance(input.elementAt(i), input
@@ -167,7 +168,7 @@ public class Bezier extends Algorithm {
 		}
 	}
 
-	private void calculateG1(Vector<Point> input, Vector<Point> output) {
+	private final void calculateG1(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * Point.distance(input.elementAt(i), input
@@ -195,7 +196,7 @@ public class Bezier extends Algorithm {
 		}
 	}
 
-	private void calculateC1(Vector<Point> input, Vector<Point> output) {
+	private final void calculateC1(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * Point.distance(input.elementAt(i), input
@@ -223,8 +224,7 @@ public class Bezier extends Algorithm {
 		}
 	}
 
-	public void calculateComplete(Curve c) {
+	public final void calculateComplete(Curve c) {
 		calculate(c);
-
 	}
 }

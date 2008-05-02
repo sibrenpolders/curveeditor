@@ -6,7 +6,7 @@ import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 //Lineair --> tussen elk paar punten een lijnstuk tekenen
-public class Linear extends Algorithm {
+public final class Linear extends Algorithm {
 
 	public Linear(short degree) {
 		super('L', (short) 1);
@@ -100,6 +100,5 @@ public class Linear extends Algorithm {
 
 	public void calculateComplete(Curve c) {
 		calculate(c);
-		
 	}
 }

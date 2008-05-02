@@ -2,7 +2,7 @@ package CurveEditor.Algorithms;
 
 import CurveEditor.Curves.Point;
 
-public class Tangent {
+public final class Tangent {
 	public static enum CONTINUITY {
 		G1, C1
 	};
