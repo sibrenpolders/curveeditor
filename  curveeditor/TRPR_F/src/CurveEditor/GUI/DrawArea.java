@@ -178,10 +178,10 @@ public class DrawArea extends JPanel {
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
 		for (int i = 0; i < curves.size(); ++i) {
 			// de outputpunten uittekenen
-			for (int j = 0; j < curves.get(i).getOutput().size(); ++j) {
+			for (int j = 0; j < curves.get(i).getOutput().size() - 1; ++j) {
 				g.drawLine(curves.get(i).getOutput().get(j).X(), curves.get(i)
 						.getOutput().get(j).Y(), curves.get(i).getOutput().get(
-						j).X(), curves.get(i).getOutput().get(j).Y());
+						j + 1).X(), curves.get(i).getOutput().get(j + 1).Y());
 
 				if (curveWidth != 0) {
 					for (int k = 1; k <= curveWidth; ++k) {

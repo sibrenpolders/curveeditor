@@ -1,9 +1,5 @@
 package CurveEditor.Core;
 
-import java.util.HashMap;
-import java.util.Vector;
-
-import CurveEditor.Core.CurveHashMap.Region;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
