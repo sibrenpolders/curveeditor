@@ -57,9 +57,9 @@ public class Curve2DArray {
 	}
 
 	public Curve searchCurve(Point p) {
-		int max_x = p.X() + 3 < maxX ? p.X() + 3 : maxX;
+		int max_x = p.X() + 3 < maxX ? p.X() + 3 : maxX - 1;
 		int min_x = p.X() - 3 >= 0 ? p.X() - 3 : 0;
-		int max_y = p.Y() + 3 < maxY ? p.Y() + 3 : maxY;
+		int max_y = p.Y() + 3 < maxY ? p.Y() + 3 : maxY - 1;
 		int min_y = p.Y() - 3 >= 0 ? p.Y() - 3 : 0;
 
 		for (int i = min_x; i <= max_x; ++i)

@@ -165,15 +165,115 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		// kunnen we gebruiken voor curves te "slepen", bijvoorbeeld
+		if (mode == Editor.MODE.SELECT_CURVE
+				|| mode == Editor.MODE.DESELECT_CURVE
+				|| mode == Editor.MODE.SELECT_CONTROL_POINT
+				|| mode == Editor.MODE.DESELECT_CONTROL_POINT)
+			draw.beginSelectionRectangle(e.getX(), e.getY());
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		if (mode == MODE.SELECT_CURVE)
+			for (int i = 0; i < hooveredCurves.size(); ++i) {
+				boolean found = false;
+				for (int j = 0; j < selectedCurves.size(); ++j)
+					if (selectedCurves.elementAt(j).equals(
+							hooveredCurves.elementAt(i)))
+						found = true;
+				if (!found) {
+					selectedCurves.add(hooveredCurves.elementAt(i));
 
+					for (int j = 0; j < curves.size(); ++j)
+						if (curves.elementAt(j).equals(
+								hooveredCurves.elementAt(i)))
+							curves.remove(j--);
+				}
+			}
+		else if (mode == MODE.SELECT_CONTROL_POINT) {
+			for (int i = 0; i < hooveredCurves.size(); ++i) {
+				boolean found = false;
+				for (int j = 0; j < selectedCurves.size(); ++j)
+					if (selectedCurves.elementAt(j).equals(
+							hooveredCurves.elementAt(i)))
+						found = true;
+				if (!found) {
+					selectedCurves.add(hooveredCurves.elementAt(i));
+
+					for (int j = 0; j < curves.size(); ++j)
+						if (curves.elementAt(j).equals(
+								hooveredCurves.elementAt(i)))
+							curves.remove(j--);
+				}
+			}
+			for (int i = 0; i < hooveredPoints.size(); ++i) {
+				if (!isSelectedControlPoint(hooveredPoints.elementAt(i))) {
+					selectedPoints.add(hooveredPoints.elementAt(i));
+				}
+			}
+		}
+
+		draw.resetSelectionRectangle();
+		if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
+			hooveredCurves.clear();
+			hooveredPoints.clear();
+			draw.repaint();
+		}
 	}
 
 	public void mouseDragged(MouseEvent e) {
+		if (e.getSource().equals(draw)
+				&& (mode == Editor.MODE.SELECT_CURVE
+						|| mode == Editor.MODE.DESELECT_CURVE
+						|| mode == Editor.MODE.SELECT_CONTROL_POINT || mode == Editor.MODE.DESELECT_CONTROL_POINT)
+				&& draw.selectionRectangleStarted()) {
 
+			int xBegin = draw.getXBegin();
+			int yBegin = draw.getYBegin();
+			int xEnd = (e.getX() < 0) ? 0 : e.getX();
+			xEnd = (xEnd > selectionTool.maxX) ? selectionTool.maxX - 1: xEnd;
+			int yEnd = (e.getY() < 0) ? 0 : e.getY();
+			yEnd = (yEnd > selectionTool.maxY) ? selectionTool.maxY - 1 : yEnd;
+
+			draw.updateSelectionRectangle(xEnd, yEnd);
+
+			if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
+				if (hooveredCurves.size() > 0)
+					hooveredCurves.clear();
+
+				for (int x = Math.min(xEnd, xBegin); x < Math
+						.max(xEnd, xBegin); ++x)
+					for (int y = Math.min(yEnd, yBegin); y < Math.max(yEnd,
+							yBegin); ++y) {
+						Curve c = this.selectionTool
+								.searchCurve(new Point(x, y));
+						if (c != null) {
+							boolean found = false;
+							for (int i = 0; i < hooveredCurves.size(); ++i)
+								if (hooveredCurves.elementAt(i).equals(c))
+									found = true;
+
+							if (!found)
+								hooveredCurves.add(c);
+						}
+					}
+			} else if (mode == MODE.DESELECT_CONTROL_POINT
+					|| mode == MODE.SELECT_CONTROL_POINT) {
+				if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
+					hooveredCurves.clear();
+					hooveredPoints.clear();
+				}
+
+				for (int x = Math.min(xEnd, xBegin); x <= Math
+						.max(xEnd, xBegin); ++x)
+					for (int y = Math.min(yEnd, yBegin); y <= Math.max(yEnd,
+							yBegin); ++y) {
+						Point p = hooverPoint(new Point(x, y));
+
+					}
+			}
+		}
+
+		draw.repaint();
 	}
 
 	public void mouseMoved(MouseEvent e) {
