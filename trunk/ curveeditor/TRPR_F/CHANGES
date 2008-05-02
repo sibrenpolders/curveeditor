@@ -111,3 +111,8 @@ Ik heb een mockupje gemaakt, zodat je ziet wat ik in gedachten had als eindprodu
 Die lay-out werkt vrij intuïtief denk ik en bevat al het nodige voor een curve-editor.
 
 Als je ergens iets anders in gedachten had, laat maar weten hé !
+
+------------------
+
+Geselecteerde curves of controlepunten deleten werkt nu ook netjes.
+Ik wou 't met een keylistener doen, maar da's veel werk en da's niet foolproof ook.

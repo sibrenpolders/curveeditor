@@ -5,6 +5,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,9 +15,11 @@ import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,7 +75,6 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		frame.setVisible(true);
 
 		selectionTool = new CurveContainer(600, 600);
-
 	}
 
 	public GUI(String filename) {
@@ -91,6 +94,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		draw = new DrawArea(this.curves, this.selectedCurves,
 				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
+		draw.addMouseMotionListener(this);
 		contentPane.add(draw);
 
 		frame.pack();
@@ -212,11 +216,9 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		}
 
 		draw.resetSelectionRectangle();
-		if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
-			hooveredCurves.clear();
-			hooveredPoints.clear();
-			draw.repaint();
-		}
+		hooveredCurves.clear();
+		hooveredPoints.clear();
+		draw.repaint();
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -424,6 +426,13 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				changeMode(MODE.SELECT_CONTROL_POINT);
 			else if (actionCommand.equals("Select Curve"))
 				changeMode(MODE.SELECT_CURVE);
+			else if (actionCommand.equals("Delete ctlpts")) {
+				deleteSelectedControlPoints();
+				recalculateCurves();
+			} else if (actionCommand.equals("Delete curves")) {
+				deleteSelectedCurves();
+				recalculateSelectedCurves();
+			}
 
 			draw.repaint();
 		}

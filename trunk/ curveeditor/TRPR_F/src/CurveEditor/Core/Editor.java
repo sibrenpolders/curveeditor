@@ -153,6 +153,37 @@ public class Editor {
 		this.mode = MODE.ADD_INPUT;
 	}
 
+	protected void deleteSelectedControlPoints() {
+		for (int i = 0; i < selectedPoints.size(); ++i) {
+			for (int j = 0; j < selectedCurves.size(); ++j) {
+				int temp;
+				while ((temp = selectedCurves.elementAt(j).containsInputPointi(
+						selectedPoints.elementAt(i))) != -1) {
+					selectedCurves.elementAt(j).getInput().remove(temp);
+				}
+			}
+		}
+
+		for (int j = 0; j < selectedCurves.size(); ++j) {
+			if (selectedCurves.elementAt(j).getNbInputPoints() == 0) {
+				selectionTool.deleteCurve(selectedCurves.elementAt(j));
+				selectedCurves.remove(j--);
+			}
+		}
+
+		curves.addAll(selectedCurves);
+		selectedCurves.clear();
+
+		selectedPoints.clear();
+	}
+
+	protected void deleteSelectedCurves() {
+		for (int j = 0; j < selectedCurves.size(); ++j)
+			selectionTool.deleteCurve(selectedCurves.elementAt(j));
+
+		selectedCurves.clear();
+	}
+
 	protected void deselectAll() {
 		for (int i = 0; i < selectedCurves.size(); ++i)
 			curves.add(selectedCurves.get(i));
@@ -247,7 +278,7 @@ public class Editor {
 		Point result = null;
 
 		Vector<Point> temp = selectionTool.searchControlPoint(p);
-		for (int i = 0; i < temp.size(); ++i) {
+		for (int i = 0; temp != null && i < temp.size(); ++i) {
 			result = temp.elementAt(0);
 
 			if (isSelectedControlPoint(temp.elementAt(i)))
@@ -348,5 +379,34 @@ public class Editor {
 			return --index;
 		else
 			return -1;
+	}
+
+	protected void recalculateSelectedCurves() {
+		Algorithm prev = currentAlgorithm;
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			Curve c = selectedCurves.elementAt(i);
+			this.getAlgorithm(selectedCurves.get(i).getType(),
+					selectedCurves.get(i).getDegree()).calculate(
+					selectedCurves.get(i));
+
+			selectionTool.deleteCurve(c);
+			selectionTool.addCurve(c);
+		}
+
+		currentAlgorithm = prev;
+	}
+
+	protected void recalculateCurves() {
+		Algorithm prev = currentAlgorithm;
+		for (int i = 0; i < curves.size(); ++i) {
+			Curve c = curves.elementAt(i);
+			this.getAlgorithm(curves.get(i).getType(),
+					curves.get(i).getDegree()).calculate(curves.get(i));
+
+			selectionTool.deleteCurve(c);
+			selectionTool.addCurve(c);
+		}
+
+		currentAlgorithm = prev;
 	}
 }
