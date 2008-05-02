@@ -20,7 +20,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import CurveEditor.Algorithms.Algorithm;
-import CurveEditor.Core.CurveContainer2D;
+import CurveEditor.Core.CurveContainer;
 import CurveEditor.Core.CurveHashMap;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
@@ -71,7 +71,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		frame.pack();
 		frame.setVisible(true);
 
-		selectionTool = new CurveContainer2D(600, 600);
+		selectionTool = new CurveContainer(600, 600);
 
 	}
 
@@ -97,7 +97,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		frame.pack();
 		frame.setVisible(true);
 
-		selectionTool = new CurveContainer2D(600, 600);
+		selectionTool = new CurveContainer(600, 600);
 	}
 
 	public void menuCanceled(MenuEvent arg0) {
