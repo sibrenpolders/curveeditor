@@ -148,3 +148,12 @@ Mss nog ff de TODO's opsommen, zodat je weet wat doen :-p :
 -buttons voorzien voor de connect-functionaliteit
 -af en toe krijg ik lineaire interpolatie te zien tussen controlepunten, terug ff klikken op het
 	juiste algoritme en het lijnstuk is weg. Bizar... maar 't zou niet mogen --> debuggen.
+	
+------------------
+
+Nog 'n TODO'tje vermelden, gewoon opdat ik het niet zou vergeten:
+een geselecteerd controlepunt wordt gemoved en komt op een andere controlepunt van de geselecteerde curve terecht
+--> óók dat controlepunt wordt dan meegesleept, en dat zou niet mogen.
+
+Oplossing: voor elke curve zélf nog een vector selectedPoints of zo bijhouden. 
+Mss niet de béste oplossing, maar toch zeker een van de makkelijkste.
