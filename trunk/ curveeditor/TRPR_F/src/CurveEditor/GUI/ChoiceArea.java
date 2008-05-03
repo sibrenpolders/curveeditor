@@ -21,7 +21,7 @@ import CurveEditor.Curves.Point;
 public class ChoiceArea extends JPanel implements ActionListener {
 
 	// private Vector<Algorithm> v;
-	final static private String[] bezierAlgTypeNames = { "Bezier C0",
+	final static private String[] bezierAlgTypeNames = { "Linear", "Bezier C0",
 			"Bezier G1", "Bezier C1" };
 	final static private String[] hermiteAlgTypeNames = { "Hermite Normal",
 			"Cardinal", "Catmull-Rom" };
