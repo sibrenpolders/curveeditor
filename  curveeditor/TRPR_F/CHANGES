@@ -184,6 +184,7 @@ Nog ff TODO's opsommen, van belangrijk naar minder belangrijk (vul aan indien ge
 - verslag
 - GUI afwerken a.h.v. mockup
 - buttons voorzien voor de connect-functionaliteit (zou vrij easy moeten zijn, meeste functies zijn al gemaakt)
+- de mogelijkheid bieden om de schermgrootte te wijzigen (draw en selectiontool moeten dan tegoei aangepast worden, zijn al wat methodes voor)
 - af en toe krijg ik lineaire interpolatie te zien tussen controlepunten, terug ff klikken op het
 	juiste algoritme en het lijnstuk is weg. Bij Linear gaat het niet weg en zie je soms twee lijnstukken vertrekken
 	uit één controlepunt --> verkeerd dus... maar ik heb de fout nog niet gevonden.
