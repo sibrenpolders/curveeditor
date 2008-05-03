@@ -104,21 +104,24 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Algorithm prev = currentAlgorithm;
+
 			for (int i = 0; i < selectedCurves.size(); ++i) {
 				Curve c = selectedCurves.elementAt(i);
+				selectionTool.deleteCurve(c);
 				c.addInput(new Point(e.getX(), e.getY()));
+
 				// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat
 				// deze is ingegeven
 				if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
-					selectionTool.deleteCurve(c);
-					this.getAlgorithm(selectedCurves.get(i).getType(),
-							selectedCurves.get(i).getDegree()).calculate(
-							selectedCurves.get(i));
-					selectionTool.addCurve(c);
+					c.clearOutput();
+					this.getAlgorithm(c.getType(), c.getDegree())
+							.calculateComplete(c);
 				}
 
+				selectionTool.addCurve(c);
 			}
+
 			currentAlgorithm = prev;
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE
@@ -416,7 +419,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 			System.out.println(e);
 			if (actionCommand.equals("Bezier"))
-				setCurrentAlgorithm('B');
+				setCurrentAlgorithm('L');
 			else if (actionCommand.equals("Hermite"))
 				setCurrentAlgorithm('H');
 			else if (actionCommand.equals("comboBoxChanged")) {
@@ -427,6 +430,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 					setCurrentAlgorithm('B');
 				else if (item.equals("Bezier G1"))
 					setCurrentAlgorithm('G');
+				else if (item.equals("Linear"))
+					setCurrentAlgorithm('L');
 				else if (item.equals("Bezier C1"))
 					setCurrentAlgorithm('C');
 				else if (item.equals("Hermite Normal"))
