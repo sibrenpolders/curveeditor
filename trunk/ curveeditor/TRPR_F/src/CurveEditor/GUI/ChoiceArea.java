@@ -185,6 +185,14 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		checkPanel.add( item );
 	}
 	
+	private void createCurveEditeMode( ) {
+		
+	}
+	
+	private void createPointEditMode( ) {
+		
+	}
+	
 	public void refresh() {
 
 	}
