@@ -52,8 +52,18 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		init();
 	}
 
-	public void toggleEditPanel( ) {
+	// true == curveEditPlane
+	// false == pointEditPlane
+	public void toggleEditPanel( boolean value ) {
+		if ( value )
+		{
+			pointEditPanel.setVisible( false );
+			curveEditPanel.setVisible( true );
+			return;
+		}
 		
+		pointEditPanel.setVisible( true);
+		curveEditPanel.setVisible( false );
 	}
 	
 	private void init() {
@@ -140,8 +150,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 	private void createRadioPanel() {
 		JPanel radioPanel = new JPanel();
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));
-		radioPanel.add(Box.createHorizontalGlue());
+		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));		
 		ButtonGroup algGroep = new ButtonGroup();
 
 		JRadioButton algName = new JRadioButton("Bezier");
@@ -162,12 +171,14 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		algGroep.add(algName);
 
 		radioPanel.add(algName);
+		radioPanel.add(Box.createHorizontalGlue());
+		
 		radioPanel.setBorder(BorderFactory.createTitledBorder("Algorithm"));
 		Dimension d = new Dimension(250, 100);
 		radioPanel.setMaximumSize(d);
 		radioPanel.setMinimumSize(d);
 		radioPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-
+				
 		add(radioPanel);
 	}
 

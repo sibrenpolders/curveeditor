@@ -172,7 +172,7 @@ public class Editor {
 			this.mode = m;
 		} else {
 			this.mode = m;
-		}
+		}			
 	}
 
 	protected void startNewCurve() {
