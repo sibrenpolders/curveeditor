@@ -8,8 +8,12 @@ import CurveEditor.Curves.Point;
 //Lineair --> tussen elk paar punten een lijnstuk tekenen
 public final class Linear extends Algorithm {
 
+	public Linear(char type, short degree) {
+		super(type, (short) degree);
+	}
+
 	public Linear(short degree) {
-		super('L', (short) 1);
+		super('L', (short) degree);
 	}
 
 	public Linear() {

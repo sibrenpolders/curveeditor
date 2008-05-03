@@ -1,15 +1,24 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
-
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class Hermite extends Algorithm {
-	int steps;
+	protected int steps;
 
 	public Hermite(char type, short degree) {
 		super(type, degree);
+		steps = 1000;
+	}
+
+	public Hermite(short degree) {
+		super('H', degree);
+		steps = 1000;
+	}
+
+	public Hermite() {
+		super('H', (short) 0);
 		steps = 1000;
 	}
 
@@ -23,9 +32,9 @@ public class Hermite extends Algorithm {
 		float h11 = t3 - t2; // basis function 4
 
 		float y = h00 * p1.Y() + h10 * r1.Y() + h01 * p2.Y() + h11 * r2.Y(); // nieuwe
-																				// y-coordinaat
+		// y-coordinaat
 		float x = h00 * p1.X() + h10 * r1.X() + h01 * p2.X() + h11 * r2.X(); // nieuwe
-																				// x-coordinaat
+		// x-coordinaat
 
 		return new Point((int) Math.floor(x + .5), (int) Math.floor(y + .5));
 	}
@@ -76,10 +85,10 @@ public class Hermite extends Algorithm {
 		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
 		// interpolleren
 		// en Ri, Rj de tangens zijn van de kromme in respectievelijk Pi, Pj
-		for(int i =0; i < size - 3; i += 2 ) {
+		for (int i = 0; i < size - 3; i += 2) {
 			// enkel de interpolatie tussen het laatste en het voorlaatste punt
 			// moet berekend worden
-			Point a = vip.get(i );
+			Point a = vip.get(i);
 			Point b = vip.get(i + 1);
 			Point c = vip.get(i + 2);
 			Point d = vip.get(i + 3);
@@ -90,6 +99,6 @@ public class Hermite extends Algorithm {
 				vop.add(hermite(a, r1, c, r2, t));
 			}
 		}
-		
+
 	}
 }

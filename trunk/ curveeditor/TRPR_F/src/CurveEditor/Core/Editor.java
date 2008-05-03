@@ -59,13 +59,15 @@ public class Editor {
 		hooveredPoints = new Vector<Point>();
 
 		// Hier moeten alle geïmplementeerde algoritmes ingegeven worden.
-		algorithms.add(new Linear((short) 1)); // 'L'
-		algorithms.add(new Bezier((short) 3)); // 'B'
-		algorithms.add(new Hermite('H', (short) 1));
-		algorithms.add(new HermiteCardinal('C', (short) 1));
-		algorithms.add(new HermiteCatmullRom('R', (short) 1));
+		algorithms.add(new Linear('L', (short) 1)); // 'L'
+		algorithms.add(new Bezier('B', (short) 3)); // 'B' --> C0
+		algorithms.add(new BezierG1('G', (short) 3)); // 'G' --> G1
+		algorithms.add(new BezierC1('C', (short) 3)); // 'C' --> C1
+		algorithms.add(new Hermite('H', (short) 0)); // 'H'
+		algorithms.add(new HermiteCardinal('A', (short) 0)); // 'A'
+		algorithms.add(new HermiteCatmullRom('R', (short) 0)); // 'R'
 
-		currentAlgorithm = getAlgorithm('B', (short) 3);
+		currentAlgorithm = getAlgorithm('L', (short) 1);
 
 		file = new FileIO();
 		// afmetingen van het canvas zijn nodig om een datastructuur aan te
@@ -92,6 +94,13 @@ public class Editor {
 		return null;
 	}
 
+	protected Algorithm getAlgorithm(char type) {
+		for (int i = 0; i < algorithms.size(); ++i)
+			if (algorithms.get(i).getType() == type)
+				return algorithms.get(i);
+		return null;
+	}
+
 	protected void setCurrentAlgorithm(char type, short degree) {
 		Algorithm temp = getAlgorithm(type, degree);
 
@@ -99,10 +108,29 @@ public class Editor {
 			currentAlgorithm = temp;
 			// de op dat moment geselecteerde curves naar dat type veranderen
 			for (int i = 0; i < selectedCurves.size(); ++i) {
+				selectionTool.deleteCurve(selectedCurves.elementAt(i));
 				selectedCurves.get(i).setType(type);
 				selectedCurves.get(i).setDegree(degree);
 				selectedCurves.get(i).clearOutput();
 				currentAlgorithm.calculate(selectedCurves.get(i));
+				selectionTool.addCurve(selectedCurves.elementAt(i));
+			}
+		}
+	}
+
+	protected void setCurrentAlgorithm(char type) {
+		Algorithm temp = getAlgorithm(type);
+
+		if (temp != null) {
+			currentAlgorithm = temp;
+			// de op dat moment geselecteerde curves naar dat type veranderen
+			for (int i = 0; i < selectedCurves.size(); ++i) {
+				selectionTool.deleteCurve(selectedCurves.elementAt(i));
+				selectedCurves.get(i).setType(type);
+				selectedCurves.get(i).setDegree(temp.getDegree());
+				selectedCurves.get(i).clearOutput();
+				currentAlgorithm.calculate(selectedCurves.get(i));
+				selectionTool.addCurve(selectedCurves.elementAt(i));
 			}
 		}
 	}

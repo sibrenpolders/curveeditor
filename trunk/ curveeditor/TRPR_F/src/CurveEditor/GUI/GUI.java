@@ -111,11 +111,10 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				// telkens de tangens. Dus er moet niet getekend worden voordat
 				// deze is ingegeven
 				if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
+					selectionTool.deleteCurve(c);
 					this.getAlgorithm(selectedCurves.get(i).getType(),
 							selectedCurves.get(i).getDegree()).calculate(
 							selectedCurves.get(i));
-
-					selectionTool.deleteCurve(c);
 					selectionTool.addCurve(c);
 				}
 
@@ -417,23 +416,25 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 			System.out.println(e);
 			if (actionCommand.equals("Bezier"))
-				currentAlgorithm = getAlgorithm('B', (short) 3);
+				setCurrentAlgorithm('B');
 			else if (actionCommand.equals("Hermite"))
-				currentAlgorithm = getAlgorithm('H', (short) 1);
+				setCurrentAlgorithm('H');
 			else if (actionCommand.equals("comboBoxChanged")) {
 				String item = (String) ((JComboBox) e.getSource())
 						.getSelectedItem();
 
-				if (item.equals("Bezier normal"))
-					currentAlgorithm = getAlgorithm('B', (short) 3);
-				else if (item.equals("Unlimited 3"))
-					currentAlgorithm = getAlgorithm('B', (short) 0);
-				else if (item.equals("Hermite normal"))
-					currentAlgorithm = getAlgorithm('H', (short) 1);
+				if (item.equals("Bezier C0"))
+					setCurrentAlgorithm('B');
+				else if (item.equals("Bezier G1"))
+					setCurrentAlgorithm('G');
+				else if (item.equals("Bezier C1"))
+					setCurrentAlgorithm('C');
+				else if (item.equals("Hermite Normal"))
+					setCurrentAlgorithm('H');
 				else if (item.equals("Cardinal"))
-					currentAlgorithm = getAlgorithm('C', (short) 1);
-				else if (item.equals("Catmull Rom"))
-					currentAlgorithm = getAlgorithm('R', (short) 1);
+					setCurrentAlgorithm('A');
+				else if (item.equals("Catmull-Rom"))
+					setCurrentAlgorithm('R');
 			} else if (actionCommand.equals("Open"))
 				open();
 			else if (actionCommand.equals("Save"))
