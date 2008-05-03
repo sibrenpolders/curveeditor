@@ -138,3 +138,13 @@ Volgende fase in mijn monoloog:
 Ik heb alle algoritmen erin gezet, Bezier ewa in klassen verdeeld en ik heb ze allemaal getest
 --> ziet er prima uit, vind ik zo !
 Connect-functie is voor een andere keer... nu slapen.
+
+
+P.S.
+Mss nog ff de TODO's opsommen, zodat je weet wat doen :-p :
+
+-selectie van curves/controlepunten d.m.v. klikken debuggen (één i.p.v. twee klikken op een gehooverd element)
+-GUI afwerken zoals op mockup of i.d.a.
+-buttons voorzien voor de connect-functionaliteit
+-af en toe krijg ik lineaire interpolatie te zien tussen controlepunten, terug ff klikken op het
+	juiste algoritme en het lijnstuk is weg. Bizar... maar 't zou niet mogen --> debuggen.
