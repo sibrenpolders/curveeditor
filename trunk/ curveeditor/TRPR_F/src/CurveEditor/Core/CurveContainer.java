@@ -52,6 +52,17 @@ public class CurveContainer {
 		this.maxY = Maxy;
 	}
 
+	public final void clear() {
+		curves = new Curve[maxX][maxY];
+		controlPoints = new Vector[maxX][maxY];
+
+		for (int x = 0; x < maxX; ++x)
+			for (int y = 0; y < maxY; ++y) {
+				curves[x][y] = null;
+				controlPoints[x][y] = new Vector<Curve>();
+			}
+	}
+
 	public void addCurve(Curve c) {
 		for (int i = 0; i < c.getOutput().size(); ++i)
 			if (isValidPoint(c.getOutput().elementAt(i)))

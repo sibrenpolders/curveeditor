@@ -83,6 +83,7 @@ public class Editor {
 		hooveredCurves.clear();
 		selectedPoints.clear();
 		hooveredPoints.clear();
+		selectionTool.clear();
 	}
 
 	// algoritme zoeken a.h.v. het type en de orde
@@ -112,7 +113,7 @@ public class Editor {
 				selectedCurves.get(i).setType(type);
 				selectedCurves.get(i).setDegree(degree);
 				selectedCurves.get(i).clearOutput();
-				currentAlgorithm.calculate(selectedCurves.get(i));
+				currentAlgorithm.calculateComplete(selectedCurves.get(i));
 				selectionTool.addCurve(selectedCurves.elementAt(i));
 			}
 		}
@@ -129,7 +130,7 @@ public class Editor {
 				selectedCurves.get(i).setType(type);
 				selectedCurves.get(i).setDegree(temp.getDegree());
 				selectedCurves.get(i).clearOutput();
-				currentAlgorithm.calculate(selectedCurves.get(i));
+				currentAlgorithm.calculateComplete(selectedCurves.get(i));
 				selectionTool.addCurve(selectedCurves.elementAt(i));
 			}
 		}
@@ -401,7 +402,7 @@ public class Editor {
 			Curve c = selectedCurves.elementAt(i);
 			selectionTool.deleteCurve(c);
 			this.getAlgorithm(selectedCurves.get(i).getType(),
-					selectedCurves.get(i).getDegree()).calculate(
+					selectedCurves.get(i).getDegree()).calculateComplete(
 					selectedCurves.get(i));
 
 			selectionTool.addCurve(c);
@@ -416,7 +417,7 @@ public class Editor {
 			Curve c = curves.elementAt(i);
 			selectionTool.deleteCurve(c);
 			this.getAlgorithm(curves.get(i).getType(),
-					curves.get(i).getDegree()).calculate(curves.get(i));
+					curves.get(i).getDegree()).calculateComplete(curves.get(i));
 
 			selectionTool.addCurve(c);
 		}
