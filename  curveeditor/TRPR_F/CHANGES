@@ -157,3 +157,18 @@ een geselecteerd controlepunt wordt gemoved en komt op een andere controlepunt v
 
 Oplossing: voor elke curve zélf nog een vector selectedPoints of zo bijhouden. 
 Mss niet de béste oplossing, maar toch zeker een van de makkelijkste.
+
+EDIT: Je spreekt hier toch over 1 curve he? je neemt 1 punt van een curve en legt dit punt op een ander punt van diezelfde
+curve? Heb ik het goed?
+Je kan dit ook zo oplossen:
+ 1. Je ziet deze operatie als een "inkorting" van de curve. Je gooit dan met andere woorden 1 punt gewoon weg, en dan is het
+ geen probleem dat de 2 controlepunten ( die nu 1 zijn geworden ) samen versleept worden.
+ 2. Je houdt tijdens het slepen een boolean bij, staat ie op false dan versleep je het punt zonder meer, staat ie op true dan versleep jet het punt en laat je een
+ kopie staan. Ik weet niet of dit mogelijk is? Ik zal sebi je code eens bekijken.
+ 
+-----
+
+Heb het project een paar dagen verwaarloost zie ik! Shame on me. Ga er vdg nog wat aan werken en morgen nog de ganse dag.
+Zal beginnen met de mockup na te maken. Of heb je een voorkeur naar 1 van de debug opdrachten?
+
+
