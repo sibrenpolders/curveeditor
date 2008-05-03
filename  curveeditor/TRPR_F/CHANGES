@@ -171,4 +171,30 @@ Je kan dit ook zo oplossen:
 Heb het project een paar dagen verwaarloost zie ik! Shame on me. Ga er vdg nog wat aan werken en morgen nog de ganse dag.
 Zal beginnen met de mockup na te maken. Of heb je een voorkeur naar 1 van de debug opdrachten?
 
+----------
 
+Je ziet maar, 't moet uiteindelijk allemaal gedaan worden. Wie wat doet maakt me niet echt uit.
+En als je zelf andere/betere ideeën hebt over de lay-out e.d., implementeert ze maar hé. ;-)
+
+Echt veel moet er niet meer gedaan worden, denk ik. Hier en daar nog wat dingetjes, maar de basis 
+is nu toch écht wel af. Ik zie overigens net dat de deadline 3 juni is. Nog een maand dus... 
+moet zéker lukken, denk ik zo. If not... foei. :-p
+
+Nog ff TODO's opsommen, van belangrijk naar minder belangrijk (vul aan indien gewenst):
+- verslag
+- GUI afwerken a.h.v. mockup
+- buttons voorzien voor de connect-functionaliteit (zou vrij easy moeten zijn, meeste functies zijn al gemaakt)
+- af en toe krijg ik lineaire interpolatie te zien tussen controlepunten, terug ff klikken op het
+	juiste algoritme en het lijnstuk is weg. Bij Linear gaat het niet weg en zie je soms twee lijnstukken vertrekken
+	uit één controlepunt --> verkeerd dus... maar ik heb de fout nog niet gevonden.
+- een geselecteerd controlepunt wordt gemoved en komt op een andere controlepunt van de geselecteerde curve terecht
+	--> óók dat controlepunt wordt dan geselecteerd/meegesleept, en dat zou niet mogen.
+- selectie van curves/controlepunten d.m.v. clicken debuggen:
+	Nu moet je dubbelklikken op een gehooverd element, omdat 'ie op een of andere plaats
+	in selectedCurves gezwierd wordt. Klikken haalt 'ie er terug uit --> alles lijkt zoals het was.
+	Nog 's klikken zet 'm terug in selectedCurves.
+	'ie Mag dus niet in selectedCurves terechtkomen vóór je 'm er zelf wilt instoppen --> zoeken waar dat gebeurt.
+	
+	
+Ik zal morgen ne timergestuurde voetballer in OpenGL proberen te modelleren. 
+Dan kan je doen wat je wil in het TRPR. ;-)
