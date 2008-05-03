@@ -52,6 +52,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		init();
 	}
 
+	public void toggleEditPanel( ) {
+		
+	}
+	
 	private void init() {
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -187,9 +191,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		container.setMinimumSize(d);
 		container.add(Box.createHorizontalGlue());
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
-		container.setBorder( BorderFactory.createTitledBorder( "Show" ));
-		
-		
+		container.setBorder( BorderFactory.createTitledBorder( "Show" ));				
 		
 		add( container );
 	}
