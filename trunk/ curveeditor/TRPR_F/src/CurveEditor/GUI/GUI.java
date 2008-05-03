@@ -419,7 +419,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		public void actionPerformed(ActionEvent e) {
 			String actionCommand = e.getActionCommand();
 
-			System.out.println(e);
+			// TODO Dit ding opkuizen!
 			if (actionCommand.equals("Bezier"))
 				setCurrentAlgorithm('L');
 			else if (actionCommand.equals("Hermite"))
@@ -476,10 +476,15 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 			draw.repaint();
 		}
 
-		@Override
 		public void itemStateChanged(ItemEvent e) {
-			// TODO Auto-generated method stub
+			String eventName = e.getItemSelectable().toString();
 			
+			if ( eventName.contains( "Coordinates" ) )
+				draw.toggleCoords();
+			else if ( eventName.contains( "Tanges") )
+				draw.toggleTangents();
+			else if ( eventName.contains( "Numbers" ))
+				draw.toggleNrs();
 		}
 	}
 }
