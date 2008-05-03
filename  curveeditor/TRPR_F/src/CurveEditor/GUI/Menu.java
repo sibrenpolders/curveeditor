@@ -148,20 +148,33 @@ public class Menu extends JMenuBar {
 		JPanel radioPanel = new JPanel( );
 		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
 		
-		JRadioButton algName = new JRadioButton( "normal" );
+		JRadioButton algName = new JRadioButton( "Linear" );
 		algName.setSelected( true );
 		algName.addActionListener( listener) ;
 		
 		group.add( algName );
 		radioPanel.add( algName );
 		
-		algName = new JRadioButton( "Unlimeted" );
+		algName = new JRadioButton( "Bezier C0" );
 		algName.setSelected( false );
 		algName.addActionListener( listener ) ;
+				
+		group.add( algName );		
+		radioPanel.add( algName );
 		
-		group.add( algName );
+		algName = new JRadioButton( "Bezier G1" );
+		algName.setSelected( false );
+		algName.addActionListener( listener ) ;
+				
+		group.add( algName );		
+		radioPanel.add( algName );
 		
-		radioPanel.add( algName );		
+		algName = new JRadioButton( "Bezier C1" );
+		algName.setSelected( false );
+		algName.addActionListener( listener ) ;
+				
+		group.add( algName );		
+		radioPanel.add( algName );
 		
 		menu.add( radioPanel );			
 	}
