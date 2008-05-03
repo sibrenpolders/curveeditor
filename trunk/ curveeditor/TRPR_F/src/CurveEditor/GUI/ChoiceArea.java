@@ -5,17 +5,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.util.EventListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
+import javax.swing.border.Border;
+
 import CurveEditor.Curves.Point;
 
 public class ChoiceArea extends JPanel implements ActionListener {
@@ -27,11 +33,15 @@ public class ChoiceArea extends JPanel implements ActionListener {
 			"Cardinal", "Catmull-Rom" };
 	private String[] currentAlgTypeNames;
 	private JComboBox type;
+	private JPanel checkPanel;
+	private JCheckBox box;	
 	private ActionListener listener;
-
-	public ChoiceArea(ActionListener listener) {
+	private ItemListener itemListener;
+	
+	public ChoiceArea(ActionListener listener, ItemListener itemListener ) {
 		super(new BorderLayout());
 		this.listener = listener;
+		this.itemListener = itemListener;
 		currentAlgTypeNames = bezierAlgTypeNames;
 		init();
 	}
@@ -44,9 +54,11 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createRadioPanel();
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		createComboBox();
-		add(Box.createRigidArea(new Dimension(0, 5)));
+		add(Box.createRigidArea(new Dimension(0, 5)));		
 		createInputField();
-
+		add(Box.createRigidArea(new Dimension(0, 5)));
+		createCheckBox();
+		
 		add(Box.createVerticalGlue());
 
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 5, Color.BLACK));
@@ -147,6 +159,32 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		add(radioPanel);
 	}
 
+	private void createCheckBox( ) {
+		checkPanel = new JPanel( );
+		checkPanel.setLayout( new BoxLayout( checkPanel, BoxLayout.Y_AXIS ));			
+		
+		createCheckBoxItem( "Coordinates" );
+		createCheckBoxItem( "Tangens" );
+		createCheckBoxItem( "Numbers" );
+		
+		
+		Dimension d = new Dimension(250, 100);
+		checkPanel.setMaximumSize(d);
+		checkPanel.setMinimumSize(d);
+		checkPanel.add(Box.createHorizontalGlue());
+		checkPanel.add(Box.createRigidArea(new Dimension(5, 0)));
+		checkPanel.setBorder( BorderFactory.createTitledBorder( "Show" ));
+		
+		add( checkPanel );
+	}
+	
+	private void createCheckBoxItem( String name ) {
+		JCheckBox item = new JCheckBox( name );
+		item.addItemListener( itemListener );
+		item.setSelected( false );
+		checkPanel.add( item );
+	}
+	
 	public void refresh() {
 
 	}
