@@ -7,7 +7,14 @@ public final class HermiteCatmullRom extends HermiteCardinal {
 
 	public HermiteCatmullRom(char type, short degree) {
 		super(type, degree);
-		// TODO Auto-generated constructor stub
+	}
+
+	public HermiteCatmullRom(short degree) {
+		this('R', degree);
+	}
+
+	public HermiteCatmullRom() {
+		this('R', (short) 0);
 	}
 
 	public void calculate(Curve cv) {

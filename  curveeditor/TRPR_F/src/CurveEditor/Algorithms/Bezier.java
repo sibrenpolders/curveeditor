@@ -1,20 +1,22 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
-
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
 public class Bezier extends Algorithm {
-	private double[][] matrix;
-	private double[][] controlPtsMatrix;
-	private double[] parameterMatrix;
-	boolean G1Continuity = true;
-	boolean C1Continuity = true;
+	protected double[][] matrix;
+	protected double[][] controlPtsMatrix;
+	protected double[] parameterMatrix;
 
 	// orde = 3 --> per 4 controlepunten de dingen berekenen dus
+	public Bezier(char type, short degree) {
+		super(type, degree);
+		createMatrix();
+	}
+
 	public Bezier(short degree) {
-		super('B', (short) 3);
+		super('B', degree);
 		createMatrix();
 	}
 
@@ -23,16 +25,7 @@ public class Bezier extends Algorithm {
 		createMatrix();
 	}
 
-	public final void toggleC1Continuity() {
-		C1Continuity = !C1Continuity;
-		G1Continuity = C1Continuity;
-	}
-
-	public final void toggleG1Continuity() {
-		G1Continuity = !G1Continuity;
-	}
-
-	private final void createMatrix() {
+	protected final void createMatrix() {
 		matrix = new double[4][4];
 		matrix[0][0] = -1.0;
 		matrix[0][1] = 3.0;
@@ -52,7 +45,7 @@ public class Bezier extends Algorithm {
 		matrix[3][3] = 0.0;
 	}
 
-	private final void fillControlPointsMatrix(Point a, Point b, Point c,
+	protected final void fillControlPointsMatrix(Point a, Point b, Point c,
 			Point d) {
 		controlPtsMatrix = new double[2][4];
 		controlPtsMatrix[0][0] = a.X();
@@ -66,7 +59,7 @@ public class Bezier extends Algorithm {
 		controlPtsMatrix[1][3] = d.Y();
 	}
 
-	private final void fillParameterMatrix(double t) {
+	protected final void fillParameterMatrix(double t) {
 		parameterMatrix = new double[4];
 
 		parameterMatrix[3] = 1;
@@ -137,27 +130,6 @@ public class Bezier extends Algorithm {
 	}
 
 	public void calculate(Vector<Point> input, Vector<Point> output) {
-		output.clear();
-
-		if (C1Continuity)
-			calculateC1(input, output);
-		else if (G1Continuity)
-			calculateG1(input, output);
-		else
-			calculateC0(input, output);
-
-		// // de output-vector lineair interpoleren
-		// Linear smoothing = new Linear();
-		// Vector<Point> temp = new Vector<Point>();
-		// for (int i = 0; i < output.size() - 1; ++i)
-		// smoothing.interpolate(output.elementAt(i), output.elementAt(i + 1),
-		// temp);
-		//
-		// output.clear();
-		// output.addAll(temp);
-	}
-
-	private final void calculateC0(Vector<Point> input, Vector<Point> output) {
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * Point.distance(input.elementAt(i), input
@@ -165,62 +137,6 @@ public class Bezier extends Algorithm {
 
 			interpolate(input.elementAt(i), input.elementAt(i + 1), input
 					.elementAt(i + 2), input.elementAt(i + 3), steps, output);
-		}
-	}
-
-	private final void calculateG1(Vector<Point> input, Vector<Point> output) {
-		for (int i = 0; i <= input.size() - 4; i = i + 3) {
-			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
-			int steps = 2 * Point.distance(input.elementAt(i), input
-					.elementAt(i + 3));
-
-			Point first, second;
-			Tangent c = new Tangent();
-
-			if (i > 0)
-				first = c.calculate(Tangent.CONTINUITY.G1, (short) 2, input
-						.elementAt(i - 1), input.elementAt(i), input
-						.elementAt(i + 1));
-			else
-				first = input.elementAt(i + 1);
-
-			if (i <= input.size() - 7)
-				second = c.calculate(Tangent.CONTINUITY.G1, (short) 1, input
-						.elementAt(i + 2), input.elementAt(i + 3), input
-						.elementAt(i + 4));
-			else
-				second = input.elementAt(i + 2);
-
-			interpolate(input.elementAt(i), first, second, input
-					.elementAt(i + 3), steps, output);
-		}
-	}
-
-	private final void calculateC1(Vector<Point> input, Vector<Point> output) {
-		for (int i = 0; i <= input.size() - 4; i = i + 3) {
-			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
-			int steps = 2 * Point.distance(input.elementAt(i), input
-					.elementAt(i + 3));
-
-			Point first, second;
-			Tangent c = new Tangent();
-
-			if (i > 0)
-				first = c.calculate(Tangent.CONTINUITY.C1, (short) 2, input
-						.elementAt(i - 1), input.elementAt(i), input
-						.elementAt(i + 1));
-			else
-				first = input.elementAt(i + 1);
-
-			if (i <= input.size() - 7)
-				second = c.calculate(Tangent.CONTINUITY.C1, (short) 1, input
-						.elementAt(i + 2), input.elementAt(i + 3), input
-						.elementAt(i + 4));
-			else
-				second = input.elementAt(i + 2);
-
-			interpolate(input.elementAt(i), first, second, input
-					.elementAt(i + 3), steps, output);
 		}
 	}
 
