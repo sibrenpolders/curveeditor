@@ -502,6 +502,7 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				changeMode(MODE.ADD_INPUT);
 				choice.toggleEditPanel( false );
 			}
+			// !!!!!!!! waarom duurt dit zolang?? +- 3 seconden
 			else if (actionCommand.equals("Clr")) {
 				changeMode(MODE.NONE);
 				reset();
