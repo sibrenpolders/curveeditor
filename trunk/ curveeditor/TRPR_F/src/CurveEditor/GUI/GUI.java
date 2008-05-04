@@ -116,9 +116,10 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				// telkens de tangens. Dus er moet niet getekend worden voordat
 				// deze is ingegeven
 				if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
-					c.clearOutput();
+					// hoeft niet, mijn functies berekend alleen maar de laatste afstand die bijkomt
+//					c.clearOutput();
 					this.getAlgorithm(c.getType(), c.getDegree())
-							.calculateComplete(c);
+							.calculate(c);
 				}
 
 				selectionTool.addCurve(c);
@@ -414,16 +415,24 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		draw.toggleTangents();
 		return draw.tangents();
 	}
-
+	
 	private class Listener implements ActionListener, ItemListener  {
 		public void actionPerformed(ActionEvent e) {
 			String actionCommand = e.getActionCommand();
 
 			// TODO Dit ding opkuizen!
 			if (actionCommand.equals("Bezier"))
+			{
 				setCurrentAlgorithm('L');
+//				recalculateSelectedCurves();
+				recalS();
+			}
 			else if (actionCommand.equals("Hermite"))
+			{
 				setCurrentAlgorithm('H');
+//				recalculateSelectedCurves();
+				recalS();
+			}
 			else if (actionCommand.equals("comboBoxChanged")) {
 				String item = (String) ((JComboBox) e.getSource())
 						.getSelectedItem();
@@ -442,6 +451,9 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 					setCurrentAlgorithm('A');
 				else if (item.equals("Catmull-Rom"))
 					setCurrentAlgorithm('R');
+				
+				// de geslecteerde curves zijn onder invloed van deze keuze
+				recalS();
 			} else if (actionCommand.equals("Open"))
 				open();
 			else if (actionCommand.equals("Save"))
@@ -451,26 +463,49 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 			else if (actionCommand.equals("New"))
 				newFile();
 			else if (actionCommand.equals("New C"))
+			{
 				changeMode(MODE.NEW_CURVE);
+				choice.toggleEditPanel( true );
+			}
 			else if (actionCommand.equals("Sel P"))
+			{
 				changeMode(MODE.SELECT_CONTROL_POINT);
+				choice.toggleEditPanel( false );
+			}
 			else if (actionCommand.equals("Sel C"))
+			{
 				changeMode(MODE.SELECT_CURVE);
+				choice.toggleEditPanel( true );
+			}
 			else if (actionCommand.equals("Mov P"))
+			{
 				changeMode(MODE.MOVE_CONTROL_POINTS);
+				choice.toggleEditPanel( false );
+			}
 			else if (actionCommand.equals("Mov C"))
+			{
 				changeMode(MODE.MOVE_CURVES);
+				choice.toggleEditPanel( true );
+			}
 			else if (actionCommand.equals("Del P")) {
+				choice.toggleEditPanel( false );
 				deleteSelectedControlPoints();
-				recalculateCurves();
+//				recalculateCurves();
+				recalS();
 			} else if (actionCommand.equals("Del C")) {
+				choice.toggleEditPanel( true );
 				deleteSelectedCurves();
-				recalculateSelectedCurves();
+//				recalculateSelectedCurves();
+				recalS();
 			} else if (actionCommand.equals("Add P"))
+			{
 				changeMode(MODE.ADD_INPUT);
+				choice.toggleEditPanel( false );
+			}
 			else if (actionCommand.equals("Clr")) {
 				changeMode(MODE.NONE);
 				reset();
+				choice.deselect( );
 			}
 
 			draw.repaint();
@@ -485,6 +520,17 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 				draw.toggleTangents();
 			else if ( eventName.contains( "Numbers" ))
 				draw.toggleNrs();
+		}
+		
+		// cleared de output van alle geslecteerde punten en herberekend ze in functie van het
+		// nieuwe geselecteerde algorithme. Weet niet juist wat uw functie doet dus heb deze meer even
+		// hier gezet.
+		private void recalS( ) {
+			for ( int i = 0; i < selectedCurves.size(); ++i )
+			{
+				selectedCurves.get( i ).clearOutput();
+				currentAlgorithm.calculateComplete( selectedCurves.get( i ) );
+			}
 		}
 	}
 }
