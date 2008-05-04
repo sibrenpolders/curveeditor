@@ -463,4 +463,29 @@ public class Editor {
 
 		recalculateSelectedCurves();
 	}
+	
+	protected void addPoint( Point a ) {
+		if ( selectedCurves.size() == 0 ) { // er is nog geen bestaande curve -> een maken
+			changeMode( MODE.NEW_CURVE );
+			startNewCurve();
+		}
+		
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			Curve c = selectedCurves.elementAt(i);
+			selectionTool.deleteCurve(c);
+			c.addInput( a );
+
+			// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
+			// telkens de tangens. Dus er moet niet getekend worden voordat
+			// deze is ingegeven
+			if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
+				// hoeft niet, mijn functies berekend alleen maar de laatste afstand die bijkomt
+//				c.clearOutput();
+				this.getAlgorithm(c.getType(), c.getDegree())
+				.calculate(c);
+			}
+			
+			selectionTool.addCurve(c);
+		}
+	}
 }

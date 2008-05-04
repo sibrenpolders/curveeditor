@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -40,6 +41,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	private JPanel curveEditPanel;
 	private JPanel pointEditPanel;
 	private JPanel currentPanel;
+	private JTextPane x, y; // nodig om de waarde van een punt ingegeven m.b.v inputfield terug te geven	
 	private ButtonGroup group;
 	private ActionListener listener;
 	private ItemListener itemListener;
@@ -72,6 +74,19 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		curveEditPanel.setVisible( false );		
 	}
 	
+	// geeft null terug indien er momenteel geen ingegeven punt is.
+	public Point getInputPoint( ) {
+		// TODO juiste error check maken ? exception ?
+		String xValue = x.getText();
+		String yValue = y.getText();
+		
+		if ( xValue.length() != 0 && yValue.length() != 0 ) {
+			return new Point( Integer.parseInt( xValue ), Integer.parseInt( yValue ) );
+		}
+		
+		return null;
+	}
+	
 	private void init() {
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -99,13 +114,13 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 		JPanel row = new JPanel();
 		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-		createInput(row, "x");
+		x = createInput(row, "x");
 		inputFieldPanel.add(row);
 
 		inputFieldPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		row = new JPanel();
 		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-		createInput(row, "y");
+		y = createInput(row, "y");
 		inputFieldPanel.add(row);
 
 		inputFieldPanel.setBorder(BorderFactory.createTitledBorder( "Input" ));
@@ -113,10 +128,18 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		inputFieldPanel.setMaximumSize(d);
 		inputFieldPanel.setMinimumSize(d);
 
+		row = new JPanel( );
+		JButton button = new JButton( "ADD" );
+		button.setToolTipText( "Add point to selected curve(s)" );
+		button.addActionListener( listener );
+		row.add( button );
+		row.add( Box.createHorizontalGlue() );
+		
+		inputFieldPanel.add( row );
 		add(inputFieldPanel);
 	}
 
-	private void createInput(JPanel parent, String textString) {
+	private JTextPane createInput(JPanel parent, String textString) {
 		// label aanmaken
 		JLabel label = new JLabel("<html><span style='font-weight: bolder'>"
 				+ textString + " : </span></html>: ");
@@ -132,8 +155,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		text.setMinimumSize(d);
 		text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		parent.add(text);
-
+		
 		parent.add(Box.createRigidArea(new Dimension(5, 0)));
+		
+		return text;
 	}
 
 	private void createComboBox() {
@@ -204,7 +229,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		checkPanel.setLayout( new BoxLayout( checkPanel, BoxLayout.Y_AXIS ));			
 		
 		createCheckBoxItem( "Coordinates" );
-		createCheckBoxItem( "Tangens" );
+		createCheckBoxItem( "Tangents" );
 		createCheckBoxItem( "Numbers" );
 		
 		// checkPanel toevoegen aan container + uitlijning verzorgen
@@ -237,8 +262,8 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		
 		createToggleButton( "Start New Curve", "Start a new curve", null, true );
 		createToggleButton( "Select All", "Select all curves", null, false );
-		createToggleButton( "Deslect All", "Deselect all curves", null, false );
-		createToggleButton( "Add Control Point", "Add a new Control point to selected curve", null, false );
+		createToggleButton( "Deselect All", "Deselect all curves", null, false );
+//		createToggleButton( "Add Control Point", "Add a new Control point to selected curve", null, false );
 		createToggleButton( "Connect Selected Curves", "Connect 2 or more connect curves", null, false );
 		createToggleButton( "Delete Selected Curves", "This will delete all selected curves, use with caution", null, false );
 		createToggleButton( "Move Selected Curves", "This will move all selected curves", null, false );
@@ -251,7 +276,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 //		toggleButton.setName(name);		
 		toggleButton.addActionListener(listener);
 		toggleButton.setToolTipText(tooltip);
-		Dimension d = new Dimension( 250, 50 );
+		Dimension d = new Dimension( 300, 50 );
 		toggleButton.setMinimumSize( d );
 		toggleButton.setMaximumSize( d );
 		group.add(toggleButton);
@@ -264,7 +289,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		group = new ButtonGroup( );
 		currentPanel = pointEditPanel;
 		
-		createToggleButton( "Deslect All", "Deselect all curves", null, false );
+		createToggleButton( "Deselect All", "Deselect all curves", null, false );
 		createToggleButton( "Deslect Selected Control Point", "Deselect selected control points", null, false );
 		createToggleButton( "Move Selected Control Points", "This will move all selected control points", null, true );				
 		
@@ -280,7 +305,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		pointEditPanel.setVisible( false );
 		container.add( Box.createHorizontalGlue() );
 		
-		Dimension d = new Dimension(250, 100);
+		Dimension d = new Dimension(300, 100);
 //		pointEditPanel.setMaximumSize(d);
 		container.setMinimumSize(d);
 		container.add(Box.createHorizontalGlue());
