@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
 
-public class Menu extends JMenuBar {
+public class Menu extends JMenuBar implements ActionListener {
 	private static final long serialVersionUID = -2717014108067514961L;
 	private JMenu menu;
 	private JMenuItem menuItem;
@@ -135,6 +135,14 @@ public class Menu extends JMenuBar {
 		group.add( button );
 		menu.add( button );
 		
+		button = new JRadioButton( "Select All" );
+		button.setSelected( true );
+		button.addActionListener( listener );
+		button.setToolTipText( "Select everything" );
+		
+		group.add( button );
+		menu.add( button );
+		
 		button = new JRadioButton( "Deselect All" );
 		button.setSelected( true );
 		button.addActionListener( listener );
@@ -183,7 +191,7 @@ public class Menu extends JMenuBar {
 		group.add( button );		
 		radioPanel.add( button );
 		
-		button = new JRadioButton( "Delete Point" );
+		button = new JRadioButton( "Deselect Point" );
 		button.setSelected( false );
 		button.addActionListener( listener ) ;
 				
@@ -209,6 +217,13 @@ public class Menu extends JMenuBar {
 		button.addActionListener( listener ) ;
 				
 		group.add( button );		
+		radioPanel.add( button );
+		
+		button = new JRadioButton( "Connect Curve" );
+		button.setSelected( false );
+		button.addActionListener( listener ) ;
+				
+		group.add( button);		
 		radioPanel.add( button );
 		
 		button = new JRadioButton( "Delete Curve" );
@@ -325,7 +340,7 @@ public class Menu extends JMenuBar {
 		menu.addSeparator();
 
 		CreateMenuItem( "About", KeyEvent.VK_A,"About", null );
-		menuItem.addActionListener( listener );
+		menuItem.addActionListener( this );
 	}
 
 
@@ -348,6 +363,11 @@ public class Menu extends JMenuBar {
 				"</p>" +
 		"</html>" ) );
 		JOptionPane.showMessageDialog(null, hbox,"CurveEditor - about", JOptionPane.PLAIN_MESSAGE );
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		// enigste actieve actieknop is op het moment about
+		about( );
 	}
 
 }

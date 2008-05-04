@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,17 +14,11 @@ import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import CurveEditor.Algorithms.Algorithm;
 import CurveEditor.Core.CurveContainer;
@@ -34,7 +26,7 @@ import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements MenuListener, MouseListener,
+public class GUI extends Editor implements MouseListener,
 		MouseMotionListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
@@ -93,18 +85,6 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		frame.setVisible(true);
 
 		selectionTool = new CurveContainer(600, 600);
-	}
-
-	public void menuCanceled(MenuEvent arg0) {
-
-	}
-
-	public void menuDeselected(MenuEvent arg0) {
-
-	}
-
-	public void menuSelected(MenuEvent arg0) {
-
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -548,6 +528,10 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		else if ( actionCommand.equals("Del P") || actionCommand.equals( "Delete Point" )) {
 			deleteSelectedControlPoints();
 			recalS();		
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Deselect Point" )) {
+			// TODO functie deselect Selected control points
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
