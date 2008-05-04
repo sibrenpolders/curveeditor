@@ -36,7 +36,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	private String[] currentAlgTypeNames;
 	private JComboBox type;
 	private JPanel checkPanel;
-	private JPanel container; // container voor curveEditPanel & pointEditPanel ( nodig voor de uitlijning );
+	private JPanel container; // container zal zorgen voor de uitlijning
 	private JPanel curveEditPanel;
 	private JPanel pointEditPanel;
 	private JPanel currentPanel;
@@ -66,14 +66,20 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		curveEditPanel.setVisible( false );
 	}
 	
+	// zorgt ervoor dat zowel point als curve edit panel onzichtbaar zijn -> MODE == NONE
+	public void deselect( ) {
+		pointEditPanel.setVisible( false );
+		curveEditPanel.setVisible( false );		
+	}
+	
 	private void init() {
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		createRadioPanel();
-		add(Box.createRigidArea(new Dimension(0, 5)));
-		createComboBox();
+//		add(Box.createRigidArea(new Dimension(0, 5)));
+//		createComboBox();
 		add(Box.createRigidArea(new Dimension(0, 5)));		
 		createInputField();
 		add(Box.createRigidArea(new Dimension(0, 5)));
@@ -102,6 +108,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createInput(row, "y");
 		inputFieldPanel.add(row);
 
+		inputFieldPanel.setBorder(BorderFactory.createTitledBorder( "Input" ));
 		Dimension d = new Dimension(250, 100);
 		inputFieldPanel.setMaximumSize(d);
 		inputFieldPanel.setMinimumSize(d);
@@ -112,7 +119,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	private void createInput(JPanel parent, String textString) {
 		// label aanmaken
 		JLabel label = new JLabel("<html><span style='font-weight: bolder'>"
-				+ textString + ": </span></html>: ");
+				+ textString + " : </span></html>: ");
 		Dimension d = new Dimension(20, 100);
 		label.setMaximumSize(d);
 		label.setMinimumSize(d);
@@ -145,10 +152,13 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 		comboPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
-		add(type);
+		container.add(type);
 	}
 
 	private void createRadioPanel() {
+		container = new JPanel( ); // zorgt voor de layout
+		container.setLayout( new BoxLayout( container, BoxLayout.Y_AXIS ));
+		
 		JPanel radioPanel = new JPanel();
 		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));		
 		ButtonGroup algGroep = new ButtonGroup();
@@ -173,13 +183,17 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		radioPanel.add(algName);
 		radioPanel.add(Box.createHorizontalGlue());
 		
-		radioPanel.setBorder(BorderFactory.createTitledBorder("Algorithm"));
+		container.add( radioPanel );
+		container.add(Box.createRigidArea(new Dimension(0, 5)));
+		createComboBox();
+		
+		container.setBorder(BorderFactory.createTitledBorder("Algorithm"));
 		Dimension d = new Dimension(250, 100);
-		radioPanel.setMaximumSize(d);
-		radioPanel.setMinimumSize(d);
-		radioPanel.add(Box.createRigidArea(new Dimension(5, 0)));
+		container.setMaximumSize(d);
+		container.setMinimumSize(d);
+		container.add(Box.createRigidArea(new Dimension(5, 0)));
 				
-		add(radioPanel);
+		add( container );
 	}
 
 	private void createCheckBox( ) {
@@ -218,6 +232,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		curveEditPanel = new JPanel( );
 		curveEditPanel.setLayout( new BoxLayout( curveEditPanel, BoxLayout.Y_AXIS ));
 		group = new ButtonGroup( );
+		
 		currentPanel = curveEditPanel;
 		
 		createToggleButton( "Start New Curve", "Start a new curve", null, true );
@@ -233,9 +248,12 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	
 	private void createToggleButton( String name, String tooltip, String icon, boolean selected ) {
 		JToggleButton toggleButton = new JToggleButton(/* new ImageIcon(icon),*/name, selected);
-//		toggleButton.setName(name);
+//		toggleButton.setName(name);		
 		toggleButton.addActionListener(listener);
 		toggleButton.setToolTipText(tooltip);
+		Dimension d = new Dimension( 250, 50 );
+		toggleButton.setMinimumSize( d );
+		toggleButton.setMaximumSize( d );
 		group.add(toggleButton);
 		currentPanel.add(toggleButton);
 	}
@@ -259,15 +277,15 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createCurveEditeMode();
 		curveEditPanel.setVisible( false );
 		createPointEditMode();
-//		pointEditPanel.setVisible( false );
+		pointEditPanel.setVisible( false );
 		container.add( Box.createHorizontalGlue() );
 		
 		Dimension d = new Dimension(250, 100);
 //		pointEditPanel.setMaximumSize(d);
-		pointEditPanel.setMinimumSize(d);
-		pointEditPanel.add(Box.createHorizontalGlue());
-		pointEditPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-		pointEditPanel.setBorder( BorderFactory.createTitledBorder( "Show" ));
+		container.setMinimumSize(d);
+		container.add(Box.createHorizontalGlue());
+		container.add(Box.createRigidArea(new Dimension(5, 0)));
+		container.setBorder( BorderFactory.createTitledBorder( "Edit" ));
 		
 		add( container );
 	}

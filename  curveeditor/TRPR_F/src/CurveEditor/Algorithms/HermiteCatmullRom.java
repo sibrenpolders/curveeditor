@@ -22,6 +22,6 @@ public final class HermiteCatmullRom extends HermiteCardinal {
 	}
 
 	public void calculateComplete(Curve cv) {
-		cardinalComplet(cv, (float) d);
+		cardinalComplete(cv, (float) d);
 	}
 }

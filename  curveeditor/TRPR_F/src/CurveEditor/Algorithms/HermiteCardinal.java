@@ -73,10 +73,10 @@ public class HermiteCardinal extends Hermite {
 			c = (float) Math.random();
 		} while (c == 0.0);
 
-		cardinalComplet(cv, c);
+		cardinalComplete(cv, c);
 	}
 
-	protected void cardinalComplet(Curve cv, float c) {
+	protected void cardinalComplete(Curve cv, float c) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
 		float t;
