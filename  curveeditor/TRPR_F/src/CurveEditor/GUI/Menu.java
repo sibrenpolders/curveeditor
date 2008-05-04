@@ -124,7 +124,101 @@ public class Menu extends JMenuBar {
 	}
 
 	private void makeTools( ) {
-		CreateMenu( "Tools", KeyEvent.VK_T, "" );	
+		CreateMenu( "Tools", KeyEvent.VK_T, "" );
+		group = new ButtonGroup( );
+		
+		JRadioButton button = new JRadioButton( "none" );
+		button.setSelected( true );
+		button.addActionListener( listener );
+		button.setToolTipText( "No tools selected" );
+		
+		group.add( button );
+		menu.add( button );
+		
+		button = new JRadioButton( "Deselect All" );
+		button.setSelected( true );
+		button.addActionListener( listener );
+		button.setToolTipText( "Deselect all that was selected" );
+		
+		group.add( button );
+		menu.add( button );
+		
+		JMenu menu2 = new JMenu( "Point");
+		menu2.setMnemonic( KeyEvent.VK_P );
+		menu2.getAccessibleContext().setAccessibleDescription( "" );
+		menu2.setToolTipText( "Tools for point Manipulation" );
+		menu.add( menu2 );
+		createPointPanel( menu2 );
+		
+		menu2 = new JMenu( "Curve" );
+		menu2.setMnemonic( KeyEvent.VK_C );
+		menu2.getAccessibleContext().setAccessibleDescription( "" );
+		menu2.setToolTipText( "Tools for curve Manipulation" );
+		menu.add( menu2 );		
+		createCurvePanel( menu2 );		
+	}
+
+	private void createPointPanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
+		
+		JRadioButton button = new JRadioButton( "Select Point" );
+		button.setSelected( false );
+		button.addActionListener( listener) ;
+		
+		group.add( button);
+		radioPanel.add( button );
+		
+		button = new JRadioButton( "Move Point" );
+		button.setSelected( false );
+		button.addActionListener( listener ) ;
+				
+		group.add( button );		
+		radioPanel.add( button );
+		
+		button = new JRadioButton( "Delete Point" );
+		button.setSelected( false );
+		button.addActionListener( listener ) ;
+				
+		group.add( button );		
+		radioPanel.add( button );
+		
+		button = new JRadioButton( "Delete Point" );
+		button.setSelected( false );
+		button.addActionListener( listener ) ;
+				
+		group.add( button);		
+		radioPanel.add( button );
+		
+		menu.add( radioPanel );			
+	}
+	
+	private void createCurvePanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
+		
+		JRadioButton button = new JRadioButton( "Select Curve" );
+		button.setSelected( true );
+		button.addActionListener( listener) ;
+		
+		group.add( button );
+		radioPanel.add( button );
+		
+		button = new JRadioButton( "Move Curve" );
+		button.setSelected( false );
+		button.addActionListener( listener ) ;
+				
+		group.add( button );		
+		radioPanel.add( button );
+		
+		button = new JRadioButton( "Delete Curve" );
+		button.setSelected( false );
+		button.addActionListener( listener ) ;
+				
+		group.add( button);		
+		radioPanel.add( button );
+		
+		menu.add( radioPanel );
 	}
 
 	private void makeAlgorithms( ) {

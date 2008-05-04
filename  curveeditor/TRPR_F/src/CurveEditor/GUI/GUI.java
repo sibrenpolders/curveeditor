@@ -16,10 +16,13 @@ import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
@@ -37,7 +40,9 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 	protected DrawArea draw;
 	private Menu menu;
 	private Toolbar toolbar;
-	private Listener listener;
+	private ToolBarListener tBListener;
+	private MenuListener mListener;
+	private ChoiceAreaListener cListener;
 
 	public GUI() {
 		super();
@@ -57,11 +62,12 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
-		listener = new Listener();
-		menu = new Menu(listener);
+		mListener = new MenuListener();
+		menu = new Menu( mListener );
 		contentPane.add(menu);
 
-		toolbar = new Toolbar(listener);
+		tBListener = new ToolBarListener( );
+		toolbar = new Toolbar( tBListener );
 		contentPane.add(toolbar);
 
 		JPanel screen = new JPanel();
@@ -69,7 +75,8 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 
 		screen.add(Box.createRigidArea(new Dimension(10, 0)));
 
-		choice = new ChoiceArea(listener, listener);
+		cListener = new ChoiceAreaListener( );
+		choice = new ChoiceArea(cListener, cListener);
 		screen.add(choice);
 
 		draw = new DrawArea(this.curves, this.selectedCurves,
@@ -105,26 +112,10 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		hooveredPoints.clear();
 
 		if (mode == Editor.MODE.ADD_INPUT) {
+			// waarom doet ge dit?
 			Algorithm prev = currentAlgorithm;
-
-			for (int i = 0; i < selectedCurves.size(); ++i) {
-				Curve c = selectedCurves.elementAt(i);
-				selectionTool.deleteCurve(c);
-				c.addInput(new Point(e.getX(), e.getY()));
-
-				// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
-				// telkens de tangens. Dus er moet niet getekend worden voordat
-				// deze is ingegeven
-				if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
-					// hoeft niet, mijn functies berekend alleen maar de laatste afstand die bijkomt
-//					c.clearOutput();
-					this.getAlgorithm(c.getType(), c.getDegree())
-							.calculate(c);
-				}
-
-				selectionTool.addCurve(c);
-			}
-
+			Point a = new Point( e.getX(), e.getY() );
+			addPoint( a );			
 			currentAlgorithm = prev;
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE
@@ -416,122 +407,232 @@ public class GUI extends Editor implements MenuListener, MouseListener,
 		return draw.tangents();
 	}
 	
-	private class Listener implements ActionListener, ItemListener  {
+	// Deze functie is (tijdelijk?) ter vervanging van uw recalculateSelected curves...
+	// Ik weet niet echt hoe die functie werkt maar ik heb problemen met van bezier lineair naar hermite te gaan
+	// Eigenlijk altijd problemen als ik m.b.v. deze functie naar hermite ga
+	private void recalS( ) {
+		for ( int i = 0; i < selectedCurves.size(); ++i ) {
+			selectedCurves.get( i ).clearOutput();
+			currentAlgorithm.calculateComplete( selectedCurves.get( i ) );
+		}
+		
+		draw.repaint();
+	}
+	
+	/* deze functies zullen bepaalde gemeenschappelijk events opgevangen, door de 3 klassen die volgen:
+	 * ToolbarListener, MenuListener en ChoiceAreaListener, herkennen en afhandelen
+	 * Om zodoende minder grote if-else if - .. - else structuren te krijgen in de 3 genoemde klassen
+	 * De functie zal true teruggeven als het event afgehandeld is, false anders.
+	 */	
+	// Alles wat te maken heeft met FILE, wordt gebruikt door Menu EN Toolbar
+	private boolean fileEvent( String actionCommand ) {
+		if (actionCommand.equals("Open")) {
+			open();
+			return true;
+		}
+		else if ( actionCommand.equals( "none" )) {
+			changeMode( MODE.NONE );
+			choice.deselect( );
+			return true;
+		}
+		else if (actionCommand.equals("Save")) {
+			save();
+			return true;
+		}	
+		else if (actionCommand.equals("New")) {
+			newFile();
+			return true;
+		}
+		// 2 verschillende namen, maar hetzelfde beestje
+		else if ( actionCommand.equals("New C") || actionCommand.equals( "New Curve" ) || actionCommand.equals( "Start a new curve")) {
+			changeMode(MODE.NEW_CURVE);
+			choice.toggleEditPanel( true );
+			return true;
+		}
+		else if ( actionCommand.equals( "Clr" ) || actionCommand.equals( "Clear" )) {
+			changeMode(MODE.NONE);
+			reset();
+			choice.deselect( );
+		}
+		return false;
+	}
+	
+	private boolean algorithmEvent( String actionCommand ) {
+		boolean eventHandled = false;
+		
+		if (actionCommand.equals( "Bezier" )) {
+			setCurrentAlgorithm('L');
+			eventHandled = true;
+		}
+		else if (actionCommand.equals( "Hermite" ))	{
+			setCurrentAlgorithm('H');
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Bezier C0" )) {
+				setCurrentAlgorithm('B');
+				eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Bezier G1" )) {
+			setCurrentAlgorithm('G');
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals ("Linear" )) {
+			setCurrentAlgorithm('L');
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Bezier C1" )) {
+			setCurrentAlgorithm('C');
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Hermite Normal" )) {
+			setCurrentAlgorithm('H');
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Cardinal" )) {
+			setCurrentAlgorithm('A');
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Catmull-Rom" )) {
+			setCurrentAlgorithm('R');
+			eventHandled = true;
+		}
+
+		if ( eventHandled )
+			// de geslecteerde curves zijn onder invloed van deze keuze
+			recalS();
+		
+		return eventHandled;
+	}
+	
+	private boolean curveEvent( String actionCommand ) {
+		boolean eventHandled = false;
+					
+		// ander naam, zelfde beestje
+		if ( actionCommand.equals( "Sel C" ) || actionCommand.equals( "Select Curve" ))	{
+			changeMode(MODE.SELECT_CURVE);
+			eventHandled = true;
+		}
+		// ander naam, zelfde beestje
+		else if (actionCommand.equals("Mov C") || actionCommand.equals( "Move Curve" ) || actionCommand.equals( "Move Selected Curves" )) {
+			changeMode(MODE.MOVE_CURVES);
+			eventHandled = true;
+		}
+		// ander naam, zelfde beestje
+		else if (actionCommand.equals("Del C") || actionCommand.equals( "Delete Curve" ) || actionCommand.equals( "Delete Selected Curves" )) {
+			deleteSelectedCurves();
+			recalS();
+			eventHandled = true;
+		}
+		else if ( actionCommand.equals( "Deselect All" )) // telt ook mee voor pointEvent int choiceArea & de Deselect all van de menuBar
+			deselectAll();
+		
+		if ( eventHandled )
+			choice.toggleEditPanel( true );		
+		return eventHandled;
+	}
+	
+	private boolean pointEvent( String actionCommand ) {
+		boolean eventHandled = false;
+		
+		// ander naam, zelfde beestje
+		if ( actionCommand.equals("Sel P")  || actionCommand.equals( "Select Point" )) {
+			changeMode(MODE.SELECT_CONTROL_POINT);
+			eventHandled = true;
+		}
+		// ander naam, zelfde beestje
+		else if ( actionCommand.equals("Mov P") || actionCommand.equals( "Move Point" ) || actionCommand.equals( "Move Selected Control Points" )) {
+			changeMode(MODE.MOVE_CONTROL_POINTS);
+			eventHandled = true;
+		}
+		// ander naam, zelfde beestje
+		else if ( actionCommand.equals("Del P") || actionCommand.equals( "Delete Point" )) {
+			deleteSelectedControlPoints();
+			recalS();		
+			eventHandled = true;
+		}
+		// ander naam, zelfde beestje
+		else if ( actionCommand.equals("Add P") || actionCommand.equals( "Add Point" )) {
+			changeMode(MODE.ADD_INPUT);
+			eventHandled = true;
+		}
+		
+		if ( eventHandled )
+			choice.toggleEditPanel( false );
+		return eventHandled;
+	}
+	
+	private class ToolBarListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String actionCommand = e.getActionCommand();
 
-			// TODO Dit ding opkuizen!
-			if (actionCommand.equals("Bezier"))
-			{
-				setCurrentAlgorithm('L');
-//				recalculateSelectedCurves();
-				recalS();
-			}
-			else if (actionCommand.equals("Hermite"))
-			{
-				setCurrentAlgorithm('H');
-//				recalculateSelectedCurves();
-				recalS();
-			}
-			else if (actionCommand.equals("comboBoxChanged")) {
-				String item = (String) ((JComboBox) e.getSource())
-						.getSelectedItem();
+			if ( fileEvent( actionCommand ) || pointEvent( actionCommand ) || curveEvent( actionCommand ) )
+					return;
+		}
+	}
 
-				if (item.equals("Bezier C0"))
-					setCurrentAlgorithm('B');
-				else if (item.equals("Bezier G1"))
-					setCurrentAlgorithm('G');
-				else if (item.equals("Linear"))
-					setCurrentAlgorithm('L');
-				else if (item.equals("Bezier C1"))
-					setCurrentAlgorithm('C');
-				else if (item.equals("Hermite Normal"))
-					setCurrentAlgorithm('H');
-				else if (item.equals("Cardinal"))
-					setCurrentAlgorithm('A');
-				else if (item.equals("Catmull-Rom"))
-					setCurrentAlgorithm('R');
-				
-				// de geslecteerde curves zijn onder invloed van deze keuze
-				recalS();
-			} else if (actionCommand.equals("Open"))
-				open();
-			else if (actionCommand.equals("Save"))
-				save();
+	private class MenuListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String actionCommand = e.getActionCommand();
+
+			if ( fileEvent( actionCommand ) || algorithmEvent( actionCommand ) ||
+					pointEvent( actionCommand ) || curveEvent( actionCommand ) )
+				return;
+			
+			else if ( actionCommand.equals( "undo" ))
+				System.out.println( "BE GONE!" );
+			else if ( actionCommand.equals( "redo" ))
+				System.out.println( "COME BACK!" );	
+			else if ( actionCommand.equals( "Preferrences" ))
+				System.out.println( "PREF" );
 			else if (actionCommand.equals("Save As ..."))
 				saveAs();
-			else if (actionCommand.equals("New"))
-				newFile();
-			else if (actionCommand.equals("New C"))
-			{
-				changeMode(MODE.NEW_CURVE);
-				choice.toggleEditPanel( true );
-			}
-			else if (actionCommand.equals("Sel P"))
-			{
-				changeMode(MODE.SELECT_CONTROL_POINT);
-				choice.toggleEditPanel( false );
-			}
-			else if (actionCommand.equals("Sel C"))
-			{
-				changeMode(MODE.SELECT_CURVE);
-				choice.toggleEditPanel( true );
-			}
-			else if (actionCommand.equals("Mov P"))
-			{
-				changeMode(MODE.MOVE_CONTROL_POINTS);
-				choice.toggleEditPanel( false );
-			}
-			else if (actionCommand.equals("Mov C"))
-			{
-				changeMode(MODE.MOVE_CURVES);
-				choice.toggleEditPanel( true );
-			}
-			else if (actionCommand.equals("Del P")) {
-				choice.toggleEditPanel( false );
-				deleteSelectedControlPoints();
-//				recalculateCurves();
-				recalS();
-			} else if (actionCommand.equals("Del C")) {
-				choice.toggleEditPanel( true );
-				deleteSelectedCurves();
-//				recalculateSelectedCurves();
-				recalS();
-			} else if (actionCommand.equals("Add P"))
-			{
-				changeMode(MODE.ADD_INPUT);
-				choice.toggleEditPanel( false );
-			}
-			// !!!!!!!! waarom duurt dit zolang?? +- 3 seconden
-			else if (actionCommand.equals("Clr")) {
-				changeMode(MODE.NONE);
-				reset();
-				choice.deselect( );
-			}
+		}				
+	}
 
-			draw.repaint();
-		}
+	private class ChoiceAreaListener implements ItemListener, ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String actionCommand = e.getActionCommand();
+			
+			if ( actionCommand.equals( "comboBoxChanged" ) )
+				actionCommand = (String) ( (JComboBox) e.getSource() ).getSelectedItem();
+			
+			if ( algorithmEvent( actionCommand ) || pointEvent( actionCommand ) || curveEvent( actionCommand ))
+				return;
+			else if ( actionCommand.equals( "ADD" )) {
+				Point a = choice.getInputPoint();
+				if ( a != null )
+				{
+					// TODO Terugzetten naar oude modus?
+					changeMode( MODE.ADD_INPUT );
+					addPoint( a );
+				}
+				else
+					JOptionPane.showMessageDialog( draw, "No point is given", "Curve Editor: ERROR", JOptionPane.ERROR_MESSAGE );
+				
+			}
+			else if ( actionCommand.equals( "Select All" ) )
+				;
+			else if ( actionCommand.equals( "Deslect All" ))
+				;
+			else if ( actionCommand.equals( "Connect Selected Curves" ))
+				;
+		}		
 
 		public void itemStateChanged(ItemEvent e) {
 			String eventName = e.getItemSelectable().toString();
-			
+
 			if ( eventName.contains( "Coordinates" ) )
 				draw.toggleCoords();
-			else if ( eventName.contains( "Tanges") )
+			else if ( eventName.contains( "Tangents") )
 				draw.toggleTangents();
 			else if ( eventName.contains( "Numbers" ))
 				draw.toggleNrs();
+			draw.repaint();
 		}
-		
+
 		// cleared de output van alle geslecteerde punten en herberekend ze in functie van het
 		// nieuwe geselecteerde algorithme. Weet niet juist wat uw functie doet dus heb deze meer even
 		// hier gezet.
-		private void recalS( ) {
-			for ( int i = 0; i < selectedCurves.size(); ++i )
-			{
-				selectedCurves.get( i ).clearOutput();
-				currentAlgorithm.calculateComplete( selectedCurves.get( i ) );
-			}
-		}
+		
 	}
 }

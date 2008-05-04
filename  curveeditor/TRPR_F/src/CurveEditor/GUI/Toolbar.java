@@ -43,28 +43,25 @@ public class Toolbar extends JToolBar {
 
 		makeButton("Sel C", "Select a curve.",
 				"src/CurveEditor/GUI/icons/ganttSelect.png");
-		makeButton("Sel P", "Select a point.",
-				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
-
-		addSeparator();
-
-		makeButton("Mov P", "Move selected control points",
-				"src/CurveEditor/GUI/icons/curvenew.png");
 		makeButton("Mov C", "Move selected curves",
-				"src/CurveEditor/GUI/icons/curvenew.png");
-
-		addSeparator();
-
-		makeButton("Del P", "Delete selected control points",
-				"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("Del C", "Delete selected curves",
-				"src/CurveEditor/GUI/icons/curvenew.png");
-		addSeparator();
-
+		"src/CurveEditor/GUI/icons/curvenew.png");
 		makeButton("New C", "Start a new curve",
-				"src/CurveEditor/GUI/icons/curvenew.png");
+		"src/CurveEditor/GUI/icons/curvenew.png");
+		
+		addSeparator();
+		
+		makeButton("Sel P", "Select a point.",
+		"src/CurveEditor/GUI/icons/ganttSelecttask.png");
+		makeButton("Mov P", "Move selected control points",
+				"src/CurveEditor/GUI/icons/curvenew.png");		
+		makeButton("Del P", "Delete selected control points",
+		"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Del C", "Delete selected curves",
+		"src/CurveEditor/GUI/icons/curvenew.png");
 		makeButton("Add P", "Add a control point to all the selected curves",
-				"src/CurveEditor/GUI/icons/curvenew.png");
+		"src/CurveEditor/GUI/icons/curvenew.png");
+		addSeparator();
+		
 		makeButton("Clr", "Remove all curves",
 				"src/CurveEditor/GUI/icons/curvenew.png");
 

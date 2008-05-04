@@ -42,7 +42,7 @@ public class DrawArea extends JPanel {
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
 			Vector<Point> hooveredPoints) {
 		init(curves, selectedCurves, hooveredCurves, selectedPoints,
-				hooveredPoints, true, true, true);
+				hooveredPoints, false, false, false );
 	}
 
 	public void init(Vector<Curve> curves, Vector<Curve> selectedCurves,
