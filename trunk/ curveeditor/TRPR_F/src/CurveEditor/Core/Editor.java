@@ -474,10 +474,10 @@ public class Editor {
 				// hoeft niet, mijn functies berekend alleen maar de laatste
 				// afstand die bijkomt
 				selectionTool.deleteCurve(c);
-				if (c.getType() != 'H')
-					c.clearOutput();
+				c.clearOutput();
 				selectionTool.deleteCurve(c);
-				this.getAlgorithm(c.getType(), c.getDegree()).calculate(c);
+				this.getAlgorithm(c.getType(), c.getDegree())
+						.calculateComplete(c);
 				selectionTool.addCurve(c);
 			}
 
