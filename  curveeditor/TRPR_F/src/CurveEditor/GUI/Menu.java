@@ -21,7 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
 
 public class Menu extends JMenuBar implements ActionListener {
-	private static final long serialVersionUID = -2717014108067514961L;
+	private static final long serialVersionUID = -2717014108067514961L;	
 	private JMenu menu;
 	private JMenuItem menuItem;
 	private ButtonGroup group;
@@ -32,8 +32,22 @@ public class Menu extends JMenuBar implements ActionListener {
 		CreateMenuBar();
 	}
 	
+	public void setSize( Dimension d ) {
+		// de menubar zijn breedte is variabel, zijn hoogte niet.
+		// als de gebruiker zijn displaywindow vergroot mag dus enkel de breedte worden aangepast
+		setMinimumSize( d );
+		setMaximumSize( d );
+		setPreferredSize( d );
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		// enigste actieve actieknop is op het moment about
+		about( );
+	}
+	
 	// Zal de menuBar opstellen
 	private void CreateMenuBar( ) {
+		setSize( DisplaySize.menuD() );
 		// Aanmaken van de menubar.
 		makeFile( );
 		makeEdit( );
@@ -364,10 +378,4 @@ public class Menu extends JMenuBar implements ActionListener {
 		"</html>" ) );
 		JOptionPane.showMessageDialog(null, hbox,"CurveEditor - about", JOptionPane.PLAIN_MESSAGE );
 	}
-
-	public void actionPerformed(ActionEvent e) {
-		// enigste actieve actieknop is op het moment about
-		about( );
-	}
-
 }

@@ -3,6 +3,7 @@ package CurveEditor.GUI;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -10,6 +11,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import javax.swing.Box;
@@ -26,7 +29,7 @@ import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements MouseListener, MouseMotionListener {
+public class GUI extends Editor implements MouseListener, MouseMotionListener, WindowStateListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	private Menu menu;
@@ -34,7 +37,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener {
 	private ToolBarListener tBListener;
 	private MenuListener mListener;
 	private ChoiceAreaListener cListener;
-
+	private DisplaySize displaySize;
+	private JFrame frame; // container frame
 	public GUI() {
 		super();
 		loadComponents();
@@ -46,15 +50,18 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener {
 	}
 
 	private void loadComponents() {
-		JFrame frame = new JFrame("Curve Editor");
+		frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setTitle("Curve Editor");
+		frame.addWindowStateListener( this );
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-
+		
+		displaySize = new DisplaySize( );
+		
 		mListener = new MenuListener();
-		menu = new Menu(mListener);
+		menu = new Menu(mListener);		
 		contentPane.add(menu);
 
 		tBListener = new ToolBarListener();
@@ -84,6 +91,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener {
 		frame.setVisible(true);
 
 		selectionTool = new CurveContainer(600, 600);
+		
+		displaySize.setCurrentSize( frame.getSize() );
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -625,5 +634,16 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener {
 		// dus heb deze meer even
 		// hier gezet.
 
+	}
+
+	public void windowStateChanged(WindowEvent e) {
+		System.out.println( "let's do this!" );
+		if ( displaySize.frameSizeChanged( frame.getSize() ) ) { // de schermgrootte is aangepast door de gebruiker			
+			choice.setSize( displaySize.choiceAreaD() );
+			draw.setSize( displaySize.drawAreaD() );
+			menu.setSize( displaySize.menuD() );
+			toolbar.setSize( displaySize.toolbarD() );		
+			selectionTool.resize( displaySize.drawAreaD().width, displaySize.drawAreaD().height );
+		}
 	}
 }

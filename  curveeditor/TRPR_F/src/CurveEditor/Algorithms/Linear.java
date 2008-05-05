@@ -23,8 +23,9 @@ public final class Linear extends Algorithm {
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		output.clear();
 
-		for (int i = 0; i < input.size() - 1; ++i)
-			interpolate(input.elementAt(i), input.elementAt(i + 1), output);
+		for (int i = 0; i < input.size() - 1; ++i) {
+			interpolate(input.get(i), input.get(i + 1), output);
+		}
 	}
 
 	// output wordt gevuld met interpolatiepunten tussen start en end
@@ -140,13 +141,11 @@ public final class Linear extends Algorithm {
 		{
 			if ( !steep )
 				output.add((new Point(x, (int) Math.floor(y + 0.5))));
-//			PutPixel(x, (int) floor( y+.5 ), color );
 			else
 				output.add((new Point((int) Math.floor(y + 0.5), x)));
-//			PutPixel( (int) floor( y+.5 ), x, color );
 			y += m;
 		}
-	}
+	}	
 //	}
 
 	public void calculateComplete(Curve c) {

@@ -1,6 +1,7 @@
 package CurveEditor.GUI;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -21,11 +22,18 @@ public class Toolbar extends JToolBar {
 	public Toolbar(ActionListener listener) {
 		setFloatable(false);
 		this.listener = listener;
+		setSize( DisplaySize.toolbarD() );
 		setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
 		setRollover(true);
 		addButtons();
 	}
 
+	public void setSize( Dimension d ) {
+		setMinimumSize( d );
+		setMaximumSize( d );
+		setPreferredSize( d );
+	}
+	
 	private void addButtons() {
 		makeButton("New", "Create a new file",
 				"src/CurveEditor/GUI/icons/filenew.png");
