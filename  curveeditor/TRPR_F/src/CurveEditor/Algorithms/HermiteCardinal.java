@@ -79,6 +79,8 @@ public class HermiteCardinal extends Hermite {
 	protected void cardinalComplete(Curve cv, float c) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
+		cv.clearOutput();
+
 		float t;
 
 		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {

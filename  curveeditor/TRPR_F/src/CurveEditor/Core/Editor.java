@@ -172,7 +172,7 @@ public class Editor {
 			this.mode = m;
 		} else {
 			this.mode = m;
-		}			
+		}
 	}
 
 	protected void startNewCurve() {
@@ -200,6 +200,7 @@ public class Editor {
 			}
 		}
 
+		recalculateSelectedCurves();
 		curves.addAll(selectedCurves);
 		selectedCurves.clear();
 		selectedPoints.clear();
@@ -400,25 +401,21 @@ public class Editor {
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			Curve c = selectedCurves.elementAt(i);
 			selectionTool.deleteCurve(c);
-			this.getAlgorithm(selectedCurves.get(i).getType()					
-					).calculate( selectedCurves.get(i) );
+			this.getAlgorithm(selectedCurves.get(i).getType())
+					.calculateComplete(c);
 
 			selectionTool.addCurve(c);
 		}
 	}
 
 	protected void recalculateCurves() {
-		Algorithm prev = currentAlgorithm;
 		for (int i = 0; i < curves.size(); ++i) {
 			Curve c = curves.elementAt(i);
 			selectionTool.deleteCurve(c);
-			this.getAlgorithm(curves.get(i).getType(),
-					curves.get(i).getDegree()).calculateComplete(curves.get(i));
+			this.getAlgorithm(curves.get(i).getType()).calculateComplete(c);
 
 			selectionTool.addCurve(c);
 		}
-
-		currentAlgorithm = prev;
 	}
 
 	protected void translateSelectedControlPoints(int x, int y) {
@@ -459,29 +456,31 @@ public class Editor {
 
 		recalculateSelectedCurves();
 	}
-	
-	protected void addPoint( Point a ) {
-		if ( selectedCurves.size() == 0 ) { // er is nog geen bestaande curve -> een maken
-			changeMode( MODE.NEW_CURVE );
+
+	protected void addPoint(Point a) {
+		if (selectedCurves.size() == 0)
+			// er is nog geen bestaande curve -> één maken
 			startNewCurve();
-		}
-		
+
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			Curve c = selectedCurves.elementAt(i);
-			selectionTool.deleteCurve(c);
-			c.addInput( a );
+
+			c.addInput(a);
 
 			// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
 			// telkens de tangens. Dus er moet niet getekend worden voordat
 			// deze is ingegeven
 			if (c.getType() != 'H' || c.getInput().size() % 2 == 0) {
-				// hoeft niet, mijn functies berekend alleen maar de laatste afstand die bijkomt
-//				c.clearOutput();
-				this.getAlgorithm(c.getType(), c.getDegree())
-				.calculate(c);
+				// hoeft niet, mijn functies berekend alleen maar de laatste
+				// afstand die bijkomt
+				selectionTool.deleteCurve(c);
+				if (c.getType() != 'H')
+					c.clearOutput();
+				selectionTool.deleteCurve(c);
+				this.getAlgorithm(c.getType(), c.getDegree()).calculate(c);
+				selectionTool.addCurve(c);
 			}
-			
-			selectionTool.addCurve(c);
+
 		}
 	}
 }
