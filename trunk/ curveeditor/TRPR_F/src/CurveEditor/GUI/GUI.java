@@ -477,9 +477,12 @@ public class GUI extends Editor implements MouseListener,
 			eventHandled = true;
 		}
 
-		if ( eventHandled )
+		if ( eventHandled ) {
 			// de geslecteerde curves zijn onder invloed van deze keuze
+//			recalculateSelectedCurves();
 			recalS();
+			draw.repaint();
+		}
 		
 		return eventHandled;
 	}

@@ -397,18 +397,14 @@ public class Editor {
 	}
 
 	protected void recalculateSelectedCurves() {
-		Algorithm prev = currentAlgorithm;
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			Curve c = selectedCurves.elementAt(i);
 			selectionTool.deleteCurve(c);
-			this.getAlgorithm(selectedCurves.get(i).getType(),
-					selectedCurves.get(i).getDegree()).calculateComplete(
-					selectedCurves.get(i));
+			this.getAlgorithm(selectedCurves.get(i).getType()					
+					).calculate( selectedCurves.get(i) );
 
 			selectionTool.addCurve(c);
 		}
-
-		currentAlgorithm = prev;
 	}
 
 	protected void recalculateCurves() {
