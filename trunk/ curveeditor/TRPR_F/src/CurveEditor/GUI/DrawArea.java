@@ -14,15 +14,13 @@ public class DrawArea extends JPanel {
 
 	// Dimensies van het tekencanvas.
 	// Voorlopig vast gekozen, nadien kijken of dit at runtime correct kan
-	// veranderd worden
-	private static int FRAMEWIDTH = 600;
-	private static int FRAMEHEIGHT = 600;
+	// veranderd worden	
 	private static int CONTROLPOINTWIDTH = 2;
 	private static int HOOVEREDCURVEWIDTH = 1;
 	private static int DEFAULTCURVEWIDTH = 0;
 
-	private int frameWidth = FRAMEWIDTH;
-	private int frameHeight = FRAMEHEIGHT;
+	private int frameWidth = DisplaySize.FRAMEWIDTH;
+	private int frameHeight = DisplaySize.FRAMEHEIGHT;
 	private int curveWidth = DEFAULTCURVEWIDTH;
 	private boolean coords;
 	private boolean nrs;
@@ -42,14 +40,14 @@ public class DrawArea extends JPanel {
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
 			Vector<Point> hooveredPoints) {
 		init(curves, selectedCurves, hooveredCurves, selectedPoints,
-				hooveredPoints, false, false, false );
+				hooveredPoints, false, false, false);
 	}
 
 	public void init(Vector<Curve> curves, Vector<Curve> selectedCurves,
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
 			Vector<Point> hooveredPoints, boolean coords, boolean nrs,
 			boolean tangents) {
-		setPreferredSize(new Dimension(FRAMEWIDTH, FRAMEHEIGHT));
+		setSize( DisplaySize.drawAreaD() );
 		setBackground(new Color(255, 255, 255));
 
 		this.curves = curves;
@@ -207,45 +205,30 @@ public class DrawArea extends JPanel {
 	}
 
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
+		Vector<Point> out, in;
 		for (int i = 0; i < curves.size(); ++i) {
 			// de outputpunten uittekenen
-			for (int j = 0; j < curves.get(i).getOutput().size() - 1; ++j) {
-				g.drawLine(curves.get(i).getOutput().get(j).X(), curves.get(i)
-						.getOutput().get(j).Y(), curves.get(i).getOutput().get(
-						j + 1).X(), curves.get(i).getOutput().get(j + 1).Y());
-
+			out = curves.get( i ).getOutput();
+			for (int j = 0; j < out.size() - 1; ++j) {
+				g.drawLine( out.get(j).X(), out.get(j).Y(), out.get(j + 1).X(), out.get(j + 1).Y());
 				if (curveWidth != 0) {
 					for (int k = 1; k <= curveWidth; ++k) {
-						g.drawLine(curves.get(i).getOutput().get(j).X(), curves
-								.get(i).getOutput().get(j).Y()
-								+ k, curves.get(i).getOutput().get(j).X(),
-								curves.get(i).getOutput().get(j).Y() + k);
-						g.drawLine(curves.get(i).getOutput().get(j).X(), curves
-								.get(i).getOutput().get(j).Y()
-								- k, curves.get(i).getOutput().get(j).X(),
-								curves.get(i).getOutput().get(j).Y() - k);
+						g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(j+1).X(), out.get(j+1).Y() + k);
+						g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(j+1).X(), out.get(j+1).Y() - k);
 					}
 				}
 			}
 
 			// de controlepunten uittekenen
-			for (int j = 0; j < curves.get(i).getInput().size(); ++j) {
-				g.fillRect(curves.get(i).getInput().get(j).X()
-						- CONTROLPOINTWIDTH, curves.get(i).getInput().get(j)
-						.Y()
-						- CONTROLPOINTWIDTH, 2 * CONTROLPOINTWIDTH + 1,
-						2 * CONTROLPOINTWIDTH + 1);
+			in = curves.get(i).getInput();
+			for (int j = 0; j < in.size(); ++j) {
+				g.fillRect(in.get(j).X()- CONTROLPOINTWIDTH, in.get(j).Y()- CONTROLPOINTWIDTH,	2 * CONTROLPOINTWIDTH + 1, 2 * CONTROLPOINTWIDTH + 1);
 
 				if (coords)
-					g.drawString(curves.get(i).getInput().get(j).X() + ", "
-							+ curves.get(i).getInput().get(j).Y(), curves
-							.get(i).getInput().get(j).X() + 4, curves.get(i)
-							.getInput().get(j).Y() + 10);
+					g.drawString(in.get(j).X() + ", " + in.get(j).Y(), in.get(j).X() + 4, in.get(j).Y() + 10);
 
 				if (nrs)
-					g.drawString("C" + i + ", P" + j, curves.get(i).getInput()
-							.get(j).X() + 4, curves.get(i).getInput().get(j)
-							.Y() - 0);
+					g.drawString("C" + i + ", P" + j, in.get(j).X() + 4, in.get(j).Y() - 0);
 			}
 		}
 	}
@@ -283,11 +266,17 @@ public class DrawArea extends JPanel {
 	}
 
 	public void setSize(int x, int y) {
-		super.setSize(x, y);
-		frameWidth = x;
-		frameHeight = y;
+//		super.setSize(x, y);
+//		frameWidth = x;
+//		frameHeight = y;
 	}
 
+	public void setSize( Dimension d ) {
+		setMinimumSize( d );
+		setMaximumSize( d );
+		setPreferredSize( d );
+	}
+	
 	public int width() {
 		return this.getWidth();
 	}

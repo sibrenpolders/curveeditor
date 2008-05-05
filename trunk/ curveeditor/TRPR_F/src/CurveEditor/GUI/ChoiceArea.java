@@ -24,16 +24,23 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.border.Border;
+import javax.tools.Tool;
+
+import com.sun.media.sound.Toolkit;
 
 import CurveEditor.Curves.Point;
 
 public class ChoiceArea extends JPanel implements ActionListener {
 
 	// private Vector<Algorithm> v;
-	final static private String[] bezierAlgTypeNames = { "Linear", "Bezier C0",
+	private static final String[] bezierAlgTypeNames = { "Linear", "Bezier C0",
 			"Bezier G1", "Bezier C1" };
-	final static private String[] hermiteAlgTypeNames = { "Hermite Normal",
+	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",
 			"Cardinal", "Catmull-Rom" };
+	
+	private static final int TOGGLEBUTTONWIDTH = 250;
+	private static final int TOGGLEBUTTONHEIGHT = 25;
+	
 	private String[] currentAlgTypeNames;
 	private JComboBox type;
 	private JPanel checkPanel;
@@ -55,6 +62,28 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		init();
 	}
 
+	private void init() {		
+		setSize( DisplaySize.choiceAreaD() );
+		
+		add(Box.createRigidArea(new Dimension(10, 0)));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		add(Box.createRigidArea(new Dimension(5, 5)));
+		createRadioPanel();
+		// add(Box.createRigidArea(new Dimension(0, 5)));
+		// createComboBox();
+		add(Box.createRigidArea(new Dimension(5, 5)));
+		createInputField();
+		add(Box.createRigidArea(new Dimension(5, 5)));
+		createEditPanel();
+		add(Box.createRigidArea(new Dimension(5, 5)));
+		createCheckBox();
+
+		add(Box.createVerticalGlue());
+				
+		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 5, Color.BLACK));
+	}
+	
 	// true == curveEditPlane
 	// false == pointEditPlane
 	public void toggleEditPanel(boolean value) {
@@ -88,25 +117,11 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		return null;
 	}
 
-	private void init() {
-		add(Box.createRigidArea(new Dimension(10, 0)));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		add(Box.createRigidArea(new Dimension(0, 5)));
-		createRadioPanel();
-		// add(Box.createRigidArea(new Dimension(0, 5)));
-		// createComboBox();
-		add(Box.createRigidArea(new Dimension(0, 5)));
-		createInputField();
-		add(Box.createRigidArea(new Dimension(0, 5)));
-		createEditPanel();
-		add(Box.createRigidArea(new Dimension(0, 5)));
-		createCheckBox();
-
-		add(Box.createVerticalGlue());
-
-		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 5, Color.BLACK));
-	}
+	public void setSize( Dimension d ) {
+		setMinimumSize( d );
+		setMaximumSize( d );
+		setPreferredSize( d );
+	}		
 
 	private void createInputField() {
 		JPanel inputFieldPanel = new JPanel();
@@ -125,9 +140,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		inputFieldPanel.add(row);
 
 		inputFieldPanel.setBorder(BorderFactory.createTitledBorder("Input"));
-		Dimension d = new Dimension(250, 100);
-		inputFieldPanel.setMaximumSize(d);
-		inputFieldPanel.setMinimumSize(d);
+		Dimension d = new Dimension( TOGGLEBUTTONWIDTH + 15, TOGGLEBUTTONHEIGHT*4 + 20 );
+		inputFieldPanel.setMaximumSize( d );
+		inputFieldPanel.setMinimumSize( d );
+		inputFieldPanel.setPreferredSize( d );
 
 		row = new JPanel();
 		JButton button = new JButton("ADD");
@@ -144,16 +160,19 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		// label aanmaken
 		JLabel label = new JLabel("<html><span style='font-weight: bolder'>"
 				+ textString + " : </span></html>: ");
-		Dimension d = new Dimension(20, 100);
-		label.setMaximumSize(d);
-		label.setMinimumSize(d);
+		Dimension d = new Dimension( 20, TOGGLEBUTTONHEIGHT );
+		label.setMaximumSize( d );
+		label.setMinimumSize( d );
+		label.setPreferredSize( d );
 		parent.add(label);
 
 		// textinputveld aanmaken
 		JTextPane text = new JTextPane();
-		d = new Dimension(230, 100);
-		text.setMaximumSize(d);
-		text.setMinimumSize(d);
+		d = new Dimension( TOGGLEBUTTONWIDTH - 20, TOGGLEBUTTONHEIGHT );
+		text.setMaximumSize( d );
+		text.setMinimumSize( d );
+		text.setPreferredSize( d );
+		
 		text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		parent.add(text);
 
@@ -171,9 +190,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		type.setSelectedIndex(0);
 		type.addActionListener(this);
 		type.addActionListener(listener);
-		Dimension d = new Dimension(210, 100);
-		type.setMaximumSize(d);
-		type.setMinimumSize(d);
+		Dimension d = new Dimension( 210, TOGGLEBUTTONHEIGHT );
+		type.setMaximumSize( d );
+		type.setMinimumSize( d );
+		type.setPreferredSize( d );		
 		comboPanel.add(type);
 
 		comboPanel.add(Box.createRigidArea(new Dimension(5, 0)));
@@ -214,9 +234,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createComboBox();
 
 		container.setBorder(BorderFactory.createTitledBorder("Algorithm"));
-		Dimension d = new Dimension(250, 100);
-		container.setMaximumSize(d);
-		container.setMinimumSize(d);
+		Dimension d = new Dimension( TOGGLEBUTTONWIDTH + 15, 100 );
+//		container.setMaximumSize( d );
+//		container.setMinimumSize( d );
+//		container.setPreferredSize( d );
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
 
 		add(container);
@@ -237,9 +258,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		container.add(checkPanel);
 		container.add(Box.createHorizontalGlue());
 
-		Dimension d = new Dimension(250, 100);
-		container.setMaximumSize(d);
-		container.setMinimumSize(d);
+		Dimension d = new Dimension( TOGGLEBUTTONWIDTH + 15, 100 );
+//		container.setMaximumSize( d );
+//		container.setMinimumSize( d );
+//		container.setPreferredSize( d );
 		container.add(Box.createHorizontalGlue());
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
 		container.setBorder(BorderFactory.createTitledBorder("Show"));
@@ -256,8 +278,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 	private void createCurveEditeMode() {
 		curveEditPanel = new JPanel();
-		curveEditPanel
-				.setLayout(new BoxLayout(curveEditPanel, BoxLayout.Y_AXIS));
+		curveEditPanel.setLayout(new BoxLayout(curveEditPanel, BoxLayout.Y_AXIS));
 		group = new ButtonGroup();
 
 		currentPanel = curveEditPanel;
@@ -275,7 +296,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 				"Connect all selected curves.", null, false);
 		createToggleButton("Delete Selected Curves",
 				"Delete all selected curves.", null, false);
-
+//		curveEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(curveEditPanel);
 	}
 
@@ -286,17 +307,17 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		// toggleButton.setName(name);
 		toggleButton.addActionListener(listener);
 		toggleButton.setToolTipText(tooltip);
-		Dimension d = new Dimension(300, 50);
-		toggleButton.setMinimumSize(d);
-		toggleButton.setMaximumSize(d);
+		Dimension d = new Dimension( TOGGLEBUTTONWIDTH, TOGGLEBUTTONHEIGHT);
+		toggleButton.setMaximumSize( d );
+		toggleButton.setMinimumSize( d );
+		toggleButton.setPreferredSize( d );
 		group.add(toggleButton);
 		currentPanel.add(toggleButton);
 	}
 
 	private void createPointEditMode() {
 		pointEditPanel = new JPanel();
-		pointEditPanel
-				.setLayout(new BoxLayout(pointEditPanel, BoxLayout.Y_AXIS));
+		pointEditPanel.setLayout(new BoxLayout(pointEditPanel, BoxLayout.Y_AXIS));
 		group = new ButtonGroup();
 		currentPanel = pointEditPanel;
 
@@ -305,23 +326,25 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createToggleButton("Move Selected Control Points",
 				"Move all selected control points.", null, false);
 		createToggleButton("Delete Selected Control Points",
-				"Delete all selected control points.", null, false);
-
+				"Delete all selected control poins.", null, false);		
+//		pointEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(pointEditPanel);
 	}
 
 	private void createEditPanel() {
 		container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+		container.add(Box.createHorizontalGlue());
 		createCurveEditeMode();
 		curveEditPanel.setVisible(false);
 		createPointEditMode();
 		pointEditPanel.setVisible(false);
-		container.add(Box.createHorizontalGlue());
-
-		Dimension d = new Dimension(300, 100);
-		// pointEditPanel.setMaximumSize(d);
-		container.setMinimumSize(d);
+		
+//		 pointEditPanel.setMaximumSize(d);
+		Dimension d = new Dimension( TOGGLEBUTTONWIDTH + 15, 100 );
+//		container.setMaximumSize( d );
+//		container.setMinimumSize( d );
+//		container.setPreferredSize( d );
 		container.add(Box.createHorizontalGlue());
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
 		container.setBorder(BorderFactory.createTitledBorder("Edit"));

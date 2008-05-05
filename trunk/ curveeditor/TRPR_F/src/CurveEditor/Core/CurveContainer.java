@@ -26,6 +26,32 @@ public class CurveContainer {
 			}
 	}
 
+	public void resize( int MaxX, int MaxY ) {
+		Curve[][] tmp = curves;
+		Vector<Curve>[][] tmp2 = controlPoints;
+		
+		curves = new Curve[MaxX][MaxY];
+		controlPoints = new Vector[MaxX][MaxY];
+		
+		int minX = ( this.maxX < MaxX )? this.maxX : MaxX;
+		int minY = ( this.maxY < MaxY )? this.maxY : MaxY;
+		
+		int x = 0, y = 0;
+		for ( ; x < minX; ++x )
+			for ( ; y < minY; ++y) {
+				curves[x][y] = tmp[x][y];
+				controlPoints[x][y] = tmp2[x][y];
+			}
+		for ( ; x < MaxX; ++x )
+			for ( ; y < MaxY; ++y ) {
+				curves[x][y] = null;
+				controlPoints[x][y] = new Vector<Curve>();
+			}
+		
+		this.maxX = MaxX;
+		this.maxY = MaxY;
+	}
+	
 	public final void reset(int Maxx, int Maxy) {
 		Curve[][] prevCurves = curves;
 		Vector<Curve>[][] prevControlPoints = controlPoints;
