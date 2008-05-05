@@ -363,24 +363,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener {
 	}
 
 	private void newFile() {
-		reset();
+		reset();		
 		draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
-				hooveredPoints, true, true, true);
-	}
-
-	private boolean toggleCoords() {
-		draw.toggleCoords();
-		return draw.coords();
-	}
-
-	private boolean toggleNrs() {
-		draw.toggleNrs();
-		return draw.nrs();
-	}
-
-	private boolean toggleTangents() {
-		draw.toggleTangents();
-		return draw.tangents();
+				hooveredPoints, draw.coords(), draw.tangents(), draw.nrs() );
 	}
 
 	// Deze functie is (tijdelijk?) ter vervanging van uw recalculateSelected
