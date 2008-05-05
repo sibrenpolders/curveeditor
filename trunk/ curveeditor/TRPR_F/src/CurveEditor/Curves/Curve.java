@@ -73,7 +73,7 @@ public final class Curve {
 	}
 
 	public void addInput(Point o) {
-		this.input.add(o);
+		this.input.add(new Point(o.X(), o.Y()));
 	}
 
 	public char getType() {

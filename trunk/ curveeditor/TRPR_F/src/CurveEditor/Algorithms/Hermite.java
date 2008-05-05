@@ -40,8 +40,10 @@ public class Hermite extends Algorithm {
 	}
 
 	public void calculate(Curve cv) {
-		Vector<Point> vip = cv.getInput();
-		Vector<Point> vop = cv.getOutput();
+		calculate(cv.getInput(), cv.getOutput());
+	}
+
+	public void calculate(Vector<Point> vip, Vector<Point> vop) {
 		float t;
 
 		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
@@ -67,15 +69,11 @@ public class Hermite extends Algorithm {
 		}
 	}
 
-	@Override
-	public void calculate(Vector<Point> input, Vector<Point> output) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void calculateComplete(Curve cv) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
+		cv.clearOutput();
+
 		float t;
 
 		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
@@ -99,6 +97,5 @@ public class Hermite extends Algorithm {
 				vop.add(hermite(a, r1, c, r2, t));
 			}
 		}
-
 	}
 }

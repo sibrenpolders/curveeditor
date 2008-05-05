@@ -130,6 +130,8 @@ public class Bezier extends Algorithm {
 	}
 
 	public void calculate(Vector<Point> input, Vector<Point> output) {
+		output.clear();
+		
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * Point.distance(input.elementAt(i), input
@@ -141,6 +143,7 @@ public class Bezier extends Algorithm {
 	}
 
 	public final void calculateComplete(Curve c) {
+		c.clearOutput();
 		calculate(c);
 	}
 }
