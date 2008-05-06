@@ -38,12 +38,12 @@ public class CurveContainer {
 		
 		int x = 0, y = 0;
 		for ( ; x < minX; ++x )
-			for ( ; y < minY; ++y) {
+			for ( y = 0; y < minY; ++y) {
 				curves[x][y] = tmp[x][y];
 				controlPoints[x][y] = tmp2[x][y];
 			}
 		for ( ; x < MaxX; ++x )
-			for ( ; y < MaxY; ++y ) {
+			for ( y = 0; y < MaxY; ++y ) {
 				curves[x][y] = null;
 				controlPoints[x][y] = new Vector<Curve>();
 			}
@@ -71,7 +71,7 @@ public class CurveContainer {
 		for (int x = 0; x < max_x; ++x)
 			for (int y = 0; y < max_y; ++y) {
 				curves[x][y] = prevCurves[x][y];
-				controlPoints[x][y].addAll(prevControlPoints[x][y]);
+				controlPoints[x][y] = prevControlPoints[x][y];
 			}
 
 		this.maxX = Maxx;

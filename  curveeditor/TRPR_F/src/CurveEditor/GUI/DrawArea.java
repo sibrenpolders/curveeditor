@@ -275,6 +275,7 @@ public class DrawArea extends JPanel {
 		setMinimumSize( d );
 		setMaximumSize( d );
 		setPreferredSize( d );
+		this.repaint();
 	}
 	
 	public int width() {
