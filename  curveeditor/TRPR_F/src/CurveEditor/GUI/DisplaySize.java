@@ -1,7 +1,6 @@
 package CurveEditor.GUI;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
 
 public class DisplaySize {
 	// standaard breedtes en hoogtes van de gui elementen
