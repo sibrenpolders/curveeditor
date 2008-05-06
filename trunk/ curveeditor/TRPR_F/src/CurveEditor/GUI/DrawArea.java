@@ -19,8 +19,8 @@ public class DrawArea extends JPanel {
 	private static int HOOVEREDCURVEWIDTH = 1;
 	private static int DEFAULTCURVEWIDTH = 0;
 
-	private int frameWidth = DisplaySize.FRAMEWIDTH;
-	private int frameHeight = DisplaySize.FRAMEHEIGHT;
+	private int frameWidth = DisplaySize.DRAWWIDTH;
+	private int frameHeight = DisplaySize.DRAWHEIGHT;
 	private int curveWidth = DEFAULTCURVEWIDTH;
 	private boolean coords;
 	private boolean nrs;
@@ -47,7 +47,8 @@ public class DrawArea extends JPanel {
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
 			Vector<Point> hooveredPoints, boolean coords, boolean nrs,
 			boolean tangents) {
-		setSize( DisplaySize.drawAreaD() );
+//		setSize( DisplaySize.drawAreaD() );
+		setSize( );
 		setBackground(new Color(255, 255, 255));
 
 		this.curves = curves;
@@ -271,11 +272,17 @@ public class DrawArea extends JPanel {
 //		frameHeight = y;
 	}
 
-	public void setSize( Dimension d ) {
-		setMinimumSize( d );
-		setMaximumSize( d );
-		setPreferredSize( d );
-		this.repaint();
+	public void setSize( ) {
+		System.out.println( DisplaySize.DRAWWIDTH );
+		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+		repaint();
+//		setMinimumSize( d );
+//		setMaximumSize( d );
+//		setPreferredSize( d );
+//		super.setSize(d );
+		
+//		this.update();
+//		this.repaint();
 	}
 	
 	public int width() {

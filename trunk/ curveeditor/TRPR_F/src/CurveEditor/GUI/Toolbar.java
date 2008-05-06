@@ -22,16 +22,17 @@ public class Toolbar extends JToolBar {
 	public Toolbar(ActionListener listener) {
 		setFloatable(false);
 		this.listener = listener;
-		setSize( DisplaySize.toolbarD() );
+		setSize( );
 		setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
 		setRollover(true);
 		addButtons();
 	}
 
-	public void setSize( Dimension d ) {
-		setMinimumSize( d );
-		setMaximumSize( d );
-		setPreferredSize( d );
+	public void setSize( ) {
+		setBounds( 0, DisplaySize.MENUHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.TOOLBARHEIGHT );
+//		setMinimumSize( d );
+//		setMaximumSize( d );
+//		setPreferredSize( d );
 	}
 	
 	private void addButtons() {

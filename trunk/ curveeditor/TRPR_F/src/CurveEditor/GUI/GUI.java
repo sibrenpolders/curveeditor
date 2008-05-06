@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -29,7 +31,7 @@ import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements MouseListener, MouseMotionListener, WindowStateListener {
+public class GUI extends Editor implements MouseListener, MouseMotionListener, ComponentListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	private Menu menu;
@@ -38,6 +40,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, W
 	private MenuListener mListener;
 	private ChoiceAreaListener cListener;
 	private DisplaySize displaySize;
+	private JPanel container;
 	private JFrame frame; // container frame
 	public GUI() {
 		super();
@@ -54,45 +57,46 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, W
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
 		frame.setTitle("Curve Editor");
-		frame.addWindowStateListener( this );
 		Container contentPane = frame.getContentPane();
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		contentPane.setLayout( null );//new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
 		displaySize = new DisplaySize( );
 		
 		mListener = new MenuListener();
 		menu = new Menu(mListener);		
-		contentPane.add(menu);
-
+		contentPane.add(menu);		
+		
 		tBListener = new ToolBarListener();
 		toolbar = new Toolbar(tBListener);
 		contentPane.add(toolbar);
 
-		JPanel screen = new JPanel();
-		screen.setLayout(new BoxLayout(screen, BoxLayout.X_AXIS));
-
-		screen.add(Box.createRigidArea(new Dimension(10, 0)));
+		container= new JPanel();
+		container.setLayout( null ); //new BoxLayout(screen, BoxLayout.X_AXIS));
+		container.setBounds( 0, DisplaySize.MENUHEIGHT + DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.CHOICEHEIGHT );
+		container.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		cListener = new ChoiceAreaListener();
 		choice = new ChoiceArea(cListener, cListener);
-		screen.add(choice);
+		container.add(choice);
 
 		draw = new DrawArea(this.curves, this.selectedCurves,
 				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
 		draw.addMouseMotionListener(this);
-		screen.add(draw);
-		screen.add(Box.createRigidArea(new Dimension(10, 0)));
-		screen.add(Box.createHorizontalGlue());
+		container.add(draw);
+		container.add(Box.createRigidArea(new Dimension(10, 0)));
+		container.add(Box.createHorizontalGlue());
 
-		contentPane.add(screen);
+		contentPane.add(container);
 
 		frame.pack();
 		frame.setVisible(true);
 
 		selectionTool = new CurveContainer(600, 600);
 		
+		frame.setBounds( 0, 0, DisplaySize.SCREENWIDTH, DisplaySize.SCREENHEIGHT );
 		displaySize.setCurrentSize( frame.getSize() );
+		frame.addComponentListener( this );
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -636,14 +640,39 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, W
 
 	}
 
-	public void windowStateChanged(WindowEvent e) {
-		System.out.println( "let's do this!" );
-		if ( displaySize.frameSizeChanged( frame.getSize() ) ) { // de schermgrootte is aangepast door de gebruiker			
-			choice.setSize( displaySize.choiceAreaD() );
-			draw.setSize( displaySize.drawAreaD() );
-			menu.setSize( displaySize.menuD() );
-			toolbar.setSize( displaySize.toolbarD() );		
-			selectionTool.reset( displaySize.drawAreaD().width, displaySize.drawAreaD().height );
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		if ( displaySize.frameSizeChanged( frame.getSize() ) ) { // de schermgrootte is aangepast door de gebruiker
+			container.setBounds( 0, DisplaySize.MENUHEIGHT + DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.CHOICEHEIGHT );
+			choice.setSize( );
+			draw.setSize( );
+			menu.setSize( );
+			toolbar.setSize( );		
+			selectionTool.resize( DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
 		}
+		
+		System.out.println( draw.getSize() );
+//		System.out.println( displaySize.drawAreaD() );
+		
+		frame.repaint();		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
