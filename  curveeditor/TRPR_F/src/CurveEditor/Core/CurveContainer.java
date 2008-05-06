@@ -42,10 +42,12 @@ public class CurveContainer {
 				curves[x][y] = tmp[x][y];
 				controlPoints[x][y] = tmp2[x][y];
 			}
-		for ( ; x < MaxX; ++x )
+		for ( x = 0; x < MaxX; ++x )
 			for ( y = 0; y < MaxY; ++y ) {
-				curves[x][y] = null;
-				controlPoints[x][y] = new Vector<Curve>();
+				if ( y >= minY || x >= minX ) {
+					curves[x][y] = null;
+					controlPoints[x][y] = new Vector<Curve>();
+				}
 			}
 		
 		this.maxX = MaxX;

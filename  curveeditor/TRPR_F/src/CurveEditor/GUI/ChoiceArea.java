@@ -63,7 +63,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	}
 
 	private void init() {		
-		setSize( DisplaySize.choiceAreaD() );
+		setSize( );
 		
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -117,10 +117,11 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		return null;
 	}
 
-	public void setSize( Dimension d ) {
-		setMinimumSize( d );
-		setMaximumSize( d );
-		setPreferredSize( d );
+	public void setSize( ) {
+		setBounds( 0, 0, DisplaySize.CHOICEWIDTH, DisplaySize.CHOICEHEIGHT );
+//		setMinimumSize( d );
+//		setMaximumSize( d );
+//		setPreferredSize( d );
 	}		
 
 	private void createInputField() {

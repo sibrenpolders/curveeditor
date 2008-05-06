@@ -32,12 +32,14 @@ public class Menu extends JMenuBar implements ActionListener {
 		CreateMenuBar();
 	}
 	
-	public void setSize( Dimension d ) {
+	public void setSize( ) {
+		setBounds(0, 0, DisplaySize.SCREENWIDTH, DisplaySize.MENUHEIGHT );
+		repaint();
 		// de menubar zijn breedte is variabel, zijn hoogte niet.
 		// als de gebruiker zijn displaywindow vergroot mag dus enkel de breedte worden aangepast
-		setMinimumSize( d );
-		setMaximumSize( d );
-		setPreferredSize( d );
+//		setMinimumSize( d );
+//		setMaximumSize( d );
+//		setPreferredSize( d );
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -47,7 +49,7 @@ public class Menu extends JMenuBar implements ActionListener {
 	
 	// Zal de menuBar opstellen
 	private void CreateMenuBar( ) {
-		setSize( DisplaySize.menuD() );
+		setSize( );
 		// Aanmaken van de menubar.
 		makeFile( );
 		makeEdit( );
