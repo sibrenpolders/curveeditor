@@ -3,7 +3,6 @@ package CurveEditor.GUI;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -13,19 +12,18 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import CurveEditor.Algorithms.Algorithm;
+
+import com.sun.corba.se.spi.orbutil.fsm.Input;
+
 import CurveEditor.Core.CurveContainer;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
@@ -105,7 +103,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Point a = new Point(e.getX(), e.getY());
-			addPoint(a);
+			System.out.println( a );
+			addPoint(a);		
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE
 				|| mode == Editor.MODE.DESELECT_CURVE) {
@@ -664,7 +663,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			selectionTool.resize( DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
 		}
 		
-		System.out.println( draw.getSize() );
+//		System.out.println( draw.getSize() );
 //		System.out.println( displaySize.drawAreaD() );
 		
 		frame.repaint();		

@@ -49,7 +49,7 @@ public class CurveContainer {
 					controlPoints[x][y] = new Vector<Curve>();
 				}
 			}
-		
+
 		this.maxX = MaxX;
 		this.maxY = MaxY;
 	}

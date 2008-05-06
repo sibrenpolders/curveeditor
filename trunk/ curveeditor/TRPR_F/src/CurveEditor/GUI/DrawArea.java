@@ -1,7 +1,6 @@
 package CurveEditor.GUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Vector;
 import javax.swing.JPanel;
@@ -18,9 +17,6 @@ public class DrawArea extends JPanel {
 	private static int CONTROLPOINTWIDTH = 2;
 	private static int HOOVEREDCURVEWIDTH = 1;
 	private static int DEFAULTCURVEWIDTH = 0;
-
-	private int frameWidth = DisplaySize.DRAWWIDTH;
-	private int frameHeight = DisplaySize.DRAWHEIGHT;
 	private int curveWidth = DEFAULTCURVEWIDTH;
 	private boolean coords;
 	private boolean nrs;
@@ -96,7 +92,7 @@ public class DrawArea extends JPanel {
 	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
 	// uitvoert. Dit hertekent het vollédige tekencanvas.
 	public void paintComponent(Graphics g) {
-		this.g = g;
+		this.g = g;	
 		super.paintComponent(g);
 
 		emptyField();
@@ -108,9 +104,9 @@ public class DrawArea extends JPanel {
 			this.drawArrow();
 
 		this.g.setColor(Color.BLACK);
-		this.drawOutput(curves, false, false);
+		this.drawOutput(curves, false, false );
 		this.g.setColor(Color.RED);
-		drawOutput(selectedCurves, coords, nrs);
+		drawOutput(selectedCurves, coords, nrs );
 		if (tangents) {
 			this.g.setColor(Color.BLUE);
 			drawTangents(selectedCurves);
@@ -122,7 +118,7 @@ public class DrawArea extends JPanel {
 
 		this.g.setColor(Color.magenta);
 		this.curveWidth = HOOVEREDCURVEWIDTH;
-		drawOutput(hooveredCurves, false, false);
+		drawOutput(hooveredCurves, false, false );
 		this.curveWidth = DEFAULTCURVEWIDTH;
 
 		this.g.setColor(Color.YELLOW);
@@ -131,9 +127,9 @@ public class DrawArea extends JPanel {
 	}
 
 	public void emptyField() {
-		g.clipRect(0, 0, frameWidth, frameHeight);
+		g.clipRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
 		g.setColor(Color.white);
-		g.fillRect(0, 0, frameWidth, frameHeight);
+		g.fillRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
 		g.setColor(Color.black);
 	}
 
@@ -205,7 +201,7 @@ public class DrawArea extends JPanel {
 		return yEnd;
 	}
 
-	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
+	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs ) {
 		Vector<Point> out, in;
 		for (int i = 0; i < curves.size(); ++i) {
 			// de outputpunten uittekenen
@@ -273,7 +269,7 @@ public class DrawArea extends JPanel {
 	}
 
 	public void setSize( ) {
-		System.out.println( DisplaySize.DRAWWIDTH );
+//		System.out.println( DisplaySize.DRAWWIDTH );
 		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
 		repaint();
 //		setMinimumSize( d );
