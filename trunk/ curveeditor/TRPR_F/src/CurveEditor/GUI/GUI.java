@@ -643,7 +643,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, W
 			draw.setSize( displaySize.drawAreaD() );
 			menu.setSize( displaySize.menuD() );
 			toolbar.setSize( displaySize.toolbarD() );		
-			selectionTool.resize( displaySize.drawAreaD().width, displaySize.drawAreaD().height );
+			selectionTool.reset( displaySize.drawAreaD().width, displaySize.drawAreaD().height );
 		}
 	}
 }
