@@ -534,6 +534,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			deselectAll();
 			changeMode(MODE.SELECT_CURVE);
 		}
+		else if (actionCommand.equals("Add Control Point")
+				|| actionCommand.equals("Add Point")) {
+			changeMode(MODE.ADD_INPUT);
+			eventHandled = true;
+		}
 
 		if (eventHandled)
 			choice.toggleEditPanel(true);
