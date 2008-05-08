@@ -205,3 +205,22 @@ Dan kan je doen wat je wil in het TRPR. ;-)
 ----
 
 Cava ik ga zien hoever ik vdg geraak met die dingen, en anders heb ik nog altijd donderdag en vrijdag
+
+
+--------
+
+Inleiding --> uitleggen waarvoor het programma zelf dient en waarom we dat gekozen hebben
+Wiskundige basis --> curve-theorie +  connect- en G1/C1-continu
+Implementatie:
+	-> Packages (uitleggen waarom zó verdeeld + korte bespreking van elk package)
+	-> GUI + listeners
+	-> Datastructuur (Curve, Algorithm)
+	-> Extra (selectiontool + curvecontainer, pathsimulation, File I/O)
+	
+Planning
+Taakverdeling
+
+Bijlagen:
+ -handleiding
+ -screenshots
+ -referenties
