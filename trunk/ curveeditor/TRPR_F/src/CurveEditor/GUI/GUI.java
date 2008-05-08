@@ -380,8 +380,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 		if (null == fileName)
 			saveAs();
-		else
-			file.save(fileName, curves, selectedCurves );
+		else {
+			Vector<Curve> tmp = curves;
+			tmp.addAll( selectedCurves );
+			file.save(fileName, tmp );
+		}
 	}
 
 	private void saveAs() {
@@ -389,8 +392,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"CurveEditor files (*.xml)", "xml");
 		jfc.setFileFilter(filter);
-		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw))
-			file.save(jfc.getSelectedFile().getAbsolutePath(), curves, selectedCurves );
+		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
+			Vector<Curve> tmp = curves;
+			tmp.addAll( selectedCurves );
+			file.save(jfc.getSelectedFile().getAbsolutePath(), tmp );
+		}
 	}
 
 	private void newFile() {
