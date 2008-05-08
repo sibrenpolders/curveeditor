@@ -22,38 +22,38 @@ public class CurveContainer {
 		for (int x = 0; x < Maxx; ++x)
 			for (int y = 0; y < Maxy; ++y) {
 				curves[x][y] = null;
-				controlPoints[x][y] = new Vector<Curve>();
+				controlPoints[x][y] = null;
 			}
 	}
 
-	public void resize( int MaxX, int MaxY ) {
+	public void resize(int MaxX, int MaxY) {
 		Curve[][] tmp = curves;
 		Vector<Curve>[][] tmp2 = controlPoints;
-		
+
 		curves = new Curve[MaxX][MaxY];
 		controlPoints = new Vector[MaxX][MaxY];
-		
-		int minX = ( this.maxX < MaxX )? this.maxX : MaxX;
-		int minY = ( this.maxY < MaxY )? this.maxY : MaxY;
-		
+
+		int minX = (this.maxX < MaxX) ? this.maxX : MaxX;
+		int minY = (this.maxY < MaxY) ? this.maxY : MaxY;
+
 		int x = 0, y = 0;
-		for ( ; x < minX; ++x )
-			for ( y = 0; y < minY; ++y) {
+		for (; x < minX; ++x)
+			for (y = 0; y < minY; ++y) {
 				curves[x][y] = tmp[x][y];
 				controlPoints[x][y] = tmp2[x][y];
 			}
-		for ( x = 0; x < MaxX; ++x )
-			for ( y = 0; y < MaxY; ++y ) {
-				if ( y >= minY || x >= minX ) {
+		for (x = 0; x < MaxX; ++x)
+			for (y = 0; y < MaxY; ++y) {
+				if (y >= minY || x >= minX) {
 					curves[x][y] = null;
-					controlPoints[x][y] = new Vector<Curve>();
+					controlPoints[x][y] = null;
 				}
 			}
 
 		this.maxX = MaxX;
 		this.maxY = MaxY;
 	}
-	
+
 	public final void reset(int Maxx, int Maxy) {
 		Curve[][] prevCurves = curves;
 		Vector<Curve>[][] prevControlPoints = controlPoints;
@@ -67,7 +67,7 @@ public class CurveContainer {
 		for (int x = 0; x < Maxx; ++x)
 			for (int y = 0; y < Maxy; ++y) {
 				curves[x][y] = null;
-				controlPoints[x][y] = new Vector<Curve>();
+				controlPoints[x][y] = null;
 			}
 
 		for (int x = 0; x < max_x; ++x)
@@ -87,7 +87,7 @@ public class CurveContainer {
 		for (int x = 0; x < maxX; ++x)
 			for (int y = 0; y < maxY; ++y) {
 				curves[x][y] = null;
-				controlPoints[x][y] = new Vector<Curve>();
+				controlPoints[x][y] = null;
 			}
 	}
 
@@ -139,9 +139,15 @@ public class CurveContainer {
 
 	private void addControlPoints(Curve c) {
 		for (int i = 0; i < c.getNbInputPoints(); ++i) {
-			if (isValidPoint(c.getInput().elementAt(i)))
+			if (isValidPoint(c.getInput().elementAt(i))) {
+				if (controlPoints[c.getInput().elementAt(i).X()][c.getInput()
+						.elementAt(i).Y()] == null)
+					controlPoints[c.getInput().elementAt(i).X()][c.getInput()
+							.elementAt(i).Y()] = new Vector<Curve>();
+
 				controlPoints[c.getInput().elementAt(i).X()][c.getInput()
 						.elementAt(i).Y()].add(c);
+			}
 
 		}
 	}
@@ -149,9 +155,17 @@ public class CurveContainer {
 	private void deleteControlPoints(Curve c) {
 		for (int i = 0; i < c.getNbInputPoints(); ++i) {
 			if (isValidPoint(c.getInput().elementAt(i)))
-				while (controlPoints[c.getInput().elementAt(i).X()][c
-						.getInput().elementAt(i).Y()].removeElement(c))
-					;
+				if (controlPoints[c.getInput().elementAt(i).X()][c.getInput()
+						.elementAt(i).Y()] != null) {
+					while (controlPoints[c.getInput().elementAt(i).X()][c
+							.getInput().elementAt(i).Y()].removeElement(c))
+						;
+
+					if (controlPoints[c.getInput().elementAt(i).X()][c
+							.getInput().elementAt(i).Y()].size() == 0)
+						controlPoints[c.getInput().elementAt(i).X()][c
+								.getInput().elementAt(i).Y()] = null;
+				}
 
 		}
 	}
@@ -176,7 +190,7 @@ public class CurveContainer {
 
 			for (int i = min_x; i <= max_x; ++i)
 				for (int j = min_y; j <= max_y; ++j)
-					if (controlPoints[i][j].size() > 0)
+					if (controlPoints[i][j] != null)
 						result.addAll(controlPoints[i][j]);
 			if (result.size() > 0)
 				return result;
@@ -206,7 +220,7 @@ public class CurveContainer {
 
 			for (int i = min_x; i <= max_x; ++i)
 				for (int j = min_y; j <= max_y; ++j)
-					if (controlPoints[i][j].size() > 0)
+					if (controlPoints[i][j] != null)
 						result.add(new Point(i, j));
 			if (result.size() > 0)
 				return result;
@@ -218,7 +232,7 @@ public class CurveContainer {
 
 	public boolean isControlPoint(Point p) {
 		if (isValidPoint(p))
-			return controlPoints[p.X()][p.Y()].size() > 0;
+			return controlPoints[p.X()][p.Y()] != null;
 		else
 			return false;
 	}
