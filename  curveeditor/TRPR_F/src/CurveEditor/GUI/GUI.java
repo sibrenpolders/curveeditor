@@ -54,23 +54,17 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 	private void loadComponents() {
 		try {
-			// HIER!!!
-			// test deze eens? doet niks bij mij...
-//			UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		
 		frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
@@ -557,7 +551,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			recalS();
 			eventHandled = true;
 		} else if (actionCommand.equals("Deselect Point")) {
-			// TODO functie deselect Selected control points
 			eventHandled = true;
 			deleteSelectedControlPoints();
 		}
@@ -616,7 +609,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			else if (actionCommand.equals("ADD")) {
 				Point a = choice.getInputPoint();
 				if (a != null) {
-					// TODO Terugzetten naar oude modus?
 					changeMode(MODE.ADD_INPUT);
 					addPoint(a);
 				} else
@@ -666,19 +658,16 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		if ( displaySize.frameSizeChanged( frame.getSize() ) ) { // de schermgrootte is aangepast door de gebruiker
 			container.setBounds( 0, DisplaySize.MENUHEIGHT + DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.CHOICEHEIGHT );
 			choice.setSize( );
@@ -693,7 +682,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 }
