@@ -140,62 +140,18 @@ public final class Curve {
 	public static Curve connectC0(Curve c1, Curve c2) {
 		Curve result = new Curve(c1.getType(), c1.getDegree());
 
-		if (c1.type == 'B') {
-			for (int i = 0; i + 3 < c1.input.size(); i += 3) {
-				if (i == 0)
-					result.addInput(c1.input.elementAt(i));
-				result.addInput(c1.input.elementAt(i + 1));
-				result.addInput(c1.input.elementAt(i + 2));
-				result.addInput(c1.input.elementAt(i + 3));
-			}
+		for (int i = 0; i < c1.input.size(); ++i)
+			result.addInput(c1.input.elementAt(i));
 
+		if (c2.input.size() > 0) {
 			Point prevCtrl = result.input.lastElement();
-			Point prevTngnt = result.input.elementAt(result.input.size() - 2);
+			Point first = c2.input.elementAt(0);
+			int diffX = prevCtrl.X() - first.X();
+			int diffY = prevCtrl.Y() - first.Y();
 
-			Point first;
-			int diffX = 0, diffY = 0;
-			for (int i = 0; i < c2.getNbInputPoints(); ++i) {
-				if (i == 0) {
-					first = c2.input.elementAt(i);
-					diffX = prevCtrl.X() - first.X();
-					diffY = prevCtrl.Y() - first.Y();
-
-					Point nextTngnt = new Tangent().tangent2C1_(prevTngnt,
-							prevCtrl);
-					result.addInput(nextTngnt);
-					++i;
-				}
-
-				if (i < c2.getNbInputPoints())
-					result.addInput(new Point(
-							c2.input.elementAt(i).X() - diffX, c2.input
-									.elementAt(i).Y()
-									- diffY));
-
-			}
-
-		} else {
-			for (int i = 0; i + 1 < c1.input.size(); i += 2) {
-				result.addInput(c1.input.elementAt(i));
-				result.addInput(c1.input.elementAt(i + 1));
-			}
-
-			Point prevCtrl = result.input.elementAt(result.input.size() - 2);
-			Point first;
-			int diffX = 0, diffY = 0;
-
-			for (int i = 0; i < c2.getNbInputPoints(); ++i) {
-				if (i == 0) {
-					first = c2.input.elementAt(i);
-					diffX = prevCtrl.X() - first.X();
-					diffY = prevCtrl.Y() - first.Y();
-					i += 2;
-				}
-				if (i < c2.getNbInputPoints())
-					result.addInput(new Point(
-							c2.input.elementAt(i).X() - diffX, c2.input
-									.elementAt(i).Y()
-									- diffY));
+			for (int i = 1; i < c2.getNbInputPoints(); ++i) {
+				result.addInput(new Point(c2.input.elementAt(i).X() + diffX,
+						c2.input.elementAt(i).Y() + diffY));
 			}
 		}
 
