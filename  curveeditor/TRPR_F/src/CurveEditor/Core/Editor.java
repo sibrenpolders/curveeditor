@@ -143,14 +143,6 @@ public class Editor {
 		return null;
 	}
 
-	protected void setCurrentTool(char type) {
-
-		Tool temp = getTool(type);
-
-		if (temp != null)
-			currentTool = temp;
-	}
-
 	public void changeMode(Editor.MODE m) {
 		if (m == MODE.NONE) {
 			deselectAll();
@@ -182,6 +174,14 @@ public class Editor {
 		this.mode = MODE.ADD_INPUT;
 	}
 
+	protected void setCurrentTool(char type) {
+
+		Tool temp = getTool(type);
+
+		if (temp != null)
+			currentTool = temp;
+	}
+
 	protected void deleteSelectedControlPoints() {
 		for (int i = 0; i < selectedPoints.size(); ++i) {
 			for (int j = 0; j < selectedCurves.size(); ++j) {
@@ -191,6 +191,8 @@ public class Editor {
 					selectedCurves.elementAt(j).getInput().remove(temp);
 				}
 			}
+			selectionTool.deleteControlPoint(selectedPoints.elementAt(i).X(),
+					selectedPoints.elementAt(i).Y());
 		}
 
 		for (int j = 0; j < selectedCurves.size(); ++j) {
