@@ -236,4 +236,8 @@ public class CurveContainer {
 		else
 			return false;
 	}
+
+	public void deleteControlPoint(int x, int y) {
+		controlPoints[x][y] = null;
+	}
 }
