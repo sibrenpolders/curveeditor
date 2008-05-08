@@ -119,11 +119,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			Point a = new Point(e.getX(), e.getY());
 			addPoint(a);		
 			draw.repaint();
-		} else if (mode == Editor.MODE.SELECT_CURVE
-				|| mode == Editor.MODE.DESELECT_CURVE) {
+		} else if ( mode == Editor.MODE.DESELECT_CURVE) {
 			Curve c = pickCurve(new Point(e.getX(), e.getY()));
-			if (c != null)
+			if (c != null) {
 				draw.repaint();
+				mode = MODE.DESELECT_CURVE;
+			}
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
 			draw.repaint();
@@ -173,6 +174,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 								hooveredCurves.elementAt(i)))
 							curves.remove(j--);
 				}
+				
+				if ( found )
+					mode = MODE.DESELECT_CURVE;
 			}
 		else if (mode == MODE.SELECT_CONTROL_POINT) {
 			for (int i = 0; i < hooveredCurves.size(); ++i) {
