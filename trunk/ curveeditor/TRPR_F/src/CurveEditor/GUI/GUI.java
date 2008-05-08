@@ -454,6 +454,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				|| actionCommand.equals("Start New Curve")) {
 			changeMode(MODE.NEW_CURVE);
 			choice.toggleEditPanel(true);
+			draw.repaint();
 			return true;
 		} else if (actionCommand.equals("Clr") || actionCommand.equals("Clear")) {
 			changeMode(MODE.NONE);
