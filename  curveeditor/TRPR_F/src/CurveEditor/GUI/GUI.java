@@ -216,9 +216,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				diffY = -diffY;
 
 			if (mode == MODE.MOVE_CURVES)
-				translateSelectedCurves(diffX, diffY);
+				translateSelectedCurves(diffX, diffY );
 			else
-				translateSelectedControlPoints(diffX, diffY);
+				translateSelectedControlPoints(diffX, diffY );
 		}
 
 		draw.resetDragging();
@@ -315,6 +315,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	}
 
 	public void mouseMoved(MouseEvent e) {
+		// TODO Tijdens het hooveren deselecteerd hij alle selected curves --> MAG NIET
 		boolean repaint = false;
 		if (mode == MODE.DESELECT_CURVE ||mode == MODE.SELECT_CURVE) {
 			if (hooveredCurves.size() > 0) {
