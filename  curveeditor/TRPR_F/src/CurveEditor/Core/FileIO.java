@@ -32,7 +32,12 @@ public class FileIO extends DefaultHandler {
 	private Curve curve;
 	private int dimension;
 	private Point point;
-
+	private String identation = "    ";
+	private int indentLevel = 0;
+	private PrintWriter pw;
+	private TransformerHandler hd;
+	private int lineNumber = 0;
+	
 	public String getCurrentFilename() {
 		return currentFilename;
 	}
@@ -54,22 +59,11 @@ public class FileIO extends DefaultHandler {
 	}
 
 	public void save(String filename, Vector<Curve> curves ) {
-		/*
-		 * DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		 * try { DocumentBuilder db = dbf.newDocumentBuilder(); // maak een
-		 * nieuwe DOM instantie aan dom = db.newDocument();
-		 * 
-		 * createDOMTree(curves); printToFile(filename);
-		 * 
-		 * }catch(ParserConfigurationException pce) { System.out.println("Error
-		 * while trying to instantiate DocumentBuilder " + pce); System.exit(1); }
-		 */
 		try {
-			PrintWriter pw = new PrintWriter(new File(filename));
+			pw = new PrintWriter(new File(filename + ".xml" ));
 			StreamResult streamResult = new StreamResult(pw);
-			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
-					.newInstance();
-			TransformerHandler hd = tf.newTransformerHandler();
+			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+			hd = tf.newTransformerHandler();
 			Transformer serializer = hd.getTransformer();
 			serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");//
 			// TODO DTD online zetten of relatief pad zoeken
@@ -82,38 +76,21 @@ public class FileIO extends DefaultHandler {
 			// href=\"mystyle.xsl\"");
 			hd.startElement("", "", "curveEditor", null);
 			String curTitle;
+			
+			++indentLevel;
 			for (int i = 0; i < curves.size(); ++i) {
 				hd.startElement("", "", "curve", null);
 				hd.startElement("", "", "type", null);
 				curTitle = curves.get(i).getTypeAsString();
-				System.out.println( curTitle );
 				hd.characters(curTitle.toCharArray(), 0, curTitle.length());
 				hd.endElement("", "", "type");
-				hd.startElement("", "", "degree", null);
-				curTitle = "" + curves.get(i).getDegree();
-				hd.characters(curTitle.toCharArray(), 0, curTitle.length());
-				hd.endElement("", "", "degree");
 				Vector<Point> vp = curves.get(i).getInput();
 				// AttributesImpl atts = new AttributesImpl();
 				for (int j = 0; j < vp.size(); ++j) {
 					hd.startElement("", "", "point", null);
-					// dimensie
-					// atts.addAttribute("", "", "someattribute", "CDATA",
-					// "test");
-					hd.startElement("", "", "x", null);
-					curTitle = "" + vp.get(j).X();
-					hd.characters(curTitle.toCharArray(), 0, curTitle.length());
-					hd.endElement("", "", "x");
-
-					hd.startElement("", "", "y", null);
-					curTitle = "" + vp.get(j).X();
-					hd.characters(curTitle.toCharArray(), 0, curTitle.length());
-					hd.endElement("", "", "x");
-
-					hd.startElement("", "", "z", null);
-					curTitle = "" + vp.get(j).X();
-					hd.characters(curTitle.toCharArray(), 0, curTitle.length());
-					hd.endElement("", "", "x");
+					writeCo( "" + vp.get(j).X(), "x" );
+					writeCo( "" + vp.get(j).Y(), "y" );
+//					writeCo( "" + vp.get(j).Z(), "x" );
 					hd.endElement("", "", "point");
 				}
 				hd.endElement("", "", "curve");
@@ -121,17 +98,24 @@ public class FileIO extends DefaultHandler {
 			hd.endElement("", "", "curveEditor");
 			hd.endDocument();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private void writeCo( String title, String cor ) throws SAXException {
+		hd.startElement("", "", cor, null);
+		hd.characters(title.toCharArray(), 0, title.length());
+		hd.endElement("", "", cor );
+	}
+	
+	private void indent(  ){
+		for ( int i = 0; i < indentLevel; ++i )
+			pw.write( indentLevel );
+	}
 	private void parseXmlFile(String filename) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
@@ -146,22 +130,25 @@ public class FileIO extends DefaultHandler {
 			pce.printStackTrace();
 		} catch (IOException ie) {
 			ie.printStackTrace();
+		} catch ( Exception e ) {
+			System.out.println( e );
 		}
+		
 	}
 
 	// Event Handlers
 	public void startElement(String uri, String localName, String qName,
-			Attributes attributes) throws SAXException {
+			Attributes attributes) throws SAXException {		
 		// reset
 		tempVal = "";
-		if (qName.equalsIgnoreCase("Curve")) {
+		if (qName.equalsIgnoreCase("Curve"))
 			// create a new instance of employee
 			curve = new Curve();
-		} else if (qName.equalsIgnoreCase("Point")) {
+		else if (qName.equalsIgnoreCase("Point")) {
 			point = new Point();
-			dimension = (2 == Integer.parseInt(attributes.getValue("dim"))) ? 2
-					: 3;
 		}
+
+		++lineNumber; // volgende regel
 	}
 
 	public void characters(char[] ch, int start, int length)
@@ -170,7 +157,7 @@ public class FileIO extends DefaultHandler {
 	}
 
 	public void endElement(String uri, String localName, String qName)
-			throws SAXException {
+			throws SAXException, NumberFormatException, IndexOutOfBoundsException {
 
 		if (qName.equalsIgnoreCase("Curve"))
 			// nieuwe curve aan de vector toevoegen
@@ -178,16 +165,12 @@ public class FileIO extends DefaultHandler {
 
 		else if (qName.equalsIgnoreCase("Type")) {
 			char c = 0;
-			if (tempVal.equalsIgnoreCase("Bezier"))
-				c = 'b';
-			else if (tempVal.equalsIgnoreCase("Hermites"))
-				c = 'h';
-
+			c = tempVal.charAt( 0 );
 			curve.setType(c);
 		}
 
-		else if (qName.equalsIgnoreCase("Degree"))
-			curve.setDegree(Short.parseShort(tempVal));
+//		else if (qName.equalsIgnoreCase("Degree"))
+//			curve.setDegree(Short.parseShort(tempVal));
 
 		else if (qName.equalsIgnoreCase("Point"))
 			curve.addInput(point);
@@ -200,6 +183,8 @@ public class FileIO extends DefaultHandler {
 
 		// else if (qName.equalsIgnoreCase("Z"))
 		// point.setZ(Integer.parseInt(tempVal));
+		
+		++lineNumber; // volgende regel
 	}
 
 	/*

@@ -365,6 +365,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showOpenDialog(draw))
 			file.load(jfc.getSelectedFile().getAbsolutePath(), curves);
+		
+		recalculateCurves();
+		draw.repaint();
 	}
 
 	private void save() {
