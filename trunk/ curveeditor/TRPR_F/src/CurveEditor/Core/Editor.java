@@ -215,9 +215,7 @@ public class Editor {
 	}
 
 	protected void deselectAll() {
-		for (int i = 0; i < selectedCurves.size(); ++i)
-			curves.add(selectedCurves.get(i));
-
+		curves.addAll(selectedCurves);
 		selectedCurves.clear();
 		selectedPoints.clear();
 	}
@@ -260,11 +258,13 @@ public class Editor {
 		if (temp != null && temp.size() > 0) {
 			for (int i = 0; i < temp.size(); ++i) {
 				hooveredPoints.add(temp.elementAt(i));
-				Vector<Curve> temp2 = selectionTool.searchCurvesByControlPoint(temp.elementAt(i));
+				Vector<Curve> temp2 = selectionTool
+						.searchCurvesByControlPoint(temp.elementAt(i));
 				for (int j = 0; j < temp2.size(); ++j) {
 					boolean found = false;
 					for (int k = 0; k < hooveredCurves.size(); ++k) {
-						if (hooveredCurves.elementAt(k).equals(temp2.elementAt(j)))
+						if (hooveredCurves.elementAt(k).equals(
+								temp2.elementAt(j)))
 							found = true;
 					}
 
@@ -416,16 +416,19 @@ public class Editor {
 		}
 	}
 
-	protected void translateSelectedControlPoints(int x, int y ) {
+	protected void translateSelectedControlPoints(int x, int y) {
 		int index;
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			selectionTool.deleteCurve(selectedCurves.elementAt(i));
 			selectedCurves.elementAt(i).clearOutput();
 
 			for (int j = 0; j < selectedPoints.size(); ++j)
-				if ((index = selectedCurves.elementAt(i).containsInputPointi(selectedPoints.elementAt(j))) != -1) {
-					selectedCurves.elementAt(i).getInput().elementAt(index).increaseX(x);
-					selectedCurves.elementAt(i).getInput().elementAt(index).increaseY(y);
+				if ((index = selectedCurves.elementAt(i).containsInputPointi(
+						selectedPoints.elementAt(j))) != -1) {
+					selectedCurves.elementAt(i).getInput().elementAt(index)
+							.increaseX(x);
+					selectedCurves.elementAt(i).getInput().elementAt(index)
+							.increaseY(y);
 				}
 		}
 

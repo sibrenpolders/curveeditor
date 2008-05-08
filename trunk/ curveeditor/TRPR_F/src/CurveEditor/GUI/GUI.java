@@ -73,7 +73,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		frame.setTitle("Curve Editor");
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(null);// new BoxLayout(contentPane,
-									// BoxLayout.Y_AXIS));
+		// BoxLayout.Y_AXIS));
 
 		displaySize = new DisplaySize();
 
@@ -156,7 +156,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if (mode == Editor.MODE.SELECT_CURVE || mode == Editor.MODE.DESELECT_CURVE || mode == Editor.MODE.SELECT_CONTROL_POINT || mode == Editor.MODE.DESELECT_CONTROL_POINT)
+		if (mode == Editor.MODE.SELECT_CURVE
+				|| mode == Editor.MODE.DESELECT_CURVE
+				|| mode == Editor.MODE.SELECT_CONTROL_POINT
+				|| mode == Editor.MODE.DESELECT_CONTROL_POINT)
 			draw.beginSelectionRectangle(e.getX(), e.getY());
 		else if (mode == MODE.MOVE_CONTROL_POINTS || mode == MODE.MOVE_CURVES)
 			draw.beginMovingArrow(e.getX(), e.getY());
@@ -216,9 +219,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				diffY = -diffY;
 
 			if (mode == MODE.MOVE_CURVES)
-				translateSelectedCurves(diffX, diffY );
+				translateSelectedCurves(diffX, diffY);
 			else
-				translateSelectedControlPoints(diffX, diffY );
+				translateSelectedControlPoints(diffX, diffY);
 		}
 
 		draw.resetDragging();
@@ -229,8 +232,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 	public void mouseDragged(MouseEvent e) {
 		if (e.getSource().equals(draw)
-				&& (mode == Editor.MODE.SELECT_CURVE || mode == Editor.MODE.DESELECT_CURVE || mode == Editor.MODE.SELECT_CONTROL_POINT 
-						|| mode == Editor.MODE.DESELECT_CONTROL_POINT) && draw.draggingStarted()) {
+				&& (mode == Editor.MODE.SELECT_CURVE
+						|| mode == Editor.MODE.DESELECT_CURVE
+						|| mode == Editor.MODE.SELECT_CONTROL_POINT || mode == Editor.MODE.DESELECT_CONTROL_POINT)
+				&& draw.draggingStarted()) {
 			int xBegin = draw.getXBegin();
 			int yBegin = draw.getYBegin();
 			int xEnd = (e.getX() < 0) ? 0 : e.getX();
@@ -315,22 +320,27 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		// TODO Tijdens het hooveren deselecteerd hij alle selected curves --> MAG NIET
+		// TODO Tijdens het hooveren deselecteerd hij alle selected curves -->
+		// MAG NIET
 		boolean repaint = false;
-		if (mode == MODE.DESELECT_CURVE ||mode == MODE.SELECT_CURVE) {
+		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
 			if (hooveredCurves.size() > 0) {
 				hooveredCurves.clear();
 				repaint = true;
 			}
 
-			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0 && e.getX() < selectionTool.maxX && e.getY() < selectionTool.maxY) {
-				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e.getY()));
+			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
+					&& e.getX() < selectionTool.maxX
+					&& e.getY() < selectionTool.maxY) {
+				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e
+						.getY()));
 				if (c != null) {
 					repaint = true;
 					hooveredCurves.add(c);
 				}
-			}		
-		} else if (mode == MODE.DESELECT_CONTROL_POINT || mode == MODE.SELECT_CONTROL_POINT) {
+			}
+		} else if (mode == MODE.DESELECT_CONTROL_POINT
+				|| mode == MODE.SELECT_CONTROL_POINT) {
 			if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
 				hooveredCurves.clear();
 				hooveredPoints.clear();
@@ -346,11 +356,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				}
 			}
 		}
-		
+
 		if (repaint)
-			draw.repaint();		
+			draw.repaint();
 	}
-	
+
 	public void propertyChange(PropertyChangeEvent evt) {
 
 	}
@@ -423,6 +433,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	 */
 	// Alles wat te maken heeft met FILE, wordt gebruikt door Menu EN Toolbar
 	private boolean fileEvent(String actionCommand) {
+		System.out.println(actionCommand);
 		if (actionCommand.equals("Open")) {
 			open();
 			return true;
@@ -440,7 +451,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		// 2 verschillende namen, maar hetzelfde beestje
 		else if (actionCommand.equals("New C")
 				|| actionCommand.equals("New Curve")
-				|| actionCommand.equals("Start a new curve")) {
+				|| actionCommand.equals("Start New Curve")) {
 			changeMode(MODE.NEW_CURVE);
 			choice.toggleEditPanel(true);
 			return true;
@@ -448,7 +459,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			changeMode(MODE.NONE);
 			reset();
 			choice.deselect();
-			draw.repaint( );
+			draw.repaint();
 		}
 		return false;
 	}
@@ -499,26 +510,30 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		boolean eventHandled = false;
 
 		// ander naam, zelfde beestje
-		if (actionCommand.equals("Sel C") || actionCommand.equals("Select Curve")) {
+		if (actionCommand.equals("Sel C")
+				|| actionCommand.equals("Select Curve")) {
 			changeMode(MODE.SELECT_CURVE);
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
-		else if (actionCommand.equals("Mov C") || actionCommand.equals("Move Curve") || actionCommand.equals("Move Selected Curves")) {
+		else if (actionCommand.equals("Mov C")
+				|| actionCommand.equals("Move Curve")
+				|| actionCommand.equals("Move Curves")) {
 			changeMode(MODE.MOVE_CURVES);
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
-		else if (actionCommand.equals("Del C") 	|| actionCommand.equals("Delete Curve") || actionCommand.equals("Delete Selected Curves")) {
+		else if (actionCommand.equals("Del C")
+				|| actionCommand.equals("Delete Curve")
+				|| actionCommand.equals("Delete Curves")) {
 			deleteSelectedCurves();
 			recalS();
+			changeMode(MODE.SELECT_CURVE);
 			eventHandled = true;
-		} else if (actionCommand.equals("Deselect All")) // telt ook mee voor
-			// pointEvent int
-			// choiceArea & de
-			// Deselect all van
-			// de menuBar
+		} else if (actionCommand.equals("Deselect All")) {
 			deselectAll();
+			changeMode(MODE.SELECT_CURVE);
+		}
 
 		if (eventHandled)
 			choice.toggleEditPanel(true);
@@ -537,22 +552,24 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		// ander naam, zelfde beestje
 		else if (actionCommand.equals("Mov P")
 				|| actionCommand.equals("Move Point")
-				|| actionCommand.equals("Move Selected Control Points")) {
+				|| actionCommand.equals("Move Control Points")) {
 			changeMode(MODE.MOVE_CONTROL_POINTS);
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
 		else if (actionCommand.equals("Del P")
-				|| actionCommand.equals("Delete Point")) {
+				|| actionCommand.equals("Delete Control Points")) {
 			deleteSelectedControlPoints();
 			recalS();
 			eventHandled = true;
-		} else if (actionCommand.equals("Deselect Point")) {
+			changeMode(MODE.SELECT_CONTROL_POINT);
+		} else if (actionCommand.equals("Deselect All Control Points")) {
 			eventHandled = true;
-			deleteSelectedControlPoints();
+			deselectAll();
+			changeMode(MODE.SELECT_CONTROL_POINT);
 		}
 		// ander naam, zelfde beestje
-		else if (actionCommand.equals("Add P")
+		else if (actionCommand.equals("Add Control Point")
 				|| actionCommand.equals("Add Point")) {
 			changeMode(MODE.ADD_INPUT);
 			eventHandled = true;
@@ -601,7 +618,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 						.getSelectedItem();
 
 			if (algorithmEvent(actionCommand) || pointEvent(actionCommand)
-					|| curveEvent(actionCommand))
+					|| curveEvent(actionCommand) || fileEvent(actionCommand))
 				return;
 			else if (actionCommand.equals("ADD")) {
 				Point a = choice.getInputPoint();
@@ -617,25 +634,29 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				draw.repaint();
 			} else if (actionCommand.equals("Deselect All Curves")) {
 				deselectAllCurves();
+				changeMode(MODE.SELECT_CURVE);
 				draw.repaint();
-			} else if (actionCommand.equals("Move Selected Curves")) {
+			} else if (actionCommand.equals("Move Curves")) {
 				changeMode(MODE.MOVE_CURVES);
 				draw.repaint();
 			} else if (actionCommand.equals("Deselect All Control Points")) {
 				deselectAll();
+				changeMode(MODE.SELECT_CONTROL_POINT);
 				draw.repaint();
-			} else if (actionCommand.equals("Move Selected Control Points")) {
+			} else if (actionCommand.equals("Move Control Points")) {
 				changeMode(MODE.MOVE_CONTROL_POINTS);
 				draw.repaint();
-			} else if (actionCommand.equals("Delete Selected Control Points")) {
+			} else if (actionCommand.equals("Delete Control Points")) {
 				deleteSelectedControlPoints();
+				changeMode(MODE.SELECT_CONTROL_POINT);
 				draw.repaint();
-			} else if (actionCommand
-					.equals("Connect Selected Curves (No Extra Points)")) {
+			} else if (actionCommand.equals("Connect Curves (No Extra Points)")) {
 				connectNoExtraPoint();
+				mode = MODE.SELECT_CURVE;
 				draw.repaint();
-			} else if (actionCommand.equals("Connect Selected Curves (C0)")) {
+			} else if (actionCommand.equals("Connect Curves (C0)")) {
 				connectCurvesC0();
+				mode = MODE.SELECT_CURVE;
 				draw.repaint();
 			}
 		}
@@ -673,10 +694,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	@Override
 	public void componentResized(ComponentEvent e) {
 		if (displaySize.frameSizeChanged(frame.getSize())) { // de
-																// schermgrootte
-																// is aangepast
-																// door de
-																// gebruiker
+			// schermgrootte
+			// is aangepast
+			// door de
+			// gebruiker
 			container.setBounds(0, DisplaySize.MENUHEIGHT
 					+ DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH,
 					DisplaySize.CHOICEHEIGHT);
