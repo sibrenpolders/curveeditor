@@ -53,7 +53,7 @@ public class FileIO extends DefaultHandler {
 		// parseDocument(curves);
 	}
 
-	public void save(String filename, Vector<Curve> curves, V) {
+	public void save(String filename, Vector<Curve> curves ) {
 		/*
 		 * DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		 * try { DocumentBuilder db = dbf.newDocumentBuilder(); // maak een
