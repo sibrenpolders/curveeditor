@@ -286,38 +286,37 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 		currentPanel = curveEditPanel;
 
-		createToggleButton("Start New Curve", "Start a new curve.", null, false);
-		createToggleButton("Select All Curves", "Select all curves.", null,
+		createButton("Start New Curve", "Start a new curve.", null, false);
+		createButton("Select All Curves", "Select all curves.", null,
 				false);
-		createToggleButton("Deselect All Curves", "Deselect all curves.", null,
+		createButton("Deselect All Curves", "Deselect all curves.", null,
 				false);
-		createToggleButton("Add Control Point",
+		createButton("Add Control Point",
 				"Add a control point to all selected curves.", null, false);
-		createToggleButton("Move Selected Curves", "Move all selected curves.",
+		createButton("Move Selected Curves", "Move all selected curves.",
 				null, false);
-		createToggleButton("Connect Selected Curves (No Extra Points)",
+		createButton("Connect Selected Curves (No Extra Points)",
 				"Connect all selected curves (no extra points).", null, false);
-		createToggleButton("Connect Selected Curves (C0)",
+		createButton("Connect Selected Curves (C0)",
 				"Connect all selected curves (C0).", null, false);
-		createToggleButton("Delete Selected Curves",
+		createButton("Delete Selected Curves",
 				"Delete all selected curves.", null, false);
 		// curveEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(curveEditPanel);
 	}
 
-	private void createToggleButton(String name, String tooltip, String icon,
+	private void createButton(String name, String tooltip, String icon,
 			boolean selected) {
-		JToggleButton toggleButton = new JToggleButton(
-		/* new ImageIcon(icon), */name, selected);
+		JButton Button = new JButton(/* new ImageIcon(icon), */name );
 		// toggleButton.setName(name);
-		toggleButton.addActionListener(listener);
-		toggleButton.setToolTipText(tooltip);
+		Button.addActionListener(listener);
+		Button.setToolTipText(tooltip);
 		Dimension d = new Dimension(TOGGLEBUTTONWIDTH, TOGGLEBUTTONHEIGHT);
-		toggleButton.setMaximumSize(d);
-		toggleButton.setMinimumSize(d);
-		toggleButton.setPreferredSize(d);
-		group.add(toggleButton);
-		currentPanel.add(toggleButton);
+		Button.setMaximumSize(d);
+		Button.setMinimumSize(d);
+		Button.setPreferredSize(d);
+		group.add(Button);
+		currentPanel.add(Button);
 	}
 
 	private void createPointEditMode() {
@@ -327,11 +326,11 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		group = new ButtonGroup();
 		currentPanel = pointEditPanel;
 
-		createToggleButton("Deselect All Control Points",
+		createButton("Deselect All Control Points",
 				"Deselect all control points.", null, false);
-		createToggleButton("Move Selected Control Points",
+		createButton("Move Selected Control Points",
 				"Move all selected control points.", null, false);
-		createToggleButton("Delete Selected Control Points",
+		createButton("Delete Selected Control Points",
 				"Delete all selected control poins.", null, false);
 		// pointEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(pointEditPanel);
