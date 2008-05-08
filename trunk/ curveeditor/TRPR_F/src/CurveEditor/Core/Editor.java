@@ -483,4 +483,39 @@ public class Editor {
 
 		}
 	}
+
+	protected void connectCurvesC0() {
+		if (selectedCurves.size() > 0) {
+			Curve result = selectedCurves.get(0);
+			selectionTool.deleteCurve(result);
+			for (int i = 1; i < selectedCurves.size(); ++i) {
+				selectionTool.deleteCurve(selectedCurves.get(i));
+				result = Curve.connectC0(result, selectedCurves.get(i));
+			}
+
+			selectedCurves.clear();
+			selectedCurves.add(result);
+			selectionTool.addCurve(result);
+			recalculateSelectedCurves();
+		}
+
+	}
+
+	protected void connectNoExtraPoint() {
+		if (selectedCurves.size() > 0) {
+			Curve result = selectedCurves.get(0);
+			selectionTool.deleteCurve(result);
+			for (int i = 1; i < selectedCurves.size(); ++i) {
+				selectionTool.deleteCurve(selectedCurves.get(i));
+				result = Curve.connectNoExtraPoint(result, selectedCurves
+						.get(i));
+			}
+
+			selectedCurves.clear();
+			selectedCurves.add(result);
+			selectionTool.addCurve(result);
+			recalculateSelectedCurves();
+		}
+
+	}
 }
