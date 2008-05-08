@@ -175,7 +175,7 @@ public final class Curve {
 			}
 
 		} else {
-			for (int i = 0; i + 1 < c2.input.size(); i += 2) {
+			for (int i = 0; i + 1 < c1.input.size(); i += 2) {
 				result.addInput(c1.input.elementAt(i));
 				result.addInput(c1.input.elementAt(i + 1));
 			}
