@@ -156,10 +156,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if (mode == Editor.MODE.SELECT_CURVE
-				|| mode == Editor.MODE.DESELECT_CURVE
-				|| mode == Editor.MODE.SELECT_CONTROL_POINT
-				|| mode == Editor.MODE.DESELECT_CONTROL_POINT)
+		if (mode == Editor.MODE.SELECT_CURVE || mode == Editor.MODE.DESELECT_CURVE || mode == Editor.MODE.SELECT_CONTROL_POINT || mode == Editor.MODE.DESELECT_CONTROL_POINT)
 			draw.beginSelectionRectangle(e.getX(), e.getY());
 		else if (mode == MODE.MOVE_CONTROL_POINTS || mode == MODE.MOVE_CURVES)
 			draw.beginMovingArrow(e.getX(), e.getY());
@@ -232,11 +229,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 	public void mouseDragged(MouseEvent e) {
 		if (e.getSource().equals(draw)
-				&& (mode == Editor.MODE.SELECT_CURVE
-						|| mode == Editor.MODE.DESELECT_CURVE
-						|| mode == Editor.MODE.SELECT_CONTROL_POINT || mode == Editor.MODE.DESELECT_CONTROL_POINT)
-				&& draw.draggingStarted()) {
-
+				&& (mode == Editor.MODE.SELECT_CURVE || mode == Editor.MODE.DESELECT_CURVE || mode == Editor.MODE.SELECT_CONTROL_POINT 
+						|| mode == Editor.MODE.DESELECT_CONTROL_POINT) && draw.draggingStarted()) {
 			int xBegin = draw.getXBegin();
 			int yBegin = draw.getYBegin();
 			int xEnd = (e.getX() < 0) ? 0 : e.getX();
@@ -321,29 +315,21 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
-			boolean repaint = false;
+		boolean repaint = false;
+		if (mode == MODE.DESELECT_CURVE ||mode == MODE.SELECT_CURVE) {
 			if (hooveredCurves.size() > 0) {
 				hooveredCurves.clear();
 				repaint = true;
 			}
 
-			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
-					&& e.getX() < selectionTool.maxX
-					&& e.getY() < selectionTool.maxY) {
-				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e
-						.getY()));
+			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0 && e.getX() < selectionTool.maxX && e.getY() < selectionTool.maxY) {
+				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e.getY()));
 				if (c != null) {
 					repaint = true;
 					hooveredCurves.add(c);
 				}
-			}
-
-			if (repaint)
-				draw.repaint();
-		} else if (mode == MODE.DESELECT_CONTROL_POINT
-				|| mode == MODE.SELECT_CONTROL_POINT) {
-			boolean repaint = false;
+			}		
+		} else if (mode == MODE.DESELECT_CONTROL_POINT || mode == MODE.SELECT_CONTROL_POINT) {
 			if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
 				hooveredCurves.clear();
 				hooveredPoints.clear();
@@ -358,12 +344,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 					repaint = true;
 				}
 			}
-
-			if (repaint)
-				draw.repaint();
 		}
+		
+		if (repaint)
+			draw.repaint();		
 	}
-
+	
 	public void propertyChange(PropertyChangeEvent evt) {
 
 	}
@@ -461,6 +447,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			changeMode(MODE.NONE);
 			reset();
 			choice.deselect();
+			draw.repaint( );
 		}
 		return false;
 	}
@@ -511,22 +498,17 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		boolean eventHandled = false;
 
 		// ander naam, zelfde beestje
-		if (actionCommand.equals("Sel C")
-				|| actionCommand.equals("Select Curve")) {
+		if (actionCommand.equals("Sel C") || actionCommand.equals("Select Curve")) {
 			changeMode(MODE.SELECT_CURVE);
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
-		else if (actionCommand.equals("Mov C")
-				|| actionCommand.equals("Move Curve")
-				|| actionCommand.equals("Move Selected Curves")) {
+		else if (actionCommand.equals("Mov C") || actionCommand.equals("Move Curve") || actionCommand.equals("Move Selected Curves")) {
 			changeMode(MODE.MOVE_CURVES);
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
-		else if (actionCommand.equals("Del C")
-				|| actionCommand.equals("Delete Curve")
-				|| actionCommand.equals("Delete Selected Curves")) {
+		else if (actionCommand.equals("Del C") 	|| actionCommand.equals("Delete Curve") || actionCommand.equals("Delete Selected Curves")) {
 			deleteSelectedCurves();
 			recalS();
 			eventHandled = true;
