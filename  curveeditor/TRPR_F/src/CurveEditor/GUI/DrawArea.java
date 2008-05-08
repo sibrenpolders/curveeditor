@@ -262,23 +262,9 @@ public class DrawArea extends JPanel {
 		}
 	}
 
-	public void setSize(int x, int y) {
-//		super.setSize(x, y);
-//		frameWidth = x;
-//		frameHeight = y;
-	}
-
 	public void setSize( ) {
-//		System.out.println( DisplaySize.DRAWWIDTH );
 		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
 		repaint();
-//		setMinimumSize( d );
-//		setMaximumSize( d );
-//		setPreferredSize( d );
-//		super.setSize(d );
-		
-//		this.update();
-//		this.repaint();
 	}
 	
 	public int width() {

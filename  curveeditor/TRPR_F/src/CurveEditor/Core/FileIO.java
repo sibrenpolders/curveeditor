@@ -53,7 +53,7 @@ public class FileIO extends DefaultHandler {
 		// parseDocument(curves);
 	}
 
-	public void save(String filename, List<Curve> curves) {
+	public void save(String filename, Vector<Curve> curves, V) {
 		/*
 		 * DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		 * try { DocumentBuilder db = dbf.newDocumentBuilder(); // maak een
@@ -64,9 +64,8 @@ public class FileIO extends DefaultHandler {
 		 * }catch(ParserConfigurationException pce) { System.out.println("Error
 		 * while trying to instantiate DocumentBuilder " + pce); System.exit(1); }
 		 */
-		PrintWriter pw;
 		try {
-			pw = new PrintWriter(new File(filename));
+			PrintWriter pw = new PrintWriter(new File(filename));
 			StreamResult streamResult = new StreamResult(pw);
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
 					.newInstance();
@@ -87,6 +86,7 @@ public class FileIO extends DefaultHandler {
 				hd.startElement("", "", "curve", null);
 				hd.startElement("", "", "type", null);
 				curTitle = curves.get(i).getTypeAsString();
+				System.out.println( curTitle );
 				hd.characters(curTitle.toCharArray(), 0, curTitle.length());
 				hd.endElement("", "", "type");
 				hd.startElement("", "", "degree", null);

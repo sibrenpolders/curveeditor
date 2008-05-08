@@ -123,7 +123,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Point a = new Point(e.getX(), e.getY());
-			System.out.println( a );
 			addPoint(a);		
 			draw.repaint();
 		} else if (mode == Editor.MODE.SELECT_CURVE
@@ -382,7 +381,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 		if (null == fileName)
 			saveAs();
 		else
-			file.save(fileName, curves);
+			file.save(fileName, curves, selectedCurves );
 	}
 
 	private void saveAs() {
@@ -391,7 +390,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 				"CurveEditor files (*.xml)", "xml");
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw))
-			file.save(jfc.getSelectedFile().getAbsolutePath(), curves);
+			file.save(jfc.getSelectedFile().getAbsolutePath(), curves, selectedCurves );
 	}
 
 	private void newFile() {
@@ -682,9 +681,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			toolbar.setSize( );		
 			selectionTool.resize( DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
 		}
-		
-//		System.out.println( draw.getSize() );
-//		System.out.println( displaySize.drawAreaD() );
 		
 		frame.repaint();		
 	}
