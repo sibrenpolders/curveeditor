@@ -287,27 +287,25 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		currentPanel = curveEditPanel;
 
 		createButton("Start New Curve", "Start a new curve.", null, false);
-		createButton("Select All Curves", "Select all curves.", null,
-				false);
-		createButton("Deselect All Curves", "Deselect all curves.", null,
-				false);
+		createButton("Select All Curves", "Select all curves.", null, false);
+		createButton("Deselect All Curves", "Deselect all curves.", null, false);
 		createButton("Add Control Point",
 				"Add a control point to all selected curves.", null, false);
-		createButton("Move Selected Curves", "Move all selected curves.",
-				null, false);
-		createButton("Connect Selected Curves (No Extra Points)",
+		createButton("Move Curves", "Move all selected curves.", null,
+				false);
+		createButton("Connect Curves (No Extra Points)",
 				"Connect all selected curves (no extra points).", null, false);
-		createButton("Connect Selected Curves (C0)",
+		createButton("Connect Curves (C0)",
 				"Connect all selected curves (C0).", null, false);
-		createButton("Delete Selected Curves",
-				"Delete all selected curves.", null, false);
+		createButton("Delete Curves", "Delete all selected curves.", null,
+				false);
 		// curveEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(curveEditPanel);
 	}
 
 	private void createButton(String name, String tooltip, String icon,
 			boolean selected) {
-		JButton Button = new JButton(/* new ImageIcon(icon), */name );
+		JButton Button = new JButton(/* new ImageIcon(icon), */name);
 		// toggleButton.setName(name);
 		Button.addActionListener(listener);
 		Button.setToolTipText(tooltip);
@@ -328,9 +326,9 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 		createButton("Deselect All Control Points",
 				"Deselect all control points.", null, false);
-		createButton("Move Selected Control Points",
+		createButton("Move Control Points",
 				"Move all selected control points.", null, false);
-		createButton("Delete Selected Control Points",
+		createButton("Delete Control Points",
 				"Delete all selected control poins.", null, false);
 		// pointEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(pointEditPanel);
