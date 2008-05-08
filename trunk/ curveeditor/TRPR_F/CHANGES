@@ -182,9 +182,9 @@ moet zéker lukken, denk ik zo. If not... foei. :-p
 
 Nog ff TODO's opsommen, van belangrijk naar minder belangrijk (vul aan indien gewenst):
 - verslag
-- GUI afwerken a.h.v. mockup
-- buttons voorzien voor de connect-functionaliteit (zou vrij easy moeten zijn, meeste functies zijn al gemaakt)
-- de mogelijkheid bieden om de schermgrootte te wijzigen (draw en selectiontool moeten dan tegoei aangepast worden, zijn al wat methodes voor)
+- GUI afwerken a.h.v. mockup --> ok
+- buttons voorzien voor de connect-functionaliteit (zou vrij easy moeten zijn, meeste functies zijn al gemaakt) --> ok
+- de mogelijkheid bieden om de schermgrootte te wijzigen (draw en selectiontool moeten dan tegoei aangepast worden, zijn al wat methodes voor) --> ok
 - ewa aan Exception-handling doen
 - alles een beetje van zinnige commentaar voorzien
 - af en toe krijg ik lineaire interpolatie te zien tussen controlepunten, terug ff klikken op het

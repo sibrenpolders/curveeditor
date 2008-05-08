@@ -31,7 +31,8 @@ import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
-public class GUI extends Editor implements MouseListener, MouseMotionListener, ComponentListener {
+public class GUI extends Editor implements MouseListener, MouseMotionListener,
+		ComponentListener {
 	protected ChoiceArea choice;
 	protected DrawArea draw;
 	private Menu menu;
@@ -42,6 +43,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 	private DisplaySize displaySize;
 	private JPanel container;
 	private JFrame frame; // container frame
+
 	public GUI() {
 		super();
 		loadComponents();
@@ -54,7 +56,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 	private void loadComponents() {
 		try {
-			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -63,28 +65,31 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
-		}		
-		
+		}
+
 		frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
 		frame.setTitle("Curve Editor");
 		Container contentPane = frame.getContentPane();
-		contentPane.setLayout( null );//new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-		
-		displaySize = new DisplaySize( );
-		
+		contentPane.setLayout(null);// new BoxLayout(contentPane,
+									// BoxLayout.Y_AXIS));
+
+		displaySize = new DisplaySize();
+
 		mListener = new MenuListener();
-		menu = new Menu(mListener);		
-		contentPane.add(menu);		
-		
+		menu = new Menu(mListener);
+		contentPane.add(menu);
+
 		tBListener = new ToolBarListener();
 		toolbar = new Toolbar(tBListener);
 		contentPane.add(toolbar);
 
-		container= new JPanel();
-		container.setLayout( null ); //new BoxLayout(screen, BoxLayout.X_AXIS));
-		container.setBounds( 0, DisplaySize.MENUHEIGHT + DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.CHOICEHEIGHT );
+		container = new JPanel();
+		container.setLayout(null); // new BoxLayout(screen, BoxLayout.X_AXIS));
+		container.setBounds(0, DisplaySize.MENUHEIGHT
+				+ DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH,
+				DisplaySize.CHOICEHEIGHT);
 		container.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		cListener = new ChoiceAreaListener();
@@ -105,10 +110,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 		frame.setVisible(true);
 
 		selectionTool = new CurveContainer(600, 600);
-		
-		frame.setBounds( 0, 0, DisplaySize.SCREENWIDTH, DisplaySize.SCREENHEIGHT );
-		displaySize.setCurrentSize( frame.getSize() );
-		frame.addComponentListener( this );
+
+		frame
+				.setBounds(0, 0, DisplaySize.SCREENWIDTH,
+						DisplaySize.SCREENHEIGHT);
+		displaySize.setCurrentSize(frame.getSize());
+		frame.addComponentListener(this);
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -117,9 +124,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Point a = new Point(e.getX(), e.getY());
-			addPoint(a);		
+			addPoint(a);
 			draw.repaint();
-		} else if ( mode == Editor.MODE.DESELECT_CURVE) {
+		} else if (mode == Editor.MODE.DESELECT_CURVE) {
 			Curve c = pickCurve(new Point(e.getX(), e.getY()));
 			if (c != null) {
 				draw.repaint();
@@ -174,8 +181,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 								hooveredCurves.elementAt(i)))
 							curves.remove(j--);
 				}
-				
-				if ( found )
+
+				if (found)
 					mode = MODE.DESELECT_CURVE;
 			}
 		else if (mode == MODE.SELECT_CONTROL_POINT) {
@@ -369,7 +376,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showOpenDialog(draw))
 			file.load(jfc.getSelectedFile().getAbsolutePath(), curves);
-		
+
 		recalculateCurves();
 		draw.repaint();
 	}
@@ -383,8 +390,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			saveAs();
 		else {
 			Vector<Curve> tmp = curves;
-			tmp.addAll( selectedCurves );
-			file.save(fileName, tmp );
+			tmp.addAll(selectedCurves);
+			file.save(fileName, tmp);
 		}
 	}
 
@@ -395,15 +402,15 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
 			Vector<Curve> tmp = curves;
-			tmp.addAll( selectedCurves );
-			file.save(jfc.getSelectedFile().getAbsolutePath(), tmp );
+			tmp.addAll(selectedCurves);
+			file.save(jfc.getSelectedFile().getAbsolutePath(), tmp);
 		}
 	}
 
 	private void newFile() {
-		reset();		
+		reset();
 		draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
-				hooveredPoints, draw.coords(), draw.tangents(), draw.nrs() );
+				hooveredPoints, draw.coords(), draw.tangents(), draw.nrs());
 	}
 
 	// Deze functie is (tijdelijk?) ter vervanging van uw recalculateSelected
@@ -640,6 +647,13 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 			} else if (actionCommand.equals("Delete Selected Control Points")) {
 				deleteSelectedControlPoints();
 				draw.repaint();
+			} else if (actionCommand
+					.equals("Connect Selected Curves (No Extra Points)")) {
+				connectNoExtraPoint();
+				draw.repaint();
+			} else if (actionCommand.equals("Connect Selected Curves (C0)")) {
+				connectCurvesC0();
+				draw.repaint();
 			}
 		}
 
@@ -665,30 +679,36 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener, C
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		
+
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		
+
 	}
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if ( displaySize.frameSizeChanged( frame.getSize() ) ) { // de schermgrootte is aangepast door de gebruiker
-			container.setBounds( 0, DisplaySize.MENUHEIGHT + DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.CHOICEHEIGHT );
-			choice.setSize( );
-			draw.setSize( );
-			menu.setSize( );
-			toolbar.setSize( );		
-			selectionTool.resize( DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
+		if (displaySize.frameSizeChanged(frame.getSize())) { // de
+																// schermgrootte
+																// is aangepast
+																// door de
+																// gebruiker
+			container.setBounds(0, DisplaySize.MENUHEIGHT
+					+ DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH,
+					DisplaySize.CHOICEHEIGHT);
+			choice.setSize();
+			draw.setSize();
+			menu.setSize();
+			toolbar.setSize();
+			selectionTool.resize(DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
 		}
-		
-		frame.repaint();		
+
+		frame.repaint();
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		
+
 	}
 }
