@@ -534,7 +534,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			deselectAll();
 			changeMode(MODE.SELECT_CURVE);
 		}
-		
+
 		if (eventHandled)
 			choice.toggleEditPanel(true);
 		return eventHandled;
@@ -567,6 +567,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			eventHandled = true;
 			deselectAll();
 			changeMode(MODE.SELECT_CONTROL_POINT);
+			draw.repaint();
 		}
 		// ander naam, zelfde beestje
 		else if (actionCommand.equals("Add Control Point")
@@ -576,7 +577,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			toggle = false;
 		}
 
-		if ( eventHandled && toggle )
+		if (eventHandled && toggle)
 			choice.toggleEditPanel(false);
 		return eventHandled;
 	}
@@ -626,6 +627,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				if (a != null) {
 					changeMode(MODE.ADD_INPUT);
 					addPoint(a);
+					draw.repaint();
 				} else
 					JOptionPane.showMessageDialog(draw, "No point is given",
 							"Curve Editor: ERROR", JOptionPane.ERROR_MESSAGE);
