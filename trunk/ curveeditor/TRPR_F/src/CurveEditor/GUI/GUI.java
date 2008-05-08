@@ -534,19 +534,14 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			deselectAll();
 			changeMode(MODE.SELECT_CURVE);
 		}
-		else if (actionCommand.equals("Add Control Point")
-				|| actionCommand.equals("Add Point")) {
-			changeMode(MODE.ADD_INPUT);
-			eventHandled = true;
-		}
-
+		
 		if (eventHandled)
 			choice.toggleEditPanel(true);
 		return eventHandled;
 	}
 
 	private boolean pointEvent(String actionCommand) {
-		boolean eventHandled = false;
+		boolean eventHandled = false, toggle = true;
 
 		// ander naam, zelfde beestje
 		if (actionCommand.equals("Sel P")
@@ -578,9 +573,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				|| actionCommand.equals("Add Point")) {
 			changeMode(MODE.ADD_INPUT);
 			eventHandled = true;
+			toggle = false;
 		}
 
-		if (eventHandled)
+		if ( eventHandled && toggle )
 			choice.toggleEditPanel(false);
 		return eventHandled;
 	}
