@@ -36,43 +36,28 @@ public class Toolbar extends JToolBar {
 	}
 	
 	private void addButtons() {
+		group = new ButtonGroup();
+		
+		makeButton("New C", "Start a new curve",
+		"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Clr", "Remove all curves",
+		"src/CurveEditor/GUI/icons/curvenew.png");
+		
+		addSeparator();
+		
+		makeButton("Sel C", "Select a curve.",
+		"src/CurveEditor/GUI/icons/ganttSelect.png");
+		makeButton("Sel P", "Select a point.",
+		"src/CurveEditor/GUI/icons/ganttSelecttask.png");
+						
+		addSeparator();
+		
 		makeButton("New", "Create a new file",
 				"src/CurveEditor/GUI/icons/filenew.png");
 		makeButton("Open", "Open a file",
 				"src/CurveEditor/GUI/icons/fileopen.png");
 		makeButton("Save", "Save a file",
 				"src/CurveEditor/GUI/icons/filesave.png");
-
-		addSeparator();
-
-		group = new ButtonGroup();
-
-		// makeToggleButton("normal", "Draw a curve or select a point",
-		// "src/CurveEditor/GUI/icons/ganttSelect.png", true );
-
-		makeButton("Sel C", "Select a curve.",
-				"src/CurveEditor/GUI/icons/ganttSelect.png");
-		makeButton("Mov C", "Move selected curves",
-		"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("New C", "Start a new curve",
-		"src/CurveEditor/GUI/icons/curvenew.png");
-		
-		addSeparator();
-		
-		makeButton("Sel P", "Select a point.",
-		"src/CurveEditor/GUI/icons/ganttSelecttask.png");
-		makeButton("Mov P", "Move selected control points",
-				"src/CurveEditor/GUI/icons/curvenew.png");		
-		makeButton("Del P", "Delete selected control points",
-		"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("Del C", "Delete selected curves",
-		"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("Add P", "Add a control point to all the selected curves",
-		"src/CurveEditor/GUI/icons/curvenew.png");
-		addSeparator();
-		
-		makeButton("Clr", "Remove all curves",
-				"src/CurveEditor/GUI/icons/curvenew.png");
 
 		add(Box.createHorizontalGlue());
 	}
