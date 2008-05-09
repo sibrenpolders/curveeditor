@@ -28,7 +28,8 @@ public class DrawArea extends JPanel {
 	private Vector<Point> selectedPoints;
 	private Vector<Point> hooveredPoints;
 	private Graphics g;
-
+	private Point runPoint;
+	
 	// variabelen voor selectierechthoekje
 	private int xBegin = -1, yBegin = -1, xEnd = -1, yEnd = -1;
 
@@ -89,6 +90,15 @@ public class DrawArea extends JPanel {
 		paint(g);
 	}
 
+	public void drawRunner( Point p ) {
+		int x = p.X();
+		int y = p.Y();
+		
+		runPoint = p;				
+		
+		repaint();
+	}
+	
 	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
 	// uitvoert. Dit hertekent het vollédige tekencanvas.
 	public void paintComponent(Graphics g) {
@@ -122,7 +132,15 @@ public class DrawArea extends JPanel {
 		this.curveWidth = DEFAULTCURVEWIDTH;
 
 		this.g.setColor(Color.YELLOW);
-		drawSelectedPoints(hooveredPoints);
+		drawSelectedPoints(hooveredPoints);		
+				
+		if ( runPoint != null ) {
+			this.g.setColor( Color.CYAN );
+			g.fillRect( runPoint.X() - 3* CONTROLPOINTWIDTH, runPoint.Y() - 3*CONTROLPOINTWIDTH,	
+					6 * CONTROLPOINTWIDTH + 1, 6 * CONTROLPOINTWIDTH + 1);
+			runPoint = null;
+		}
+		
 		this.g.setColor(Color.BLACK);
 	}
 

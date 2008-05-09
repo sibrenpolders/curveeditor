@@ -260,18 +260,18 @@ public class Editor {
 		if (temp != null && temp.size() > 0) {
 			for (int i = 0; i < temp.size(); ++i) {
 				hooveredPoints.add(temp.elementAt(i));
-				Vector<Curve> temp2 = selectionTool
+				Curve temp2 = selectionTool
 						.searchCurvesByControlPoint(temp.elementAt(i));
-				for (int j = 0; j < temp2.size(); ++j) {
+				if ( temp2 != null ) {
 					boolean found = false;
 					for (int k = 0; k < hooveredCurves.size(); ++k) {
 						if (hooveredCurves.elementAt(k).equals(
-								temp2.elementAt(j)))
+								temp2))
 							found = true;
 					}
 
 					if (!found)
-						hooveredCurves.add(temp2.elementAt(i));
+						hooveredCurves.add(temp2);
 
 				}
 			}
@@ -423,16 +423,13 @@ public class Editor {
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			selectionTool.deleteCurve(selectedCurves.elementAt(i));
 			selectedCurves.elementAt(i).clearOutput();
-
-			for (int j = 0; j < selectedPoints.size(); ++j)
-				if ((index = selectedCurves.elementAt(i).containsInputPointi(
-						selectedPoints.elementAt(j))) != -1) {
-					selectedCurves.elementAt(i).getInput().elementAt(index)
-							.increaseX(x);
-					selectedCurves.elementAt(i).getInput().elementAt(index)
-							.increaseY(y);
-				}
 		}
+//		for (int j = 0; j < selectedPoints.size(); ++j)
+//				if ((index = selectedCurves.elementAt(i).containsInputPointi(selectedPoints.elementAt(j))) != -1) {
+//					selectedCurves.elementAt(i).getInput().elementAt(index).increaseX(x);
+//					selectedCurves.elementAt(i).getInput().elementAt(index).increaseY(y);
+//				}
+//		}
 
 		for (int i = 0; i < selectedPoints.size(); ++i) {
 			selectedPoints.elementAt(i).increaseX(x);
@@ -474,7 +471,7 @@ public class Editor {
 				// hoeft niet, mijn functies berekend alleen maar de laatste
 				// afstand die bijkomt
 				selectionTool.deleteCurve(c);
-				c.clearOutput();
+//				c.clearOutput();
 				selectionTool.deleteCurve(c);
 				this.getAlgorithm(c.getType(), c.getDegree())
 						.calculateComplete(c);
