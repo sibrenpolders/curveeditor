@@ -9,7 +9,7 @@ public class CurveContainer {
 	private static short SEARCH_RANGE = 3;
 	// houdt bij of een x,y-punt op een curve ligt
 	private Curve[][] curves;
-	private Vector<Curve>[][] controlPoints;
+	private Curve[][] controlPoints;
 	public int maxX, maxY;
 
 	public CurveContainer(int Maxx, int Maxy) {
@@ -17,7 +17,7 @@ public class CurveContainer {
 		this.maxY = Maxy;
 
 		curves = new Curve[Maxx][Maxy];
-		controlPoints = new Vector[Maxx][Maxy];
+		controlPoints = new Curve[Maxx][Maxy];
 
 		for (int x = 0; x < Maxx; ++x)
 			for (int y = 0; y < Maxy; ++y) {
@@ -28,10 +28,10 @@ public class CurveContainer {
 
 	public void resize(int MaxX, int MaxY) {
 		Curve[][] tmp = curves;
-		Vector<Curve>[][] tmp2 = controlPoints;
+		Curve[][] tmp2 = controlPoints;
 
 		curves = new Curve[MaxX][MaxY];
-		controlPoints = new Vector[MaxX][MaxY];
+		controlPoints = new Curve[MaxX][MaxY];
 
 		int minX = (this.maxX < MaxX) ? this.maxX : MaxX;
 		int minY = (this.maxY < MaxY) ? this.maxY : MaxY;
@@ -56,10 +56,10 @@ public class CurveContainer {
 
 	public final void reset(int Maxx, int Maxy) {
 		Curve[][] prevCurves = curves;
-		Vector<Curve>[][] prevControlPoints = controlPoints;
+		Curve[][] prevControlPoints = controlPoints;
 
 		curves = new Curve[Maxx][Maxy];
-		controlPoints = new Vector[Maxx][Maxy];
+		controlPoints = new Curve[Maxx][Maxy];
 
 		int max_x = (Maxx > maxX) ? maxX : Maxx;
 		int max_y = (Maxy > maxY) ? maxY : Maxy;
@@ -82,7 +82,7 @@ public class CurveContainer {
 
 	public final void clear() {
 		curves = new Curve[maxX][maxY];
-		controlPoints = new Vector[maxX][maxY];
+		controlPoints = new Curve[maxX][maxY];
 
 		for (int x = 0; x < maxX; ++x)
 			for (int y = 0; y < maxY; ++y) {
@@ -143,10 +143,10 @@ public class CurveContainer {
 				if (controlPoints[c.getInput().elementAt(i).X()][c.getInput()
 						.elementAt(i).Y()] == null)
 					controlPoints[c.getInput().elementAt(i).X()][c.getInput()
-							.elementAt(i).Y()] = new Vector<Curve>();
+							.elementAt(i).Y()] = new Curve();
 
 				controlPoints[c.getInput().elementAt(i).X()][c.getInput()
-						.elementAt(i).Y()].add(c);
+						.elementAt(i).Y()] = c;
 			}
 
 		}
@@ -157,32 +157,22 @@ public class CurveContainer {
 			if (isValidPoint(c.getInput().elementAt(i)))
 				if (controlPoints[c.getInput().elementAt(i).X()][c.getInput()
 						.elementAt(i).Y()] != null) {
-					while (controlPoints[c.getInput().elementAt(i).X()][c
-							.getInput().elementAt(i).Y()].removeElement(c))
-						;
-
-					if (controlPoints[c.getInput().elementAt(i).X()][c
-							.getInput().elementAt(i).Y()].size() == 0)
-						controlPoints[c.getInput().elementAt(i).X()][c
-								.getInput().elementAt(i).Y()] = null;
+					controlPoints[c.getInput().elementAt(i).X()][c.getInput().elementAt(i).Y()] = null;
 				}
-
 		}
 	}
 
-	public Vector<Curve> searchCurvesByControlPoint(Point p, short range) {
+	public Curve searchCurvesByControlPoint(Point p, short range) {
 		return searchCurvesByControlPoint_(p, range);
 
 	}
 
-	public Vector<Curve> searchCurvesByControlPoint(Point p) {
+	public Curve searchCurvesByControlPoint(Point p) {
 		return searchCurvesByControlPoint_(p, SEARCH_RANGE);
 	}
 
-	private Vector<Curve> searchCurvesByControlPoint_(Point p, short range) {
+	private Curve searchCurvesByControlPoint_(Point p, short range) {
 		if (isValidPoint(p)) {
-			Vector<Curve> result = new Vector<Curve>();
-
 			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
 			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
 			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
@@ -191,13 +181,10 @@ public class CurveContainer {
 			for (int i = min_x; i <= max_x; ++i)
 				for (int j = min_y; j <= max_y; ++j)
 					if (controlPoints[i][j] != null)
-						result.addAll(controlPoints[i][j]);
-			if (result.size() > 0)
-				return result;
-			else
-				return null;
-		} else
-			return null;
+						return controlPoints[i][j];
+		}
+		
+		return null;
 	}
 
 	public Vector<Point> searchControlPoint(Point p, short range) {
@@ -220,8 +207,11 @@ public class CurveContainer {
 
 			for (int i = min_x; i <= max_x; ++i)
 				for (int j = min_y; j <= max_y; ++j)
-					if (controlPoints[i][j] != null)
-						result.add(new Point(i, j));
+					if (controlPoints[i][j] != null) {
+						int k;
+						if ( ( k = controlPoints[i][j].containsInputPointi( new Point( i, j )) ) != -1 )						
+							result.add( controlPoints[i][j].getInput().get(k));
+					}
 			if (result.size() > 0)
 				return result;
 			else
@@ -230,11 +220,16 @@ public class CurveContainer {
 			return null;
 	}
 
-	public boolean isControlPoint(Point p) {
-		if (isValidPoint(p))
-			return controlPoints[p.X()][p.Y()] != null;
-		else
-			return false;
+	public Point isControlPoint(Point p) {
+		if (isValidPoint(p)) {
+			if ( controlPoints[p.X()][p.Y()] != null ) {
+				Vector<Point> input = controlPoints[p.X()][p.Y()].getInput();
+				for ( int i = 0; i < input.size(); ++i )
+					if ( p.equals( input.get(i)) )
+						return input.get(i);
+			}		
+		}
+		return null;
 	}
 
 	public void deleteControlPoint(int x, int y) {

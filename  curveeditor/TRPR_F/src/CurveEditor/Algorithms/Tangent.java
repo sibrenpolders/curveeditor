@@ -91,9 +91,14 @@ public final class Tangent {
 				return temp;
 			} else if (c.Y() > a.Y() && c.Y() <= b.Y()) {
 				Point temp = c.minus(a);
-				double factor = 1.0 - (b.Y() - c.Y()) / (b.Y() - c.Y());
-				temp = new Point((int) Math.floor(-temp.X() * factor + 0.5),
-						(int) Math.floor(-temp.Y() * factor + 0.5)).plus(b);
+				double factor = 1.0;
+				
+				if ( b.Y() - c.Y() != 0 ) {
+					factor = 1.0 - (a.Y() - b.Y()) / (b.Y() - c.Y());					
+				}
+					
+				temp = new Point((int) Math.floor(-temp.X() * factor + 0.5), (int) Math.floor(-temp.Y() * factor + 0.5)).plus(b);
+				
 				return temp;
 			}
 		}

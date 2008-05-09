@@ -24,12 +24,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-
 import CurveEditor.Core.CurveContainer;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
+import CurveEditor.Tools.PathSimulation;
 
 public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		ComponentListener {
@@ -96,8 +95,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		choice = new ChoiceArea(cListener, cListener);
 		container.add(choice);
 
-		draw = new DrawArea(this.curves, this.selectedCurves,
-				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
+		draw = new DrawArea(this.curves, this.selectedCurves, this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
 		draw.addMouseMotionListener(this);
 		container.add(draw);
@@ -274,20 +272,19 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 					for (int y = Math.min(yEnd, yBegin); y <= Math.max(yEnd,
 							yBegin); ++y) {
 						Point temp = new Point(x, y);
-						if (selectionTool.isControlPoint(temp)) {
+						if ((temp = selectionTool.isControlPoint(temp) ) != null ) {
 							hooveredPoints.add(temp);
-							Vector<Curve> temp2 = selectionTool
-									.searchCurvesByControlPoint(temp, (short) 0);
-							for (int i = 0; i < temp2.size(); ++i) {
+							Curve temp2 = selectionTool.searchCurvesByControlPoint(temp, (short) 0);
+							if ( temp2 != null ) {
 								boolean found = false;
 								for (int k = 0; k < hooveredCurves.size(); ++k) {
 									if (hooveredCurves.elementAt(k).equals(
-											temp2.elementAt(i)))
+											temp2 ))
 										found = true;
 								}
 
 								if (!found)
-									hooveredCurves.add(temp2.elementAt(i));
+									hooveredCurves.add( temp2 );
 
 							}
 						}
@@ -600,7 +597,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			if (fileEvent(actionCommand) || algorithmEvent(actionCommand)
 					|| pointEvent(actionCommand) || curveEvent(actionCommand))
 				return;
-
+			else if ( actionCommand.equals( "Path Simulation") ) {
+				(new Thread( new PathSimulation( draw, selectedCurves ) ) ).start();				
+			}
 			else if (actionCommand.equals("undo"))
 				System.out.println("BE GONE!");
 			else if (actionCommand.equals("redo"))

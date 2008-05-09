@@ -138,12 +138,20 @@ public class Menu extends JMenuBar implements ActionListener {
 
 	private void makeTools( ) {
 		CreateMenu( "Tools", KeyEvent.VK_T, "" );
-		group = new ButtonGroup( );
+		group = new ButtonGroup( );		
 		
 		JRadioButton button = new JRadioButton( "none" );
 		button.setSelected( true );
 		button.addActionListener( listener );
 		button.setToolTipText( "No tools selected" );
+		
+		group.add( button );
+		menu.add( button );
+		
+		button = new JRadioButton( "Path Simulation" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.setToolTipText( "Simulate a path" );
 		
 		group.add( button );
 		menu.add( button );
