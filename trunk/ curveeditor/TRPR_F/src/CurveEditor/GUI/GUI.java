@@ -128,15 +128,16 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			Curve c = pickCurve(new Point(e.getX(), e.getY()));
 			if (c != null) {
 				draw.repaint();
-				mode = MODE.DESELECT_CURVE;
+//				mode = MODE.DESELECT_CURVE;
 			}
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
 			draw.repaint();
-		} else if (mode == Editor.MODE.SELECT_CONTROL_POINT
-				|| mode == Editor.MODE.DESELECT_CONTROL_POINT) {
-			pickControlPoint(new Point(e.getX(), e.getY()));
-			draw.repaint();
+		} else if ( mode == Editor.MODE.DESELECT_CONTROL_POINT ) {
+			if ( pickControlPoint(new Point(e.getX(), e.getY())) != null ) {
+				draw.repaint();
+//				mode = MODE.DESELECT_CONTROL_POINT;
+			}
 		}
 	}
 
@@ -179,8 +180,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 								hooveredCurves.elementAt(i)))
 							curves.remove(j--);
 				}
-
-				if (found)
+				else
 					mode = MODE.DESELECT_CURVE;
 			}
 		else if (mode == MODE.SELECT_CONTROL_POINT) {
@@ -198,6 +198,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 								hooveredCurves.elementAt(i)))
 							curves.remove(j--);
 				}
+				else
+					mode = MODE.DESELECT_CONTROL_POINT;
 			}
 			for (int i = 0; i < hooveredPoints.size(); ++i) {
 				if (!isSelectedControlPoint(hooveredPoints.elementAt(i))) {
