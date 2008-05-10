@@ -232,3 +232,35 @@ Bijlagen:
  kijkt ge eens of de GUI zo goed is? Heb redelijk wat weggegooit. 
  
  -------
+ 
+ Maakt nie uit joh, 't is veels te mooi/warm weer. ;-)
+ Toch projectdagen genoeg, eigenlijk.
+ 
+ Ff gekeken vanuit HCI-standpunt:
+ - woorden voluit schrijven: clear, select curve/control point, new curve 
+ 	(laat elk woord met hoofdletter beginnen om consequent te blijven)
+ - volgorde zou ik persoonlijk iets anders doen: eerst alle file-gerelateerde buttons en
+ 	pas dan de rest (de volgorde daarvan is wel ok) --> in andere progs staan die filebuttons ook
+ 	als eerste
+ - new/save/open File --> dat woord moet er ook telkens achter komen, vind ik
+ - in controlpoint-mode zou ik mss nog wat extra buttons toevoegen, buttons die je 
+ 	ook in curve-mode hebt: 
+ 		- Start New Curve (altijd handig als je dat altijd kan doen, in eender welke mode)
+ 		- Add Control Point (lijkt me ook daar handig)
+ 		- Move Curves --> idem
+ 		- de andere uit curvemode vind ik in controlpoint-mode niet echt iets bijbrengen
+ 			(mss nog Delete Curves, maar de rest: nope, nie nodig vind ik)
+ - in de menubalk, onder File: New Curve heeft daar weinig te zoeken, niet ?
+ 	File mss i.p.v. FILE ?
+ - Preferences weglaten of zo, of gaan we daar nog iets mee doen ?
+ - menubalk -> Algorithms -> Hermite: Normal i.p.v. normal, en een koppelteken bij Catmull-Rom
+ - menubalk -> Tools -> curve -> Connect Curves i.p.v. Connect Curve
+ - menubalk -> Tools -> curve -> Deselect Curve voorzien zoals bij points ? 
+  	En die Deselect-dingen mss vlak onder de Select-dingen zetten ? Hoort wat bij elkaar.
+  	
+  
+  Voor de rest is dat dik in orde en zéér gelijkaardig aan onze eerste mockup hé !
+  
+  
+  	
+ 
