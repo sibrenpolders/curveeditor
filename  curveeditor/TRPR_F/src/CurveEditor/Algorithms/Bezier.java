@@ -3,13 +3,23 @@ package CurveEditor.Algorithms;
 import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.*;
 
+/*
+ * Deze van Algorithm afgeleide klasse implementeert het Bezier-interpolatiealgoritme.
+ * Per vier punten wordt een curve berekend als volgt: de curve start in het eerste punt 
+ * in de richting van het tweede, om dan in het vierde punt te eindigen in de richting 
+ * van het derde.
+ * Voor meer informatie over dit algoritme: 
+ * 		zie cursus Computer Graphics 2e Bach UHasselt, p. 106.
+ */
 public class Bezier extends Algorithm {
-	protected double[][] matrix;
-	protected double[][] controlPtsMatrix;
+	protected double[][] matrix; // de Bezier-
+	protected double[][] controlPtsMatrix; // de matrix
 	protected double[] parameterMatrix;
 
-	// orde = 3 --> per 4 controlepunten de dingen berekenen dus
+	// Deze constructor is voorzien opdat we subklassen van Bezier zouden kunnen
+	// implementeren, die dezelfde orde zouden hebben.
 	public Bezier(char type, short degree) {
 		super(type, degree);
 		createMatrix();
@@ -20,6 +30,7 @@ public class Bezier extends Algorithm {
 		createMatrix();
 	}
 
+	// orde = 3 --> per 4 controlepunten berkenen we interpolatiepunten
 	public Bezier() {
 		super('B', (short) 3);
 		createMatrix();
@@ -131,7 +142,7 @@ public class Bezier extends Algorithm {
 
 	public void calculate(Vector<Point> input, Vector<Point> output) {
 		output.clear();
-		
+
 		for (int i = 0; i <= input.size() - 4; i = i + 3) {
 			// aantal stappen bepalen a.h.v. de afstand tussen de eindpunten
 			int steps = 2 * Point.distance(input.elementAt(i), input
@@ -142,7 +153,8 @@ public class Bezier extends Algorithm {
 		}
 	}
 
-	public final void calculateComplete(Curve c) {
+	public final void calculateComplete(Curve c)
+			throws InvalidArgumentException {
 		c.clearOutput();
 		calculate(c);
 	}
