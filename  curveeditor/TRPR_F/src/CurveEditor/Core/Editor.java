@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import CurveEditor.Algorithms.*;
 import CurveEditor.Curves.*;
+import CurveEditor.Exceptions.InvalidArgumentException;
 import CurveEditor.Tools.*;
 
 public class Editor {
@@ -113,7 +114,12 @@ public class Editor {
 				selectedCurves.get(i).setType(type);
 				selectedCurves.get(i).setDegree(degree);
 				selectedCurves.get(i).clearOutput();
-				currentAlgorithm.calculateComplete(selectedCurves.get(i));
+				try {
+					currentAlgorithm.calculateComplete(selectedCurves.get(i));
+				} catch (InvalidArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				selectionTool.addCurve(selectedCurves.elementAt(i));
 			}
 		}
@@ -130,7 +136,12 @@ public class Editor {
 				selectedCurves.get(i).setType(type);
 				selectedCurves.get(i).setDegree(temp.getDegree());
 				selectedCurves.get(i).clearOutput();
-				currentAlgorithm.calculateComplete(selectedCurves.get(i));
+				try {
+					currentAlgorithm.calculateComplete(selectedCurves.get(i));
+				} catch (InvalidArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				selectionTool.addCurve(selectedCurves.elementAt(i));
 			}
 		}
@@ -401,8 +412,13 @@ public class Editor {
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			Curve c = selectedCurves.elementAt(i);
 			selectionTool.deleteCurve(c);
-			this.getAlgorithm(selectedCurves.get(i).getType())
-					.calculateComplete(c);
+			try {
+				this.getAlgorithm(selectedCurves.get(i).getType())
+						.calculateComplete(c);
+			} catch (InvalidArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			selectionTool.addCurve(c);
 		}
@@ -412,7 +428,12 @@ public class Editor {
 		for (int i = 0; i < curves.size(); ++i) {
 			Curve c = curves.elementAt(i);
 			selectionTool.deleteCurve(c);
-			this.getAlgorithm(curves.get(i).getType()).calculateComplete(c);
+			try {
+				this.getAlgorithm(curves.get(i).getType()).calculateComplete(c);
+			} catch (InvalidArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			selectionTool.addCurve(c);
 		}
@@ -473,8 +494,13 @@ public class Editor {
 				selectionTool.deleteCurve(c);
 //				c.clearOutput();
 				selectionTool.deleteCurve(c);
-				this.getAlgorithm(c.getType(), c.getDegree())
-						.calculateComplete(c);
+				try {
+					this.getAlgorithm(c.getType(), c.getDegree())
+							.calculateComplete(c);
+				} catch (InvalidArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				selectionTool.addCurve(c);
 			}
 
