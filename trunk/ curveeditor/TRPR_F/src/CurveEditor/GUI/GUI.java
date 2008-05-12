@@ -28,6 +28,7 @@ import CurveEditor.Core.CurveContainer;
 import CurveEditor.Core.Editor;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.InvalidArgumentException;
 import CurveEditor.Tools.PathSimulation;
 
 public class GUI extends Editor implements MouseListener, MouseMotionListener,
@@ -95,7 +96,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		choice = new ChoiceArea(cListener, cListener);
 		container.add(choice);
 
-		draw = new DrawArea(this.curves, this.selectedCurves, this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
+		draw = new DrawArea(this.curves, this.selectedCurves,
+				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
 		draw.addMouseMotionListener(this);
 		container.add(draw);
@@ -107,7 +109,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		frame.pack();
 		frame.setVisible(true);
 
-		selectionTool = new CurveContainer(600, 600);
+		try {
+			selectionTool = new CurveContainer(600, 600);
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		frame
 				.setBounds(0, 0, DisplaySize.SCREENWIDTH,
@@ -128,15 +135,15 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			Curve c = pickCurve(new Point(e.getX(), e.getY()));
 			if (c != null) {
 				draw.repaint();
-//				mode = MODE.DESELECT_CURVE;
+				// mode = MODE.DESELECT_CURVE;
 			}
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
 			draw.repaint();
-		} else if ( mode == Editor.MODE.DESELECT_CONTROL_POINT ) {
-			if ( pickControlPoint(new Point(e.getX(), e.getY())) != null ) {
+		} else if (mode == Editor.MODE.DESELECT_CONTROL_POINT) {
+			if (pickControlPoint(new Point(e.getX(), e.getY())) != null) {
 				draw.repaint();
-//				mode = MODE.DESELECT_CONTROL_POINT;
+				// mode = MODE.DESELECT_CONTROL_POINT;
 			}
 		}
 	}
@@ -179,8 +186,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 						if (curves.elementAt(j).equals(
 								hooveredCurves.elementAt(i)))
 							curves.remove(j--);
-				}
-				else
+				} else
 					mode = MODE.DESELECT_CURVE;
 			}
 		else if (mode == MODE.SELECT_CONTROL_POINT) {
@@ -197,8 +203,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 						if (curves.elementAt(j).equals(
 								hooveredCurves.elementAt(i)))
 							curves.remove(j--);
-				}
-				else
+				} else
 					mode = MODE.DESELECT_CONTROL_POINT;
 			}
 			for (int i = 0; i < hooveredPoints.size(); ++i) {
@@ -239,9 +244,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			int xBegin = draw.getXBegin();
 			int yBegin = draw.getYBegin();
 			int xEnd = (e.getX() < 0) ? 0 : e.getX();
-			xEnd = (xEnd > selectionTool.maxX) ? selectionTool.maxX - 1 : xEnd;
+			xEnd = (xEnd > selectionTool.maxX()) ? selectionTool.maxX() - 1 : xEnd;
 			int yEnd = (e.getY() < 0) ? 0 : e.getY();
-			yEnd = (yEnd > selectionTool.maxY) ? selectionTool.maxY - 1 : yEnd;
+			yEnd = (yEnd > selectionTool.maxY()) ? selectionTool.maxY() - 1 : yEnd;
 
 			draw.updateDragging(xEnd, yEnd);
 
@@ -274,19 +279,20 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 					for (int y = Math.min(yEnd, yBegin); y <= Math.max(yEnd,
 							yBegin); ++y) {
 						Point temp = new Point(x, y);
-						if ((temp = selectionTool.isControlPoint(temp) ) != null ) {
+						if ((temp = selectionTool.isControlPoint(temp)) != null) {
 							hooveredPoints.add(temp);
-							Curve temp2 = selectionTool.searchCurvesByControlPoint(temp, (short) 0);
-							if ( temp2 != null ) {
+							Curve temp2 = selectionTool
+									.searchCurvesByControlPoint(temp, (short) 0);
+							if (temp2 != null) {
 								boolean found = false;
 								for (int k = 0; k < hooveredCurves.size(); ++k) {
 									if (hooveredCurves.elementAt(k).equals(
-											temp2 ))
+											temp2))
 										found = true;
 								}
 
 								if (!found)
-									hooveredCurves.add( temp2 );
+									hooveredCurves.add(temp2);
 
 							}
 						}
@@ -329,8 +335,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			}
 
 			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
-					&& e.getX() < selectionTool.maxX
-					&& e.getY() < selectionTool.maxY) {
+					&& e.getX() < selectionTool.maxX()
+					&& e.getY() < selectionTool.maxY()) {
 				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e
 						.getY()));
 				if (c != null) {
@@ -347,8 +353,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			}
 
 			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
-					&& e.getX() < selectionTool.maxX
-					&& e.getY() < selectionTool.maxY) {
+					&& e.getX() < selectionTool.maxX()
+					&& e.getY() < selectionTool.maxY()) {
 				Point p = hooverPoint(new Point(e.getX(), e.getY()));
 				if (p != null) {
 					repaint = true;
@@ -417,7 +423,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	private void recalS() {
 		for (int i = 0; i < selectedCurves.size(); ++i) {
 			selectedCurves.get(i).clearOutput();
-			currentAlgorithm.calculateComplete(selectedCurves.get(i));
+			try {
+				currentAlgorithm.calculateComplete(selectedCurves.get(i));
+			} catch (InvalidArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		draw.repaint();
@@ -599,10 +610,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			if (fileEvent(actionCommand) || algorithmEvent(actionCommand)
 					|| pointEvent(actionCommand) || curveEvent(actionCommand))
 				return;
-			else if ( actionCommand.equals( "Path Simulation") ) {
-				(new Thread( new PathSimulation( draw, selectedCurves ) ) ).start();				
-			}
-			else if (actionCommand.equals("undo"))
+			else if (actionCommand.equals("Path Simulation")) {
+				(new Thread(new PathSimulation(draw, selectedCurves))).start();
+			} else if (actionCommand.equals("undo"))
 				System.out.println("BE GONE!");
 			else if (actionCommand.equals("redo"))
 				System.out.println("COME BACK!");
@@ -710,7 +720,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			draw.setSize();
 			menu.setSize();
 			toolbar.setSize();
-			selectionTool.resize(DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+			try {
+				selectionTool.resize(DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+			} catch (InvalidArgumentException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 		frame.repaint();
