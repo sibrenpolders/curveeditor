@@ -151,8 +151,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			} catch (InvalidArgumentException e1) {
 				e1.printStackTrace();
 			}
-		} else if (mode == Editor.MODE.DESELECT_CURVE
-				|| mode == Editor.MODE.SELECT_CURVE) {
+		} else if (mode == Editor.MODE.DESELECT_CURVE) {
 			// Curve zoeken; pickCurve switcht automatisch de selectiestatus
 			// van de gevonden curve.
 			if (pickCurve(new Point(e.getX(), e.getY())) != null) {
@@ -161,8 +160,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
 			draw.repaint();
-		} else if (mode == Editor.MODE.DESELECT_CONTROL_POINT
-				|| mode == Editor.MODE.SELECT_CONTROL_POINT) {
+		} else if (mode == Editor.MODE.DESELECT_CONTROL_POINT) {
 			// Punt zoeken; pickControlPoints switcht automatisch de
 			// selectiestatus van de gevonden curves.
 			if (pickControlPoint(new Point(e.getX(), e.getY())) != null) {
@@ -211,17 +209,43 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	public void mouseReleased(MouseEvent e) {
 		// We willen curves selecteren --> alle curves in het
 		// draggingrechthoekje worden geselecteerd.
-		if (mode == MODE.SELECT_CURVE || mode == MODE.DESELECT_CURVE)
+		if (mode == MODE.SELECT_CURVE)
 			for (int i = 0; i < hooveredCurves.size(); ++i) {
-				selectCurve(hooveredCurves.elementAt(i));
+				boolean found = false;
+				for (int j = 0; j < selectedCurves.size(); ++j)
+					if (selectedCurves.elementAt(j).equals(
+							hooveredCurves.elementAt(i)))
+						found = true;
+				if (!found) {
+					selectedCurves.add(hooveredCurves.elementAt(i));
+					for (int j = 0; j < curves.size(); ++j)
+						if (curves.elementAt(j).equals(
+								hooveredCurves.elementAt(i)))
+							curves.remove(j--);
+				} else
+					mode = MODE.DESELECT_CURVE;
 			}
 		// We willen inputpunten selecteren --> alle inputpunten in het
 		// draggingrechthoekje worden geselecteerd, net zoals de daarbijhorende
 		// Curves.
-		else if (mode == MODE.SELECT_CONTROL_POINT
-				|| mode == MODE.DESELECT_CONTROL_POINT) {
+		else if (mode == MODE.SELECT_CONTROL_POINT) {
 			for (int i = 0; i < hooveredCurves.size(); ++i) {
-				selectCurve(hooveredCurves.elementAt(i));
+				boolean found = false;
+
+				for (int j = 0; j < selectedCurves.size(); ++j)
+					if (selectedCurves.elementAt(j).equals(
+							hooveredCurves.elementAt(i)))
+						found = true;
+
+				if (!found) {
+					selectedCurves.add(hooveredCurves.elementAt(i));
+					for (int j = 0; j < curves.size(); ++j)
+						if (curves.elementAt(j).equals(
+								hooveredCurves.elementAt(i)))
+							curves.remove(j--);
+
+				} else
+					mode = MODE.DESELECT_CONTROL_POINT;
 			}
 			for (int i = 0; i < hooveredPoints.size(); ++i) {
 				if (!isSelectedControlPoint(hooveredPoints.elementAt(i))) {
