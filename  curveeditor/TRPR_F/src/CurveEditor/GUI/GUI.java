@@ -49,11 +49,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		loadComponents();
 	}
 
-	public GUI(String filename) {
-		super(filename);
-		loadComponents();
-	}
-
 	private void loadComponents() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -244,9 +239,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			int xBegin = draw.getXBegin();
 			int yBegin = draw.getYBegin();
 			int xEnd = (e.getX() < 0) ? 0 : e.getX();
-			xEnd = (xEnd > selectionTool.maxX()) ? selectionTool.maxX() - 1 : xEnd;
+			xEnd = (xEnd > selectionTool.maxX()) ? selectionTool.maxX() - 1
+					: xEnd;
 			int yEnd = (e.getY() < 0) ? 0 : e.getY();
-			yEnd = (yEnd > selectionTool.maxY()) ? selectionTool.maxY() - 1 : yEnd;
+			yEnd = (yEnd > selectionTool.maxY()) ? selectionTool.maxY() - 1
+					: yEnd;
 
 			draw.updateDragging(xEnd, yEnd);
 
@@ -377,9 +374,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showOpenDialog(draw))
-			file.load(jfc.getSelectedFile().getAbsolutePath(), curves);
+			loadFile(jfc.getSelectedFile().getAbsolutePath());
 
-		recalculateCurves();
 		draw.repaint();
 	}
 
@@ -393,7 +389,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		else {
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
-			file.save(fileName, tmp);
+			saveFile(fileName, tmp);
+
+			draw.repaint();
 		}
 	}
 
@@ -405,7 +403,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
-			file.save(jfc.getSelectedFile().getAbsolutePath(), tmp);
+			saveFile(jfc.getSelectedFile().getAbsolutePath(), tmp);
+			draw.repaint();
 		}
 	}
 
@@ -413,25 +412,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		reset();
 		draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
 				hooveredPoints, draw.coords(), draw.tangents(), draw.nrs());
-	}
-
-	// Deze functie is (tijdelijk?) ter vervanging van uw recalculateSelected
-	// curves...
-	// Ik weet niet echt hoe die functie werkt maar ik heb problemen met van
-	// bezier lineair naar hermite te gaan
-	// Eigenlijk altijd problemen als ik m.b.v. deze functie naar hermite ga
-	private void recalS() {
-		for (int i = 0; i < selectedCurves.size(); ++i) {
-			selectedCurves.get(i).clearOutput();
-			try {
-				currentAlgorithm.calculateComplete(selectedCurves.get(i));
-			} catch (InvalidArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		draw.repaint();
 	}
 
 	/*
@@ -510,7 +490,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		if (eventHandled) {
 			// de geslecteerde curves zijn onder invloed van deze keuze
 			recalculateSelectedCurves();
-			// recalS();
 			draw.repaint();
 		}
 
@@ -538,7 +517,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				|| actionCommand.equals("Delete Curve")
 				|| actionCommand.equals("Delete Curves")) {
 			deleteSelectedCurves();
-			recalS();
+			recalculateSelectedCurves();
 			changeMode(MODE.SELECT_CURVE);
 			eventHandled = true;
 		} else if (actionCommand.equals("Deselect All")) {
@@ -571,7 +550,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		else if (actionCommand.equals("Del P")
 				|| actionCommand.equals("Delete Control Points")) {
 			deleteSelectedControlPoints();
-			recalS();
+			recalculateSelectedCurves();
 			eventHandled = true;
 			changeMode(MODE.SELECT_CONTROL_POINT);
 		} else if (actionCommand.equals("Deselect All Control Points")) {
@@ -721,7 +700,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			menu.setSize();
 			toolbar.setSize();
 			try {
-				selectionTool.resize(DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+				selectionTool.resize(DisplaySize.DRAWWIDTH,
+						DisplaySize.DRAWHEIGHT);
 			} catch (InvalidArgumentException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
