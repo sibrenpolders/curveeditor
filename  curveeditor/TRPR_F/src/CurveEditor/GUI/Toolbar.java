@@ -1,9 +1,7 @@
 package CurveEditor.GUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -22,36 +20,37 @@ public class Toolbar extends JToolBar {
 	public Toolbar(ActionListener listener) {
 		setFloatable(false);
 		this.listener = listener;
-		setSize( );
+		setSize();
 		setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
 		setRollover(true);
 		addButtons();
 	}
 
-	public void setSize( ) {
-		setBounds( 0, DisplaySize.MENUHEIGHT, DisplaySize.SCREENWIDTH, DisplaySize.TOOLBARHEIGHT );
-//		setMinimumSize( d );
-//		setMaximumSize( d );
-//		setPreferredSize( d );
+	public void setSize() {
+		setBounds(0, DisplaySize.MENUHEIGHT, DisplaySize.SCREENWIDTH,
+				DisplaySize.TOOLBARHEIGHT);
+		// setMinimumSize( d );
+		// setMaximumSize( d );
+		// setPreferredSize( d );
 	}
-	
+
 	private void addButtons() {
 		group = new ButtonGroup();
-		
+
 		makeButton("New C", "Start a new curve",
-		"src/CurveEditor/GUI/icons/curvenew.png");
+				"src/CurveEditor/GUI/icons/curvenew.png");
 		makeButton("Clr", "Remove all curves",
-		"src/CurveEditor/GUI/icons/curvenew.png");
-		
+				"src/CurveEditor/GUI/icons/curvenew.png");
+
 		addSeparator();
-		
+
 		makeButton("Sel C", "Select a curve.",
-		"src/CurveEditor/GUI/icons/ganttSelect.png");
+				"src/CurveEditor/GUI/icons/ganttSelect.png");
 		makeButton("Sel P", "Select a point.",
-		"src/CurveEditor/GUI/icons/ganttSelecttask.png");
-						
+				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
+
 		addSeparator();
-		
+
 		makeButton("New", "Create a new file",
 				"src/CurveEditor/GUI/icons/filenew.png");
 		makeButton("Open", "Open a file",
@@ -62,7 +61,7 @@ public class Toolbar extends JToolBar {
 		add(Box.createHorizontalGlue());
 	}
 
-	private void makeToggleButton(String name, String tooltip, String icon,
+	protected void makeToggleButton(String name, String tooltip, String icon,
 			boolean selected) {
 		toggleButton = new JToggleButton(new ImageIcon(icon), selected);
 		toggleButton.setName(name);
