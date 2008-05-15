@@ -54,6 +54,12 @@ public class Editor {
 		init();
 	}
 
+	// Constructor die m.b.v. een bestand reeds al wat curves inlaadt.
+	public Editor(String file) {
+		init();
+		loadFile(file);
+	}
+
 	// Alle variabelen op hun initiële waarde zetten.
 	protected void init() {
 		mode = MODE.NONE;

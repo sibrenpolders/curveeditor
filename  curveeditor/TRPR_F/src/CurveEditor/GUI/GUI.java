@@ -12,7 +12,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.JComboBox;
@@ -23,33 +22,52 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import CurveEditor.Core.CurveContainer;
-import CurveEditor.Core.Editor;
-import CurveEditor.Curves.Curve;
-import CurveEditor.Curves.Point;
-import CurveEditor.Exceptions.InvalidArgumentException;
+import CurveEditor.Core.*;
+import CurveEditor.Curves.*;
+import CurveEditor.Exceptions.*;
 import CurveEditor.Tools.PathSimulation;
 
+/*
+ * Deze van Editor afgeleide klasse verbindt de mogelijke fysieke acties van de gebruiker
+ * (selecteren, hooveren, klikken, menuselecties) met de juiste methodes van Editor.
+ * Kortom: deze klasse implementeert al de Editor-functionaliteit in een GUI.
+ */
 public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		ComponentListener {
+	// De GUI-elementen.
 	protected ChoiceArea choice;
 	protected DrawArea draw;
-	private Menu menu;
-	private Toolbar toolbar;
-	private ToolBarListener tBListener;
-	private MenuListener mListener;
-	private ChoiceAreaListener cListener;
-	private DisplaySize displaySize;
-	private JPanel container;
-	private JFrame frame; // container frame
+	protected Menu menu;
+	protected Toolbar toolbar;
 
-	public GUI() {
+	// Listeners.
+	protected ToolBarListener tBListener;
+	protected MenuListener mListener;
+	protected ChoiceAreaListener cListener;
+
+	protected DisplaySize displaySize;
+
+	// De container bevat choiceArea en drawArea, en de container wordt
+	// aan de container van het frame/window toegevoegd. Op deze manier hebben
+	// we de GUI opgesplitst in twee delen: menu- en toolbar enerzijds
+	// (horizontaal onder elkaar), choice- en drawarea anderzijds (verticaal
+	// langs elkaar, en samen horizontaal onder de rest).
+	protected JPanel container;
+	protected JFrame frame;
+
+	public GUI() throws InvalidArgumentException {
 		super();
 		loadComponents();
 	}
 
-	private void loadComponents() {
+	// Constructor die m.b.v. een bestand reeds al wat curves inlaadt.
+	public GUI(String file) throws InvalidArgumentException {
+		super(file);
+		loadComponents();
+	}
+
+	// Initialiseren van alle GUI-elementen.
+	private void loadComponents() throws InvalidArgumentException {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
@@ -62,26 +80,28 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			e.printStackTrace();
 		}
 
+		// frame is het window, in feite.
 		frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
 		frame.setTitle("Curve Editor");
 		Container contentPane = frame.getContentPane();
-		contentPane.setLayout(null);// new BoxLayout(contentPane,
-		// BoxLayout.Y_AXIS));
+		contentPane.setLayout(null);
 
 		displaySize = new DisplaySize();
 
 		mListener = new MenuListener();
 		menu = new Menu(mListener);
-		contentPane.add(menu);
+		contentPane.add(menu); // toevoegen
 
 		tBListener = new ToolBarListener();
 		toolbar = new Toolbar(tBListener);
-		contentPane.add(toolbar);
+		contentPane.add(toolbar); // toevoegen
 
+		// De container die de verticaal langs elkaar geplaatste elementen
+		// bevat.
 		container = new JPanel();
-		container.setLayout(null); // new BoxLayout(screen, BoxLayout.X_AXIS));
+		container.setLayout(null);
 		container.setBounds(0, DisplaySize.MENUHEIGHT
 				+ DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH,
 				DisplaySize.CHOICEHEIGHT);
@@ -89,13 +109,13 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 		cListener = new ChoiceAreaListener();
 		choice = new ChoiceArea(cListener, cListener);
-		container.add(choice);
+		container.add(choice); // toevoegen
 
 		draw = new DrawArea(this.curves, this.selectedCurves,
 				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
 		draw.addMouseListener(this);
 		draw.addMouseMotionListener(this);
-		container.add(draw);
+		container.add(draw); // toevoegen
 		container.add(Box.createRigidArea(new Dimension(10, 0)));
 		container.add(Box.createHorizontalGlue());
 
@@ -104,55 +124,61 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		frame.pack();
 		frame.setVisible(true);
 
-		try {
-			selectionTool = new CurveContainer(600, 600);
-		} catch (InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		frame
 				.setBounds(0, 0, DisplaySize.SCREENWIDTH,
 						DisplaySize.SCREENHEIGHT);
 		displaySize.setCurrentSize(frame.getSize());
 		frame.addComponentListener(this);
+
+		// selectionTool resizen naar de nieuwe dimensies.
+		selectionTool.resize(frame.getWidth(), frame.getWidth());
+
 	}
 
+	// _______________________MOUSE EVENTS_______________________
+
+	// Methode die reageert op een click-event in DrawArea.
+	// Afhankelijk van de MODE die in Editor geset is, wordt een
+	// actie uitgevoerd.
 	public void mouseClicked(MouseEvent e) {
 		hooveredCurves.clear();
 		hooveredPoints.clear();
 
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Point a = new Point(e.getX(), e.getY());
-
 			try {
 				addPoint(a);
+				draw.repaint();
 			} catch (InvalidArgumentException e1) {
 				e1.printStackTrace();
 			}
-
-			draw.repaint();
-		} else if (mode == Editor.MODE.DESELECT_CURVE) {
-			Curve c = pickCurve(new Point(e.getX(), e.getY()));
-			if (c != null) {
+		} else if (mode == Editor.MODE.DESELECT_CURVE
+				|| mode == Editor.MODE.SELECT_CURVE) {
+			// Curve zoeken; pickCurve switcht automatisch de selectiestatus
+			// van de gevonden curve.
+			if (pickCurve(new Point(e.getX(), e.getY())) != null) {
 				draw.repaint();
-				// mode = MODE.DESELECT_CURVE;
 			}
 		} else if (mode == Editor.MODE.NEW_CURVE) {
 			startNewCurve();
 			draw.repaint();
-		} else if (mode == Editor.MODE.DESELECT_CONTROL_POINT) {
+		} else if (mode == Editor.MODE.DESELECT_CONTROL_POINT
+				|| mode == Editor.MODE.SELECT_CONTROL_POINT) {
+			// Punt zoeken; pickControlPoints switcht automatisch de
+			// selectiestatus van de gevonden curves.
 			if (pickControlPoint(new Point(e.getX(), e.getY())) != null) {
 				draw.repaint();
-				// mode = MODE.DESELECT_CONTROL_POINT;
 			}
 		}
 	}
 
+	// Indien de cursor drawArea binnenkomt --> van cursorweergave veranderen.
 	public void mouseEntered(MouseEvent arg0) {
 		draw.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
+	// Indien de cursor drawArea verlaat --> van cursorweergave veranderen
+	// en alles dehooveren.
 	public void mouseExited(MouseEvent arg0) {
 		draw.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
@@ -162,57 +188,51 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		}
 	}
 
+	// Methode die reageert op een press-event in DrawArea.
+	// Afhankelijk van de MODE die in Editor geset is, wordt een
+	// actie uitgevoerd.
 	public void mousePressed(MouseEvent e) {
+		// We zitten in een selectiemode --> we beginnen de
+		// dragging-functionaliteit van DrawArea.
 		if (mode == Editor.MODE.SELECT_CURVE
 				|| mode == Editor.MODE.DESELECT_CURVE
 				|| mode == Editor.MODE.SELECT_CONTROL_POINT
 				|| mode == Editor.MODE.DESELECT_CONTROL_POINT)
 			draw.beginSelectionRectangle(e.getX(), e.getY());
+		// We zitten in een movemode --> we beginnen de
+		// dragging-functionaliteit van DrawArea maar willen een pijlte i.p.v.
+		// een rechthoekje uittekenen.
 		else if (mode == MODE.MOVE_CONTROL_POINTS || mode == MODE.MOVE_CURVES)
 			draw.beginMovingArrow(e.getX(), e.getY());
 	}
 
+	// Methode die reageert op een release-event in DrawArea.
+	// Afhankelijk van de MODE die in Editor geset is, wordt een
+	// actie uitgevoerd.
 	public void mouseReleased(MouseEvent e) {
-		if (mode == MODE.SELECT_CURVE)
+		// We willen curves selecteren --> alle curves in het
+		// draggingrechthoekje worden geselecteerd.
+		if (mode == MODE.SELECT_CURVE || mode == MODE.DESELECT_CURVE)
 			for (int i = 0; i < hooveredCurves.size(); ++i) {
-				boolean found = false;
-				for (int j = 0; j < selectedCurves.size(); ++j)
-					if (selectedCurves.elementAt(j).equals(
-							hooveredCurves.elementAt(i)))
-						found = true;
-				if (!found) {
-					selectedCurves.add(hooveredCurves.elementAt(i));
-
-					for (int j = 0; j < curves.size(); ++j)
-						if (curves.elementAt(j).equals(
-								hooveredCurves.elementAt(i)))
-							curves.remove(j--);
-				} else
-					mode = MODE.DESELECT_CURVE;
+				selectCurve(hooveredCurves.elementAt(i));
 			}
-		else if (mode == MODE.SELECT_CONTROL_POINT) {
+		// We willen inputpunten selecteren --> alle inputpunten in het
+		// draggingrechthoekje worden geselecteerd, net zoals de daarbijhorende
+		// Curves.
+		else if (mode == MODE.SELECT_CONTROL_POINT
+				|| mode == MODE.DESELECT_CONTROL_POINT) {
 			for (int i = 0; i < hooveredCurves.size(); ++i) {
-				boolean found = false;
-				for (int j = 0; j < selectedCurves.size(); ++j)
-					if (selectedCurves.elementAt(j).equals(
-							hooveredCurves.elementAt(i)))
-						found = true;
-				if (!found) {
-					selectedCurves.add(hooveredCurves.elementAt(i));
-
-					for (int j = 0; j < curves.size(); ++j)
-						if (curves.elementAt(j).equals(
-								hooveredCurves.elementAt(i)))
-							curves.remove(j--);
-				} else
-					mode = MODE.DESELECT_CONTROL_POINT;
+				selectCurve(hooveredCurves.elementAt(i));
 			}
 			for (int i = 0; i < hooveredPoints.size(); ++i) {
 				if (!isSelectedControlPoint(hooveredPoints.elementAt(i))) {
 					selectedPoints.add(hooveredPoints.elementAt(i));
 				}
 			}
-		} else if (mode == MODE.MOVE_CURVES || mode == MODE.MOVE_CONTROL_POINTS) {
+		}
+		// We willen geselecteerde curves of inputpunten selecteren
+		// --> translatieafstand berekenen en al de nodige dingen verschuiven.
+		else if (mode == MODE.MOVE_CURVES || mode == MODE.MOVE_CONTROL_POINTS) {
 			int xB = draw.getXEnd();
 			int yB = draw.getYEnd();
 			int xE = e.getX();
@@ -236,7 +256,13 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		draw.repaint();
 	}
 
+	// Methode die reageert op een drag-event in DrawArea.
+	// Afhankelijk van de MODE die in Editor geset is, wordt een
+	// actie uitgevoerd.
 	public void mouseDragged(MouseEvent e) {
+
+		// We zitten in een selectiemode --> draggingrectangle van DrawArea
+		// updaten en nieuwe gehooverde elementen zoeken.
 		if (e.getSource().equals(draw)
 				&& (mode == Editor.MODE.SELECT_CURVE
 						|| mode == Editor.MODE.DESELECT_CURVE
@@ -253,6 +279,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 			draw.updateDragging(xEnd, yEnd);
 
+			// We zitten in een curveselectiemode --> curves in het
+			// draggingrechthoekje zoeken en hooveren.
 			if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
 				if (hooveredCurves.size() > 0)
 					hooveredCurves.clear();
@@ -272,7 +300,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 								hooveredCurves.add(c);
 						}
 					}
-			} else if (mode == MODE.DESELECT_CONTROL_POINT
+			}
+
+			// We zitten in een puntselectiemode --> inputpunten in het
+			// draggingrechthoekje zoeken en hooveren, en ook de daaraan
+			// verbonden curves hooveren.
+			else if (mode == MODE.DESELECT_CONTROL_POINT
 					|| mode == MODE.SELECT_CONTROL_POINT) {
 				hooveredCurves.clear();
 				hooveredPoints.clear();
@@ -301,7 +334,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 						}
 					}
 			}
-		} else if (e.getSource().equals(draw)
+		}
+
+		// We willen geselecteerde curves of inputpunten moven
+		// --> translatieafstand berekenen en al de nodige dingen verschuiven.
+		else if (e.getSource().equals(draw)
 				&& (mode == Editor.MODE.MOVE_CONTROL_POINTS || mode == Editor.MODE.MOVE_CURVES)
 				&& draw.draggingStarted()) {
 
@@ -328,8 +365,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		// TODO Tijdens het hooveren deselecteerd hij alle selected curves -->
-		// MAG NIET
 		boolean repaint = false;
 		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
 			if (hooveredCurves.size() > 0) {
@@ -367,10 +402,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 		if (repaint)
 			draw.repaint();
-	}
-
-	public void propertyChange(PropertyChangeEvent evt) {
-
 	}
 
 	private void open() {
@@ -416,8 +447,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 	private void newFile() {
 		reset();
-		draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
-				hooveredPoints, draw.coords(), draw.tangents(), draw.nrs());
+		try {
+			draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
+					hooveredPoints, draw.coords(), draw.tangents(), draw.nrs());
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -697,7 +732,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if (displaySize.frameSizeChanged(frame.getSize())) { // de
+		if (displaySize.changeFrameSize(frame.getSize())) { // de
 			// schermgrootte
 			// is aangepast
 			// door de
