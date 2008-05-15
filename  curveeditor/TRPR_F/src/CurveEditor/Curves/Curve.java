@@ -1,38 +1,45 @@
 package CurveEditor.Curves;
 
 import java.util.Vector;
+import CurveEditor.Exceptions.*;
 
 /*
- * Deze klasse bevat de voorstelling van de huidige curves. 
- * De output- en inputpunten van de verschillende curves worden hier bijgehouden.
- * Bij het herberekenen van de outputpunten, verplaatsen/toevoegen/verwijderen van
- * inputpunten moet deze container terug bijgewerkt worden om terug met de curve-
- * voorstelling overeen te komen, uiteraard.
- * Deze klasse wordt gebruikt wanneer men vlug wil nagaan óf en tót welke curve een
- * input- of outputpunt behoort (bij hoovering, selecteren e.d.). 
+ * Deze klasse omvat de voorstelling van een curve.
+ * Een curve heeft een type en een orde, en aan de hand van die eigenschappen kan er een Algorithm aan gelinkt worden. 
+ * Dit gebeurt niet hier, maar in Editor, omdat moesten we voor elke Curve ook een Algorithm-object bijhouden, we wel 
+ * van geheugenverspilling kunnen spreken. Algorithms zijn immers Curve-onafhankelijk en doen niet meer dan m.b.v. een Vector
+ * van Points een andere Vector van Points vullen. Daarom: Curve en Algorithm onafhankelijk, maar wel met gemeenschappelijke
+ * ID's om ze aan elkaar te kunnen linken.
+ * Zoals gezegd: een Curve bestaat naast de kenmerkende eigenschappen, ook nog uit twee Vectoren, een voor de input- en een
+ * voor de outpunten.
  */
 public final class Curve {
 	private static short SEARCH_RANGE = 3;
 
-	// de controlepunten, volgorde is belangrijk !!!
+	// De Vector van inputpunten, volgorde is belangrijk !!!
 	protected Vector<Point> input;
 
-	// de berekende tussenpunten
+	// De Vector van outputpunten, die kan berekend worden uit de Vector van
+	// inputpunten.
 	protected Vector<Point> output;
 
-	// identifier
+	// Identifiers
 	protected char type;
 	protected short degree;
 
+	// De default constructor is bvb. nodig voor File I/O, alwaar we stuk voor
+	// stuk de curve kunnen herconstrueren: eerst Curve aanmaken, dan ID's
+	// zetten en dan de input punten inladen.
 	public Curve() {
-		type = 0;
-		degree = 0;
+		this.type = 0;
+		this.degree = 0;
+
 		input = new Vector<Point>();
 		output = new Vector<Point>();
 	}
 
-	public Curve(char Type, short degree) {
-		type = Type;
+	public Curve(char type, short degree) {
+		this.type = type;
 		this.degree = degree;
 
 		input = new Vector<Point>();
@@ -47,11 +54,12 @@ public final class Curve {
 		return output;
 	}
 
-	// verwijder de interpolatiepunten
+	// Verwijder al de berekende outputpunten.
 	public void clearOutput() {
 		this.output.clear();
 	}
 
+	// Verwijder al de inputpunten.
 	public void clearInput() {
 		this.input.clear();
 	}
@@ -64,22 +72,36 @@ public final class Curve {
 		return output.size();
 	}
 
+	// Voeg een outputpunt toe aan de Curve.
 	public void addOutput(Point o) {
 		this.output.add(o);
 	}
 
+	// Verwijder een inputpunt.
 	public void removeInput(Point o) {
-		for (int i = 0; i < getNbInputPoints(); ++i)
-			if (input.get(i).X() == o.X() && input.get(i).Y() == o.Y())
-				input.remove(i--);
+		if (o != null) {
+			// Voor elk inputpunt: controleer of het op dezelfde plaats ligt als
+			// het
+			// gegeven punt of niet.
+			for (int i = 0; i < getNbInputPoints(); ++i)
+				if (input.get(i).X() == o.X() && input.get(i).Y() == o.Y())
+					input.remove(i--);
+		}
 	}
 
-	// i is de index in de vector
-	public void removeInput(int i) {
+	// i is de index in de Vector.
+	public void removeInput(int i) throws InvalidArgumentException {
+		if (i < 0 || i > input.size() - 1)
+			throw new InvalidArgumentException(
+					"Curve.java - removeInput(int): Invalid Argument.");
 		input.remove(i);
 	}
 
-	public void addInput(Point o) {
+	public void addInput(Point o) throws InvalidArgumentException {
+		if (o == null)
+			throw new InvalidArgumentException(
+					"Curve.java - addInput(Point): Invalid Argument.");
+
 		this.input.add(new Point(o.X(), o.Y()));
 	}
 
@@ -103,26 +125,31 @@ public final class Curve {
 		this.type = t;
 	}
 
-	// lineair zoeken --> normaal gebruik: niet al teveel inputpunten, dus niet
-	// zó van belang
+	// Lineair zoeken of een punt als inputpunt aanwezig is -->
+	// bij normaal gebruik: niet al teveel inputpunten, dus niet
+	// zó van belang.
 	public Point containsInputPoint(Point p) {
-		for (int i = 0; i < input.size(); ++i)
-			if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
-					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
-				return input.elementAt(i);
+		if (p != null)
+			for (int i = 0; i < input.size(); ++i)
+				if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
+						&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
+					return input.elementAt(i);
 		return null;
 	}
 
-	// geeft de index terug als het punt een controlepunt is
+	// Geeft de index terug als het punt een controlepunt is.
+	// Zelfde algoritme als containsInputPoint, maar een andere returnwaarde.
 	public int containsInputPointi(Point p) {
-		for (int i = 0; i < input.size(); ++i)
-			if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
-					&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
-				return i;
+		if (p != null)
+			for (int i = 0; i < input.size(); ++i)
+				if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
+						&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
+					return i;
 		return -1;
 	}
 
-	// verschuiving over een afstand x,y --> alle controlepunten verschuiven
+	// Verschuiving van de Curve over een afstand x,y
+	// --> alle controlepunten verschuiven (en elders herberekenen).
 	public void translate(int x, int y) {
 		output.clear();
 		for (int i = 0; i < input.size(); ++i) {
@@ -131,9 +158,17 @@ public final class Curve {
 		}
 	}
 
-	// de aangemaakte curve krijgt de eigenschappen van de eerste curve en AL de
-	// inputpunten van de twee curves; zeer basic en dus niet echt goed
-	public static Curve connectNoExtraPoint(Curve c1, Curve c2) {
+	// De aangemaakte curve krijgt de eigenschappen van de eerste curve en AL de
+	// inputpunten van de twee curves. Het eerste inputpunt van c2 volgt dus op
+	// het laatste inputpunt van c1. De inputpunten behouden hun oorspronkelijke
+	// positie.
+	// De Curve wordt hier niet herberekend, uiteraard.
+	public static Curve connectNoExtraPoint(Curve c1, Curve c2)
+			throws InvalidArgumentException {
+		if (c1 == null || c2 == null)
+			throw new InvalidArgumentException(
+					"Curve.java - connectNoExtraPoint(Curve, Curve): Invalid Argument.");
+
 		Curve result = new Curve(c1.getType(), c1.getDegree());
 		result.input.addAll(c1.input);
 		result.input.addAll(c2.input);
@@ -141,21 +176,29 @@ public final class Curve {
 		return result;
 	}
 
-	// de aangemaakte curve krijgt de eigenschappen van de eerste curve en de
-	// inputpunten van de twee curves, laatste van c1 en eerste van c2 vallen
-	// samen, c2 wordt richting c1 verschoven
-	public static Curve connectC0(Curve c1, Curve c2) {
-		Curve result = new Curve(c1.getType(), c1.getDegree());
+	// De aangemaakte curve krijgt de eigenschappen van de eerste curve en de
+	// inputpunten van de twee curves. Het eerste inputpunt van c2 valt samen
+	// met het laatste inputpunt van c1. De overige inputpunten van c2 worden
+	// over een afstand verschoven zodanig dat díe twee inputpunten samenvallen.
+	public static Curve connectC0(Curve c1, Curve c2)
+			throws InvalidArgumentException {
+		if (c1 == null || c2 == null)
+			throw new InvalidArgumentException(
+					"Curve.java - connectC0(Curve, Curve): Invalid Argument.");
 
-		for (int i = 0; i < c1.input.size(); ++i)
-			result.addInput(c1.input.elementAt(i));
+		Curve result = new Curve(c1.getType(), c1.getDegree());
+		result.getInput().addAll(c1.getInput());
 
 		if (c2.input.size() > 0) {
+			// laatste input van c1
 			Point prevCtrl = result.input.lastElement();
-			Point first = c2.input.elementAt(0);
+			Point first = c2.input.elementAt(0); // eerste input van c2
+
+			// Verschuivingswaarden berekenen.
 			int diffX = prevCtrl.X() - first.X();
 			int diffY = prevCtrl.Y() - first.Y();
 
+			// Alle inputpunten van c2 verschuiven en aan result toevoegen.
 			for (int i = 1; i < c2.getNbInputPoints(); ++i) {
 				result.addInput(new Point(c2.input.elementAt(i).X() + diffX,
 						c2.input.elementAt(i).Y() + diffY));

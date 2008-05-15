@@ -124,7 +124,13 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Point a = new Point(e.getX(), e.getY());
-			addPoint(a);
+
+			try {
+				addPoint(a);
+			} catch (InvalidArgumentException e1) {
+				e1.printStackTrace();
+			}
+
 			draw.repaint();
 		} else if (mode == Editor.MODE.DESELECT_CURVE) {
 			Curve c = pickCurve(new Point(e.getX(), e.getY()));
@@ -617,7 +623,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				Point a = choice.getInputPoint();
 				if (a != null) {
 					changeMode(MODE.ADD_INPUT);
-					addPoint(a);
+					try {
+						addPoint(a);
+					} catch (InvalidArgumentException e1) {
+						e1.printStackTrace();
+					}
 					draw.repaint();
 				} else
 					JOptionPane.showMessageDialog(draw, "No point is given",

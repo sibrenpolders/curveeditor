@@ -2,6 +2,8 @@ package CurveEditor.Core;
 
 import CurveEditor.Curves.Point;
 import CurveEditor.Curves.Curve;
+import CurveEditor.Exceptions.InvalidArgumentException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class FileIO extends DefaultHandler {
 	private PrintWriter pw;
 	private TransformerHandler hd;
 	private int lineNumber = 0;
-	
+
 	public String getCurrentFilename() {
 		return currentFilename;
 	}
@@ -55,11 +57,12 @@ public class FileIO extends DefaultHandler {
 		// parseDocument(curves);
 	}
 
-	public void save(String filename, Vector<Curve> curves ) {
+	public void save(String filename, Vector<Curve> curves) {
 		try {
-			pw = new PrintWriter(new File(filename + ".xml" ));
+			pw = new PrintWriter(new File(filename + ".xml"));
 			StreamResult streamResult = new StreamResult(pw);
-			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
+					.newInstance();
 			hd = tf.newTransformerHandler();
 			Transformer serializer = hd.getTransformer();
 			serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");//
@@ -73,7 +76,7 @@ public class FileIO extends DefaultHandler {
 			// href=\"mystyle.xsl\"");
 			hd.startElement("", "", "curveEditor", null);
 			String curTitle;
-			
+
 			++indentLevel;
 			for (int i = 0; i < curves.size(); ++i) {
 				hd.startElement("", "", "curve", null);
@@ -85,9 +88,9 @@ public class FileIO extends DefaultHandler {
 				// AttributesImpl atts = new AttributesImpl();
 				for (int j = 0; j < vp.size(); ++j) {
 					hd.startElement("", "", "point", null);
-					writeCo( "" + vp.get(j).X(), "x" );
-					writeCo( "" + vp.get(j).Y(), "y" );
-//					writeCo( "" + vp.get(j).Z(), "x" );
+					writeCo("" + vp.get(j).X(), "x");
+					writeCo("" + vp.get(j).Y(), "y");
+					// writeCo( "" + vp.get(j).Z(), "x" );
 					hd.endElement("", "", "point");
 				}
 				hd.endElement("", "", "curve");
@@ -103,12 +106,12 @@ public class FileIO extends DefaultHandler {
 		}
 	}
 
-	private void writeCo( String title, String cor ) throws SAXException {
+	private void writeCo(String title, String cor) throws SAXException {
 		hd.startElement("", "", cor, null);
 		hd.characters(title.toCharArray(), 0, title.length());
-		hd.endElement("", "", cor );
+		hd.endElement("", "", cor);
 	}
-	
+
 	private void parseXmlFile(String filename) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
@@ -123,15 +126,15 @@ public class FileIO extends DefaultHandler {
 			pce.printStackTrace();
 		} catch (IOException ie) {
 			ie.printStackTrace();
-		} catch ( Exception e ) {
-			System.out.println( e );
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		
+
 	}
 
 	// Event Handlers
 	public void startElement(String uri, String localName, String qName,
-			Attributes attributes) throws SAXException {		
+			Attributes attributes) throws SAXException {
 		// reset
 		tempVal = "";
 		if (qName.equalsIgnoreCase("Curve"))
@@ -150,7 +153,8 @@ public class FileIO extends DefaultHandler {
 	}
 
 	public void endElement(String uri, String localName, String qName)
-			throws SAXException, NumberFormatException, IndexOutOfBoundsException {
+			throws SAXException, NumberFormatException,
+			IndexOutOfBoundsException {
 
 		if (qName.equalsIgnoreCase("Curve"))
 			// nieuwe curve aan de vector toevoegen
@@ -158,16 +162,19 @@ public class FileIO extends DefaultHandler {
 
 		else if (qName.equalsIgnoreCase("Type")) {
 			char c = 0;
-			c = tempVal.charAt( 0 );
+			c = tempVal.charAt(0);
 			curve.setType(c);
 		}
 
-//		else if (qName.equalsIgnoreCase("Degree"))
-//			curve.setDegree(Short.parseShort(tempVal));
+		// else if (qName.equalsIgnoreCase("Degree"))
+		// curve.setDegree(Short.parseShort(tempVal));
 
 		else if (qName.equalsIgnoreCase("Point"))
-			curve.addInput(point);
-
+			try {
+				curve.addInput(point);
+			} catch (InvalidArgumentException e) {
+				e.printStackTrace();
+			}
 		else if (qName.equalsIgnoreCase("X"))
 			point.setX(Integer.parseInt(tempVal));
 
@@ -176,7 +183,7 @@ public class FileIO extends DefaultHandler {
 
 		// else if (qName.equalsIgnoreCase("Z"))
 		// point.setZ(Integer.parseInt(tempVal));
-		
+
 		++lineNumber; // volgende regel
 	}
 
