@@ -2,79 +2,63 @@ package CurveEditor.GUI;
 
 import java.awt.Dimension;
 
-public class DisplaySize {
-	// standaard breedtes en hoogtes van de gui elementen
+/*
+ * Deze klasse omvat als het ware een dynamische display, specifiek voor onze GUI.
+ * A.h.v. de totale canvasdimensies worden de dimensies van de verschillende 
+ * GUI-elementen berekend. Deze kunnen dan bij een resize herberekend worden en 
+ * geset worden als de dimensies van die GUI-elementen.
+ */
+public final class DisplaySize {
+	// De standaard breedtes en hoogtes van de GUI-elementen.
 	public static int DRAWWIDTH = 600; // standaard breedte voor DrawArea
-	public static int DRAWHEIGHT = 600; // standaard hoogte voor DrawArea		
+	public static int DRAWHEIGHT = 600; // standaard hoogte voor DrawArea
+	// standaard breedte voor ChoiceArea
 	public static final int CHOICEWIDTH = 275;
-	public static int CHOICEHEIGHT = DRAWHEIGHT;
-	public static int SCREENWIDTH = DRAWWIDTH + CHOICEWIDTH;	
-	public static final int MENUHEIGHT = 20;
-//	public static int TOOLBARWIDTH = MENUWIDTH;
+	public static int CHOICEHEIGHT = DRAWHEIGHT; // hoogte voor ChoiceArea
+	// breedte voor de totale GUI
+	public static int SCREENWIDTH = DRAWWIDTH + CHOICEWIDTH;
+	public static final int MENUHEIGHT = 20; // standaard hoogte voor Menu
+	// hoogte voor Toolbar
 	public static final int TOOLBARHEIGHT = MENUHEIGHT + 5;
-	
-//	public static int SCREENWIDTH = MENUWIDTH;
+
 	public static int SCREENHEIGHT = CHOICEHEIGHT + MENUHEIGHT + TOOLBARHEIGHT;
-	
-	// Dimensies van de verschillende gui elementen
-//	private static Dimension drawArea;
-//	private static Dimension choiceArea;
-//	private static Dimension menu;
-//	private static Dimension toolbar;
-	
-	// huidige schermgrootte
+
+	// Huidige schermgrootte van de applicatie.
 	private Dimension frameSize;
-	
-	public DisplaySize( ) {
-//		drawArea = new Dimension( FRAMEWIDTH, FRAMEHEIGHT );
-//		choiceArea = new Dimension( CHOICEWIDTH, CHOICEHEIGHT );
-//		menu = new Dimension( MENUWIDTH, MENUHEIGHT );
-//		toolbar = new Dimension( TOOLBARWIDTH, TOOLBARHEIGHT );
+
+	public Dimension frameSize() {
+		return frameSize;
 	}
-	
-	public void recalculate( Dimension d ) {
-		// de hoogte van zowel menu en toolbar zijn vast. verandering van hoogte van het displayscherm heeft dus geen invloed
-		// op deze 2 elementen. Bij choiceArea is de breedte vast.		
+
+	public void setCurrentSize(Dimension d) {
+		frameSize = d;
+	}
+
+	public DisplaySize() {
+	}
+
+	// Gegeven een nieuwe schermgrootte van de applicatie,
+	// herbereken de dimensies van de GUI-elementen.
+	public void recalculate(Dimension d) {
+		// De hoogte van zowel Menu als Toolbar zijn vast. Een verandering van
+		// de hoogte van het canvas heeft dus geen invloed op deze 2 elementen.
+		// Bij ChoiceArea is de breedte vast.
 		SCREENWIDTH = (int) d.getWidth();
 		SCREENHEIGHT = (int) d.getHeight();
 		DRAWWIDTH = SCREENWIDTH - CHOICEWIDTH;
 		DRAWHEIGHT = SCREENHEIGHT - MENUHEIGHT - TOOLBARHEIGHT;
-		CHOICEHEIGHT =  SCREENHEIGHT - MENUHEIGHT - TOOLBARHEIGHT;		
-//		MENUWIDTH = (int) d.getWidth();
-//		TOOLBARWIDTH = (int) d.getWidth();
+		CHOICEHEIGHT = SCREENHEIGHT - MENUHEIGHT - TOOLBARHEIGHT;
 	}
-	
-//	public static Dimension drawAreaD( ) {
-//		return drawArea;
-//	}
-//	
-//	public static Dimension choiceAreaD( ) {
-//		return choiceArea;
-//	}
-//	
-//	public static Dimension menuD( ) {
-//		return menu;
-//	}
-//	
-//	public static Dimension toolbarD( ) {
-//		return toolbar;
-//	}
-//	
-	public void setCurrentSize( Dimension d ) {
-		frameSize = d;
-	}
-	
-	public Dimension frameSize( ) {
-		return frameSize;	
-	}
-	
-	public boolean frameSizeChanged( Dimension d ) {		
-		if ( frameSize == null || !frameSize.equals( d )) {
-			setCurrentSize( d );
-			recalculate( frameSize );
+
+	// Verander de schermgrootte en herbereken de dimensies
+	// van alle GUI-elementen.
+	public boolean changeFrameSize(Dimension d) {
+		if (d != null && (frameSize == null || !frameSize.equals(d))) {
+			setCurrentSize(d);
+			recalculate(frameSize);
 			return true;
 		}
-		
+
 		return false;
 	}
 }
