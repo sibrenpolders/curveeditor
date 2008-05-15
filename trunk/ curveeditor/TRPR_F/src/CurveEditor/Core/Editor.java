@@ -375,8 +375,11 @@ public class Editor {
 
 	// Een nieuw inputpunt aan alle huidige geselecteerde curves toevoegen.
 	// Deze curves, alsook de container, wordt herberekend.
-	protected void addPoint(Point a) {
-		if (a != null) {
+	protected void addPoint(Point a) throws InvalidArgumentException {
+		if (a == null)
+			throw new InvalidArgumentException(
+					"Editor.java - addPoint(Point): Invalid Argument.");
+		else {
 			if (selectedCurves.size() == 0)
 				// Er is nog geen geselecteerde curve -> ééntje aanmaken.
 				startNewCurve();
@@ -394,8 +397,7 @@ public class Editor {
 						|| c.getInput().size() % 2 == 0) {
 					try {
 						selectionTool.deleteCurve(c);
-						this.getAlgorithm(c.getType(), c.getDegree())
-								.calculateComplete(c);
+						temp.calculateComplete(c);
 						selectionTool.addCurve(c);
 					} catch (InvalidArgumentException e) {
 						e.printStackTrace();
@@ -479,7 +481,12 @@ public class Editor {
 			for (int i = 1; i < selectedCurves.size(); ++i) {
 				selectionTool.deleteCurve(selectedCurves.get(i));
 				// De geselecteerde curve "plakken" aan de rest.
-				result = Curve.connectC0(result, selectedCurves.get(i));
+				try {
+					result = Curve.connectC0(result, selectedCurves.get(i));
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+					recalculateSelectedCurves();
+				}
 			}
 
 			// Alle curves deselecteren en verwijderen en de nieuwe
@@ -503,8 +510,13 @@ public class Editor {
 			for (int i = 1; i < selectedCurves.size(); ++i) {
 				selectionTool.deleteCurve(selectedCurves.get(i));
 				// De geselecteerde curve "plakken" aan de rest.
-				result = Curve.connectNoExtraPoint(result, selectedCurves
-						.get(i));
+				try {
+					result = Curve.connectNoExtraPoint(result, selectedCurves
+							.get(i));
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+					recalculateSelectedCurves();
+				}
 			}
 
 			// Alle curves deselecteren en verwijderen en de nieuwe
