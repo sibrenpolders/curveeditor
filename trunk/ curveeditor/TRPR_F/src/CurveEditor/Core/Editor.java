@@ -1,10 +1,6 @@
 package CurveEditor.Core;
 
 import java.util.Vector;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import CurveEditor.Algorithms.*;
 import CurveEditor.Curves.*;
 import CurveEditor.Exceptions.*;

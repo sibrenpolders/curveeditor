@@ -1,9 +1,16 @@
 package CurveEditor.Curves;
 
 import java.util.Vector;
-import CurveEditor.Algorithms.Tangent;
 
-//interpolatiepunten worden berekend vanuit Editor
+/*
+ * Deze klasse bevat de voorstelling van de huidige curves. 
+ * De output- en inputpunten van de verschillende curves worden hier bijgehouden.
+ * Bij het herberekenen van de outputpunten, verplaatsen/toevoegen/verwijderen van
+ * inputpunten moet deze container terug bijgewerkt worden om terug met de curve-
+ * voorstelling overeen te komen, uiteraard.
+ * Deze klasse wordt gebruikt wanneer men vlug wil nagaan óf en tót welke curve een
+ * input- of outputpunt behoort (bij hoovering, selecteren e.d.). 
+ */
 public final class Curve {
 	private static short SEARCH_RANGE = 3;
 

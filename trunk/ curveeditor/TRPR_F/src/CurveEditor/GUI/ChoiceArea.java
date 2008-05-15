@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,8 +27,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -844431215144101927L
-	;
+	private static final long serialVersionUID = -844431215144101927L;
 	// private Vector<Algorithm> v;
 	private static final String[] bezierAlgTypeNames = { "Linear", "Bezier C0",
 			"Bezier G1", "Bezier C1" };
@@ -46,7 +44,8 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	private JPanel curveEditPanel;
 	private JPanel pointEditPanel;
 	private JPanel currentPanel;
-	private JTextField x, y; // nodig om de waarde van een punt ingegeven m.b.v
+	private JTextField x, y; // nodig om de waarde van een punt ingegeven
+	// m.b.v
 	// inputfield terug te geven
 	private ButtonGroup group;
 	private ActionListener listener;
@@ -234,10 +233,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createComboBox();
 
 		container.setBorder(BorderFactory.createTitledBorder("Algorithm"));
-		Dimension d = new Dimension(TOGGLEBUTTONWIDTH + 15, 100);
-		// container.setMaximumSize( d );
-		// container.setMinimumSize( d );
-		// container.setPreferredSize( d );
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
 
 		add(container);
@@ -258,10 +253,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		container.add(checkPanel);
 		container.add(Box.createHorizontalGlue());
 
-		Dimension d = new Dimension(TOGGLEBUTTONWIDTH + 15, 100);
-		// container.setMaximumSize( d );
-		// container.setMinimumSize( d );
-		// container.setPreferredSize( d );
 		container.add(Box.createHorizontalGlue());
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
 		container.setBorder(BorderFactory.createTitledBorder("Show"));
@@ -289,8 +280,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createButton("Deselect All Curves", "Deselect all curves.", null, false);
 		createButton("Add Control Point",
 				"Add a control point to all selected curves.", null, false);
-		createButton("Move Curves", "Move all selected curves.", null,
-				false);
+		createButton("Move Curves", "Move all selected curves.", null, false);
 		createButton("Connect Curves (No Extra Points)",
 				"Connect all selected curves (no extra points).", null, false);
 		createButton("Connect Curves (C0)",
@@ -341,11 +331,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		createPointEditMode();
 		pointEditPanel.setVisible(false);
 
-		// pointEditPanel.setMaximumSize(d);
-		Dimension d = new Dimension(TOGGLEBUTTONWIDTH + 15, 100);
-		// container.setMaximumSize( d );
-		// container.setMinimumSize( d );
-		// container.setPreferredSize( d );
 		container.add(Box.createHorizontalGlue());
 		container.add(Box.createRigidArea(new Dimension(5, 0)));
 		container.setBorder(BorderFactory.createTitledBorder("Edit"));

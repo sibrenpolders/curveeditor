@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -30,9 +29,7 @@ public class FileIO extends DefaultHandler {
 	private String tempVal;
 	private Vector<Curve> curves;
 	private Curve curve;
-	private int dimension;
 	private Point point;
-	private String identation = "    ";
 	private int indentLevel = 0;
 	private PrintWriter pw;
 	private TransformerHandler hd;
@@ -112,10 +109,6 @@ public class FileIO extends DefaultHandler {
 		hd.endElement("", "", cor );
 	}
 	
-	private void indent(  ){
-		for ( int i = 0; i < indentLevel; ++i )
-			pw.write( indentLevel );
-	}
 	private void parseXmlFile(String filename) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {

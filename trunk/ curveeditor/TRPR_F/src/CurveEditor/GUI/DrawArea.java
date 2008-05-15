@@ -13,7 +13,7 @@ public class DrawArea extends JPanel {
 
 	// Dimensies van het tekencanvas.
 	// Voorlopig vast gekozen, nadien kijken of dit at runtime correct kan
-	// veranderd worden	
+	// veranderd worden
 	private static int CONTROLPOINTWIDTH = 2;
 	private static int HOOVEREDCURVEWIDTH = 1;
 	private static int DEFAULTCURVEWIDTH = 0;
@@ -29,7 +29,7 @@ public class DrawArea extends JPanel {
 	private Vector<Point> hooveredPoints;
 	private Graphics g;
 	private Point runPoint;
-	
+
 	// variabelen voor selectierechthoekje
 	private int xBegin = -1, yBegin = -1, xEnd = -1, yEnd = -1;
 
@@ -44,8 +44,8 @@ public class DrawArea extends JPanel {
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
 			Vector<Point> hooveredPoints, boolean coords, boolean nrs,
 			boolean tangents) {
-//		setSize( DisplaySize.drawAreaD() );
-		setSize( );
+		// setSize( DisplaySize.drawAreaD() );
+		setSize();
 		setBackground(new Color(255, 255, 255));
 
 		this.curves = curves;
@@ -90,19 +90,16 @@ public class DrawArea extends JPanel {
 		paint(g);
 	}
 
-	public void drawRunner( Point p ) {
-		int x = p.X();
-		int y = p.Y();
-		
-		runPoint = p;				
-		
+	public void drawRunner(Point p) {
+		runPoint = p;
+
 		repaint();
 	}
-	
+
 	// Deze methode wordt impliciet aangeroepen als je ergens this.repaint()
 	// uitvoert. Dit hertekent het vollédige tekencanvas.
 	public void paintComponent(Graphics g) {
-		this.g = g;	
+		this.g = g;
 		super.paintComponent(g);
 
 		emptyField();
@@ -114,9 +111,9 @@ public class DrawArea extends JPanel {
 			this.drawArrow();
 
 		this.g.setColor(Color.BLACK);
-		this.drawOutput(curves, false, false );
+		this.drawOutput(curves, false, false);
 		this.g.setColor(Color.RED);
-		drawOutput(selectedCurves, coords, nrs );
+		drawOutput(selectedCurves, coords, nrs);
 		if (tangents) {
 			this.g.setColor(Color.BLUE);
 			drawTangents(selectedCurves);
@@ -128,26 +125,27 @@ public class DrawArea extends JPanel {
 
 		this.g.setColor(Color.magenta);
 		this.curveWidth = HOOVEREDCURVEWIDTH;
-		drawOutput(hooveredCurves, false, false );
+		drawOutput(hooveredCurves, false, false);
 		this.curveWidth = DEFAULTCURVEWIDTH;
 
 		this.g.setColor(Color.YELLOW);
-		drawSelectedPoints(hooveredPoints);		
-				
-		if ( runPoint != null ) {
-			this.g.setColor( Color.CYAN );
-			g.fillRect( runPoint.X() - 3* CONTROLPOINTWIDTH, runPoint.Y() - 3*CONTROLPOINTWIDTH,	
-					6 * CONTROLPOINTWIDTH + 1, 6 * CONTROLPOINTWIDTH + 1);
+		drawSelectedPoints(hooveredPoints);
+
+		if (runPoint != null) {
+			this.g.setColor(Color.CYAN);
+			g.fillRect(runPoint.X() - 3 * CONTROLPOINTWIDTH, runPoint.Y() - 3
+					* CONTROLPOINTWIDTH, 6 * CONTROLPOINTWIDTH + 1,
+					6 * CONTROLPOINTWIDTH + 1);
 			runPoint = null;
 		}
-		
+
 		this.g.setColor(Color.BLACK);
 	}
 
 	public void emptyField() {
-		g.clipRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
+		g.clipRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
 		g.setColor(Color.white);
-		g.fillRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT );
+		g.fillRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
 		g.setColor(Color.black);
 	}
 
@@ -219,17 +217,20 @@ public class DrawArea extends JPanel {
 		return yEnd;
 	}
 
-	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs ) {
+	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
 		Vector<Point> out, in;
 		for (int i = 0; i < curves.size(); ++i) {
 			// de outputpunten uittekenen
-			out = curves.get( i ).getOutput();
+			out = curves.get(i).getOutput();
 			for (int j = 0; j < out.size() - 1; ++j) {
-				g.drawLine( out.get(j).X(), out.get(j).Y(), out.get(j + 1).X(), out.get(j + 1).Y());
+				g.drawLine(out.get(j).X(), out.get(j).Y(), out.get(j + 1).X(),
+						out.get(j + 1).Y());
 				if (curveWidth != 0) {
 					for (int k = 1; k <= curveWidth; ++k) {
-						g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(j+1).X(), out.get(j+1).Y() + k);
-						g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(j+1).X(), out.get(j+1).Y() - k);
+						g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(
+								j + 1).X(), out.get(j + 1).Y() + k);
+						g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
+								j + 1).X(), out.get(j + 1).Y() - k);
 					}
 				}
 			}
@@ -237,13 +238,17 @@ public class DrawArea extends JPanel {
 			// de controlepunten uittekenen
 			in = curves.get(i).getInput();
 			for (int j = 0; j < in.size(); ++j) {
-				g.fillRect(in.get(j).X()- CONTROLPOINTWIDTH, in.get(j).Y()- CONTROLPOINTWIDTH,	2 * CONTROLPOINTWIDTH + 1, 2 * CONTROLPOINTWIDTH + 1);
+				g.fillRect(in.get(j).X() - CONTROLPOINTWIDTH, in.get(j).Y()
+						- CONTROLPOINTWIDTH, 2 * CONTROLPOINTWIDTH + 1,
+						2 * CONTROLPOINTWIDTH + 1);
 
 				if (coords)
-					g.drawString(in.get(j).X() + ", " + in.get(j).Y(), in.get(j).X() + 4, in.get(j).Y() + 10);
+					g.drawString(in.get(j).X() + ", " + in.get(j).Y(), in
+							.get(j).X() + 4, in.get(j).Y() + 10);
 
 				if (nrs)
-					g.drawString("C" + i + ", P" + j, in.get(j).X() + 4, in.get(j).Y() - 0);
+					g.drawString("C" + i + ", P" + j, in.get(j).X() + 4, in
+							.get(j).Y() - 0);
 			}
 		}
 	}
@@ -280,11 +285,12 @@ public class DrawArea extends JPanel {
 		}
 	}
 
-	public void setSize( ) {
-		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+	public void setSize() {
+		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH,
+				DisplaySize.DRAWHEIGHT);
 		repaint();
 	}
-	
+
 	public int width() {
 		return this.getWidth();
 	}
