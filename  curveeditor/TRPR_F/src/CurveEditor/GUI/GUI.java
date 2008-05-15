@@ -143,7 +143,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	public void mouseClicked(MouseEvent e) {
 		hooveredCurves.clear();
 		hooveredPoints.clear();
-
 		if (mode == Editor.MODE.ADD_INPUT) {
 			Point a = new Point(e.getX(), e.getY());
 			try {
@@ -364,46 +363,40 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		draw.repaint();
 	}
 
+	// Methode die reageert op een move-event in DrawArea.
+	// Afhankelijk van de MODE die in Editor geset is, wordt een
+	// actie uitgevoerd. In curveselectiemodie worden curves al dan niet
+	// gehooverd, in puntselectiemode punten.
 	public void mouseMoved(MouseEvent e) {
-		boolean repaint = false;
 		if (mode == MODE.DESELECT_CURVE || mode == MODE.SELECT_CURVE) {
-			if (hooveredCurves.size() > 0) {
-				hooveredCurves.clear();
-				repaint = true;
-			}
+			hooveredCurves.clear();
 
+			// Indien zich een curve op de locatie bevindt --> deze aan
+			// hooveredCurves toevoegen.
 			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
 					&& e.getX() < selectionTool.maxX()
-					&& e.getY() < selectionTool.maxY()) {
-				Curve c = this.selectionTool.searchCurve(new Point(e.getX(), e
-						.getY()));
-				if (c != null) {
-					repaint = true;
-					hooveredCurves.add(c);
-				}
-			}
+					&& e.getY() < selectionTool.maxY())
+				hooverCurve(new Point(e.getX(), e.getY()));
 		} else if (mode == MODE.DESELECT_CONTROL_POINT
 				|| mode == MODE.SELECT_CONTROL_POINT) {
-			if (hooveredCurves.size() > 0 || hooveredPoints.size() > 0) {
-				hooveredCurves.clear();
-				hooveredPoints.clear();
-				repaint = true;
-			}
-
+			hooveredCurves.clear();
+			hooveredPoints.clear();
+			// Indien zich een inputpunt op de locatie bevindt --> deze aan
+			// hooveredPoints toevoegen.
 			if (e.getSource().equals(draw) && e.getX() >= 0 && e.getY() >= 0
 					&& e.getX() < selectionTool.maxX()
-					&& e.getY() < selectionTool.maxY()) {
-				Point p = hooverPoint(new Point(e.getX(), e.getY()));
-				if (p != null) {
-					repaint = true;
-				}
-			}
+					&& e.getY() < selectionTool.maxY())
+				hooverPoint(new Point(e.getX(), e.getY()));
 		}
 
-		if (repaint)
-			draw.repaint();
+		draw.repaint();
 	}
 
+	// _______________________FILE I/O_______________________
+
+	// Een nieuw venster openen dat een mappenstructuur voorstelt.
+	// Als op "OK" geklikt wordt, wordt a.h.v. de gekozen bestandsnaam
+	// en -locatie het desbetreffende bestand ingeladen.
 	private void open() {
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -411,14 +404,16 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showOpenDialog(draw))
-			loadFile(jfc.getSelectedFile().getAbsolutePath());
+			loadFile(jfc.getSelectedFile().getAbsolutePath()); // file inladen
 
 		draw.repaint();
 	}
 
+	// Methode die uitgevoerd wordt indien de gebruiker op "Save" klikt.
 	private void save() {
-		// checken of er reeds een bestandsnaam gekent is waarnaar opgeslagen
-		// moet worden.
+		// Checken of er reeds een bestandsnaam gekend is waarnaar opgeslagen
+		// kan worden. Indien dat niet het geval is --> SaveAs(); anders naar
+		// dat bestand opslaan.
 		String fileName = file.getCurrentFilename();
 
 		if (null == fileName)
@@ -427,11 +422,12 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
 			saveFile(fileName, tmp);
-
-			draw.repaint();
 		}
 	}
 
+	// Een nieuw venster openen dat een mappenstructuur voorstelt.
+	// Als op "OK" geklikt wordt, wordt a.h.v. de gekozen bestandsnaam
+	// en -locatie alles naar het desbetreffende bestand opgeslaan.
 	private void saveAs() {
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -440,20 +436,16 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
-			saveFile(jfc.getSelectedFile().getAbsolutePath(), tmp);
-			draw.repaint();
+			saveFile(jfc.getSelectedFile().getAbsolutePath(), tmp); // opslaan
 		}
 	}
 
+	// Een volledig nieuwe file starten: alle Vectoren clearen.
 	private void newFile() {
 		reset();
-		try {
-			draw.init(curves, selectedCurves, hooveredCurves, selectedPoints,
-					hooveredPoints, draw.coords(), draw.tangents(), draw.nrs());
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
 	}
+
+	// _______________________Listeners_______________________
 
 	/*
 	 * deze functies zullen bepaalde gemeenschappelijk events opgevangen, door
@@ -720,23 +712,13 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 	}
 
-	@Override
-	public void componentHidden(ComponentEvent e) {
-
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {
-
-	}
-
-	@Override
+	// Methode die uitgevoerd wordt indien het frame geresized wordt.
+	// De dimensies van alle GUI-elementen worden dan herberekend en geset.
 	public void componentResized(ComponentEvent e) {
-		if (displaySize.changeFrameSize(frame.getSize())) { // de
-			// schermgrootte
-			// is aangepast
-			// door de
-			// gebruiker
+		if (frame != null && displaySize != null
+				&& displaySize.changeFrameSize(frame.getSize())) {
+
+			// Dimensies zetten.
 			container.setBounds(0, DisplaySize.MENUHEIGHT
 					+ DisplaySize.TOOLBARHEIGHT, DisplaySize.SCREENWIDTH,
 					DisplaySize.CHOICEHEIGHT);
@@ -748,16 +730,21 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				selectionTool.resize(DisplaySize.DRAWWIDTH,
 						DisplaySize.DRAWHEIGHT);
 			} catch (InvalidArgumentException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-
 		frame.repaint();
 	}
 
-	@Override
 	public void componentShown(ComponentEvent e) {
+
+	}
+
+	public void componentHidden(ComponentEvent e) {
+
+	}
+
+	public void componentMoved(ComponentEvent e) {
 
 	}
 }

@@ -348,6 +348,22 @@ public class Editor {
 		curves.clear();
 	}
 
+	// M.b.v. een gegeven punt een in het zoekbereik bestaande curve
+	// zoeken. Deze curve krijgt de gehooverde status en deze wordt
+	// teruggegeven.
+	// Dit dient vooral ter controle of er iets gevonden werd. null wordt
+	// teruggegeven indien er niks gevonden werd.
+	protected Curve hooverCurve(Point p) {
+		if (p == null)
+			return null;
+
+		Curve c = this.selectionTool.searchCurve(p);
+		if (c != null)
+			hooveredCurves.add(c);
+
+		return c;
+	}
+
 	// De meegegeven curve verandert van niet-gehooverde naar
 	// gehooverde status. Deze blijft de status van geselecteerd of
 	// ongeselecteerd dus behouden.
