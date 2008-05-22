@@ -22,17 +22,15 @@ import javax.swing.JTextField;
 
 import CurveEditor.Curves.Point;
 
+/*
+ * Deze klasse zal de knoppen en informatie links in het programma weergeven.
+ * Curve bewerkingen, punt bewerkingen, ...
+ */
 public class ChoiceArea extends JPanel implements ActionListener {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -844431215144101927L;
 	// private Vector<Algorithm> v;
-	private static final String[] bezierAlgTypeNames = { "Linear", "Bezier C0",
-			"Bezier G1", "Bezier C1" };
-	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",
-			"Cardinal", "Catmull-Rom" };
+	private static final String[] bezierAlgTypeNames = { "Linear", "Bezier C0", "Bezier G1", "Bezier C1" };
+	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",	"Cardinal", "Catmull-Rom" };
 
 	private static final int TOGGLEBUTTONWIDTH = 250;
 	private static final int TOGGLEBUTTONHEIGHT = 25;
@@ -45,13 +43,12 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	private JPanel pointEditPanel;
 	private JPanel currentPanel;
 	private JTextField x, y; // nodig om de waarde van een punt ingegeven
-	// m.b.v
-	// inputfield terug te geven
+							 // m.b.v inputfield terug te geven
 	private ButtonGroup group;
-	private ActionListener listener;
-	private ItemListener itemListener;
+	private ActionListener listener; // actionlistener om interactie met de GUI mogenlijk te maken
+	private ItemListener itemListener; // itemlistener om interactie met de GUI mogenlijk te maken
 
-	public ChoiceArea(ActionListener listener, ItemListener itemListener) {
+	public ChoiceArea( ActionListener listener, ItemListener itemListener ) {
 		super(new BorderLayout());
 		this.listener = listener;
 		this.itemListener = itemListener;
@@ -59,10 +56,14 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		init();
 	}
 
+	/*
+	 * Zal het keuzenveld opstellen. De verschillende create functies zullen alle widgets goed zetten
+	 * en de connectie aanmaken tussen GUI en hunzelf m.b.v. listener en itemlistener
+	 */
 	private void init() {
 		setSize();
 
-		add(Box.createRigidArea(new Dimension(10, 0)));
+		add( Box.createRigidArea( new Dimension(10, 0) ));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		add(Box.createRigidArea(new Dimension(5, 5)));
@@ -81,8 +82,12 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 5, Color.BLACK));
 	}
 
-	// true == curveEditPlane
-	// false == pointEditPlane
+	/*
+	 * Zal het veld links laten toggle tussen curvebewerkingen en puntbewerkingen.
+	 * Elke modus heeft zijn eigen knoppen en funtionaliteit om de gebruiker zo goed mogenlijk bij te staan.
+	 * true == curveEditPlane
+	 * false == pointEditPlane
+	 */
 	public void toggleEditPanel(boolean value) {
 		if (value) {
 			pointEditPanel.setVisible(false);
@@ -101,26 +106,31 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		curveEditPanel.setVisible(false);
 	}
 
-	// geeft null terug indien er momenteel geen ingegeven punt is.
-	public Point getInputPoint() {
-		// TODO juiste error check maken ? exception ?
+	/*
+	 * Geeft het punt terug dat de gebruiker in het add Point field heeft ingevuld
+	 * Is er geen punt ingevuld dan zal dit null teruggeven
+	 */
+	public Point getInputPoint() throws NullPointerException {
 		String xValue = x.getText();
 		String yValue = y.getText();
 
 		if (xValue.length() != 0 && yValue.length() != 0) {
 			return new Point(Integer.parseInt(xValue), Integer.parseInt(yValue));
 		}
-
-		return null;
+		
+		throw new NullPointerException( "No input point given!" );
 	}
 
 	public void setSize() {
 		setBounds(0, 0, DisplaySize.CHOICEWIDTH, DisplaySize.CHOICEHEIGHT);
-		// setMinimumSize( d );
-		// setMaximumSize( d );
-		// setPreferredSize( d );
 	}
 
+
+	/*
+	 * creert de mogenlijkheid om links punten toe te voegen 
+	 * door op de knop addpoint te clicken nadat de gebuiker x en y coordinaten in het juist veld
+	 * heeft ingevuld.
+	 */
 	private void createInputField() {
 		JPanel inputFieldPanel = new JPanel();
 		inputFieldPanel.setLayout(new BoxLayout(inputFieldPanel,
@@ -145,7 +155,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		inputFieldPanel.setPreferredSize(d);
 
 		row = new JPanel();
-		JButton button = new JButton("ADD");
+		JButton button = new JButton("Add Point");
 		button.setToolTipText("Add control point to selected curve(s).");
 		button.addActionListener(listener);
 		row.add(button);
@@ -267,6 +277,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		checkPanel.add(item);
 	}
 
+	// zal er voor zorgen dat de mogenlijheden voor curvebewerkingen zichtbaar worden.
 	private void createCurveEditeMode() {
 		curveEditPanel = new JPanel();
 		curveEditPanel
@@ -274,7 +285,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		group = new ButtonGroup();
 
 		currentPanel = curveEditPanel;
-
+		
 		createButton("Start New Curve", "Start a new curve.", null, false);
 		createButton("Select All Curves", "Select all curves.", null, false);
 		createButton("Deselect All Curves", "Deselect all curves.", null, false);
@@ -305,6 +316,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		currentPanel.add(Button);
 	}
 
+	// zal er voor zorgen dat de mogenlijheden voor punt bewerkingen zichtbaar worden.
 	private void createPointEditMode() {
 		pointEditPanel = new JPanel();
 		pointEditPanel
@@ -312,16 +324,21 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		group = new ButtonGroup();
 		currentPanel = pointEditPanel;
 
+		createButton("Start New Curve", "Start a new curve.", null, false);
+		createButton("Add Control Point",
+				"Add a control point to all selected curves.", null, false);
 		createButton("Deselect All Control Points",
 				"Deselect all control points.", null, false);
 		createButton("Move Control Points",
 				"Move all selected control points.", null, false);
+		createButton("Move Curves", "Move all selected curves.", null, false);
 		createButton("Delete Control Points",
 				"Delete all selected control poins.", null, false);
 		// pointEditPanel.setBorder(BorderFactory.createTitledBorder("Edit"));
 		container.add(pointEditPanel);
 	}
 
+	// zorgt voor een container waar point edit mode en curve edit mode in geplaatst kunnen worden
 	private void createEditPanel() {
 		container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
@@ -339,7 +356,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	}
 
 	public void refresh() {
-
 	}
 
 	public Point newPointInput() {
@@ -354,6 +370,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		return null;
 	}
 
+	// zet de combobox van het keuze veld op bezier of hermite
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Bezier"))
 			type.setModel(new DefaultComboBoxModel(bezierAlgTypeNames));
