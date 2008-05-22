@@ -4,6 +4,12 @@ import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
+/*
+ * Deze van Algorithm afgeleide klasse implementeert het Hermite-interpolatiealgoritme.
+ * Per vier punten wordt een curve berekend als volgt: de curve start in het eerste punt 
+ * in de richting van het tweede, om dan in het derde punt te eindigen in de richting 
+ * van het vierde. Punten 2 en 4 zijn dus de richtingsvectoren van de punten 1 en 3.
+ */
 public class Hermite extends Algorithm {
 	protected int steps;
 
@@ -22,6 +28,11 @@ public class Hermite extends Algorithm {
 		steps = 1000;
 	}
 
+	/*
+	 * Als input krijg je 2 punten p1 en p2 en hun respectievelijke richtingsvectoren r1 en r2.
+	 * Hieruit wordt m.b.v. de hermite basis functies de geinterpoleerde x en y gehaald.
+	 * 
+	 */
 	protected Point hermite(Point p1, Point r1, Point p2, Point r2, float t) {
 		float t2 = (float) Math.pow(t, 2);
 		float t3 = (float) Math.pow(t, 3);
@@ -39,14 +50,15 @@ public class Hermite extends Algorithm {
 		return new Point((int) Math.floor(x + .5), (int) Math.floor(y + .5));
 	}
 
+	// een overloaded functie van calculate voor het gebruiksgemak
 	public void calculate(Curve cv) {
 		calculate(cv.getInput(), cv.getOutput());
 	}
-
+	
+	// Zal de interpolatie berekenen tussen de 4 laatste punten
 	public void calculate(Vector<Point> vip, Vector<Point> vop) {
 		float t;
 
-		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
 		int size = vip.size();
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
@@ -69,6 +81,7 @@ public class Hermite extends Algorithm {
 		}
 	}
 
+	// berekend de interpolatie tussen alle opgegeven punten
 	public void calculateComplete(Curve cv) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
@@ -81,7 +94,7 @@ public class Hermite extends Algorithm {
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
 		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
-		// interpolleren
+		// interpoleren
 		// en Ri, Rj de tangens zijn van de kromme in respectievelijk Pi, Pj
 		for (int i = 0; i < size - 3; i += 2) {
 			// enkel de interpolatie tussen het laatste en het voorlaatste punt
