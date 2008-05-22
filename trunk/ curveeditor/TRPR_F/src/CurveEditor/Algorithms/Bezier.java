@@ -1,5 +1,6 @@
 package CurveEditor.Algorithms;
 
+import java.util.LinkedList;
 import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -92,7 +93,7 @@ public class Bezier extends Algorithm {
 	// uitleg over hoe we tot deze werkwijze komen is te vinden in:
 	// zie cursus Computer Graphics 2e Bach UHasselt, p. 106.
 	public final void interpolate(Point aa, Point bb, Point cc, Point dd,
-			int steps, Vector<Point> out) {
+			int steps, LinkedList<Point> out) {
 		// het interpolatieinterval berekenen a.h.v. het aantal stappen
 		double d = 1.0 / steps;
 		double d2 = d * d;
@@ -161,7 +162,7 @@ public class Bezier extends Algorithm {
 
 	// Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
 	// outpunten m.b.v. het geïmplementeerde interpolatiealgoritme.
-	public void calculate(Vector<Point> input, Vector<Point> output)
+	public void calculate(Vector<Point> input, LinkedList<Point> output)
 			throws InvalidArgumentException {
 		output.clear();
 

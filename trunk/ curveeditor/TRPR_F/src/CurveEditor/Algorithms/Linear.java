@@ -1,5 +1,6 @@
 package CurveEditor.Algorithms;
 
+import java.util.LinkedList;
 import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -51,7 +52,7 @@ public class Linear extends Algorithm {
 
 	// Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
 	// outpunten m.b.v. het geïmplementeerde interpolatiealgoritme.
-	public final void calculate(Vector<Point> input, Vector<Point> output)
+	public final void calculate(Vector<Point> input, LinkedList<Point> output)
 			throws InvalidArgumentException {
 		if (input == null || output == null)
 			throw new InvalidArgumentException(

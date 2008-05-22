@@ -1,5 +1,6 @@
 package CurveEditor.Curves;
 
+import java.util.LinkedList;
 import java.util.Vector;
 import CurveEditor.Exceptions.*;
 
@@ -21,7 +22,7 @@ public final class Curve {
 
 	// De Vector van outputpunten, die kan berekend worden uit de Vector van
 	// inputpunten.
-	protected Vector<Point> output;
+	protected LinkedList<Point> output;
 
 	// Identifiers
 	protected char type;
@@ -35,7 +36,7 @@ public final class Curve {
 		this.degree = 0;
 
 		input = new Vector<Point>();
-		output = new Vector<Point>();
+		output = new LinkedList<Point>();
 	}
 
 	public Curve(char type, short degree) {
@@ -43,14 +44,14 @@ public final class Curve {
 		this.degree = degree;
 
 		input = new Vector<Point>();
-		output = new Vector<Point>();
+		output = new LinkedList<Point>();
 	}
 
 	public Vector<Point> getInput() {
 		return input;
 	}
 
-	public Vector<Point> getOutput() {
+	public LinkedList<Point> getOutput() {
 		return output;
 	}
 

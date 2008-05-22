@@ -24,9 +24,10 @@ De interpolatie tussen een gegeven set punten is een uitgebreide en interessante
 op vele vlakken in de informatica/wiskunde zijn nut kan bewijzen. Curve editor geeft er de 
 basistoepassing ( ofwel de toegepaste wiskundige ) ervan. \newline \newline \newline \newline
 \newline \newline \newline \newline
-\begin{center}
-\textit{``If the path be beautiful, let us not ask where it leads.''} - Anatole France \newpage
-\end{center}\newpage
+%\begin{center}
+%\textit{``If the path be beautiful, let us not ask where it leads.''} - Anatole France \newpage
+%\end{center}
+\newpage
 \section{Wiskundige Voorkennis}
 \subsection{lineair}
 \subsection{Bezier}
@@ -116,10 +117,111 @@ co\"ordinaten van op te geven, \ldots.\newline \newline
 Er zijn ook twee HandleException klassen voorzien. Eentje in dit pakket, deze zal gewoon 
 het exceptie bericht in de console uitprinten. In het GUI pakket is een HandleException klasse
 voorzien die in een dialog scherm de exceptie zal uitprinten.
+\subsubsection{GUI}
+De GUI is vrij grondig opgesplitst( zie figuur BLAH ). Elk groot deel heeft zo zijn eigen klasse.
+Zo heb je een menubalk klasse, een snelknopbalk klasse, een tekengebied klasse en een keuzegebied
+klasse. De GUI klasse op zijn beurt zal het centrale orgaan spelen die al deze klassens 
+connecteerd. Het is daarom ook niet te verwonderen dat deze is afgeleid van de klasse Editor,
+die centrale klasse was van de core van de applicatie. 
+
+Hoewel het opdelen van de GUI in verschillende klassen heeft enorme voordelen als we spreken 
+over leesbaarheid en onderhoudbaarheid van code. Het eventhandle systeem van java is zelf
+optimaal voor dit soort afscheiding. In java worden de events opgevangen door een klasse 
+af te leiden van een van de Listener interface's (ActionListener, ItemListener, ... ). Deze 
+klasse zal dan de nodige member functies impementeren om de juiste evenafhandeling te kunnen
+doen. Het is dus voldoende om deze event handle klassens in GUI aan te maken en door te geven
+aan de juiste componenten ( menubalk, tekengebied, ... ). Meer uitleg hierover vind je verder in
+de tekst.
+\subsubsection{Tools}
+Dit bevat de een curve simulator. In principe is het een ``sjieke'' naam voor een bolletje
+dat over het pad loopt. Dit kan gebruikt worden door de gebruiker om de stijging en daling
+van de curve te bestuderen.
 \subsection{Uitwerking van de GUI}
+\subsubsection{Overzicht}
+
+Zoals in screenshot BLAH te zien is kan de vormgeving van de GUI in 4 grote stukken opgedeeld 
+worden.
+\begin{enumerate}
+\item Menubalk ( fig BLAH)
+Hierin kan de gebruiker elke actie terugvinden die door het programma kan uitgevoerd worden.
+Bijna elke actie is ook te bereiken met keyboard sneltoetsen ( Alt-F, Ctrl-O, \ldots ) zodat
+elke gebruiker op zijn lievelingsmethode kan navigeren door de verschillende uitvoerbare taken.
+Er is telkens op gelet dat de nesting van de menu-items niet te diep is noch te breed, verder
+is elke naam zo triviaal mogelijk gekozen en meestal ook voorzien van een icoon. Dit alles
+om het gebruiksgemak te verhogen.
+\item Snelknopbalk ( fig BLAH)
+Hierin vind je enkele veel gebruikte taken terug ( nieuw bestand, een bestand openen, 
+nieuwe curve, \ldots ). Dit opdat de gebruiker deze taken snel en en dus effici\"enter kan
+afhandelen.
+\item Keuzegebied ( fig BLAH)
+In dit gebied zal de gebruiker snel kunnen kiezen welk soort curve hij wil tekenen (bezier, 
+hermite, \ldots ) en kan hij ten alle tijden een punt toevoegen door zijn co\"ordinaten in te
+geven. Verder kan de gebruiker hier ook altijd kiezen of hij de co\"ordinaten, tangens en 
+puntnummers wil laten zien bij het tekenen. \newline
+Het Edit-veld van dit gebied hangt af van de Modus waarin je zit. Er zijn voor de gebruiker
+twee grote modi zichtbaar. De ene is curve modus, hier bewerk je curves ( selecteren, 
+deselectere, nieuwe curve, \ldots ) en de punt modus ( punt verslepen, selecteren, toevoegen ).
+Naargelang de modus waarin je zit zulle andere mogenlijkheden zichtbaar worden in het edit veld.
+Dit leidt tot een groter gebruiksgemak vermits de taken die verschijnen meestal ook gebruikt
+worden waneer je in de modus werkt.
+\item Tekengebied ( fig BLAH )
+Dit gebied is waarschijnlijk wel het interessantste voor de gebruiker. Met behulp van muis
+interactie kan de gebruiker punten aan dit veld toevoegen en deze punten laten connecteren
+door een interpolatie methode. De gebruiker kan tevens in dit veld punten en curves selecteren,
+verwijderen en zelf verslepen. Het tekengebied maakt gebruik van double buffering om 
+beeldflikkering te vermijden en ook van clipping zodat alleen getekend wordt wat ook echt
+op het scherm verschijnt.
+\end{enumerate}
 \subsection{Java Listeners}
+Java heeft een aparte stijl om events op te vangen ( signalen gestuurd door buttons, menu items,
+\ldots ). De taal bezit hiervoor zogenaamde event listener interfaces. De programmeur
+moet een klasse aanmaken die een dergelijke interface zal implementeren. Deze klasse wordt dan
+m.b.v. een simpel commando geconnecteerd met een bepaald component ( bijvoorbeeld een button ).
+In de interface is er een eventhandle functie gedefini\"eerd die dan door de programmeur zal 
+ge\"implementeerd worden zodat, wanneer het component een signaal uitvoert,
+de opgevangen event afhandeld zal worden.\newline
+
+Dit systeem is pas echt voordelig als je een event moet afhandelen in een geneste klasse 
+structuur. Stel bijvoorbeeld je hebt in een klasse A een instantie van een Klasse B zitten
+die op zijn beurt weer een instantie heeft van klasse C en je wilt dan klasse A een handeling
+doet als klasse C een event uitstuurt( figuure BLAH ). 
+Met callbacks is de properste manier (om klasse onafhankelijkheid te bewaren), een callback 
+te connecteren van klasse A naar klasse B, daarna een callback van klasse B naar klasse C. 
+Bij java kan ge gewoon een event handle klasse vanuit klasse A meegeven aan B die het op zijn 
+beurt meegeeft aan klasse C. Wat de code natuurlijk wat overzichtelijker maakt.\newline \newline
+
+In deze implementatie is ervoor gekozen om deze eventhandle klassen in de klasse GUI te 
+defini\"eren. Het voordeel hiervan is dat de enkel de klasse GUI de eventhandle klassen kan 
+instanti\"eren en deze instanties zulle alle member variabele en functies van GUI kunnen 
+gebruiken. Wat ervoor zorgt dat er geen extra connectie moet gelegd worden tussen de 
+eventhandle klassen en GUI (Een soort van friendly class die niet ge\"instantieerd kan worden 
+dus). 
 \subsection{Datastructuren}
+\subsubsection{Point}
+Deze datastructuur heeft niet zoveel uitleg nodig, een Point bestaat uit zijn x- en y-waarde
+en de nodige get() en set() functies. Het dient, zoals de naam al doet vermoeden, om een punt
+in een vlak voor te stellen.
+\subsubsection{Curve}
+Deze structuur heeft al iets meer uitleg nodig. Een curve is op het laagste niveau niets dan
+een container van punten.\newline
+Elke curve Houdt drie essentiele dingen bij
+\begin{enumerate}
+\item Type ( bezier, hermite, \ldot )
+\item een vector van input punten
+\item een vector van output punten
+\end{enumerate}
+
+Hierbij worden type en de input punten gegeven door de gebruiker. De vector van output punten
+wordt intern berekend door de verschillende interpolatie algoritmes. Daarna wordt de vector
+gebruikt om te kunnen tekenen op het tekengebied.\newline
+
+We hebben voor een vector gekozen om de input punten op te slaan omdat de verschillende
+interpolatietechnieken gemakkelijk moeten kunnen springen tussen de gegeven input punten om
+hun algorithme te kunnen uitvoern.
+
+Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve, \ldots
 \subsection{Extra's}
+\subsection{Interessante problemen}
 \newpage
 \section{Planning}
 \newpage
