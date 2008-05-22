@@ -76,7 +76,7 @@ de commandline een file mee te geven. Dit is enkel ter volledigheid vermits de g
 de loop van het programma zeer makkelijk bestanden kan inladen en opslaan.
 \subsubsection{Algorithms}
 Dit pakket voorziet allerlei klassen die voor de interpolatie tussen punten zullen zorgen.
-Elke klasse in dit pakket implementeert de Algorithme interface. Dit is handig voor de 
+Elke klasse in dit pakket implementeert de Algorithme interface. Dit is handig voor  
 groepswerk vermits deze interface vastlegt welke functies de programmeur zal implementeren.
 Zodoende weet je al op voorhand welke methodes je moet aanroepen om een bepaald resultaat
 te verkrijgen. \newline
@@ -139,11 +139,12 @@ voorzien die in een dialog scherm de exceptie zal uitprinten.
 \subsubsection{GUI}
 De GUI is vrij grondig opgesplitst( zie figuur BLAH ). Elk groot deel heeft zo zijn eigen klasse.
 Zo heb je een menubalk klasse, een snelknopbalk klasse, een tekengebied klasse en een keuzegebied
-klasse. De GUI klasse op zijn beurt zal het centrale orgaan spelen die al deze klassen 
+klasse. \newline
+De GUI klasse zal op zijn beurt het centrale orgaan spelen die al deze klassen 
 connecteerd. Het is daarom ook niet te verwonderen dat deze is afgeleid van de klasse Editor,
 die centrale klasse was van de core van de applicatie. 
-
-Hoewel het opdelen van de GUI in verschillende klassen heeft enorme voordelen als we spreken 
+\newline
+Het opdelen van de GUI in verschillende klassen heeft enorme voordelen als we spreken 
 over leesbaarheid en onderhoudbaarheid van code. Het eventhandle systeem van java is zelf
 optimaal voor dit soort afscheiding. In java worden de events opgevangen door een klasse 
 af te leiden van een van de Listener interface's (ActionListener, ItemListener, ... ). Deze 
@@ -152,9 +153,9 @@ doen. Het is dus voldoende om deze event handle klassen in GUI aan te maken en d
 aan de juiste componenten ( menubalk, tekengebied, ... ). Meer uitleg hierover vind je verder in
 de tekst.
 \subsubsection{Tools}
-Dit bevat de een curve simulator. In principe is het een ``sjieke'' naam voor een bolletje
+Dit bevat een curve simulator. In principe is het een ``sjieke'' naam voor een bolletje
 dat over het pad loopt. Dit kan gebruikt worden door de gebruiker om de stijging en daling
-van de curve te bestuderen.
+van de curve te bestuderen. Zodoende kan hij de getekende curve visueel evalueren.
 \subsection{Uitwerking van de GUI}
 \subsubsection{Overzicht}
 
@@ -206,7 +207,7 @@ die op zijn beurt weer een instantie heeft van klasse C en je wilt dan klasse A 
 doet als klasse C een event uitstuurt( figuure BLAH ). 
 Met callbacks is de properste manier (om klasse onafhankelijkheid te bewaren), een callback 
 te connecteren van klasse A naar klasse B, daarna een callback van klasse B naar klasse C. 
-Bij java kan ge gewoon een event handle klasse vanuit klasse A meegeven aan B die het op zijn 
+Bij java kan je gewoon een event handle klasse vanuit klasse A meegeven aan B die het op zijn 
 beurt meegeeft aan klasse C. Wat de code natuurlijk wat overzichtelijker maakt.\newline \newline
 
 In deze implementatie is ervoor gekozen om deze eventhandle klassen in de klasse GUI te 
@@ -221,8 +222,8 @@ Deze datastructuur heeft niet zoveel uitleg nodig, een Point bestaat uit zijn x-
 en de nodige get() en set() functies. Het dient, zoals de naam al doet vermoeden, om een punt
 in een vlak voor te stellen.
 \subsubsection{Curve}
-Deze structuur heeft al iets meer uitleg nodig. Een curve is op het laagste niveau niets dan
-een container van punten.\newline
+Deze structuur heeft al iets meer uitleg nodig. Een curve is op het laagste niveau niets 
+anders dan een container van punten.\newline
 Elke curve Houdt drie essentiele dingen bij
 \begin{enumerate}
 \item Type ( bezier, hermite, \ldots )
@@ -236,7 +237,7 @@ gebruikt om te kunnen tekenen op het tekengebied.\newline
 
 We hebben voor een vector gekozen om de input punten op te slaan omdat de verschillende
 interpolatietechnieken gemakkelijk moeten kunnen springen tussen de gegeven input punten om
-hun algorithme te kunnen uitvoeren. Voor de output punten hebben we dan gekozen voor een 
+hun algoritme te kunnen uitvoeren. Voor de output punten hebben we dan gekozen voor een 
 enkelvoudig gelinkte lijst vermits de punten maar in een richting dienen toegevoegd en gelezen
 te worden.
 
