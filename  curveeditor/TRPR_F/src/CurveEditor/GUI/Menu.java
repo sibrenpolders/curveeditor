@@ -81,18 +81,18 @@ public class Menu extends JMenuBar implements ActionListener {
 
 	private void makeFile() {
 		// menu object aanmaken
-		CreateMenu("FILE", KeyEvent.VK_F, "");
-		CreateMenuItem("New", KeyEvent.VK_N, "Create a new file",
+		CreateMenu("File", KeyEvent.VK_F, "");
+		CreateMenuItem("New File", KeyEvent.VK_N, "Create a new file",
 				"src/CurveEditor/GUI/icons/filenew.png");
 		menuItem.addActionListener(listener);
 
-		CreateMenuItem("Open", KeyEvent.VK_O, "Open a file",
+		CreateMenuItem("Open File", KeyEvent.VK_O, "Open a file",
 				"src/CurveEditor/GUI/icons/fileopen.png");
 		menuItem.addActionListener(listener);
 
 		menu.addSeparator();
 
-		CreateMenuItem("Save", KeyEvent.VK_S, "Save a file",
+		CreateMenuItem("Save File", KeyEvent.VK_S, "Save a file",
 				"src/CurveEditor/GUI/icons/filesave.png");
 		menuItem.addActionListener(listener);
 
@@ -108,7 +108,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
 		menu.addSeparator();
 
-		CreateMenuItem("Quit", KeyEvent.VK_Q, "Quit Curve Editor",
+		CreateMenuItem("Quit Program", KeyEvent.VK_Q, "Quit Curve Editor",
 				"src/CurveEditor/GUI/icons/exit.png");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -135,7 +135,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		
 		menu.addSeparator();
 
-		CreateMenuItem("Preferrences", KeyEvent.VK_P,
+		CreateMenuItem("Preferences", KeyEvent.VK_P,
 				"Make adjustments to Curve Editor", null);
 		menuItem.addActionListener(listener);
 	}
@@ -156,22 +156,6 @@ public class Menu extends JMenuBar implements ActionListener {
 		button.setSelected(false);
 		button.addActionListener(listener);
 		button.setToolTipText("Simulate a path");
-
-		group.add(button);
-		menu.add(button);
-
-		button = new JRadioButton("Select All");
-		button.setSelected(true);
-		button.addActionListener(listener);
-		button.setToolTipText("Select everything");
-
-		group.add(button);
-		menu.add(button);
-
-		button = new JRadioButton("Deselect All");
-		button.setSelected(true);
-		button.addActionListener(listener);
-		button.setToolTipText("Deselect all that was selected");
 
 		group.add(button);
 		menu.add(button);
@@ -209,6 +193,14 @@ public class Menu extends JMenuBar implements ActionListener {
 		group.add(button);
 		radioPanel.add(button);
 
+		button = new JRadioButton("Deselect All Points");
+		button.setSelected(false);
+		button.addActionListener(listener);
+		button.setToolTipText("Deselect all that was selected");
+
+		group.add(button);
+		radioPanel.add(button);
+		
 		button = new JRadioButton("Delete Point");
 		button.setSelected(false);
 		button.addActionListener(listener);
@@ -249,8 +241,24 @@ public class Menu extends JMenuBar implements ActionListener {
 		button.addActionListener(listener);
 
 		group.add(button);
-		radioPanel.add(button);
+		radioPanel.add(button);		
 
+		button = new JRadioButton("Select All Curves");
+		button.setSelected(false);
+		button.addActionListener(listener);
+		button.setToolTipText("Select everything");
+
+		group.add(button);
+		radioPanel.add(button);
+		
+		button = new JRadioButton("Deselect All Curves");
+		button.setSelected(true);
+		button.addActionListener(listener);
+		button.setToolTipText("Deselect all that was selected");
+
+		group.add(button);
+		radioPanel.add(button);
+		
 		button = new JRadioButton("Delete Curve");
 		button.setSelected(false);
 		button.addActionListener(listener);
@@ -317,7 +325,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		JPanel radioPanel = new JPanel();
 		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
 
-		JRadioButton algName = new JRadioButton("normal");
+		JRadioButton algName = new JRadioButton("Normal");
 		algName.setSelected(true);
 		algName.addActionListener(listener);
 
@@ -347,10 +355,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		add(Box.createHorizontalGlue());
 		CreateMenu("Help", KeyEvent.VK_H, "");
 
-		CreateMenuItem("Quick howto's", KeyEvent.VK_H, "Learn the basics", null);
+		CreateMenuItem("Quick Howto's", KeyEvent.VK_H, "Learn the basics", null);
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Quick howto");
+				System.out.println("Quick Howto");
 			}
 		});
 
