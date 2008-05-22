@@ -492,13 +492,6 @@ public class Editor {
 			selectedCurves.elementAt(i).translate(x, y);
 		}
 
-		// Geselecteerde inputpunten moeten mee verschoven worden,
-		// indien die er zijn.
-		for (int i = 0; i < selectedPoints.size(); ++i) {
-			selectedPoints.elementAt(i).increaseX(x);
-			selectedPoints.elementAt(i).increaseY(y);
-		}
-
 		// Curvegegevens herberekenen.
 		recalculateSelectedCurves();
 	}
