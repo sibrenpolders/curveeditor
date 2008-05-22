@@ -116,9 +116,9 @@ public class CurveContainer {
 			// Alle outputpunten toevoegen.
 			for (int i = 0; i < c.getOutput().size(); ++i)
 				// Checken of het punt wel binnen de dimensies valt.
-				if (isValidPoint(c.getOutput().elementAt(i)))
-					curves[c.getOutput().elementAt(i).X()][c.getOutput()
-							.elementAt(i).Y()] = c;
+				if (isValidPoint(c.getOutput().get(i)))
+					curves[c.getOutput().get(i).X()][c.getOutput()
+							.get(i).Y()] = c;
 
 			addControlPoints(c); // input toevoegen
 		}
@@ -130,9 +130,9 @@ public class CurveContainer {
 			// Alle outputpunten verwijderen.
 			for (int i = 0; i < c.getOutput().size(); ++i)
 				// Checken of het punt wel binnen de dimensies valt.
-				if (isValidPoint(c.getOutput().elementAt(i)))
-					curves[c.getOutput().elementAt(i).X()][c.getOutput()
-							.elementAt(i).Y()] = null;
+				if (isValidPoint(c.getOutput().get(i)))
+					curves[c.getOutput().get(i).X()][c.getOutput()
+							.get(i).Y()] = null;
 
 			deleteControlPoints(c); // input verwijderen
 		}
