@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import sun.awt.RepaintArea;
 import CurveEditor.Core.*;
 import CurveEditor.Curves.*;
 import CurveEditor.Exceptions.*;
@@ -274,7 +276,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				translateSelectedCurves(diffX, diffY);
 			else
 				translateSelectedControlPoints(diffX, diffY);
-
 			pushNew();
 		}
 
@@ -582,13 +583,19 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			recalculateSelectedCurves();
 			changeMode(MODE.SELECT_CURVE);
 			eventHandled = true;
-		} else if (actionCommand.equals("Deselect All")) {
+		} else if (actionCommand.equals("Deselect All Curves")) {
 			deselectAll();
 			changeMode(MODE.SELECT_CURVE);
+			eventHandled = true;
+		} else if (actionCommand.equals("Select All Curves")) {			
+			selectAllCurves();
+			eventHandled = true;
 		}
-
-		if (eventHandled)
+		if (eventHandled) {
 			choice.toggleEditPanel(true);
+			draw.repaint();
+		}
+		
 		return eventHandled;
 	}
 
@@ -616,10 +623,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			eventHandled = true;
 			changeMode(MODE.SELECT_CONTROL_POINT);
 		} else if (actionCommand.equals("Deselect All Control Points")) {
-			eventHandled = true;
 			deselectAll();
-			changeMode(MODE.SELECT_CONTROL_POINT);
-			draw.repaint();
+			changeMode(MODE.SELECT_CURVE);
+			eventHandled = true;			
 		}
 		// ander naam, zelfde beestje
 		else if (actionCommand.equals("Add Control Point")
@@ -629,8 +635,11 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			toggle = false;
 		}
 
-		if (eventHandled && toggle)
+		if (eventHandled && toggle) {
 			choice.toggleEditPanel(false);
+			draw.repaint();
+		}
+		
 		return eventHandled;
 	}
 
@@ -659,7 +668,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			} else if (actionCommand.equals("Redo")) {
 				redo();
 				draw.repaint();
-			} else if (actionCommand.equals("Preferrences"))
+			} else if (actionCommand.equals("Preferences"))
 				System.out.println("PREF");
 			else if (actionCommand.equals("Save As ..."))
 				saveAs();
