@@ -195,7 +195,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				|| mode == Editor.MODE.DESELECT_CURVE
 				|| mode == Editor.MODE.SELECT_CONTROL_POINT
 				|| mode == Editor.MODE.DESELECT_CONTROL_POINT) {
-			push();
 			draw.beginSelectionRectangle(e.getX(), e.getY());
 		}
 		// We zitten in een movemode --> we beginnen de
