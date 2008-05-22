@@ -5,6 +5,15 @@ import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
 
+/*
+ * Deze van Algorithm afgeleide klasse implementeert het Hermite Cardinaal-interpolatiealgoritme.
+ * Per vier punten wordt een curve berekend als volgt: 
+ * Punt pi-1 en punt pi+1 worden gebruikt om de richtingsvector van punt pi te bepalen m.b.v. volgende formule:
+ * (1-c)*( (pi-1 - pi+1)/2) hierbij is c een getal tussen 0 en 1.
+ * Bijgevolg halen we uit de 4 punten 2 punten waartussen we interpoleren en hun respectievelijke richtingsvectoren,
+ * deze geve we mee aan het algorithme van de Hermite klasse om de interpolatie te berekenen. 
+ * Merk op dat we daarom niet kunnen interpoleren tussen het eerste en het tweede en het derde en het vierde punt. 
+ */
 public class HermiteCardinal extends Hermite {
 
 	public HermiteCardinal(char type, short degree) {
@@ -29,7 +38,7 @@ public class HermiteCardinal extends Hermite {
 		// Er zijn minstens 4 punten nodig om deze bewerking uit te kunnen
 		// voeren
 		// Pi-1, Pi, Pi+1, Pi+2
-		// hierbij zijn Pi en Pi+1 de punten waartussen we interpolleren
+		// hierbij zijn Pi en Pi+1 de punten waartussen we interpoleren
 		// de andere punten worden berekend om de tangens te berekenen
 		// volgens volgende formule Ti = c*(Pi+1 - Pi-1)
 		if (size - 4 >= 0) {
@@ -39,7 +48,7 @@ public class HermiteCardinal extends Hermite {
 			Point p4 = vip.get(size - 1);
 
 			int x, y;
-			// we interpolleren tussen p2 en p3 eerst t2 vinden
+			// we interpoleren tussen p2 en p3 eerst t2 vinden
 			x = (int) (c * (p3.X() - p1.X()));
 			y = (int) (c * (p3.Y() - p1.Y()));
 			Point t2 = new Point(x, y);
@@ -83,7 +92,6 @@ public class HermiteCardinal extends Hermite {
 
 		float t;
 
-		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
 		int size = vip.size();
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
@@ -98,7 +106,7 @@ public class HermiteCardinal extends Hermite {
 			Point p3 = vip.get(i + 2);
 			Point p4 = vip.get(i + 3);
 			int x, y;
-			// we interpolleren tussen p2 en p3 eerst t2 vinden
+			// we interpoleren tussen p2 en p3 eerst t2 vinden
 			x = (int) (c * (p3.X() - p1.X()));
 			y = (int) (c * (p3.Y() - p1.Y()));
 			Point t2 = new Point(x, y);
