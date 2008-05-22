@@ -125,19 +125,19 @@ public class Menu extends JMenuBar implements ActionListener {
 	private void makeEdit() {
 		CreateMenu("Edit", KeyEvent.VK_E, "");
 
-		CreateMenuItem("Undo", KeyEvent.VK_U, "Undo last action",
+		CreateMenuItem("Undo", KeyEvent.VK_U, "Undo last action.",
 				"src/CurveEditor/GUI/icons/undo.png");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Be gone** ");
+				System.out.println("Undo");
 			}
 		});
 
-		CreateMenuItem("Redo", KeyEvent.VK_R, "Redolast action",
+		CreateMenuItem("Redo", KeyEvent.VK_R, "Redo last action.",
 				"src/CurveEditor/GUI/icons/redo.png");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Come back");
+				System.out.println("Redo");
 			}
 		});
 

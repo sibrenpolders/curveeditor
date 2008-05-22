@@ -649,9 +649,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			else if (actionCommand.equals("Path Simulation")) {
 				(new Thread(new PathSimulation(draw, selectedCurves))).start();
 			} else if (actionCommand.equals("undo"))
-				System.out.println("BE GONE!");
+				undo();
 			else if (actionCommand.equals("redo"))
-				System.out.println("COME BACK!");
+				redo();
 			else if (actionCommand.equals("Preferrences"))
 				System.out.println("PREF");
 			else if (actionCommand.equals("Save As ..."))

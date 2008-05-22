@@ -1,5 +1,6 @@
 package CurveEditor.Core;
 
+import java.util.EmptyStackException;
 import java.util.Vector;
 import CurveEditor.Algorithms.*;
 import CurveEditor.Curves.*;
@@ -97,7 +98,8 @@ public class Editor {
 
 	// Alles van punten en curves resetten.
 	protected void reset() {
-
+		push();
+		
 		// Clearen, en niet opnieuw aanmaken, om referenties elders
 		// in het programma niet corrupt te maken !
 		curves.clear();
@@ -221,6 +223,10 @@ public class Editor {
 
 	// Alles wordt gedeselecteerd.
 	protected void deselectAll() {
+		if(selectedCurves.size() > 0 || selectedPoints.size() > 0)
+		{
+			push();
+		}
 		// Geselecteerde curves bij de ongeselecteerde voegen.
 		curves.addAll(selectedCurves);
 		selectedCurves.clear();
@@ -232,6 +238,7 @@ public class Editor {
 	// De huidige situatie aanpassen opdat men één nieuwe lege
 	// curve zou kunnen gaan aanpassen.
 	protected void startNewCurve() {
+		push();
 		deselectAll();
 		// selectedCurves bevat slechts één curve, een voorlopig lege.
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
@@ -254,6 +261,7 @@ public class Editor {
 		if (c == null)
 			return null;
 		else {
+			push();
 			// De gevonden Curve moeten van selectiestatus switchen.
 			if (isSelectedCurve(c))
 				deselectCurve(c);
@@ -314,6 +322,7 @@ public class Editor {
 		int index = findIndexCurve(c);
 
 		if (index != -1) {
+			push();
 			selectedCurves.add(curves.get(index));
 			curves.remove(index);
 		}
@@ -327,6 +336,7 @@ public class Editor {
 		int index = findIndexSelectedCurve(c);
 
 		if (index != -1) {
+			push();
 			curves.add(selectedCurves.get(index));
 			selectedCurves.remove(index);
 		}
@@ -334,16 +344,22 @@ public class Editor {
 
 	// Alle curves krijgen de status ongeselecteerd.
 	protected void deselectAllCurves() {
-		for (int i = 0; i < selectedCurves.size(); ++i)
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			if (i == 0)
+				push();
 			curves.add(selectedCurves.get(i));
+		}
 
 		selectedCurves.clear();
 	}
 
 	// Alle curves krijgen de status geselecteerd.
 	protected void selectAllCurves() {
-		for (int i = 0; i < curves.size(); ++i)
+		for (int i = 0; i < curves.size(); ++i) {
+			if (i == 0)
+				push();
 			selectedCurves.add(curves.get(i));
+		}
 
 		curves.clear();
 	}
@@ -388,8 +404,12 @@ public class Editor {
 
 	// Alle geselecteerde curves worden verwijderd.
 	protected void deleteSelectedCurves() {
-		for (int j = 0; j < selectedCurves.size(); ++j)
+		for (int j = 0; j < selectedCurves.size(); ++j) {
+			if (j == 0)
+				push();
+
 			selectionTool.deleteCurve(selectedCurves.elementAt(j));
+		}
 
 		selectedCurves.clear();
 		selectedPoints.clear();
@@ -407,6 +427,9 @@ public class Editor {
 				startNewCurve();
 
 			for (int i = 0; i < selectedCurves.size(); ++i) {
+				if (i == 0)
+					push();
+
 				Curve c = selectedCurves.elementAt(i);
 
 				c.addInput(a); // Punt toevoegen.
@@ -497,6 +520,7 @@ public class Editor {
 	// samenvalt met het laatste van de vorige curve.
 	protected void connectCurvesC0() {
 		if (selectedCurves.size() > 0) {
+			push();
 			Curve result = selectedCurves.get(0);
 			selectionTool.deleteCurve(result);
 
@@ -527,6 +551,7 @@ public class Editor {
 	// gewoon op het laatste inputpunt van de vorige curve.
 	protected void connectNoExtraPoint() {
 		if (selectedCurves.size() > 0) {
+			push();
 			Curve result = selectedCurves.get(0);
 			selectionTool.deleteCurve(result);
 			for (int i = 1; i < selectedCurves.size(); ++i) {
@@ -563,6 +588,9 @@ public class Editor {
 		Point result = null;
 		Vector<Point> temp = selectionTool.searchControlPoint(p); // Zoeken.
 		for (int i = 0; temp != null && i < temp.size(); ++i) {
+			if (i == 0)
+				push();
+
 			result = temp.elementAt(0);
 
 			// Elk gevonden inputpunt moet van selectiestatus switchen.
@@ -670,6 +698,7 @@ public class Editor {
 	// inputpunt van de curves waartoe zij allemaal behoren.
 	// De curves worden uiteraard opnieuw berekend.
 	protected void deleteSelectedControlPoints() {
+		push();
 		for (int i = 0; i < selectedPoints.size(); ++i) {
 			for (int j = 0; j < selectedCurves.size(); ++j) {
 				int temp;
@@ -723,6 +752,7 @@ public class Editor {
 
 	// Een bestand inladen.
 	protected void loadFile(String s) {
+		push();
 		file.load(s, curves);
 		recalculateCurves();
 	}
@@ -730,5 +760,33 @@ public class Editor {
 	// In een bestand opslaan.
 	protected void saveFile(String s, Vector<Curve> v) {
 		file.save(s, v);
+	}
+
+	protected void undo() {
+		try {
+			file.undo(curves, selectedCurves);
+		} catch (EmptyStackException e) {
+			e.printStackTrace();
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void push() {
+		try {
+			file.push(curves, selectedCurves);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void redo() {
+		try {
+			file.redo(curves, selectedCurves);
+		} catch (EmptyStackException e) {
+			e.printStackTrace();
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
 	}
 }
