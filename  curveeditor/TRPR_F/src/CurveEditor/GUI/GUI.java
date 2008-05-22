@@ -455,10 +455,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				draw.saveToFile(fileName, "PNG");
 			else if (fileName.endsWith("gif") || fileName.endsWith("GIF"))
 				draw.saveToFile(fileName, "GIF");
-			else if (fileName.endsWith("jpg") || fileName.endsWith("JPG"))
-				draw.saveToFile(fileName, "JPG");
-			else if (fileName.endsWith("bmp") || fileName.endsWith("BMP"))
-				draw.saveToFile(fileName, "BMP");
 			else
 				saveFile(fileName, tmp);
 		}
@@ -470,8 +466,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	private void saveAs() {
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.xml) + Image files (*.png/gif/bmp/jpg)",
-				"xml", "png", "gif", "bmp", "jpg");
+				"CurveEditor files (*.xml) + Image files (*.png/gif)", "xml",
+				"png", "gif");
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
 			Vector<Curve> tmp = curves;
@@ -482,10 +478,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				draw.saveToFile(path, "PNG");
 			else if (path.endsWith("gif") || path.endsWith("GIF"))
 				draw.saveToFile(path, "GIF");
-			else if (path.endsWith("jpg") || path.endsWith("JPG"))
-				draw.saveToFile(path, "JPG");
-			else if (path.endsWith("bmp") || path.endsWith("BMP"))
-				draw.saveToFile(path, "BMP");
 			else
 				saveFile(path, tmp); // opslaan
 		}

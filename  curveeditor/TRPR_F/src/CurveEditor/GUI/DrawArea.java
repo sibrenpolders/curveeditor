@@ -372,9 +372,6 @@ public final class DrawArea extends JPanel {
 
 		try {
 			if (extension.compareToIgnoreCase("png") == 0
-					|| extension.compareToIgnoreCase("png") == 0
-					|| extension.compareToIgnoreCase("bmp") == 0
-					|| extension.compareToIgnoreCase("jpg") == 0
 					|| extension.compareToIgnoreCase("gif") == 0)
 				ImageIO.write(bi, extension.toUpperCase(), new File(fileName));
 		} catch (IOException e) {
