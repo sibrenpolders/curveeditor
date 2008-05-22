@@ -450,7 +450,17 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		else {
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
-			saveFile(fileName, tmp);
+
+			if (fileName.endsWith("png") || fileName.endsWith("PNG"))
+				draw.saveToFile(fileName, "PNG");
+			else if (fileName.endsWith("gif") || fileName.endsWith("GIF"))
+				draw.saveToFile(fileName, "GIF");
+			else if (fileName.endsWith("jpg") || fileName.endsWith("JPG"))
+				draw.saveToFile(fileName, "JPG");
+			else if (fileName.endsWith("bmp") || fileName.endsWith("BMP"))
+				draw.saveToFile(fileName, "BMP");
+			else
+				saveFile(fileName, tmp);
 		}
 	}
 
@@ -460,12 +470,24 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	private void saveAs() {
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.xml)", "xml");
+				"CurveEditor files (*.xml) + Image files (*.png/gif/bmp/jpg)",
+				"xml", "png", "gif", "bmp", "jpg");
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
-			saveFile(jfc.getSelectedFile().getAbsolutePath(), tmp); // opslaan
+			String path = jfc.getSelectedFile().getAbsolutePath();
+
+			if (path.endsWith("png") || path.endsWith("PNG"))
+				draw.saveToFile(path, "PNG");
+			else if (path.endsWith("gif") || path.endsWith("GIF"))
+				draw.saveToFile(path, "GIF");
+			else if (path.endsWith("jpg") || path.endsWith("JPG"))
+				draw.saveToFile(path, "JPG");
+			else if (path.endsWith("bmp") || path.endsWith("BMP"))
+				draw.saveToFile(path, "BMP");
+			else
+				saveFile(path, tmp); // opslaan
 		}
 	}
 
@@ -586,7 +608,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			deselectAll();
 			changeMode(MODE.SELECT_CURVE);
 			eventHandled = true;
-		} else if (actionCommand.equals("Select All Curves")) {			
+		} else if (actionCommand.equals("Select All Curves")) {
 			selectAllCurves();
 			eventHandled = true;
 		}
@@ -594,7 +616,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			choice.toggleEditPanel(true);
 			draw.repaint();
 		}
-		
+
 		return eventHandled;
 	}
 
@@ -624,7 +646,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		} else if (actionCommand.equals("Deselect All Control Points")) {
 			deselectAll();
 			changeMode(MODE.SELECT_CURVE);
-			eventHandled = true;			
+			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
 		else if (actionCommand.equals("Add Control Point")
@@ -638,7 +660,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			choice.toggleEditPanel(false);
 			draw.repaint();
 		}
-		
+
 		return eventHandled;
 	}
 
