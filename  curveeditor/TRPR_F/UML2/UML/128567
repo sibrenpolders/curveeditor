@@ -1,0 +1,1745 @@
+format 46
+"Core" // CurveEditor::Core
+  revision 1
+  modified_by 55 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/Core"
+  java_package "CurveEditor.Core"
+  classview 128567 "Core"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 129975 "CurveContainer"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse bevat de voorstelling van de huidige curves. 
+De output- en inputpunten van de verschillende curves worden hier bijgehouden.
+Bij het herberekenen van de outputpunten, verplaatsen/toevoegen/verwijderen van
+inputpunten moet deze container terug bijgewerkt worden om terug met de curve-
+voorstelling overeen te komen, uiteraard.
+Deze klasse wordt gebruikt wanneer men vlug wil nagaan óf en tót welke curve een
+input- of outputpunt behoort (bij hoovering, selecteren e.d.). 
+"
+      attribute 129207 "SEARCH_RANGE"
+	class_attribute private explicit_type "short"
+	init_value "=  3"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Welk gebiedje moet afgezocht worden bij een gegeven pixel ?
+"
+      end
+
+      classrelation 128951 // curves (<unidirectional association>)
+	relation 128951 --->
+	  a role_name "curves" multiplicity "[][]" private
+	    comment " Houdt bij of en op welke curve een x,y-outputpunt ligt.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	    classrelation_ref 128951 // curves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 129079 // controlPoints (<unidirectional association>)
+	relation 129079 --->
+	  a role_name "controlPoints" multiplicity "[][]" private
+	    comment " Houdt bij of en op welke curve een x,y-inputpunt ligt.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	    classrelation_ref 129079 // controlPoints (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      attribute 129335 "maxX"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De dimensies van de container.
+"
+      end
+
+      attribute 129463 "maxY"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De dimensies van de container.
+"
+      end
+
+      operation 135479 "maxX"
+	public explicit_return_type "int"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135607 "maxY"
+	public explicit_return_type "int"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 135735 "CurveContainer"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "Maxx" explicit_type "int"
+	  param in name "Maxy" explicit_type "int"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Constructor die m.b.v. de meegegeven dimensies
+ een voorstelling van de curveverzameling aanmaakt."
+      end
+
+      operation 135863 "resize"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "MaxX" explicit_type "int"
+	  param in name "MaxY" explicit_type "int"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De dimensies van de voorstelling veranderen en
+ de vorige gegevens naar de nieuwe voorstelling kopiëren."
+      end
+
+      operation 135991 "clear"
+	public explicit_return_type "void"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De huidige gegevens verwijderen."
+      end
+
+      operation 136119 "addCurve"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Een curve aan de container toevoegen."
+      end
+
+      operation 136247 "deleteCurve"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Een curve uit de container verwijderen."
+      end
+
+      operation 136375 "isValidPoint"
+	private explicit_return_type "boolean"
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Checken of het gegeven punt wel binnen de dimensies van
+ de container valt."
+      end
+
+      operation 136503 "searchCurve"
+	public return_type class_ref 128311 // Curve
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt de bijhorende curve, gebruik
+ makende van het default zoekbereik."
+      end
+
+      operation 136631 "searchCurve"
+	public return_type class_ref 128311 // Curve
+	nparams 2
+	  param inout name "p" type class_ref 128695 // Point
+	  param in name "range" explicit_type "short"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt de bijhorende curve, gebruik
+ makende van het meegegeven zoekbereik."
+      end
+
+      operation 136759 "searchCurve_"
+	private return_type class_ref 128311 // Curve
+	nparams 2
+	  param inout name "p" type class_ref 128695 // Point
+	  param in name "range" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt en het meegegeven zoekbereik de bijhorende
+ curve."
+      end
+
+      operation 136887 "addControlPoints"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De inputpunten van een meegegeven curve aan de container toevoegen."
+      end
+
+      operation 137015 "deleteControlPoints"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De inputpunten van een meegegeven curve uit de container verwijderen."
+      end
+
+      operation 137143 "searchCurvesByControlPoint"
+	public return_type class_ref 128311 // Curve
+	nparams 2
+	  param inout name "p" type class_ref 128695 // Point
+	  param in name "range" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt als inputpunt de bijhorende curve, gebruik
+ makende van het meegegeven zoekbereik."
+      end
+
+      operation 137271 "searchCurvesByControlPoint"
+	public return_type class_ref 128311 // Curve
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt als inputpunt de bijhorende curve, gebruik
+ makende van het default zoekbereik."
+      end
+
+      operation 137399 "searchCurvesByControlPoint_"
+	private return_type class_ref 128311 // Curve
+	nparams 2
+	  param inout name "p" type class_ref 128695 // Point
+	  param in name "range" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven mogelijk inputpunt en het meegegeven zoekbereik
+ de bijhorende curve."
+      end
+
+      operation 137527 "searchControlPoint"
+	public return_type class_ref 128695 // Point
+	nparams 2
+	  param inout name "p" type class_ref 128695 // Point
+	  param in name "range" explicit_type "short"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt alle beschikbare inputpunten in het
+ meegegeven zoekbereik."
+      end
+
+      operation 137655 "searchControlPoint"
+	public return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. een gegeven punt alle beschikbare inputpunten in het
+ default zoekbereik."
+      end
+
+      operation 137783 "searchControlPoint_"
+	private return_type class_ref 128695 // Point
+	nparams 2
+	  param inout name "p" type class_ref 128695 // Point
+	  param in name "range" explicit_type "short"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zoek a.h.v. het gegeven punt en het meegegeven zoekbereik
+ alle beschikbare inputpunten in dát zoekbereik."
+      end
+
+      operation 137911 "isControlPoint"
+	public return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Controleren of een gegeven punt een inputpunt is van een curve.
+ null wordt teruggegeven indien dit niet het geval is, anders
+ het inputpunt zelf."
+      end
+
+      operation 138039 "deleteControlPoint"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Het inputpoint op de meegegeven locatie uit de container verwijderen."
+      end
+    end
+
+    class 130103 "Editor"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse is het centraal orgaan van heel de applicatie. Hier worden
+de curves in specifieke lijsten bijgehouden (geselecteerde, ongeselecteerde
+en gehooverde). Bewerkingen die men uiteindelijk op de (lijsten van) curves kan 
+doen worden in deze klasse voorzien; deze zorgen er uiteraard ook voor dat de 
+opslag van de curves consequent blijft. Ook wordt hier bijgehouden in welke MODE
+de gebruiker zich nu bevindt; dit heeft namelijk zijn weerslag op acties die de
+gebruiker dan doet.  
+Kortom: deze klasse brengt alles samen.
+"
+      class 130231 "MODE"
+	visibility protected stereotype "enum"
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+	php_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	attribute 129591 "NONE"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 129719 "ADD_INPUT"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 129847 "SELECT_CURVE"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 129975 "SELECT_CONTROL_POINT"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 130103 "DESELECT_CURVE"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 130231 "DESELECT_CONTROL_POINT"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 130359 "DESELECT_ALL"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 130487 "NEW_CURVE"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 130615 "MOVE_CURVES"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 130743 "MOVE_CONTROL_POINTS"
+	  public type class_ref 130231 // MODE
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+      end
+
+      attribute 130871 "SEARCH_RANGE"
+	class_attribute protected explicit_type "short"
+	init_value "=  3"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Default zoekbereik indien vanuit een gegeven punt
+ een input- of outputpunt van de curves gezocht wordt.
+"
+      end
+
+      classrelation 129207 // mode (<unidirectional association>)
+	relation 129207 --->
+	  a role_name "mode" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 129207 // mode (<unidirectional association>)
+	  b parent class_ref 130231 // MODE
+      end
+
+      classrelation 129335 // algorithms (<unidirectional association>)
+	relation 129335 --->
+	  stereotype "Vector"
+	  a role_name "algorithms" protected
+	    comment " Lijst van alle geïmplementeerde algoritmen.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129335 // algorithms (<unidirectional association>)
+	  b parent class_ref 128183 // Algorithm
+      end
+
+      classrelation 129463 // curves (<unidirectional association>)
+	relation 129463 --->
+	  stereotype "Vector"
+	  a role_name "curves" protected
+	    comment " Lijst van ongeselecteerde curves."
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129463 // curves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 129591 // selectedCurves (<unidirectional association>)
+	relation 129591 --->
+	  stereotype "Vector"
+	  a role_name "selectedCurves" protected
+	    comment " Lijst van geselecteerde curves --> hier worden de bewerkingen op gedaan.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129591 // selectedCurves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 129719 // hooveredCurves (<unidirectional association>)
+	relation 129719 --->
+	  stereotype "Vector"
+	  a role_name "hooveredCurves" protected
+	    comment " Lijst van curves die onder de cursor staan; moeten wel in curves of
+ selectedCurves blijven staan.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129719 // hooveredCurves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 129847 // selectedPoints (<unidirectional association>)
+	relation 129847 --->
+	  stereotype "Vector"
+	  a role_name "selectedPoints" protected
+	    comment " Lijst van geselecteerde controlepunten --> kunnen verplaatst worden;
+ curves die dit punt als controlepunt gebruiken, moeten in selectedCurves
+ staan.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129847 // selectedPoints (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      classrelation 129975 // hooveredPoints (<unidirectional association>)
+	relation 129975 --->
+	  stereotype "Vector"
+	  a role_name "hooveredPoints" protected
+	    comment " Lijst van punten die onder de cursor staan.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 129975 // hooveredPoints (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      classrelation 130103 // currentAlgorithm (<unidirectional association>)
+	relation 130103 --->
+	  a role_name "currentAlgorithm" protected
+	    comment " Algorithm dat momenteel geselecteerd is; verandert men dit, dan wordt dit
+ autom. verandert voor elke selectedCurve.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 130103 // currentAlgorithm (<unidirectional association>)
+	  b parent class_ref 128183 // Algorithm
+      end
+
+      classrelation 130231 // file (<unidirectional association>)
+	relation 130231 --->
+	  a role_name "file" protected
+	    comment " Zorgt voor het uit- en inlezen van bestanden."
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 130231 // file (<unidirectional association>)
+	  b parent class_ref 130359 // FileIO
+      end
+
+      classrelation 130359 // selectionTool (<unidirectional association>)
+	relation 130359 --->
+	  a role_name "selectionTool" protected
+	    comment " Datastructuur die kan gebruikt worden om na te gaan op welke curve
+ geklikt is, over welke curve of inputpunt gehoovered wordt, etc..
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 130359 // selectionTool (<unidirectional association>)
+	  b parent class_ref 129975 // CurveContainer
+      end
+
+      operation 138167 "Editor"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Default constructor."
+      end
+
+      operation 138295 "Editor"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "file" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Constructor die m.b.v. een bestand reeds al wat curves inlaadt."
+      end
+
+      operation 138423 "init"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alle variabelen op hun initiële waarde zetten."
+      end
+
+      operation 138551 "reset"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alles van punten en curves resetten."
+      end
+
+      operation 138679 "getAlgorithm"
+	protected return_type class_ref 128183 // Algorithm
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________ALGORITHM BEHEER_______________________
+ Algoritme zoeken a.h.v. een gegeven type en orde.
+ null wordt gereturned indien niks gevonden werd."
+      end
+
+      operation 138807 "getAlgorithm"
+	protected return_type class_ref 128183 // Algorithm
+	nparams 1
+	  param in name "type" explicit_type "char"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Algoritme zoeken a.h.v. een gegeven type.
+ null wordt gereturned indien niks gevonden werd."
+      end
+
+      operation 138935 "setCurrentAlgorithm"
+	protected explicit_return_type "void"
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " currentAlgorithm veranderen naar het algoritme met het
+ gegeven type en de gegeven orde. Indien die niet bestaat,
+ verandert er niks."
+      end
+
+      operation 139063 "setCurrentAlgorithm"
+	protected explicit_return_type "void"
+	nparams 1
+	  param in name "type" explicit_type "char"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " currentAlgorithm veranderen naar het algoritme met het
+ gegeven type. Indien die niet bestaat,
+ verandert er niks."
+      end
+
+      operation 139191 "changeMode"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "m" type class_ref 130231 // MODE
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________MODE BEHEER_______________________
+ De huidige MODE veranderen. Deze functie dient aangeroepen te worden
+ indien de gebruiker met de applicatie geïnterageerd heeft en het nodig
+ is om van MODE te veranderen."
+      end
+
+      operation 139319 "deselectAll"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alles wordt gedeselecteerd."
+      end
+
+      operation 139447 "startNewCurve"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________CURVE BEHEER_______________________
+ De huidige situatie aanpassen opdat men één nieuwe lege
+ curve zou kunnen gaan aanpassen."
+      end
+
+      operation 139575 "pickCurve"
+	protected return_type class_ref 128311 // Curve
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " M.b.v. een gegeven Point, wordt een curve gezocht.
+ Deze curve moet een punt in het zoekbereik van het
+ gegeven als outputpunt hebben. null wordt terug-
+ gegeven indien zo geen Curve gevonden wordt."
+      end
+
+      operation 139703 "findIndexCurve"
+	protected explicit_return_type "int"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De index van de curve in <curves> wordt gezocht.
+ -1 wordt teruggegeven indien deze niet gevonden wordt."
+      end
+
+      operation 139831 "findIndexSelectedCurve"
+	protected explicit_return_type "int"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De index van de curve in <selectedCurves> wordt gezocht.
+ -1 wordt teruggegeven indien deze niet gevonden wordt."
+      end
+
+      operation 139959 "isSelectedCurve"
+	protected explicit_return_type "boolean"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Nagaan of de meegegeven Curve geselecteerd is of niet."
+      end
+
+      operation 140087 "selectCurve"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De meegegeven curve verandert van ongeselecteerde naar
+ geselecteerde status. Het zoeken naar de Curve zelf gebeurt dus _niet_
+ hier."
+      end
+
+      operation 140215 "deselectCurve"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De meegegeven curve verandert van geselecteerde naar
+ ongeselecteerde status. Het zoeken naar de Curve zelf gebeurt dus _niet_
+ hier."
+      end
+
+      operation 140343 "deselectAllCurves"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alle curves krijgen de status ongeselecteerd."
+      end
+
+      operation 140471 "selectAllCurves"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alle curves krijgen de status geselecteerd."
+      end
+
+      operation 140599 "hooverCurve"
+	protected return_type class_ref 128311 // Curve
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " M.b.v. een gegeven punt een in het zoekbereik bestaande curve
+ zoeken. Deze curve krijgt de gehooverde status en deze wordt
+ teruggegeven.
+ Dit dient vooral ter controle of er iets gevonden werd. null wordt
+ teruggegeven indien er niks gevonden werd."
+      end
+
+      operation 140727 "hooverCurve"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De meegegeven curve verandert van niet-gehooverde naar
+ gehooverde status. Deze blijft de status van geselecteerd of
+ ongeselecteerd dus behouden.
+ Het zoeken naar de Curve zelf gebeurt dus _niet_ hier."
+      end
+
+      operation 140855 "dehooverCurve"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De meegegeven curve verandert van gehooverde naar
+ niet-gehooverde status. Deze blijft de status van geselecteerd of
+ ongeselecteerd dus behouden.
+ Het zoeken naar de Curve zelf gebeurt dus _niet_ hier."
+      end
+
+      operation 140983 "deleteSelectedCurves"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alle geselecteerde curves worden verwijderd."
+      end
+
+      operation 141111 "addPoint"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "a" type class_ref 128695 // Point
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Een nieuw inputpunt aan alle huidige geselecteerde curves toevoegen.
+ Deze curves, alsook de container, wordt herberekend."
+      end
+
+      operation 141239 "recalculateSelectedCurves"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De geselecteerde curves worden herberekend a.h.v. hun type en orde."
+      end
+
+      operation 141367 "recalculateCurves"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De ongeselecteerde curves worden herberekend a.h.v. hun type en orde."
+      end
+
+      operation 141495 "translateSelectedCurves"
+	protected explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De geselecteerde curves worden over een afstand x,y verschoven
+ en herberekend."
+      end
+
+      operation 141623 "connectCurvesC0"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alle geselecteerde curves tot één curve verbinden die de
+ eigenschappen overneemt van de eerst geselecteerde curve.
+ De curves worden onderling verbonden met C0-continuïteit
+ --> een curve wordt zodanig verschoven dat het eerste inputpunt
+ samenvalt met het laatste van de vorige curve."
+      end
+
+      operation 141751 "connectNoExtraPoint"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Alle geselecteerde curves tot één curve verbinden die de
+ eigenschappen overneemt van de eerst geselecteerde curve.
+ De curves worden onderling verbonden zonder enige verschuiving
+ --> het eerste inputpunt van een curve volgt in de nieuwe curve
+ gewoon op het laatste inputpunt van de vorige curve."
+      end
+
+      operation 141879 "pickControlPoint"
+	protected return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________POINT BEHEER_______________________
+ M.b.v. een gegeven Point, wordt een bestaan inputpoint gezocht.
+ Dit punt moet in het zoekbereik van het gegeven punt liggen. null wordt
+ teruggegeven indien zo geen Point gevonden wordt."
+      end
+
+      operation 142007 "deselectControlPoint"
+	protected explicit_return_type "void"
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Deselecteer een gegeven punt.
+ Er wordt geen gebruik gemaakt van een zoekbereik.
+ Enkel selectedPoints wordt bijgewerkt."
+      end
+
+      operation 142135 "isSelectedControlPoint"
+	protected explicit_return_type "boolean"
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Nagaan of een gegeven punt een geselecteerd inputpunt is.
+ Er wordt geen gebruik gemaakt van een zoekbereik."
+      end
+
+      operation 142263 "nbSelectedControlPoints"
+	protected explicit_return_type "int"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Tel voor een gegeven Curve heeft inputpunten daarvan geselecteerd zijn."
+      end
+
+      operation 142391 "hooverPoint"
+	protected return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " M.b.v. een gegeven punt alle in het zoekbereik bestaande inputpunten
+ zoeken. Deze punten krijgen de gehooverde status, alsook de daaraan
+ verbonden curves. Een inputpunt wordt teruggegeven, dit dient vooral ter
+ controle of er iets gevonden werd. null wordt teruggegeven indien er niks
+ gevonden werd."
+      end
+
+      operation 142519 "deleteSelectedControlPoints"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De geselecteerde controlepunten worden verwijderd als
+ inputpunt van de curves waartoe zij allemaal behoren.
+ De curves worden uiteraard opnieuw berekend."
+      end
+
+      operation 142647 "translateSelectedControlPoints"
+	protected explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De geselecteerde inputpunten worden over een afstand x,y verschoven.
+ De aan de inputpunten verbonden curves worden met die nieuwe
+ posities herberekend."
+      end
+
+      operation 142775 "loadFile"
+	protected explicit_return_type "void"
+	nparams 1
+	  param in name "s" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________FILE I/O_______________________
+ Een bestand inladen."
+      end
+
+      operation 142903 "saveFile"
+	protected explicit_return_type "void"
+	nparams 2
+	  param in name "s" explicit_type "String"
+	  param inout name "v" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " In een bestand opslaan."
+      end
+
+      operation 143031 "undo"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 143159 "push"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 143287 "pushNew"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 143415 "redo"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      classrelation 135735 // <dependency>
+	relation 135735 -_->
+	  a default
+	    classrelation_ref 135735 // <dependency>
+	  b parent class_ref 133175 // HandleExceptions
+      end
+
+      classrelation 137271 // <dependency>
+	relation 137271 -_->
+	  a default
+	    classrelation_ref 137271 // <dependency>
+	  b parent class_ref 130359 // FileIO
+      end
+
+      classrelation 137399 // <dependency>
+	relation 137399 -_->
+	  a default
+	    classrelation_ref 137399 // <dependency>
+	  b parent class_ref 129975 // CurveContainer
+      end
+
+      classrelation 137527 // <dependency>
+	relation 137527 -_->
+	  a default
+	    classrelation_ref 137527 // <dependency>
+	  b parent class_ref 128695 // Point
+      end
+
+      classrelation 137655 // <dependency>
+	relation 137655 -_->
+	  a default
+	    classrelation_ref 137655 // <dependency>
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 137783 // <dependency>
+	relation 137783 -_->
+	  a default
+	    classrelation_ref 137783 // <dependency>
+	  b parent class_ref 128183 // Algorithm
+      end
+    end
+
+    class 130359 "FileIO"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 130487 // <generalisation>
+	relation 130487 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 130487 // <generalisation>
+	  b parent class_ref 130487 // DefaultHandler
+      end
+
+      attribute 130999 "currentFilename"
+	private explicit_type "String"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 131127 "tempVal"
+	private explicit_type "String"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      classrelation 130615 // curves (<unidirectional association>)
+	relation 130615 --->
+	  stereotype "Vector"
+	  a role_name "curves" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 130615 // curves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 130743 // curve (<unidirectional association>)
+	relation 130743 --->
+	  a role_name "curve" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 130743 // curve (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 130871 // point (<unidirectional association>)
+	relation 130871 --->
+	  a role_name "point" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 130871 // point (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      attribute 131255 "indentLevel"
+	private explicit_type "int"
+	init_value "=  0"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 131383 "pw"
+	private explicit_type "PrintWriter"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 131511 "hd"
+	private explicit_type "TransformerHandler"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 131639 "lineNumber"
+	private explicit_type "int"
+	init_value "=  0"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 143543 "getCurrentFilename"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 143671 "setCurrentFilename"
+	class_operation public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 143799 "FileIO"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 143927 "FileIO"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "filename" explicit_type "String"
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 144055 "load"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "filename" explicit_type "String"
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 144183 "save"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "filename" explicit_type "String"
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 144311 "writeCo"
+	private explicit_return_type "void"
+	nparams 2
+	  param in name "title" explicit_type "String"
+	  param in name "cor" explicit_type "String"
+	nexceptions 1
+	  explicit_exception "SAXException"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 144439 "parseXmlFile"
+	private explicit_return_type "void"
+	nparams 1
+	  param in name "filename" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 144567 "startElement"
+	public explicit_return_type "void"
+	nparams 4
+	  param in name "uri" explicit_type "String"
+	  param in name "localName" explicit_type "String"
+	  param in name "qName" explicit_type "String"
+	  param inout name "attributes" explicit_type "Attributes"
+	nexceptions 1
+	  explicit_exception "SAXException"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Event Handlers"
+      end
+
+      operation 144695 "characters"
+	public explicit_return_type "void"
+	nparams 3
+	  param in name "ch" explicit_type "char"
+	  param in name "start" explicit_type "int"
+	  param in name "length" explicit_type "int"
+	nexceptions 1
+	  explicit_exception "SAXException"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0}[] ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 144823 "endElement"
+	public explicit_return_type "void"
+	nparams 3
+	  param in name "uri" explicit_type "String"
+	  param in name "localName" explicit_type "String"
+	  param in name "qName" explicit_type "String"
+	nexceptions 3
+	  explicit_exception "SAXException"
+	  explicit_exception "NumberFormatException"
+	  explicit_exception "IndexOutOfBoundsException"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      attribute 131767 "stack"
+	private explicit_type "byte[]"
+	init_value "=  new Stack<byte[]>()"
+	stereotype "Stack"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 131895 "stackRedo"
+	private explicit_type "byte[]"
+	init_value "=  new Stack<byte[]>()"
+	stereotype "Stack"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 144951 "push"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 145079 "pushNew"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 145207 "undo"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	nexceptions 2
+	  explicit_exception "EmptyStackException"
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 145335 "redo"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	nexceptions 2
+	  explicit_exception "EmptyStackException"
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 145463 "pop"
+	private explicit_return_type "void"
+	nparams 3
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	  param inout name "stack1" explicit_type "Stack<byte[]>"
+	nexceptions 2
+	  exception class_ref 128439 // InvalidArgumentException
+	  explicit_exception "EmptyStackException"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 145591 "pushCurve"
+	private explicit_return_type "void"
+	nparams 2
+	  param inout name "v" explicit_type "Vector<Curve>"
+	  param inout name "stack1" explicit_type "Stack<byte[]>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 145719 "popCurve"
+	private explicit_return_type "void"
+	nparams 2
+	  param inout name "v" explicit_type "Vector<Curve>"
+	  param inout name "stack1" explicit_type "Stack<byte[]>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+  end
+
+  deploymentview 128311 "Core"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 129335 "CurveContainer"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 129975 // CurveContainer
+      end
+    end
+
+    artifact 129463 "Editor"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.EmptyStackException;
+import java.util.Vector;
+import CurveEditor.Algorithms.*;
+import CurveEditor.Curves.*;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 130103 // Editor
+      end
+    end
+
+    artifact 129591 "FileIO"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import CurveEditor.Curves.Point;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Exceptions.InvalidArgumentException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.EmptyStackException;
+import java.util.Stack;
+import java.util.Vector;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+${definition}"
+      associated_classes
+	class_ref 130359 // FileIO
+      end
+    end
+  end
+end

@@ -1,0 +1,565 @@
+class Editor
+!!!138167.java!!!	Editor()
+		init();
+!!!138295.java!!!	Editor(in file : String)
+		init();
+		loadFile(file);
+!!!138423.java!!!	init() : void
+		mode = MODE.NONE;
+
+		// Vectoren aanmaken.
+		algorithms = new Vector<Algorithm>();
+		curves = new Vector<Curve>();
+		selectedCurves = new Vector<Curve>();
+		hooveredCurves = new Vector<Curve>();
+		selectedPoints = new Vector<Point>();
+		hooveredPoints = new Vector<Point>();
+
+		// Hier moeten alle geïmplementeerde algoritmes ingegeven worden.
+		algorithms.add(new Linear('L', (short) 1)); // 'L'
+		algorithms.add(new Bezier('B', (short) 3)); // 'B' --> C0
+		algorithms.add(new BezierG1('G', (short) 3)); // 'G' --> G1
+		algorithms.add(new BezierC1('C', (short) 3)); // 'C' --> C1
+		algorithms.add(new Hermite('H', (short) 0)); // 'H'
+		algorithms.add(new HermiteCardinal('A', (short) 0)); // 'A'
+		algorithms.add(new HermiteCatmullRom('R', (short) 0)); // 'R'
+
+		// Lineair is default algoritme.
+		currentAlgorithm = getAlgorithm('L', (short) 1);
+
+		file = new FileIO();
+
+		try {
+			// Er is nog geen tekencanvas of i.d.a. --> dimensieloos.
+			selectionTool = new CurveContainer(1, 1);
+		} catch (InvalidArgumentException e) {
+			System.out
+					.println("Error while creating selectionTool: Invalid Arguments.");
+		}
+!!!138551.java!!!	reset() : void
+		push();
+
+		// Clearen, en niet opnieuw aanmaken, om referenties elders
+		// in het programma niet corrupt te maken !
+		curves.clear();
+		selectedCurves.clear();
+		hooveredCurves.clear();
+		selectedPoints.clear();
+		hooveredPoints.clear();
+		selectionTool.clear();
+!!!138679.java!!!	getAlgorithm(in type : char, in degree : short) : Algorithm
+		for (int i = 0; i < algorithms.size(); ++i)
+			if (algorithms.get(i).getType() == type
+					&& algorithms.get(i).getDegree() == degree)
+				return algorithms.get(i);
+		return null;
+!!!138807.java!!!	getAlgorithm(in type : char) : Algorithm
+		for (int i = 0; i < algorithms.size(); ++i)
+			if (algorithms.get(i).getType() == type)
+				return algorithms.get(i);
+		return null;
+!!!138935.java!!!	setCurrentAlgorithm(in type : char, in degree : short) : void
+		Algorithm temp = getAlgorithm(type, degree); // zoeken
+
+		if (temp != null) {
+			currentAlgorithm = temp;
+			// De op dat moment geselecteerde curves naar dat type veranderen.
+			for (int i = 0; i < selectedCurves.size(); ++i) {
+				// De oorspronkeleijke gegevens verwijderen.
+				selectionTool.deleteCurve(selectedCurves.elementAt(i));
+				selectedCurves.get(i).clearOutput();
+				try {
+					// De nieuwe gegevens berekenen en opslaan.
+					selectedCurves.get(i).setType(type);
+					selectedCurves.get(i).setDegree(degree);
+					currentAlgorithm.calculateComplete(selectedCurves.get(i));
+					selectionTool.addCurve(selectedCurves.elementAt(i));
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+!!!139063.java!!!	setCurrentAlgorithm(in type : char) : void
+		Algorithm temp = getAlgorithm(type);
+
+		if (temp != null) {
+			currentAlgorithm = temp;
+			// De op dat moment geselecteerde curves naar dat type veranderen.
+			for (int i = 0; i < selectedCurves.size(); ++i) {
+				// De oorspronkeleijke gegevens verwijderen.
+				selectionTool.deleteCurve(selectedCurves.elementAt(i));
+				selectedCurves.get(i).clearOutput();
+				try {
+					// De nieuwe gegevens berekenen en opslaan.
+					selectedCurves.get(i).setType(type);
+					selectedCurves.get(i).setDegree(
+							currentAlgorithm.getDegree());
+					currentAlgorithm.calculateComplete(selectedCurves.get(i));
+					selectionTool.addCurve(selectedCurves.elementAt(i));
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+!!!139191.java!!!	changeMode(inout m : MODE) : void
+		if (m == MODE.NONE) {
+			deselectAll(); // Alles deselecteren.
+			this.mode = m;
+		} else if (m == MODE.NEW_CURVE) {
+			// Nieuwe curve aanmaken --> autom. komt men dan in
+			// ADD_INPUT-mode terecht zodat men de nieuw aangemaakte
+			// curve kan beginnen vullen.
+			startNewCurve();
+			this.mode = MODE.ADD_INPUT;
+		} else if (m == MODE.DESELECT_ALL) {
+			deselectAll(); // Alles deselecteren.
+			// Indien men niet in een select- of deselect-mode zat
+			// --> MODE op NONE zetten.
+			if (mode != MODE.SELECT_CURVE && mode != MODE.SELECT_CONTROL_POINT
+					&& mode != MODE.DESELECT_CONTROL_POINT
+					&& mode != MODE.DESELECT_CURVE)
+				this.mode = MODE.NONE;
+		} else if (m == MODE.ADD_INPUT) {
+			// De gebruiker wenst nieuwe punten in te geven --> enkel curves
+			// hoeven nog geselecteerd te worden.
+			selectedPoints.clear();
+			this.mode = m;
+		} else if (m == MODE.SELECT_CURVE || m == MODE.DESELECT_CURVE
+				|| m == MODE.SELECT_CONTROL_POINT || m == MODE.SELECT_CURVE) {
+			deselectAll(); // Alles deselecteren.
+			this.mode = m;
+		} else {
+			this.mode = m;
+		}
+!!!139319.java!!!	deselectAll() : void
+		// Geselecteerde curves bij de ongeselecteerde voegen.
+		curves.addAll(selectedCurves);
+		selectedCurves.clear();
+		selectedPoints.clear();
+!!!139447.java!!!	startNewCurve() : void
+		deselectAll();
+		// selectedCurves bevat slechts één curve, een voorlopig lege.
+		selectedCurves.add(new Curve(currentAlgorithm.getType(),
+				currentAlgorithm.getDegree()));
+
+		this.mode = MODE.ADD_INPUT;
+!!!139575.java!!!	pickCurve(inout p : Point) : Curve
+		if (p == null)
+			return null;
+
+		// De Curve zoeken.
+		Curve c = this.selectionTool.searchCurve(p);
+
+		if (c == null)
+			return null;
+		else {
+			// De gevonden Curve moeten van selectiestatus switchen.
+			if (isSelectedCurve(c))
+				deselectCurve(c);
+			else
+				selectCurve(c);
+
+			return c;
+		}
+!!!139703.java!!!	findIndexCurve(inout c : Curve) : int
+		int index = 0;
+		boolean stop = false;
+
+		if (c != null)
+			for (; index < curves.size() && !stop; ++index)
+				if (c.equals(curves.get(index)))
+					stop = true;
+
+		if (stop)
+			return --index;
+		else
+			return -1;
+!!!139831.java!!!	findIndexSelectedCurve(inout c : Curve) : int
+		int index = 0;
+		boolean stop = false;
+
+		if (c != null)
+			for (; index < selectedCurves.size() && !stop; ++index)
+				if (c.equals(selectedCurves.get(index)))
+					stop = true;
+
+		if (stop)
+			return --index;
+		else
+			return -1;
+!!!139959.java!!!	isSelectedCurve(inout c : Curve) : boolean
+		for (int j = 0; j < selectedCurves.size(); ++j)
+			if (selectedCurves.elementAt(j).equals(c))
+				return true;
+		return false;
+!!!140087.java!!!	selectCurve(inout c : Curve) : void
+		// Zoeken waar de curve zich in <curves> bevindt.
+		int index = findIndexCurve(c);
+
+		if (index != -1) {
+			selectedCurves.add(curves.get(index));
+			curves.remove(index);
+		}
+!!!140215.java!!!	deselectCurve(inout c : Curve) : void
+		// Zoeken waar de curve zich in <selectedCurves> bevindt.
+		int index = findIndexSelectedCurve(c);
+
+		if (index != -1) {
+			curves.add(selectedCurves.get(index));
+			selectedCurves.remove(index);
+		}
+!!!140343.java!!!	deselectAllCurves() : void
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			curves.add(selectedCurves.get(i));
+		}
+
+		selectedCurves.clear();
+!!!140471.java!!!	selectAllCurves() : void
+		for (int i = 0; i < curves.size(); ++i) {
+			selectedCurves.add(curves.get(i));
+		}
+
+		curves.clear();
+!!!140599.java!!!	hooverCurve(inout p : Point) : Curve
+		if (p == null)
+			return null;
+
+		Curve c = this.selectionTool.searchCurve(p);
+		if (c != null)
+			hooveredCurves.add(c);
+
+		return c;
+!!!140727.java!!!	hooverCurve(inout c : Curve) : void
+		// Zoeken waar de curve zich in <curves> bevindt.
+		int index = findIndexCurve(c);
+
+		if (index != -1)
+			hooveredCurves.add(curves.get(index));
+!!!140855.java!!!	dehooverCurve(inout c : Curve) : void
+		for (int i = 0; i < hooveredCurves.size(); ++i)
+			if (hooveredCurves.elementAt(i).equals(c))
+				hooveredCurves.remove(i--);
+!!!140983.java!!!	deleteSelectedCurves() : void
+		for (int j = 0; j < selectedCurves.size(); ++j) {
+			if (j == 0)
+				push();
+
+			selectionTool.deleteCurve(selectedCurves.elementAt(j));
+		}
+
+		selectedCurves.clear();
+		selectedPoints.clear();
+!!!141111.java!!!	addPoint(inout a : Point) : void
+		if (a == null)
+			throw new InvalidArgumentException(
+					"Editor.java - addPoint(Point): Invalid Argument.");
+		else {
+			if (selectedCurves.size() == 0)
+				// Er is nog geen geselecteerde curve -> ééntje aanmaken.
+				startNewCurve();
+
+			for (int i = 0; i < selectedCurves.size(); ++i) {
+				if (i == 0)
+					push();
+
+				Curve c = selectedCurves.elementAt(i);
+
+				c.addInput(a); // Punt toevoegen.
+				Algorithm temp = getAlgorithm(c.getType());
+
+				// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
+				// telkens de tangens. Dus er moet niet getekend worden voordat
+				// deze is ingegeven.
+				if (temp != null && c.getType() != 'H'
+						|| c.getInput().size() % 2 == 0) {
+					try {
+						selectionTool.deleteCurve(c);
+						temp.calculateComplete(c);
+						selectionTool.addCurve(c);
+					} catch (InvalidArgumentException e) {
+						e.printStackTrace();
+					}
+				}
+				if (i == selectedCurves.size() - 1)
+					pushNew();
+			}
+		}
+!!!141239.java!!!	recalculateSelectedCurves() : void
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			Curve c = selectedCurves.elementAt(i);
+			Algorithm temp = getAlgorithm(c.getType());
+			if (temp != null) {
+				// De oude gegevens verwijderen.
+				selectionTool.deleteCurve(c);
+				c.clearOutput();
+				try {
+					// Nieuwe gegevens berekenen en opslaan.
+					temp.calculateComplete(c);
+					selectionTool.addCurve(c);
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+!!!141367.java!!!	recalculateCurves() : void
+		for (int i = 0; i < curves.size(); ++i) {
+			Curve c = curves.elementAt(i);
+			Algorithm temp = getAlgorithm(c.getType());
+			if (temp != null) {
+				// De oude gegevens verwijderen.
+				selectionTool.deleteCurve(c);
+				c.clearOutput();
+				try {
+					// Nieuwe gegevens berekenen en opslaan.
+					temp.calculateComplete(c);
+					selectionTool.addCurve(c);
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+!!!141495.java!!!	translateSelectedCurves(in x : int, in y : int) : void
+		// Curvegegevens verwijderen en de curves verschuiven.
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			selectionTool.deleteCurve(selectedCurves.elementAt(i));
+			selectedCurves.elementAt(i).clearOutput();
+			selectedCurves.elementAt(i).translate(x, y);
+		}
+
+		// Geselecteerde inputpunten moeten mee verschoven worden,
+		// indien die er zijn.
+		for (int i = 0; i < selectedPoints.size(); ++i) {
+			selectedPoints.elementAt(i).increaseX(x);
+			selectedPoints.elementAt(i).increaseY(y);
+		}
+
+		// Curvegegevens herberekenen.
+		recalculateSelectedCurves();
+!!!141623.java!!!	connectCurvesC0() : void
+		if (selectedCurves.size() > 0) {
+			push();
+			Curve result = selectedCurves.get(0);
+			selectionTool.deleteCurve(result);
+
+			for (int i = 1; i < selectedCurves.size(); ++i) {
+				selectionTool.deleteCurve(selectedCurves.get(i));
+				// De geselecteerde curve "plakken" aan de rest.
+				try {
+					result = Curve.connectC0(result, selectedCurves.get(i));
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+					recalculateSelectedCurves();
+				}
+			}
+
+			// Alle curves deselecteren en verwijderen en de nieuwe
+			// curve selecteren en aan de container toevoegen.
+			selectedCurves.clear();
+			selectedCurves.add(result);
+			selectionTool.addCurve(result);
+			recalculateSelectedCurves();
+			pushNew();
+		}
+!!!141751.java!!!	connectNoExtraPoint() : void
+		if (selectedCurves.size() > 0) {
+			push();
+			Curve result = selectedCurves.get(0);
+			selectionTool.deleteCurve(result);
+			for (int i = 1; i < selectedCurves.size(); ++i) {
+				selectionTool.deleteCurve(selectedCurves.get(i));
+				// De geselecteerde curve "plakken" aan de rest.
+				try {
+					result = Curve.connectNoExtraPoint(result, selectedCurves
+							.get(i));
+				} catch (InvalidArgumentException e) {
+					e.printStackTrace();
+					recalculateSelectedCurves();
+				}
+			}
+
+			// Alle curves deselecteren en verwijderen en de nieuwe
+			// curve selecteren en aan de container toevoegen.
+			selectedCurves.clear();
+			selectedCurves.add(result);
+			selectionTool.addCurve(result);
+			recalculateSelectedCurves();
+			pushNew();
+		}
+
+!!!141879.java!!!	pickControlPoint(inout p : Point) : Point
+		if (p == null)
+			return null;
+
+		Point result = null;
+		Vector<Point> temp = selectionTool.searchControlPoint(p); // Zoeken.
+		for (int i = 0; temp != null && i < temp.size(); ++i) {
+			result = temp.elementAt(0);
+
+			// Elk gevonden inputpunt moet van selectiestatus switchen.
+			if (isSelectedControlPoint(temp.elementAt(i)))
+				deselectControlPoint(temp.elementAt(i));
+			else {
+				selectedPoints.add(temp.elementAt(i));
+
+				// Voor elke niet-geselecteerde curve nagaan of het nieuw
+				// geselecteerde inputpunt een inputpunt van die Curve is.
+				// Indien ja, moet deze Curve ook geselecteerd worden.
+				for (int j = 0; j < curves.size(); ++j)
+					if (curves.elementAt(j).containsInputPoint(
+							temp.elementAt(i)) != null) {
+						selectedCurves.add(curves.elementAt(j));
+						curves.remove(j--);
+					}
+			}
+		}
+
+		// Voor elke geselecteerde Curve nagaan hoeveel geselecteerde
+		// inputpunten deze nog bevat. Indien dat nul is, moet de curve
+		// gedeselecteerd worden.
+		for (int i = 0; i < selectedCurves.size(); ++i)
+			if (nbSelectedControlPoints(selectedCurves.elementAt(i)) == 0) {
+				curves.add(selectedCurves.elementAt(i));
+				selectedCurves.remove(i--);
+			}
+
+		return result;
+!!!142007.java!!!	deselectControlPoint(inout p : Point) : void
+		if (p != null)
+			for (int j = 0; j < selectedPoints.size(); ++j)
+				if (selectedPoints.elementAt(j).X() == p.X()
+						&& selectedPoints.elementAt(j).Y() == p.Y())
+					selectedPoints.remove(j--);
+!!!142135.java!!!	isSelectedControlPoint(inout p : Point) : boolean
+		if (p != null)
+			for (int j = 0; j < selectedPoints.size(); ++j)
+				if (selectedPoints.elementAt(j).X() == p.X()
+						&& selectedPoints.elementAt(j).Y() == p.Y())
+					return true;
+		return false;
+!!!142263.java!!!	nbSelectedControlPoints(inout c : Curve) : int
+		int result = 0;
+		if (c != null)
+			for (int j = 0; j < selectedPoints.size(); ++j)
+				if (c.containsInputPoint(selectedPoints.elementAt(j)) != null)
+					++result;
+
+		return result;
+!!!142391.java!!!	hooverPoint(inout p : Point) : Point
+		if (p == null)
+			return null;
+
+		// De geldige punten zoeken.
+		Vector<Point> temp = selectionTool.searchControlPoint(p);
+		if (temp != null && temp.size() > 0) {
+			for (int i = 0; i < temp.size(); ++i) {
+				hooveredPoints.add(temp.elementAt(i));
+
+				// Per gevonden inputpunt de daaraan verbonden curves zoeken en
+				// hooveren indien dat al niet het geval was.
+				Curve temp2 = selectionTool.searchCurvesByControlPoint(temp
+						.elementAt(i));
+				if (temp2 != null) {
+					boolean found = false;
+					for (int k = 0; k < hooveredCurves.size(); ++k) {
+						if (hooveredCurves.elementAt(k).equals(temp2))
+							found = true;
+					}
+
+					if (!found)
+						hooveredCurves.add(temp2);
+
+				}
+			}
+			// Het eerste gevonden punt teruggeven, dat kan dan bvb. gebruikt
+			// worden om uit te tekenen.
+			return temp.elementAt(0);
+		} else
+			return null;
+!!!142519.java!!!	deleteSelectedControlPoints() : void
+		for (int i = 0; i < selectedPoints.size(); ++i) {
+			if (i == 0)
+				push();
+
+			for (int j = 0; j < selectedCurves.size(); ++j) {
+				int temp;
+				// Als het controlepunt tot de curve behoort --> het punt uit
+				// die curve verwijderen.
+				while ((temp = selectedCurves.elementAt(j).containsInputPointi(
+						selectedPoints.elementAt(i))) != -1) {
+					selectedCurves.elementAt(j).getInput().remove(temp);
+				}
+			}
+			// Het punt ook uit de container halen.
+			selectionTool.deleteControlPoint(selectedPoints.elementAt(i).X(),
+					selectedPoints.elementAt(i).Y());
+		}
+
+		// Indien curves nu leeg blijken te zijn --> die curves verwijderen.
+		for (int j = 0; j < selectedCurves.size(); ++j) {
+			if (selectedCurves.elementAt(j).getNbInputPoints() == 0) {
+				selectionTool.deleteCurve(selectedCurves.elementAt(j));
+				selectedCurves.remove(j--);
+			}
+		}
+
+		recalculateSelectedCurves(); // De curves herberekenen.
+		curves.addAll(selectedCurves); // De curves deselecteren.
+		selectedCurves.clear();
+		selectedPoints.clear();
+		pushNew();
+!!!142647.java!!!	translateSelectedControlPoints(in x : int, in y : int) : void
+		// Curvegegevens verwijderen.
+		for (int i = 0; i < selectedCurves.size(); ++i) {
+			selectionTool.deleteCurve(selectedCurves.elementAt(i));
+			selectedCurves.elementAt(i).clearOutput();
+		}
+
+		// De inputpunten verschuiven.
+		for (int i = 0; i < selectedPoints.size(); ++i) {
+			selectedPoints.elementAt(i).increaseX(x);
+			selectedPoints.elementAt(i).increaseY(y);
+		}
+
+		// Curvegegevens herberekenen.
+		recalculateSelectedCurves();
+!!!142775.java!!!	loadFile(in s : String) : void
+		push();
+		file.load(s, curves);
+		recalculateCurves();
+		pushNew();
+!!!142903.java!!!	saveFile(in s : String, inout v : Vector<Curve>) : void
+		file.save(s, v);
+!!!143031.java!!!	undo() : void
+		try {
+			file.undo(curves, selectedCurves);
+			selectionTool.clear();
+			recalculateCurves();
+			recalculateSelectedCurves();
+		} catch (EmptyStackException e) {
+			System.out.println("Nothing to undo.");
+		} catch (InvalidArgumentException e) {
+			System.out.println(e);
+		}
+!!!143159.java!!!	push() : void
+		try {
+			file.push(curves, selectedCurves);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+!!!143287.java!!!	pushNew() : void
+		try {
+			file.pushNew(curves, selectedCurves);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+!!!143415.java!!!	redo() : void
+		try {
+			file.redo(curves, selectedCurves);
+			selectionTool.clear();
+			recalculateCurves();
+			recalculateSelectedCurves();
+		} catch (EmptyStackException e) {
+			System.out.println("Nothing to redo.");
+		} catch (InvalidArgumentException e) {
+			System.out.println(e);
+		}

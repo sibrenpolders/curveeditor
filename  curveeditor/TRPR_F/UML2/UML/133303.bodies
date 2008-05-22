@@ -1,0 +1,12 @@
+class HandleExceptions
+!!!165047.java!!!	HandleExceptions()
+
+!!!165175.java!!!	print(inout npe : NullPointerException) : void
+		JOptionPane.showMessageDialog(null, "Curve Editor: ERROR", npe
+				.getMessage(), JOptionPane.ERROR_MESSAGE);
+!!!165303.java!!!	print(inout dbze : DivisionByZeroException) : void
+		JOptionPane.showMessageDialog(null, "Curve Editor: ERROR", dbze
+				.getMessage(), JOptionPane.ERROR_MESSAGE);
+!!!165431.java!!!	print(inout iae : InvalidArgumentException) : void
+		JOptionPane.showMessageDialog(null, "Curve Editor: ERROR", iae
+				.getMessage(), JOptionPane.ERROR_MESSAGE);

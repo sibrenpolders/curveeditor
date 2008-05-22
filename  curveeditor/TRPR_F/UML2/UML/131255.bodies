@@ -1,0 +1,220 @@
+class DrawArea
+!!!155063.java!!!	DrawArea(inout curves : Vector<Curve>, inout selectedCurves : Vector<Curve>, inout hooveredCurves : Vector<Curve>, inout selectedPoints : Vector<Point>, inout hooveredPoints : Vector<Point>)
+		init(curves, selectedCurves, hooveredCurves, selectedPoints,
+				hooveredPoints, false, false, false);
+!!!155191.java!!!	init(inout curves : Vector<Curve>, inout selectedCurves : Vector<Curve>, inout hooveredCurves : Vector<Curve>, inout selectedPoints : Vector<Point>, inout hooveredPoints : Vector<Point>, inout coords : boolean, inout nrs : boolean, inout tangents : boolean) : void
+		setSize(); // De grootte instellen.
+		setBackground(new Color(255, 255, 255));
+
+		if (curves == null || selectedCurves == null || hooveredCurves == null
+				|| selectedCurves == null || selectedPoints == null
+				|| hooveredPoints == null)
+			throw new InvalidArgumentException(
+					"DrawArea.java - init(): Invalid Argument.");
+
+		this.curves = curves;
+		this.selectedCurves = selectedCurves;
+		this.hooveredCurves = hooveredCurves;
+		this.selectedPoints = selectedPoints;
+		this.hooveredPoints = hooveredPoints;
+
+		this.coords = coords;
+		this.nrs = nrs;
+		this.tangents = tangents;
+		this.drawRectangle = true;
+
+		this.repaint();
+!!!155319.java!!!	coords() : boolean
+		return coords;
+!!!155447.java!!!	nrs() : boolean
+		return nrs;
+!!!155575.java!!!	tangents() : boolean
+		return tangents;
+!!!155703.java!!!	toggleCoords() : void
+		coords = !coords;
+!!!155831.java!!!	toggleNrs() : void
+		nrs = !nrs;
+!!!155959.java!!!	toggleTangents() : void
+		tangents = !tangents;
+!!!156087.java!!!	update() : void
+		paint(g);
+!!!156215.java!!!	drawRunner(inout p : Point) : void
+		runPoint = p;
+		repaint();
+!!!156343.java!!!	paintComponent(inout g : Graphics) : void
+		this.g = g;
+		super.paintComponent(g);
+
+		emptyField(); // Clear het canvas.
+
+		this.g.setColor(Color.LIGHT_GRAY);
+		if (drawRectangle)
+			// Teken het selectierechthoekje indien nodig.
+			this.drawSelectionRectangle();
+		else
+			// Anders, teken een dragging arrow in de plaats.
+			this.drawArrow();
+
+		this.g.setColor(Color.BLACK);
+		// Ongeselecteerde curves worden altijd zonder extra
+		// info uitgetekend.
+		this.drawOutput(curves, false, false);
+		this.g.setColor(Color.RED);
+		// Geselecteerde curves worden a.h.v. de geselecteerde
+		// opties uitgetekend.
+		drawOutput(selectedCurves, coords, nrs);
+		if (tangents) {
+			this.g.setColor(Color.BLUE);
+			drawTangents(selectedCurves);
+		}
+
+		this.g.setColor(Color.GREEN);
+		drawSelectedPoints(selectedPoints);
+		this.g.setColor(Color.BLACK);
+
+		this.g.setColor(Color.magenta);
+		// Verander de curvedikte en teken de gehooverde
+		// curves uit.
+		this.curveWidth = HOOVEREDCURVEWIDTH;
+		drawOutput(hooveredCurves, false, false);
+		this.curveWidth = DEFAULTCURVEWIDTH;
+
+		this.g.setColor(Color.YELLOW);
+		drawSelectedPoints(hooveredPoints);
+
+		// Als de pathsimulationtool actief is --> teken het vierkantje
+		// op zijn huidige positie uit.
+		if (runPoint != null) {
+			this.g.setColor(Color.CYAN);
+			g.fillRect(runPoint.X() - 3 * CONTROLPOINTWIDTH, runPoint.Y() - 3
+					* CONTROLPOINTWIDTH, 6 * CONTROLPOINTWIDTH + 1,
+					6 * CONTROLPOINTWIDTH + 1);
+			runPoint = null;
+		}
+
+		this.g.setColor(Color.BLACK);
+!!!156471.java!!!	emptyField() : void
+		g.clipRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+		g.setColor(Color.white);
+		g.fillRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+		g.setColor(Color.black);
+!!!156599.java!!!	drawSelectionRectangle() : void
+		if (xBegin != -1 && yBegin != -1 && xEnd != -1 && yEnd != -1) {
+			int rectWidth = Math.abs(xBegin - xEnd);
+			int rectHeigth = Math.abs(yBegin - yEnd);
+			int yStart = (yBegin > yEnd) ? yEnd : yBegin;
+			int xStart = (xBegin > xEnd) ? xEnd : xBegin;
+
+			g.fillRect(xStart, yStart, rectWidth, rectHeigth);
+		}
+!!!156727.java!!!	drawArrow() : void
+		if (xBegin != -1 && yBegin != -1 && xEnd != -1 && yEnd != -1) {
+			g.drawLine(xBegin, yBegin, xEnd, yEnd);
+			g.drawLine(xBegin, yBegin + 1, xEnd, yEnd + 1);
+			g.drawLine(xBegin, yBegin - 1, xEnd, yEnd - 1);
+		}
+!!!156855.java!!!	resetDragging() : void
+		xBegin = -1;
+		yBegin = -1;
+		xEnd = -1;
+		yEnd = -1;
+		drawRectangle = true;
+!!!156983.java!!!	beginSelectionRectangle(in x : int, in y : int) : void
+		xBegin = x;
+		yBegin = y;
+		xEnd = x;
+		yEnd = y;
+		drawRectangle = true;
+!!!157111.java!!!	beginMovingArrow(in x : int, in y : int) : void
+		xBegin = x;
+		yBegin = y;
+		xEnd = x;
+		yEnd = y;
+		drawRectangle = false;
+!!!157239.java!!!	updateDragging(in x : int, in y : int) : void
+		xEnd = x;
+		yEnd = y;
+!!!157367.java!!!	draggingStarted() : boolean
+		return xBegin != -1 && yBegin != -1;
+!!!157495.java!!!	getXBegin() : int
+		return xBegin;
+!!!157623.java!!!	getYBegin() : int
+		return yBegin;
+!!!157751.java!!!	getXEnd() : int
+		return xEnd;
+!!!157879.java!!!	getYEnd() : int
+		return yEnd;
+!!!158007.java!!!	drawOutput(inout curves : Vector<Curve>, inout coords : boolean, inout nrs : boolean) : void
+		Vector<Point> out, in;
+		for (int i = 0; i < curves.size(); ++i) {
+			// De outputpunten uittekenen.
+			out = curves.get(i).getOutput();
+			for (int j = 0; j < out.size() - 1; ++j) {
+				g.drawLine(out.get(j).X(), out.get(j).Y(), out.get(j + 1).X(),
+						out.get(j + 1).Y());
+				// Indien de curve dikker moet zijn dan de default dikte,
+				// kleur de nodige omliggende pixels ook in.
+				if (curveWidth != 0) {
+					for (int k = 1; k <= curveWidth; ++k) {
+						g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(
+								j + 1).X(), out.get(j + 1).Y() + k);
+						g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
+								j + 1).X(), out.get(j + 1).Y() - k);
+					}
+				}
+			}
+
+			// De inputpunten uittekenen.
+			in = curves.get(i).getInput();
+			for (int j = 0; j < in.size(); ++j) {
+				// Een rechthoekje op de plaats van het punt uittekenen.
+				g.fillRect(in.get(j).X() - CONTROLPOINTWIDTH, in.get(j).Y()
+						- CONTROLPOINTWIDTH, 2 * CONTROLPOINTWIDTH + 1,
+						2 * CONTROLPOINTWIDTH + 1);
+
+				// Informatie weergeven, indien gevraagd.
+				if (coords)
+					g.drawString(in.get(j).X() + ", " + in.get(j).Y(), in
+							.get(j).X() + 4, in.get(j).Y() + 10);
+
+				if (nrs)
+					g.drawString("C" + i + ", P" + j, in.get(j).X() + 4, in
+							.get(j).Y() - 0);
+			}
+		}
+!!!158135.java!!!	drawTangents(inout curves : Vector<Curve>) : void
+		for (int i = 0; i < curves.size(); ++i) {
+			Vector<Point> vip = curves.get(i).getInput();
+
+			if (curves.get(i).getType() == 'H') {
+				for (int j = 0; j + 1 < vip.size(); j = j + 2) {
+					g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(j + 1)
+							.X(), vip.get(j + 1).Y());
+				}
+			}
+			// Per vier inputpunten: raakvector 1 is van punt 1 naar punt 2,
+			// raakvector 2 is van punt 4 naar punt 3.
+			else if ((curves.get(i).getType() == 'B'
+					|| curves.get(i).getType() == 'C' || curves.get(i)
+					.getType() == 'G')
+					&& curves.get(i).getDegree() == 3) {
+				for (int j = 0; j < vip.size(); j = j + 3) {
+					if (j + 1 < vip.size())
+						g.drawLine(vip.get(j).X(), vip.get(j).Y(), vip.get(
+								j + 1).X(), vip.get(j + 1).Y());
+					if (j - 1 >= 0)
+						g.drawLine(vip.get(j - 1).X(), vip.get(j - 1).Y(), vip
+								.get(j).X(), vip.get(j).Y());
+				}
+			}
+		}
+!!!158263.java!!!	drawSelectedPoints(inout v : Vector<Point>) : void
+		for (int j = 0; j < v.size(); ++j) {
+			g.fillRect(v.get(j).X() - (CONTROLPOINTWIDTH + 1), v.get(j).Y()
+					- (CONTROLPOINTWIDTH + 1), 2 * (CONTROLPOINTWIDTH + 1) + 1,
+					2 * (CONTROLPOINTWIDTH + 1) + 1);
+		}
+!!!158391.java!!!	setSize() : void
+		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH,
+				DisplaySize.DRAWHEIGHT);
+		repaint();

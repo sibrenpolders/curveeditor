@@ -1,0 +1,196 @@
+class CurveContainer
+!!!135479.java!!!	maxX() : int
+		return maxX;
+!!!135607.java!!!	maxY() : int
+		return maxY;
+!!!135735.java!!!	CurveContainer(in Maxx : int, in Maxy : int)
+		if (Maxx <= 0 || Maxy <= 0)
+			throw new InvalidArgumentException(
+					"CurveContainer.java - CurveContainer(int, int): Invalid Argument.");
+		else {
+			this.maxX = Maxx;
+			this.maxY = Maxy;
+
+			curves = new Curve[Maxx][Maxy];
+			controlPoints = new Curve[Maxx][Maxy];
+
+			for (int x = 0; x < Maxx; ++x)
+				for (int y = 0; y < Maxy; ++y) {
+					curves[x][y] = null;
+					controlPoints[x][y] = null;
+				}
+		}
+!!!135863.java!!!	resize(in MaxX : int, in MaxY : int) : void
+		if (MaxX <= 0 || MaxY <= 0)
+			throw new InvalidArgumentException(
+					"CurveContainer.java - resize(int, int): Invalid Argument.");
+		else {
+			// de oude bijhouden
+			Curve[][] tmp = curves;
+			Curve[][] tmp2 = controlPoints;
+
+			// nieuwe aanmaken
+			curves = new Curve[MaxX][MaxY];
+			controlPoints = new Curve[MaxX][MaxY];
+
+			int minX = (this.maxX < MaxX) ? this.maxX : MaxX;
+			int minY = (this.maxY < MaxY) ? this.maxY : MaxY;
+
+			int x = 0, y = 0;
+
+			// De beschikbare oude gegevens in de nieuwe voorstelling
+			// kopiëren.
+			for (; x < minX; ++x)
+				for (y = 0; y < minY; ++y) {
+					curves[x][y] = tmp[x][y];
+					controlPoints[x][y] = tmp2[x][y];
+				}
+			// De rest met null-pointers opvullen.
+			for (x = 0; x < MaxX; ++x)
+				for (y = 0; y < MaxY; ++y) {
+					if (y >= minY || x >= minX) {
+						curves[x][y] = null;
+						controlPoints[x][y] = null;
+					}
+				}
+
+			this.maxX = MaxX;
+			this.maxY = MaxY;
+		}
+!!!135991.java!!!	clear() : void
+		curves = new Curve[maxX][maxY];
+		controlPoints = new Curve[maxX][maxY];
+
+		for (int x = 0; x < maxX; ++x)
+			for (int y = 0; y < maxY; ++y) {
+				curves[x][y] = null;
+				controlPoints[x][y] = null;
+			}
+!!!136119.java!!!	addCurve(inout c : Curve) : void
+		if (c != null) {
+
+			// Alle outputpunten toevoegen.
+			for (int i = 0; i < c.getOutput().size(); ++i)
+				// Checken of het punt wel binnen de dimensies valt.
+				if (isValidPoint(c.getOutput().elementAt(i)))
+					curves[c.getOutput().elementAt(i).X()][c.getOutput()
+							.elementAt(i).Y()] = c;
+
+			addControlPoints(c); // input toevoegen
+		}
+!!!136247.java!!!	deleteCurve(inout c : Curve) : void
+		if (c != null) {
+			// Alle outputpunten verwijderen.
+			for (int i = 0; i < c.getOutput().size(); ++i)
+				// Checken of het punt wel binnen de dimensies valt.
+				if (isValidPoint(c.getOutput().elementAt(i)))
+					curves[c.getOutput().elementAt(i).X()][c.getOutput()
+							.elementAt(i).Y()] = null;
+
+			deleteControlPoints(c); // input verwijderen
+		}
+!!!136375.java!!!	isValidPoint(inout p : Point) : boolean
+		return p != null && p.X() < maxX && p.Y() < maxY && p.Y() >= 0
+				&& p.X() >= 0;
+!!!136503.java!!!	searchCurve(inout p : Point) : Curve
+		return searchCurve_(p, SEARCH_RANGE);
+!!!136631.java!!!	searchCurve(inout p : Point, in range : short) : Curve
+		return searchCurve_(p, range);
+!!!136759.java!!!	searchCurve_(inout p : Point, in range : short) : Curve
+		if (isValidPoint(p)) {
+
+			// de min- en maxwaarden bepalen, die binnen de dimensies
+			// van de container liggen
+			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
+			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
+			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
+			int min_y = p.Y() - range >= 0 ? p.Y() - range : 0;
+
+			for (int i = min_x; i <= max_x; ++i)
+				for (int j = min_y; j <= max_y; ++j)
+					if (curves[i][j] != null)
+						return curves[i][j];
+		}
+
+		return null;
+!!!136887.java!!!	addControlPoints(inout c : Curve) : void
+		if (c != null) {
+			for (int i = 0; i < c.getNbInputPoints(); ++i) {
+				if (isValidPoint(c.getInput().elementAt(i))) {
+					controlPoints[c.getInput().elementAt(i).X()][c.getInput()
+							.elementAt(i).Y()] = c;
+				}
+
+			}
+		}
+!!!137015.java!!!	deleteControlPoints(inout c : Curve) : void
+		for (int i = 0; i < c.getNbInputPoints(); ++i) {
+			if (isValidPoint(c.getInput().elementAt(i)))
+				controlPoints[c.getInput().elementAt(i).X()][c.getInput()
+						.elementAt(i).Y()] = null;
+		}
+!!!137143.java!!!	searchCurvesByControlPoint(inout p : Point, in range : short) : Curve
+		return searchCurvesByControlPoint_(p, range);
+
+!!!137271.java!!!	searchCurvesByControlPoint(inout p : Point) : Curve
+		return searchCurvesByControlPoint_(p, SEARCH_RANGE);
+!!!137399.java!!!	searchCurvesByControlPoint_(inout p : Point, in range : short) : Curve
+		if (isValidPoint(p)) {
+
+			// de min- en maxwaarden bepalen, die binnen de dimensies
+			// van de container liggen
+			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
+			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
+			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
+			int min_y = p.Y() - range >= 0 ? p.Y() - range : 0;
+
+			for (int i = min_x; i <= max_x; ++i)
+				for (int j = min_y; j <= max_y; ++j)
+					if (controlPoints[i][j] != null)
+						return controlPoints[i][j];
+		}
+
+		return null;
+!!!137527.java!!!	searchControlPoint(inout p : Point, in range : short) : Point
+		return searchControlPoint_(p, range);
+
+!!!137655.java!!!	searchControlPoint(inout p : Point) : Point
+		return searchControlPoint_(p, SEARCH_RANGE);
+!!!137783.java!!!	searchControlPoint_(inout p : Point, in range : short) : Point
+		if (isValidPoint(p)) {
+			Vector<Point> result = new Vector<Point>();
+
+			// de min- en maxwaarden bepalen, die binnen de dimensies
+			// van de container liggen
+			int max_x = p.X() + range < maxX ? p.X() + range : maxX - 1;
+			int min_x = p.X() - range >= 0 ? p.X() - range : 0;
+			int max_y = p.Y() + range < maxY ? p.Y() + range : maxY - 1;
+			int min_y = p.Y() - range >= 0 ? p.Y() - range : 0;
+
+			for (int i = min_x; i <= max_x; ++i)
+				for (int j = min_y; j <= max_y; ++j)
+					if (controlPoints[i][j] != null) {
+						int k;
+						if ((k = controlPoints[i][j]
+								.containsInputPointi(new Point(i, j))) != -1)
+							result.add(controlPoints[i][j].getInput().get(k));
+					}
+			if (result.size() > 0)
+				return result;
+			else
+				return null;
+		} else
+			return null;
+!!!137911.java!!!	isControlPoint(inout p : Point) : Point
+		if (isValidPoint(p)) {
+			if (controlPoints[p.X()][p.Y()] != null) {
+				Vector<Point> input = controlPoints[p.X()][p.Y()].getInput();
+				for (int i = 0; i < input.size(); ++i)
+					if (p.equals(input.get(i)))
+						return input.get(i);
+			}
+		}
+		return null;
+!!!138039.java!!!	deleteControlPoint(in x : int, in y : int) : void
+		if (isValidPoint(new Point(x, y)))
+			controlPoints[x][y] = null;

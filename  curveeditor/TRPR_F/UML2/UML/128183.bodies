@@ -1,0 +1,18 @@
+class Algorithm
+!!!128183.java!!!	Algorithm(in type : char, in degree : short)
+		this.type = type;
+		this.degree = degree;
+!!!128311.java!!!	getType() : char
+		return type;
+!!!128439.java!!!	getDegree() : short
+		return degree;
+!!!128567.java!!!	toString() : String
+		return "Type: " + type + ", degree: " + degree;
+!!!128695.java!!!	hashCode() : int
+		return toString().hashCode();
+!!!128823.java!!!	calculate(inout c : Curve) : void
+		if (c == null) // ongeldig argument --> exception gooien
+			throw new InvalidArgumentException(
+					"Algorithm.java - calculate(Curve): Invalid Argument.");
+		else
+			calculate(c.getInput(), c.getOutput());

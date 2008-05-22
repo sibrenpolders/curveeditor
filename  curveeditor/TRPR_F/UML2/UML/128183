@@ -1,0 +1,1321 @@
+format 46
+"Algorithms" // CurveEditor::Algorithms
+  revision 1
+  modified_by 55 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/Algorithms"
+  java_package "CurveEditor.Algorithms"
+  classview 128183 "Algorithms"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 128183 "Algorithm"
+      abstract visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse is de klasse waar ALLE voorziene interpolatiealgoritmen van afgeleid moeten
+worden. Deze bevat de kenmerkende eigenschappen van een algoritme, zijnde het type en de
+orde.
+De belangrijkste/publieke methodes zijn de calculate-methodes, die a.h.v. een gegeven 
+vector inputpunten een gegeven vector voor outputpunten vult.
+"
+      attribute 128055 "type"
+	const_attribute protected explicit_type "char"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Het type, dat ééns gezet in principe niet meer veranderd dient te worden.
+"
+      end
+
+      attribute 128183 "degree"
+	const_attribute protected explicit_type "short"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De orde, dat ééns gezet in principe niet meer veranderd dient te worden.
+"
+      end
+
+      operation 128183 "Algorithm"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De constructor; een default constructor is niet voorzien, omdat type én
+ degree gezet moéten worden."
+      end
+
+      operation 128311 "getType"
+	public explicit_return_type "char"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 128439 "getDegree"
+	public explicit_return_type "short"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 128567 "toString"
+	public explicit_return_type "String"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Het algoritme omzetten naar een String --> nodig voor oa. hashCode()."
+      end
+
+      operation 128695 "hashCode"
+	public explicit_return_type "int"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De teruggegeven waarde bepaalt de bucket waarin het algoritme in een
+ HashMap terecht zal komen."
+      end
+
+      operation 128823 "calculate"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Curve c, vul zijn Vector van outputpunten zodanig dat deze
+ de geïnterpoleerde punten van de inputpunten voorstellen."
+      end
+
+      operation 128951 "calculateComplete"
+	abstract public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Curve c, hervul zijn Vector van outputpunten vollédig met de
+ geïnterpoleerde punten van de inputpunten.
+ 't Verschil met calculate ligt 'm in het feit dat die laatste ook enkel
+ de Vector van outpunten kan bijvullen, i.p.v. volledig te (her-)vullen."
+      end
+
+      operation 129079 "calculate"
+	abstract public explicit_return_type "void"
+	nparams 2
+	  param inout name "input" explicit_type "Vector<Point>"
+	  param inout name "output" explicit_type "Vector<Point>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
+ outpunten m.b.v. het geïmplementeerde interpolatiealgoritme."
+      end
+
+      classrelation 135991 // <dependency>
+	relation 135991 -_->
+	  a default
+	    classrelation_ref 135991 // <dependency>
+	  b parent class_ref 128311 // Curve
+      end
+    end
+
+    class 128567 "Bezier"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze van Algorithm afgeleide klasse implementeert het Bezier-interpolatiealgoritme.
+Per vier punten wordt een curve berekend als volgt: de curve start in het eerste punt 
+in de richting van het tweede, om dan in het vierde punt te eindigen in de richting 
+van het derde.
+Voor meer informatie over dit algoritme: 
+		zie cursus Computer Graphics 2e Bach UHasselt, p. 106.
+"
+      classrelation 128055 // <generalisation>
+	relation 128055 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128055 // <generalisation>
+	  b parent class_ref 128183 // Algorithm
+      end
+
+      attribute 128311 "matrix"
+	protected explicit_type "double"
+	multiplicity "[][]"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " de Bezier-basismatrix"
+      end
+
+      attribute 128439 "controlPtsMatrix"
+	protected explicit_type "double"
+	multiplicity "[][]"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " de matrix van controlepunten"
+      end
+
+      attribute 128567 "parameterMatrix"
+	protected explicit_type "double"
+	multiplicity "[]"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " de kolommatrix van machten van de t-parameter
+"
+      end
+
+      operation 129207 "Bezier"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Deze constructor is voorzien opdat we subklassen van Bezier kunnen
+ implementeren, die dezelfde orde zouden hebben."
+      end
+
+      operation 129335 "Bezier"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 129463 "Bezier"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " orde = 3 --> per 4 controlepunten berkenen we interpolatiepunten"
+      end
+
+      operation 129591 "createMatrix"
+	protected explicit_return_type "void"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De basismatrix aanmaken en opvullen."
+      end
+
+      operation 129719 "fillControlPointsMatrix"
+	protected explicit_return_type "void"
+	nparams 4
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	  param inout name "c" type class_ref 128695 // Point
+	  param inout name "d" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Voor een viertal van controlepunten de matrix aanmaken en opvullen.
+ De eerste rij bevat de X-waarden, de tweede de Y-waarden."
+      end
+
+      operation 129847 "fillParameterMatrix"
+	protected explicit_return_type "void"
+	nparams 1
+	  param in name "t" explicit_type "double"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Voor een parameter t de parametermatrix aanmaken en opvullen,
+ gaande van de derde tot de nulde (= 1) macht van t."
+      end
+
+      operation 129975 "interpolate"
+	public explicit_return_type "void"
+	nparams 6
+	  param inout name "aa" type class_ref 128695 // Point
+	  param inout name "bb" type class_ref 128695 // Point
+	  param inout name "cc" type class_ref 128695 // Point
+	  param inout name "dd" type class_ref 128695 // Point
+	  param in name "steps" explicit_type "int"
+	  param inout name "out" explicit_type "Vector<Point>"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}, ${t5} ${p5}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Voor een gegeven viertal van inputpunten wordt de gegeven Vector van
+ output-punten verder aangevuld.
+ <steps> stelt het aantal interpolatiepunten voor.
+ Dit algoritme maakt gebruik van derde-orde differenties, een precieze
+ uitleg over hoe we tot deze werkwijze komen is te vinden in:
+ zie cursus Computer Graphics 2e Bach UHasselt, p. 106."
+      end
+
+      operation 130103 "calculate"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "input" explicit_type "Vector<Point>"
+	  param inout name "output" explicit_type "Vector<Point>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
+ outpunten m.b.v. het geïmplementeerde interpolatiealgoritme."
+      end
+
+      operation 130231 "calculateComplete"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Curve c, hervul zijn Vector van outputpunten vollédig met de
+ geïnterpoleerde punten van de inputpunten."
+      end
+    end
+
+    class 128823 "BezierC1"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze van Bezier afgeleide klasse implementeert het Bezier-interpolatiealgoritme,
+maar eveneens C1-continuïteit.
+Per vier punten wordt een curve berekend als volgt: de curve start in het eerste punt 
+in de richting van het tweede, om dan in het vierde punt te eindigen in de richting 
+van het derde. De C1-continuïteit wordt berekend m.b.v. methodes uit de klasse Tangent.
+Meer info over continuïteit is dan ook daar terug te vinden.
+"
+      classrelation 128183 // <generalisation>
+	relation 128183 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128183 // <generalisation>
+	  b parent class_ref 128567 // Bezier
+      end
+
+      operation 130359 "BezierC1"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Deze constructor is voorzien opdat we subklassen van BezierC1 kunnen
+ implementeren, die dezelfde orde zouden hebben."
+      end
+
+      operation 130487 "BezierC1"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 130615 "BezierC1"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " orde = 3 --> per 4 controlepunten berkenen we interpolatiepunten"
+      end
+
+      operation 130743 "calculate"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "input" explicit_type "Vector<Point>"
+	  param inout name "output" explicit_type "Vector<Point>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
+ outpunten m.b.v. het geïmplementeerde interpolatiealgoritme."
+      end
+    end
+
+    class 128951 "BezierG1"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze van Bezier afgeleide klasse implementeert het Bezier-interpolatiealgoritme,
+maar eveneens G1-continuïteit.
+Per vier punten wordt een curve berekend als volgt: de curve start in het eerste punt 
+in de richting van het tweede, om dan in het vierde punt te eindigen in de richting 
+van het derde. De G1-continuïteit wordt berekend m.b.v. methodes uit de klasse Tangent.
+Meer info over continuïteit is dan ook daar terug te vinden.
+"
+      classrelation 128311 // <generalisation>
+	relation 128311 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128311 // <generalisation>
+	  b parent class_ref 128567 // Bezier
+      end
+
+      operation 130871 "BezierG1"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Deze constructor is voorzien opdat we subklassen van BezierG1 kunnen
+ implementeren, die dezelfde orde zouden hebben."
+      end
+
+      operation 130999 "BezierG1"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131127 "BezierG1"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131255 "calculate"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "input" explicit_type "Vector<Point>"
+	  param inout name "output" explicit_type "Vector<Point>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
+ outpunten m.b.v. het geïmplementeerde interpolatiealgoritme."
+      end
+    end
+
+    class 129079 "Hermite"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128439 // <generalisation>
+	relation 128439 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128439 // <generalisation>
+	  b parent class_ref 128183 // Algorithm
+      end
+
+      attribute 128695 "steps"
+	protected explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 131383 "Hermite"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131511 "Hermite"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131639 "Hermite"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131767 "hermite"
+	protected return_type class_ref 128695 // Point
+	nparams 5
+	  param inout name "p1" type class_ref 128695 // Point
+	  param inout name "r1" type class_ref 128695 // Point
+	  param inout name "p2" type class_ref 128695 // Point
+	  param inout name "r2" type class_ref 128695 // Point
+	  param in name "t" explicit_type "float"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 131895 "calculate"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "cv" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132023 "calculate"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "vip" explicit_type "Vector<Point>"
+	  param inout name "vop" explicit_type "Vector<Point>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132151 "calculateComplete"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "cv" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 129207 "HermiteCardinal"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128567 // <generalisation>
+	relation 128567 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128567 // <generalisation>
+	  b parent class_ref 129079 // Hermite
+      end
+
+      operation 132279 "HermiteCardinal"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132407 "HermiteCardinal"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132535 "HermiteCardinal"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132663 "cardinal"
+	protected explicit_return_type "void"
+	nparams 2
+	  param inout name "cv" type class_ref 128311 // Curve
+	  param in name "c" explicit_type "float"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132791 "calculate"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "cv" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 132919 "calculateComplete"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "cv" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133047 "cardinalComplete"
+	protected explicit_return_type "void"
+	nparams 2
+	  param inout name "cv" type class_ref 128311 // Curve
+	  param in name "c" explicit_type "float"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 129335 "HermiteCatmullRom"
+      visibility public 
+      cpp_decl ""
+      final java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128695 // <generalisation>
+	relation 128695 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128695 // <generalisation>
+	  b parent class_ref 129207 // HermiteCardinal
+      end
+
+      attribute 128823 "d"
+	const_attribute private explicit_type "double"
+	init_value "=  0.5"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 133175 "HermiteCatmullRom"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133303 "HermiteCatmullRom"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133431 "HermiteCatmullRom"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133559 "calculate"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "cv" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133687 "calculateComplete"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "cv" type class_ref 128311 // Curve
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 129463 "Linear"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze van Algorithm afgeleide klasse implementeert gewoon lineaire interpolatie.
+M.a.w., per twee punten wordt gewoon een tussenliggend lijnstuk getekend.
+"
+      classrelation 128823 // <generalisation>
+	relation 128823 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 128823 // <generalisation>
+	  b parent class_ref 128183 // Algorithm
+      end
+
+      operation 133815 "Linear"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 133943 "Linear"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134071 "Linear"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134199 "findYForX"
+	private explicit_return_type "int"
+	nparams 5
+	  param in name "x" explicit_type "int"
+	  param in name "x0" explicit_type "int"
+	  param in name "y0" explicit_type "int"
+	  param in name "x1" explicit_type "int"
+	  param in name "y1" explicit_type "int"
+	nexceptions 1
+	  exception class_ref 129591 // DivisionByZeroException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven de coördinaten van het begin- en eindpunt én een X-waarde,
+ zoek de bijhorende Y-waarde van het punt met die X-waarde dat op
+ het tussenliggend lijnstuk ligt."
+      end
+
+      operation 134327 "findXForY"
+	private explicit_return_type "int"
+	nparams 5
+	  param in name "y" explicit_type "int"
+	  param in name "x0" explicit_type "int"
+	  param in name "y0" explicit_type "int"
+	  param in name "x1" explicit_type "int"
+	  param in name "y1" explicit_type "int"
+	nexceptions 1
+	  exception class_ref 129591 // DivisionByZeroException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven de coördinaten van het begin- en eindpunt én een Y-waarde,
+ zoek de bijhorende X-waarde van het punt met die Y-waarde dat op
+ het tussenliggend lijnstuk ligt."
+      end
+
+      operation 134455 "calculate"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "input" explicit_type "Vector<Point>"
+	  param inout name "output" explicit_type "Vector<Point>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
+ outpunten m.b.v. het geïmplementeerde interpolatiealgoritme."
+      end
+
+      operation 134583 "calculateComplete"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "c" type class_ref 128311 // Curve
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een Curve c, hervul zijn Vector van outputpunten vollédig met de
+ geïnterpoleerde punten van de inputpunten."
+      end
+    end
+
+    class 129719 "Tangent"
+      visibility public 
+      cpp_decl ""
+      final java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse is de klasse die de methodes voorziet om uit een gegeven drietal input-
+punten een ander drietal inputpunten te berekenen, die voldoen aan ofwel C1-
+ofwel G1-continuïteit.
+"
+      class 129847 "CONTINUITY"
+	visibility public stereotype "enum"
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+	php_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	attribute 128951 "G1"
+	  public type class_ref 129847 // CONTINUITY
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+
+	attribute 129079 "C1"
+	  public type class_ref 129847 // CONTINUITY
+	  cpp_decl ""
+	  java_decl "  ${@}${name}${value},${comment}"
+	  php_decl ""
+	  idl_decl ""
+	end
+      end
+
+      operation 134711 "Tangent"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 134839 "calculate"
+	public return_type class_ref 128695 // Point
+	nparams 5
+	  param inout name "co" type class_ref 129847 // CONTINUITY
+	  param in name "nr" explicit_type "short"
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	  param inout name "c" type class_ref 128695 // Point
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Mogelijke parametercombinaties, a = linkertangent, b = controlepunt, c =
+ rechtertangent:
+
+ C1, 1 --> dit geeft de linkertangent zodanig dat linker- en
+ rechtertangent op één lijn liggen en op eenzelfde afstand van punt b
+ liggen
+ 
+ C1, 2 --> dit geeft de rechtertangent zodanig dat linker- en
+ rechtertangent op één lijn liggen en op eenzelfde afstand van punt b
+ liggen
+ 
+ G1, 1 --> dit geeft de linkertangent zodanig dat linker- en
+ rechtertangent op één lijn liggen en de verhouding van de afstanden tot
+ punt b overeenkomt met de oorspronkelijke verhouding
+ 
+ G1, 2 --> dit geeft de rechtertangent zodanig dat linker- en
+ rechtertangent op één lijn liggen en de verhouding van de afstanden tot
+ punt b overeenkomt met de oorspronkelijke verhouding"
+      end
+
+      operation 134967 "tangent1G1"
+	private return_type class_ref 128695 // Point
+	nparams 3
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	  param inout name "c" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " ab = raakvector 1, b = controlepunt, bc = raakvector 2
+ result = punt voor geldige raakvector 1 voor G1
+
+ Het resultaat wordt bekomen door de vector ac te verschuiven zodanig dat
+ het punt b op die vector ligt. Het nieuwe eerste uiteinde van die
+ vector is dan het gevraagde punt."
+      end
+
+      operation 135095 "tangent2G1"
+	private return_type class_ref 128695 // Point
+	nparams 3
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	  param inout name "c" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " ab = raakvector 1, b = controlepunt, bc = raakvector 2
+ result = punt voor geldige raakvector 2 voor G1
+
+ Het resultaat wordt bekomen door de vector ac te verschuiven zodanig dat
+ het punt b op die vector ligt. Het nieuwe tweede uiteinde van die
+ vector is dan het gevraagde punt."
+      end
+
+      operation 135223 "tangent1C1"
+	private return_type class_ref 128695 // Point
+	nparams 3
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	  param inout name "c" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " ab = raakvector 1, b = controlepunt, bc = raakvector 2
+ result = punt voor geldige raakvector 1 voor C1
+
+ Het resultaat wordt bekomen door de vector ac te verschuiven zodanig dat
+ het punt b op die vector ligt én die vector door het punt b in twee
+ gelijke delen verdeeld wordt. Het nieuwe eerste uiteinde van die
+ vector is dan het gevraagde punt."
+      end
+
+      operation 135351 "tangent2C1"
+	private return_type class_ref 128695 // Point
+	nparams 3
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	  param inout name "c" type class_ref 128695 // Point
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " ab = raakvector 1, b = controlepunt, bc = raakvector 2
+ result = punt voor geldige raakvector 2 voor C1
+
+ Het resultaat wordt bekomen door de vector ac te verschuiven zodanig dat
+ het punt b op die vector ligt én die vector door het punt b in twee
+ gelijke delen verdeeld wordt. Het nieuwe tweede uiteinde van die
+ vector is dan het gevraagde punt."
+      end
+    end
+  end
+
+  deploymentview 128183 "Algorithms"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 128183 "Algorithm"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 128183 // Algorithm
+      end
+    end
+
+    artifact 128311 "Bezier"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 128567 // Bezier
+      end
+    end
+
+    artifact 128439 "BezierC1"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.InvalidArgumentException;
+${definition}"
+      associated_classes
+	class_ref 128823 // BezierC1
+      end
+    end
+
+    artifact 128567 "BezierG1"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.InvalidArgumentException;
+${definition}"
+      associated_classes
+	class_ref 128951 // BezierG1
+      end
+    end
+
+    artifact 128695 "Hermite"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+${definition}"
+      associated_classes
+	class_ref 129079 // Hermite
+      end
+    end
+
+    artifact 128823 "HermiteCardinal"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+${definition}"
+      associated_classes
+	class_ref 129207 // HermiteCardinal
+      end
+    end
+
+    artifact 128951 "HermiteCatmullRom"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import CurveEditor.Curves.Curve;
+${definition}"
+      associated_classes
+	class_ref 129335 // HermiteCatmullRom
+      end
+    end
+
+    artifact 129079 "Linear"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.DivisionByZeroException;
+import CurveEditor.Exceptions.InvalidArgumentException;
+${definition}"
+      associated_classes
+	class_ref 129463 // Linear
+      end
+    end
+
+    artifact 129207 "Tangent"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 129719 // Tangent
+      end
+    end
+  end
+end

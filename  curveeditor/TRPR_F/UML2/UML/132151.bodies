@@ -1,0 +1,7 @@
+class ToolBarListener
+!!!160823.java!!!	actionPerformed(inout e : ActionEvent) : void
+			String actionCommand = e.getActionCommand();
+
+			if (fileEvent(actionCommand) || pointEvent(actionCommand)
+					|| curveEvent(actionCommand))
+				return;

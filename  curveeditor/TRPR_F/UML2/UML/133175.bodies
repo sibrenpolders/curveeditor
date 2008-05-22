@@ -1,0 +1,5 @@
+class HandleExceptions
+!!!164791.java!!!	HandleExceptions()
+		
+!!!164919.java!!!	print(inout e : Exception) : void
+		System.out.println( e.getMessage() );

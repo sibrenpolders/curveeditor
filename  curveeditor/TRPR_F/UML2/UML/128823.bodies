@@ -1,0 +1,53 @@
+class BezierC1
+!!!130359.java!!!	BezierC1(in type : char, in degree : short)
+		super(type, degree);
+!!!130487.java!!!	BezierC1(in degree : short)
+		this('C', degree);
+!!!130615.java!!!	BezierC1()
+		this('C', (short) 3);
+!!!130743.java!!!	calculate(inout input : Vector<Point>, inout output : Vector<Point>) : void
+		if (input == null || output == null)
+			throw new InvalidArgumentException(
+					"BezierC1.java - calculate(Vector, Vector): Invalid Argument.");
+		else {
+			// Voor elk viertal van inputpunten berekenen we de outputpunten.
+			for (int i = 0; i <= input.size() - 4; i = i + 3) {
+				// Aantal stappen bepalen a.h.v. de afstand tussen de
+				// eindpunten.
+				int steps = 2 * Point.distance(input.elementAt(i), input
+						.elementAt(i + 3));
+
+				Point first, second;
+				// Hiermee berekenen we de inputpunten, nodig voor C1.
+				Tangent c = new Tangent();
+
+				try {
+					// Bereken het tweede inputpunt uit het huidige tweede
+					// inputpunt en uit het vorige derde inputpunt,
+					// indien beschikbaar.
+					if (i > 0)
+						first = c.calculate(Tangent.CONTINUITY.C1, (short) 2,
+								input.elementAt(i - 1), input.elementAt(i),
+								input.elementAt(i + 1));
+					else
+						first = input.elementAt(i + 1);
+
+					// Bereken het derde inputpunt uit het huidige derde
+					// inputpunt en uit het volgende tweede inputpunt,
+					// indien beschikbaar.
+					if (i <= input.size() - 7)
+						second = c.calculate(Tangent.CONTINUITY.C1, (short) 1,
+								input.elementAt(i + 2), input.elementAt(i + 3),
+								input.elementAt(i + 4));
+					else
+						second = input.elementAt(i + 2);
+				} catch (InvalidArgumentException e) {
+					output.clear();
+					throw e;
+				}
+
+				// Bereken de interpolatiepunten.
+				interpolate(input.elementAt(i), first, second, input
+						.elementAt(i + 3), steps, output);
+			}
+		}

@@ -1,0 +1,688 @@
+format 46
+"Curves" // CurveEditor::Curves
+  revision 1
+  modified_by 55 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/Curves"
+  java_package "CurveEditor.Curves"
+  classview 128311 "Curves"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 128311 "Curve"
+      visibility public 
+      cpp_decl ""
+      final java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse omvat de voorstelling van een curve.
+Een curve heeft een type en een orde, en aan de hand van die eigenschappen kan er een Algorithm aan gelinkt worden. 
+Dit gebeurt niet hier, maar in Editor, omdat moesten we voor elke Curve ook een Algorithm-object bijhouden, we wel 
+van geheugenverspilling kunnen spreken. Algorithms zijn immers Curve-onafhankelijk en doen niet meer dan m.b.v. een Vector
+van Points een andere Vector van Points vullen. Daarom: Curve en Algorithm onafhankelijk, maar wel met gemeenschappelijke
+ID's om ze aan elkaar te kunnen linken.
+Zoals gezegd: een Curve bestaat naast de kenmerkende eigenschappen, ook nog uit twee Vectoren, een voor de input- en een
+voor de outpunten.
+"
+      attribute 132023 "SEARCH_RANGE"
+	class_attribute private explicit_type "short"
+	init_value "=  3"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      classrelation 130999 // input (<unidirectional association>)
+	relation 130999 --->
+	  stereotype "Vector"
+	  a role_name "input" protected
+	    comment " De Vector van inputpunten, volgorde is belangrijk !!!
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 130999 // input (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      classrelation 131127 // output (<unidirectional association>)
+	relation 131127 --->
+	  stereotype "Vector"
+	  a role_name "output" protected
+	    comment " De Vector van outputpunten, die kan berekend worden uit de Vector van
+ inputpunten.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 131127 // output (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      attribute 132151 "type"
+	protected explicit_type "char"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Identifiers
+"
+      end
+
+      attribute 132279 "degree"
+	protected explicit_type "short"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 145847 "Curve"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De default constructor is bvb. nodig voor File I/O, alwaar we stuk voor
+ stuk de curve kunnen herconstrueren: eerst Curve aanmaken, dan ID's
+ zetten en dan de input punten inladen."
+      end
+
+      operation 145975 "Curve"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "type" explicit_type "char"
+	  param in name "degree" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 146103 "getInput"
+	public return_type class_ref 128695 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 146231 "getOutput"
+	public return_type class_ref 128695 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}Vector<${type}> ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 146359 "clearOutput"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verwijder al de berekende outputpunten."
+      end
+
+      operation 146487 "clearInput"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verwijder al de inputpunten."
+      end
+
+      operation 146615 "getNbInputPoints"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 146743 "getNbOutputPoints"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 146871 "addOutput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "o" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Voeg een outputpunt toe aan de Curve."
+      end
+
+      operation 146999 "removeInput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "o" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verwijder een inputpunt."
+      end
+
+      operation 147127 "removeInput"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "i" explicit_type "int"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " i is de index in de Vector."
+      end
+
+      operation 147255 "addInput"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "o" type class_ref 128695 // Point
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 147383 "getType"
+	public explicit_return_type "char"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 147511 "getTypeAsString"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 147639 "getDegree"
+	public explicit_return_type "short"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 147767 "setDegree"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "d" explicit_type "short"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 147895 "setType"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "t" explicit_type "char"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 148023 "containsInputPoint"
+	public return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Lineair zoeken of een punt als inputpunt aanwezig is -->
+ bij normaal gebruik: niet al teveel inputpunten, dus niet
+ zó van belang."
+      end
+
+      operation 148151 "containsInputPointi"
+	public explicit_return_type "int"
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Geeft de index terug als het punt een controlepunt is.
+ Zelfde algoritme als containsInputPoint, maar een andere returnwaarde."
+      end
+
+      operation 148279 "translate"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verschuiving van de Curve over een afstand x,y
+ --> alle controlepunten verschuiven (en elders herberekenen)."
+      end
+
+      operation 148407 "connectNoExtraPoint"
+	class_operation public return_type class_ref 128311 // Curve
+	nparams 2
+	  param inout name "c1" type class_ref 128311 // Curve
+	  param inout name "c2" type class_ref 128311 // Curve
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De aangemaakte curve krijgt de eigenschappen van de eerste curve en AL de
+ inputpunten van de twee curves. Het eerste inputpunt van c2 volgt dus op
+ het laatste inputpunt van c1. De inputpunten behouden hun oorspronkelijke
+ positie.
+ De Curve wordt hier niet herberekend, uiteraard."
+      end
+
+      operation 148535 "connectC0"
+	class_operation public return_type class_ref 128311 // Curve
+	nparams 2
+	  param inout name "c1" type class_ref 128311 // Curve
+	  param inout name "c2" type class_ref 128311 // Curve
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " De aangemaakte curve krijgt de eigenschappen van de eerste curve en de
+ inputpunten van de twee curves. Het eerste inputpunt van c2 valt samen
+ met het laatste inputpunt van c1. De overige inputpunten van c2 worden
+ over een afstand verschoven zodanig dat díe twee inputpunten samenvallen."
+      end
+
+      classrelation 135863 // <dependency>
+	relation 135863 -_->
+	  a default
+	    classrelation_ref 135863 // <dependency>
+	  b parent class_ref 128183 // Algorithm
+      end
+
+      classrelation 136119 // <dependency>
+	relation 136119 -_->
+	  a default
+	    classrelation_ref 136119 // <dependency>
+	  b parent class_ref 129719 // Tangent
+      end
+    end
+
+    class 128695 "Point"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse stelt een 2D-punt voor.
+"
+      attribute 132407 "X"
+	protected explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 132535 "Y"
+	protected explicit_type "int"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 148663 "Point"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Default constructor."
+      end
+
+      operation 148791 "Point"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "X" explicit_type "int"
+	  param in name "Y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 148919 "X"
+	public explicit_return_type "int"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 149047 "setX"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "X" explicit_type "int"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 149175 "increaseX"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "x" explicit_type "int"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verhoog X met de gegeven waarde."
+      end
+
+      operation 149303 "Y"
+	public explicit_return_type "int"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 149431 "setY"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "Y" explicit_type "int"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 149559 "increaseY"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "y" explicit_type "int"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verhoog Y met de gegeven waarde."
+      end
+
+      operation 149687 "toString"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 149815 "equals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "obj" explicit_type "Object"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Indien punten in een Vector en dergelijke opgeslaan worden,
+ dan wordt m.b.v. deze functie bepaald of het punt er al in zit."
+      end
+
+      operation 149943 "hashCode"
+	public explicit_return_type "int"
+	nparams 0
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 150071 "minus"
+	public return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "other" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Geef een Point terug dat gelijk is aan het verschil tussen dit Point en
+ het gegeven Point."
+      end
+
+      operation 150199 "plus"
+	public return_type class_ref 128695 // Point
+	nparams 1
+	  param inout name "other" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Geef een Point terug dat gelijk is aan de som van dit Point en
+ het gegeven Point."
+      end
+
+      operation 150327 "times"
+	public return_type class_ref 128695 // Point
+	nparams 1
+	  param in name "d" explicit_type "double"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Vermenigvuldig/scaleer dit Point met de waarde d en geef terug."
+      end
+
+      operation 150455 "length"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Bereken de lengte, of de afstand tot de oorsprong."
+      end
+
+      operation 150583 "distance"
+	class_operation public explicit_return_type "int"
+	nparams 2
+	  param inout name "a" type class_ref 128695 // Point
+	  param inout name "b" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Bereken de afstand tussen twee Points."
+      end
+    end
+  end
+
+  deploymentview 128439 "Curves"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 129719 "Curve"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 128311 // Curve
+      end
+    end
+
+    artifact 129847 "Point"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+${definition}"
+      associated_classes
+	class_ref 128695 // Point
+      end
+    end
+  end
+end

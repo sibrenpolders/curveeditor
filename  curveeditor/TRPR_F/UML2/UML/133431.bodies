@@ -1,0 +1,9 @@
+class PathSimulationKeys
+!!!165559.java!!!	PathSimulationKeys(inout step : Integer)
+		this.step = step;
+		input = new Scanner(System.in);
+!!!165687.java!!!	run() : void
+		while (true) {
+			while (true)
+				;
+		}
