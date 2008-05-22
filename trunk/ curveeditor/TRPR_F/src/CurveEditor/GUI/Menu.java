@@ -40,8 +40,10 @@ public class Menu extends JMenuBar implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		// enigste actieve actieknop is op het moment about
-		about();
+		if ( e.getActionCommand().equals("about") )
+			about();
 	}
 
 	// Zal de menuBar opstellen
@@ -225,7 +227,8 @@ public class Menu extends JMenuBar implements ActionListener {
 		JRadioButton button = new JRadioButton("Select Curve");
 		button.setSelected(true);
 		button.addActionListener(listener);
-
+		button.addActionListener( this );
+		
 		group.add(button);
 		radioPanel.add(button);
 
