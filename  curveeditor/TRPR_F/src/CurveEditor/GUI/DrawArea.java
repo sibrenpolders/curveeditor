@@ -2,7 +2,13 @@ package CurveEditor.GUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -352,5 +358,27 @@ public final class DrawArea extends JPanel {
 		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH,
 				DisplaySize.DRAWHEIGHT);
 		repaint();
+	}
+
+	// Sla het canvas op naar het gegeven bestand in het gegeven formaat, indien
+	// dat bestaat.
+	public void saveToFile(String fileName, String extension) {
+		BufferedImage bi = new BufferedImage(DisplaySize.DRAWWIDTH,
+				DisplaySize.DRAWHEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D ig2 = bi.createGraphics();
+		Graphics temp = g;
+		paintComponent(ig2);
+		g = temp;
+
+		try {
+			if (extension.compareToIgnoreCase("png") == 0
+					|| extension.compareToIgnoreCase("png") == 0
+					|| extension.compareToIgnoreCase("bmp") == 0
+					|| extension.compareToIgnoreCase("jpg") == 0
+					|| extension.compareToIgnoreCase("gif") == 0)
+				ImageIO.write(bi, extension.toUpperCase(), new File(fileName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
