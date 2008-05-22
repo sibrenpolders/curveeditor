@@ -32,8 +32,9 @@ public class Linear extends Algorithm {
 		if (x1 - x0 == 0)
 			throw new DivisionByZeroException();
 
-		return (int) ((double) y0 + (x - (double) x0)
-				* ((y1 - y0) / ((double) x1 - x0)));
+		else
+			return (int) ((double) y0 + (x - (double) x0)
+					* ((y1 - y0) / ((double) x1 - x0)));
 	}
 
 	// Gegeven de coördinaten van het begin- en eindpunt én een Y-waarde,
@@ -60,71 +61,75 @@ public class Linear extends Algorithm {
 
 			// Voor elk paar punten de interpolatiepunten berekenen.
 			for (int i = 0; i < input.size() - 1; ++i) {
+				if (input.get(i).X() != input.get(i + 1).X()
+						|| input.get(i).Y() != input.get(i + 1).Y()) {
+					// Positief verschil in x-waarden.
+					int diff1 = (input.get(i).X() < input.get(i + 1).X()) ? input
+							.get(i + 1).X()
+							- input.get(i).X()
+							: input.get(i).X() - input.get(i + 1).X();
 
-				// Positief verschil in x-waarden.
-				int diff1 = (input.get(i).X() < input.get(i + 1).X()) ? input
-						.get(i + 1).X()
-						- input.get(i).X() : input.get(i).X()
-						- input.get(i + 1).X();
+					// Positief verschil in y-waarden.
+					int diff2 = (input.get(i).Y() < input.get(i + 1).Y()) ? input
+							.get(i + 1).Y()
+							- input.get(i).Y()
+							: input.get(i).Y() - input.get(i + 1).Y();
 
-				// Positief verschil in y-waarden.
-				int diff2 = (input.get(i).Y() < input.get(i + 1).Y()) ? input
-						.get(i + 1).Y()
-						- input.get(i).Y() : input.get(i).Y()
-						- input.get(i + 1).Y();
+					try {
 
-				try {
-
-					// Lijnstuk stijgt sneller volgens X dan volgens Y
-					// --> voor elke X de Y zoeken.
-					if (diff1 > diff2) {
-						// Eerste controlepunt ligt links van het tweede.
-						if (input.get(i).X() < input.get(i + 1).X()) {
-							for (int x = input.get(i).X(); x <= input
-									.get(i + 1).X(); ++x) {
-								output.add(new Point(x, findYForX(x, input.get(
-										i).X(), input.get(i).Y(), input.get(
-										i + 1).X(), input.get(i + 1).Y())));
+						// Lijnstuk stijgt sneller volgens X dan volgens Y
+						// --> voor elke X de Y zoeken.
+						if (diff1 > diff2) {
+							// Eerste controlepunt ligt links van het tweede.
+							if (input.get(i).X() < input.get(i + 1).X()) {
+								for (int x = input.get(i).X(); x <= input.get(
+										i + 1).X(); ++x) {
+									output.add(new Point(x, findYForX(x, input
+											.get(i).X(), input.get(i).Y(),
+											input.get(i + 1).X(), input.get(
+													i + 1).Y())));
+								}
+							}
+							// Eerste controlepunt ligt rechts van het tweede.
+							else {
+								for (int x = input.get(i).X(); x >= input.get(
+										i + 1).X(); --x) {
+									output.add(new Point(x, findYForX(x, input
+											.get(i).X(), input.get(i).Y(),
+											input.get(i + 1).X(), input.get(
+													i + 1).Y())));
+								}
 							}
 						}
-						// Eerste controlepunt ligt rechts van het tweede.
+						// Lijnstuk stijgt sneller volgens Y dan volgens X
+						// --> voor elke Y de X zoeken.
 						else {
-							for (int x = input.get(i).X(); x >= input
-									.get(i + 1).X(); --x) {
-								output.add(new Point(x, findYForX(x, input.get(
-										i).X(), input.get(i).Y(), input.get(
-										i + 1).X(), input.get(i + 1).Y())));
+							// Eerste controlepunt ligt onder het tweede.
+							if (input.get(i).Y() < input.get(i + 1).Y()) {
+								for (int y = input.get(i).Y(); y <= input.get(
+										i + 1).Y(); ++y) {
+									output.add(new Point(findXForY(y, input
+											.get(i).X(), input.get(i).Y(),
+											input.get(i + 1).X(), input.get(
+													i + 1).Y()), y));
+								}
+							}
+							// Eerste controlepunt ligt boven het tweede.
+							else {
+								for (int y = input.get(i).Y(); y >= input.get(
+										i + 1).Y(); --y) {
+									output.add(new Point(findXForY(y, input
+											.get(i).X(), input.get(i).Y(),
+											input.get(i + 1).X(), input.get(
+													i + 1).Y()), y));
+								}
 							}
 						}
+					} catch (DivisionByZeroException e) {
+						output.clear();
+						throw new InvalidArgumentException(
+								"Linear.java - calculate(Vector, Vector): Division by zero.");
 					}
-					// Lijnstuk stijgt sneller volgens Y dan volgens X
-					// --> voor elke Y de X zoeken.
-					else {
-						// Eerste controlepunt ligt onder het tweede.
-						if (input.get(i).Y() < input.get(i + 1).Y()) {
-							for (int y = input.get(i).Y(); y <= input
-									.get(i + 1).Y(); ++y) {
-								output.add(new Point(findXForY(y, input.get(i)
-										.X(), input.get(i).Y(), input
-										.get(i + 1).X(), input.get(i + 1).Y()),
-										y));
-							}
-						}
-						// Eerste controlepunt ligt boven het tweede.
-						else {
-							for (int y = input.get(i).Y(); y >= input
-									.get(i + 1).Y(); --y) {
-								output.add(new Point(findXForY(y, input.get(i)
-										.X(), input.get(i).Y(), input
-										.get(i + 1).X(), input.get(i + 1).Y()),
-										y));
-							}
-						}
-					}
-				} catch (DivisionByZeroException e) {
-					output.clear();
-					throw new InvalidArgumentException(
-							"Linear.java - calculate(Vector, Vector): Division by zero.");
 				}
 			}
 		}
