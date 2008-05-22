@@ -486,17 +486,17 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	// Alles wat te maken heeft met FILE, wordt gebruikt door Menu EN Toolbar
 	private boolean fileEvent(String actionCommand) {
 		System.out.println(actionCommand);
-		if (actionCommand.equals("Open")) {
+		if (actionCommand.equals("Open File")) {
 			open();
 			return true;
 		} else if (actionCommand.equals("none")) {
 			changeMode(MODE.NONE);
 			choice.deselect();
 			return true;
-		} else if (actionCommand.equals("Save")) {
+		} else if (actionCommand.equals("Save File")) {
 			save();
 			return true;
-		} else if (actionCommand.equals("New")) {
+		} else if (actionCommand.equals("New File")) {
 			newFile();
 			return true;
 		}
@@ -685,7 +685,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			if (algorithmEvent(actionCommand) || pointEvent(actionCommand)
 					|| curveEvent(actionCommand) || fileEvent(actionCommand))
 				return;
-			else if (actionCommand.equals("ADD")) {
+			else if (actionCommand.equals("Add Point")) {
 				Point a = choice.getInputPoint();
 				if (a != null) {
 					changeMode(MODE.ADD_INPUT);
