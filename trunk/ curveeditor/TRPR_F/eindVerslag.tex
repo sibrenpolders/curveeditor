@@ -16,8 +16,8 @@
 Op welke manieren kan je een set van punten op een gladde wijze met elkaar verbinden? Dat was
 de vraag achter Curve Editor. Het gemakkelijkste pad dat getekend kan worden tussen de punten
 is natuurlijk lineair. Maar er zijn nog zoveel andere mogelijkheden, waarvan we er
-slechts twee hebben verwerkt in curve editor (nl. Bezier en Hermite). Deze algorithmes zullen
-vlakke kromme maken tussen de interpolatiepunten. De toepassingen van de algortitmes die we 
+slechts twee hebben verwerkt in curve editor (nl. Bezier en Hermite). Deze algoritmes zullen
+vlakke kromme maken tussen de interpolatiepunten. De toepassingen van de algoritmes die we 
 gebruikt hebben beperken zich niet enkel tot het tekenen van ``lijntjes'' tussen punten, 
 maar ook op bijvoorbeeld camerabeweging of ``AI''-beweging in games.
 De interpolatie tussen een gegeven set punten is een uitgebreide en interessante studie die 
@@ -30,6 +30,25 @@ basistoepassing ( ofwel de toegepaste wiskundige ) ervan. \newline \newline \new
 \newpage
 \section{Wiskundige Voorkennis}
 \subsection{lineair}
+\subsubsection{Na\"ieve poging}
+Een eerste poging om lineaire interpolatie uit te rekenen bestaat er in tussen elk puntenpaar
+de vergelijking \begin{math}y = mx + b\end{math} uit te rekenen. 
+Waarbij \begin{math}m = (y_1-y_0)/(x_1-x_0)\end{math} en b het
+startpunt is op de y-as. De grote nadelen van dit algoritme zijn dat er voor iedere nieuwe
+pixel opnieuw getekend moet worden en er behoefte is aan een floating point optelling en 
+vermenigvuldiging ( vermits m een floating point is.
+\subsubsection{DDA}
+Bij deze methode wordt nog steeds m als floating point voorgesteld, maar de berekening van
+de volgende y-waarde wordt als volgt vereenvoudigd:
+\begin{math}
+y_{i+1} = m.x_{i+1} + b\newline
+=m.(x_i + \Delta x) + b\newline
+=m.x_i + m.\Delta x) + b\newline
+=y_i + m.\Delta x)\newline
+=y_i + m) aangezien \Delta x = 1 als we 1 pixel verder gaan. \newline
+\end{math} 
+Dit algorithme is duidelijk efficienter vermits we een float vermenigvuldiging hebben 
+uitgschakeld.
 \subsection{Bezier}
 \subsection{Hermite}
 \newpage
@@ -52,23 +71,23 @@ te gaan op de technische details.
 Dit is wellicht het kleinste pakket van de reeks (figuur BLAH). Het bevat slechts een klasse, 
 namelijk de 
 main klasse. Deze klasse zal, zoals wellicht duidelijk is, als bootstrap dienen voor de 
-applicatie curve editor. Er wordt ook de mogenlijkheid geboden om al rechtstreeks vanuit
+applicatie curve editor. Er wordt ook de mogelijkheid geboden om al rechtstreeks vanuit
 de commandline een file mee te geven. Dit is enkel ter volledigheid vermits de gebruiker tijdens
 de loop van het programma zeer makkelijk bestanden kan inladen en opslaan.
 \subsubsection{Algorithms}
-Dit pakket voorziet allerlei klassens die voor de interpolatie tussen punten zullen zorgen.
-Elke klasse in dit pakket implementeerd de Algorithme interface. Dit is handig voor de 
+Dit pakket voorziet allerlei klassen die voor de interpolatie tussen punten zullen zorgen.
+Elke klasse in dit pakket implementeert de Algorithme interface. Dit is handig voor de 
 groepswerk vermits deze interface vastlegt welke functies de programmeur zal implementeren.
 Zodoende weet je al op voorhand welke methodes je moet aanroepen om een bepaald resultaat
 te verkrijgen. \newline
 De klassenamen zijn triviaal gekozen: ``Lineair, Bezier, BezierC1, BezierG1, Hermite, 
 Hermite Cardinaal, Hermite Catmull Rom''(figuur BLAH). 
-Zoals de namen al verdaden zullen deze de verschillende
+Zoals de namen al veraden zullen deze de verschillende
 interpolatie methodes die besproken werden in het deel 'Wiskundige voorkennis' implementeren.
 Hiervoor werd natuurlijk altijd geoogd op de meeste optimale implementatie van degene die 
 besproken werden.
 \subsubsection{Core}
-Dit pakket bevat enkele noodzakkelijk klassens(figuur BLAH).\newline \newline
+Dit pakket bevat enkele noodzakelijk klassen(figuur BLAH).\newline \newline
 De klasse CurveContainer zal ervoor zorgen dat ingegeven punten kunnen opgeslagen worden, samen
 met hun door interpolatie berekende punten. \newline \newline
 Een eerste idee was het subdivsion principe toe te passen. In de beginsituatie is het tekenveld
@@ -77,11 +96,11 @@ waar punten geplaatst zijn onderverdeeld in steeds kleiner wordende rechthoekjes
 rechthoekje zat dan juist een punt van een curve. Zodat er gemakkelijk gezegd kon worden
 welk punt waar stond en tot welke curve het behoorde.\newline
 Dit algorithme bleek echter niet zo effici\"ent te zijn wanneer we te maken hadden met een groot
-aantal input punten. Dit kwam voornamelijk doordat er telkens opnieuwe een kleinere rechthoek
+aantal input punten. Dit kwam voornamelijk doordat er telkens opnieuw een kleinere rechthoek
 moest berekend worden bij ingeven van een nieuw punt. En een grotere wanneer er punten verwijderd
 werden. Uiteindelijk was de applicatie meer bezig met het berekenen van rechthoekjes dan met zijn
 doel: voorstellen van curves.\newline \newline
-De tweede poging leek beter te lukken. We stelden een veld op waarvan elke pixel een mogenlijke
+De tweede poging leek beter te lukken. We stelden een veld op waarvan elke pixel een mogelijke
 houder kon zijn van een punt. De houders werden ge\"initialiseerd met de waarde null zodat ze 
 geen
 plaats innamen. Het toevoegen van punten is zo simpel uit te voeren door het new commando toe
@@ -95,15 +114,15 @@ De klasse Editor is het hart van de curve editor. Deze zal zorgen dat de data di
 moet worden kan en ook in de juiste richting zal stromen. De uitwisseling van data zal 
 voornamelijk bestaan uit het zoeken of verwijderen van punten uit de CurveContainer klasse.
 Maar ook het opvangen en afhandelen van excepties. Deze klasse zorgt er dus voor dat de 
-verschillende andere klassen zo autonoom als mogenlijk kunnen werken. Dit verhoogd natuurlijk
+verschillende andere klassen zo autonoom als mogelijk kunnen werken. Dit verhoogd natuurlijk
 enkel de leesbaarheid en onderhoudbaarheid van de code.\newline \newline
 Een laatste klasse van dit pakket is de FileIO klasse, deze zal niet alleen files opslaan en
-inladen, maar ook zal hij de funtonialiteit van undo en redo implementeren, vermits deze van
+inladen, maar ook zal hij de functionialiteit van undo en redo implementeren, vermits deze van
 dezelfde functies gebruik maakt.
 \subsubsection{Curve}
 Dit pakket bevat de de twee datatypes die doorheen het programma gebruikt worden. Point zoals
-de naam doet vermoeden geeft de mogenlijkheid een punt op te slaan. Curve geeft dan weer de
-mogenlijkheid om een verzameling van punten ( lees een kromme of curve ) op te slaan. De
+de naam doet vermoeden geeft de mogelijkheid een punt op te slaan. Curve geeft dan weer de
+mogelijkheid om een verzameling van punten ( lees een kromme of curve ) op te slaan. De
 technische details van deze laatste klasse wordt beter uitgelegd verder in de tekst. 
 Voorlopig is het voldoende om te weten dat Curve een vector van Point's bijhoudt en enkele
 basisvoorzieningen voorziet ( punten opvragen, toevoeg, transleren, \ldots ).
@@ -120,7 +139,7 @@ voorzien die in een dialog scherm de exceptie zal uitprinten.
 \subsubsection{GUI}
 De GUI is vrij grondig opgesplitst( zie figuur BLAH ). Elk groot deel heeft zo zijn eigen klasse.
 Zo heb je een menubalk klasse, een snelknopbalk klasse, een tekengebied klasse en een keuzegebied
-klasse. De GUI klasse op zijn beurt zal het centrale orgaan spelen die al deze klassens 
+klasse. De GUI klasse op zijn beurt zal het centrale orgaan spelen die al deze klassen 
 connecteerd. Het is daarom ook niet te verwonderen dat deze is afgeleid van de klasse Editor,
 die centrale klasse was van de core van de applicatie. 
 
@@ -129,7 +148,7 @@ over leesbaarheid en onderhoudbaarheid van code. Het eventhandle systeem van jav
 optimaal voor dit soort afscheiding. In java worden de events opgevangen door een klasse 
 af te leiden van een van de Listener interface's (ActionListener, ItemListener, ... ). Deze 
 klasse zal dan de nodige member functies impementeren om de juiste evenafhandeling te kunnen
-doen. Het is dus voldoende om deze event handle klassens in GUI aan te maken en door te geven
+doen. Het is dus voldoende om deze event handle klassen in GUI aan te maken en door te geven
 aan de juiste componenten ( menubalk, tekengebied, ... ). Meer uitleg hierover vind je verder in
 de tekst.
 \subsubsection{Tools}
@@ -161,7 +180,7 @@ puntnummers wil laten zien bij het tekenen. \newline
 Het Edit-veld van dit gebied hangt af van de Modus waarin je zit. Er zijn voor de gebruiker
 twee grote modi zichtbaar. De ene is curve modus, hier bewerk je curves ( selecteren, 
 deselectere, nieuwe curve, \ldots ) en de punt modus ( punt verslepen, selecteren, toevoegen ).
-Naargelang de modus waarin je zit zulle andere mogenlijkheden zichtbaar worden in het edit veld.
+Naargelang de modus waarin je zit zulle andere mogelijkheden zichtbaar worden in het edit veld.
 Dit leidt tot een groter gebruiksgemak vermits de taken die verschijnen meestal ook gebruikt
 worden waneer je in de modus werkt.
 \item Tekengebied ( fig BLAH )
@@ -206,7 +225,7 @@ Deze structuur heeft al iets meer uitleg nodig. Een curve is op het laagste nive
 een container van punten.\newline
 Elke curve Houdt drie essentiele dingen bij
 \begin{enumerate}
-\item Type ( bezier, hermite, \ldot )
+\item Type ( bezier, hermite, \ldots )
 \item een vector van input punten
 \item een vector van output punten
 \end{enumerate}
@@ -217,19 +236,34 @@ gebruikt om te kunnen tekenen op het tekengebied.\newline
 
 We hebben voor een vector gekozen om de input punten op te slaan omdat de verschillende
 interpolatietechnieken gemakkelijk moeten kunnen springen tussen de gegeven input punten om
-hun algorithme te kunnen uitvoern.
+hun algorithme te kunnen uitvoeren. Voor de output punten hebben we dan gekozen voor een 
+enkelvoudig gelinkte lijst vermits de punten maar in een richting dienen toegevoegd en gelezen
+te worden.
 
 Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve, \ldots
 \subsection{Extra's}
+TODO
 \subsection{Interessante problemen}
+TODO
 \newpage
 \section{Planning}
 \newpage
 \section{Taakverdeling}
+\begin{enumerate}
+\item Sibrand Staessens:
+       Bezier algorithmes, CurveContainer, Editor, DrawArea, GUI
+\item Sibren Polders
+       Hermite algorithmes, FileIO, Menu, ToolBar, ChoiceArea, GUI, PathSimulation
+\end{enumerate}
 \newpage
 \section{Appendix}
 \appendix
 \section{Handleiding}
+Had gij dacht ik?
 \section{Screenshot}
+Gij ook? Alleja ik ga kijken welke gij al hebt en dan bijmaken wat ik nodig heb. Zodoende gaan
+we geen dubbel werk leveren \ldots. ``Stel niet uit tot morgen wat je vandaag door een ander
+kan laten doen''
 \section{Referenties}
+Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics 
 \end{document}
