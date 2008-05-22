@@ -215,13 +215,14 @@ public class FileIO extends DefaultHandler {
 			throws EmptyStackException, InvalidArgumentException {
 		if (stack.size() > 1) {
 			byte[] selCur = stack.pop();
-			byte[] cur = stack.peek();
+			byte[] cur = stack.pop();
+			stack.push(cur);
 			stack.push(selCur);
 
 			stackRedo.push(cur);
-			stackRedo.push(selCur);			
+			stackRedo.push(selCur);
 		}
-		
+
 		pop(curves, selectedCurves, stack);
 	}
 
@@ -229,11 +230,12 @@ public class FileIO extends DefaultHandler {
 			throws EmptyStackException, InvalidArgumentException {
 		if (stackRedo.size() > 1) {
 			byte[] selCur = stackRedo.pop();
-			byte[] cur = stackRedo.peek();
+			byte[] cur = stackRedo.pop();
+			stackRedo.push(cur);
 			stackRedo.push(selCur);
 
 			stack.push(cur);
-			stack.push(selCur);			
+			stack.push(selCur);
 		}
 		pop(curves, selectedCurves, stackRedo);
 	}

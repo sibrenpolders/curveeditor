@@ -421,7 +421,7 @@ public class Editor {
 				Curve c = selectedCurves.elementAt(i);
 
 				c.addInput(a); // Punt toevoegen.
-				Algorithm temp = getAlgorithm(c.getType(), c.getDegree());
+				Algorithm temp = getAlgorithm(c.getType());
 
 				// Bij Hermite ( type == 'H' ) is het 2de ingegeven punt
 				// telkens de tangens. Dus er moet niet getekend worden voordat
