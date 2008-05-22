@@ -61,7 +61,15 @@ public class FileIO extends DefaultHandler {
 
 	public void save(String filename, Vector<Curve> curves) {
 		try {
-			pw = new PrintWriter(new File(filename + ".xml"));
+			if (filename.endsWith(".xml") || filename.endsWith(".XML"))
+				pw = new PrintWriter(new File(filename));
+			else if (filename.indexOf(".") != -1) {
+				pw = new PrintWriter(new File(filename.substring(0, filename
+						.indexOf("."))
+						+ ".xml"));
+			} else
+				pw = new PrintWriter(new File(filename + ".xml"));
+
 			StreamResult streamResult = new StreamResult(pw);
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
 					.newInstance();

@@ -451,9 +451,9 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
 
-			if (fileName.endsWith("png") || fileName.endsWith("PNG"))
+			if (fileName.endsWith(".png") || fileName.endsWith(".PNG"))
 				draw.saveToFile(fileName, "PNG");
-			else if (fileName.endsWith("gif") || fileName.endsWith("GIF"))
+			else if (fileName.endsWith(".gif") || fileName.endsWith(".GIF"))
 				draw.saveToFile(fileName, "GIF");
 			else
 				saveFile(fileName, tmp);

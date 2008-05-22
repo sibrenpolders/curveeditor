@@ -40,9 +40,9 @@ public class Menu extends JMenuBar implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
+
 		// enigste actieve actieknop is op het moment about
-		if ( e.getActionCommand().equals("about") )
+		if (e.getActionCommand().equals("about"))
 			about();
 	}
 
@@ -134,7 +134,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		CreateMenuItem("Redo", KeyEvent.VK_R, "Redo last action.",
 				"src/CurveEditor/GUI/icons/redo.png");
 		menuItem.addActionListener(listener);
-		
+
 		menu.addSeparator();
 
 		CreateMenuItem("Preferences", KeyEvent.VK_P,
@@ -202,7 +202,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
 		group.add(button);
 		radioPanel.add(button);
-		
+
 		button = new JRadioButton("Delete Point");
 		button.setSelected(false);
 		button.addActionListener(listener);
@@ -227,8 +227,8 @@ public class Menu extends JMenuBar implements ActionListener {
 		JRadioButton button = new JRadioButton("Select Curve");
 		button.setSelected(true);
 		button.addActionListener(listener);
-		button.addActionListener( this );
-		
+		button.addActionListener(this);
+
 		group.add(button);
 		radioPanel.add(button);
 
@@ -244,7 +244,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		button.addActionListener(listener);
 
 		group.add(button);
-		radioPanel.add(button);		
+		radioPanel.add(button);
 
 		button = new JRadioButton("Select All Curves");
 		button.setSelected(false);
@@ -253,7 +253,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
 		group.add(button);
 		radioPanel.add(button);
-		
+
 		button = new JRadioButton("Deselect All Curves");
 		button.setSelected(true);
 		button.addActionListener(listener);
@@ -261,7 +261,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
 		group.add(button);
 		radioPanel.add(button);
-		
+
 		button = new JRadioButton("Delete Curve");
 		button.setSelected(false);
 		button.addActionListener(listener);
