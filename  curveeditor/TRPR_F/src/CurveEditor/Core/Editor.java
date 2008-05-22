@@ -210,11 +210,10 @@ public class Editor {
 		} else if (m == MODE.ADD_INPUT) {
 			// De gebruiker wenst nieuwe punten in te geven --> enkel curves
 			// hoeven nog geselecteerd te worden.
-			selectedPoints.clear();
 			this.mode = m;
 		} else if (m == MODE.SELECT_CURVE || m == MODE.DESELECT_CURVE
 				|| m == MODE.SELECT_CONTROL_POINT || m == MODE.SELECT_CURVE) {
-			deselectAll(); // Alles deselecteren.
+			// deselectAll(); // Alles deselecteren.
 			this.mode = m;
 		} else {
 			this.mode = m;
