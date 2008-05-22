@@ -293,7 +293,7 @@ public class FileIO extends DefaultHandler {
 		this.curves = v;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-
+			curves.clear();
 			SAXParser sp = spf.newSAXParser();
 			sp.parse(new ByteArrayInputStream(stack.pop()), this);
 			curves = prev;

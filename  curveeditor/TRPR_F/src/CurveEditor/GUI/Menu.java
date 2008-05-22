@@ -127,20 +127,12 @@ public class Menu extends JMenuBar implements ActionListener {
 
 		CreateMenuItem("Undo", KeyEvent.VK_U, "Undo last action.",
 				"src/CurveEditor/GUI/icons/undo.png");
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Undo");
-			}
-		});
+		menuItem.addActionListener(listener);
 
 		CreateMenuItem("Redo", KeyEvent.VK_R, "Redo last action.",
 				"src/CurveEditor/GUI/icons/redo.png");
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Redo");
-			}
-		});
-
+		menuItem.addActionListener(listener);
+		
 		menu.addSeparator();
 
 		CreateMenuItem("Preferrences", KeyEvent.VK_P,
