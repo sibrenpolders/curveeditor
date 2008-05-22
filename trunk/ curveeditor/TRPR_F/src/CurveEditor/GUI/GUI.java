@@ -23,7 +23,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import sun.awt.RepaintArea;
 import CurveEditor.Core.*;
 import CurveEditor.Curves.*;
 import CurveEditor.Exceptions.*;
