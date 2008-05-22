@@ -194,13 +194,17 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		if (mode == Editor.MODE.SELECT_CURVE
 				|| mode == Editor.MODE.DESELECT_CURVE
 				|| mode == Editor.MODE.SELECT_CONTROL_POINT
-				|| mode == Editor.MODE.DESELECT_CONTROL_POINT)
+				|| mode == Editor.MODE.DESELECT_CONTROL_POINT) {
+			push();
 			draw.beginSelectionRectangle(e.getX(), e.getY());
+		}
 		// We zitten in een movemode --> we beginnen de
 		// dragging-functionaliteit van DrawArea maar willen een pijlte i.p.v.
 		// een rechthoekje uittekenen.
-		else if (mode == MODE.MOVE_CONTROL_POINTS || mode == MODE.MOVE_CURVES)
+		else if (mode == MODE.MOVE_CONTROL_POINTS || mode == MODE.MOVE_CURVES) {
+			push();
 			draw.beginMovingArrow(e.getX(), e.getY());
+		}
 	}
 
 	// Methode die reageert op een release-event in DrawArea.
