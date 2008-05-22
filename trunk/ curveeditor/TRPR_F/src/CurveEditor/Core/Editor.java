@@ -437,6 +437,8 @@ public class Editor {
 						e.printStackTrace();
 					}
 				}
+				if (i == selectedCurves.size() - 1)
+					pushNew();
 			}
 		}
 	}
@@ -530,6 +532,7 @@ public class Editor {
 			selectedCurves.add(result);
 			selectionTool.addCurve(result);
 			recalculateSelectedCurves();
+			pushNew();
 		}
 	}
 
@@ -561,6 +564,7 @@ public class Editor {
 			selectedCurves.add(result);
 			selectionTool.addCurve(result);
 			recalculateSelectedCurves();
+			pushNew();
 		}
 
 	}
@@ -714,6 +718,7 @@ public class Editor {
 		curves.addAll(selectedCurves); // De curves deselecteren.
 		selectedCurves.clear();
 		selectedPoints.clear();
+		pushNew();
 	}
 
 	// De geselecteerde inputpunten worden over een afstand x,y verschoven.
@@ -743,6 +748,7 @@ public class Editor {
 		push();
 		file.load(s, curves);
 		recalculateCurves();
+		pushNew();
 	}
 
 	// In een bestand opslaan.
@@ -766,6 +772,14 @@ public class Editor {
 	protected void push() {
 		try {
 			file.push(curves, selectedCurves);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void pushNew() {
+		try {
+			file.pushNew(curves, selectedCurves);
 		} catch (InvalidArgumentException e) {
 			e.printStackTrace();
 		}
