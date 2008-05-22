@@ -753,6 +753,7 @@ public class Editor {
 	protected void undo() {
 		try {
 			file.undo(curves, selectedCurves);
+			selectionTool.clear();
 			recalculateCurves();
 			recalculateSelectedCurves();
 		} catch (EmptyStackException e) {
@@ -773,6 +774,7 @@ public class Editor {
 	protected void redo() {
 		try {
 			file.redo(curves, selectedCurves);
+			selectionTool.clear();
 			recalculateCurves();
 			recalculateSelectedCurves();
 		} catch (EmptyStackException e) {
