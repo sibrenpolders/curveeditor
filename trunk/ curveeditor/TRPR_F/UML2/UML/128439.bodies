@@ -1,0 +1,7 @@
+class InvalidArgumentException
+!!!151351.java!!!	InvalidArgumentException(in arg0 : String)
+		super(arg0);
+!!!151479.java!!!	InvalidArgumentException(inout arg0 : Throwable)
+		super(arg0);
+!!!151607.java!!!	InvalidArgumentException(in arg0 : String, inout arg1 : Throwable)
+		super(arg0, arg1);

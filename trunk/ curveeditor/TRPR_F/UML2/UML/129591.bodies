@@ -1,0 +1,7 @@
+class DivisionByZeroException
+!!!150839.java!!!	DivisionByZeroException(in arg0 : String)
+		super(arg0);
+!!!150967.java!!!	DivisionByZeroException(inout arg0 : Throwable)
+		super(arg0);
+!!!151095.java!!!	DivisionByZeroException(in arg0 : String, inout arg1 : Throwable)
+		super(arg0, arg1);

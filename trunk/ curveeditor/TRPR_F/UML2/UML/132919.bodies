@@ -1,0 +1,19 @@
+class PathSimulation
+!!!164535.java!!!	PathSimulation(inout draw : DrawArea, inout curves : Vector<Curve>)
+		this.draw = draw;
+		this.curves = curves;
+!!!164663.java!!!	run() : void
+		for (int i = 0; i < curves.size(); ++i) {
+			Vector<Point> out = curves.get(i).getOutput();
+
+			for (int j = 0; j < out.size(); j += 10) {
+				draw.drawRunner(out.get(j));
+				draw.repaint();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			draw.repaint();
+		}

@@ -1,0 +1,22 @@
+class DisplaySize
+!!!154423.java!!!	frameSize() : Dimension
+		return frameSize;
+!!!154551.java!!!	setCurrentSize(inout d : Dimension) : void
+		frameSize = d;
+!!!154807.java!!!	recalculate(inout d : Dimension) : void
+		// De hoogte van zowel Menu als Toolbar zijn vast. Een verandering van
+		// de hoogte van het canvas heeft dus geen invloed op deze 2 elementen.
+		// Bij ChoiceArea is de breedte vast.
+		SCREENWIDTH = (int) d.getWidth();
+		SCREENHEIGHT = (int) d.getHeight();
+		DRAWWIDTH = SCREENWIDTH - CHOICEWIDTH;
+		DRAWHEIGHT = SCREENHEIGHT - MENUHEIGHT - TOOLBARHEIGHT;
+		CHOICEHEIGHT = SCREENHEIGHT - MENUHEIGHT - TOOLBARHEIGHT;
+!!!154935.java!!!	changeFrameSize(inout d : Dimension) : boolean
+		if (d != null && (frameSize == null || !frameSize.equals(d))) {
+			setCurrentSize(d);
+			recalculate(frameSize);
+			return true;
+		}
+
+		return false;

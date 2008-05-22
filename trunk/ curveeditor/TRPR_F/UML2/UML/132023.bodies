@@ -1,0 +1,51 @@
+class Toolbar
+!!!163895.java!!!	Toolbar(inout listener : ActionListener)
+		setFloatable(false);
+		this.listener = listener;
+		setSize();
+		setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
+		setRollover(true);
+		addButtons();
+!!!164023.java!!!	setSize() : void
+		setBounds(0, DisplaySize.MENUHEIGHT, DisplaySize.SCREENWIDTH,
+				DisplaySize.TOOLBARHEIGHT);
+		// setMinimumSize( d );
+		// setMaximumSize( d );
+		// setPreferredSize( d );
+!!!164151.java!!!	addButtons() : void
+		group = new ButtonGroup();
+
+		makeButton("New C", "Start a new curve",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+		makeButton("Clr", "Remove all curves",
+				"src/CurveEditor/GUI/icons/curvenew.png");
+
+		addSeparator();
+
+		makeButton("Sel C", "Select a curve.",
+				"src/CurveEditor/GUI/icons/ganttSelect.png");
+		makeButton("Sel P", "Select a point.",
+				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
+
+		addSeparator();
+
+		makeButton("New", "Create a new file",
+				"src/CurveEditor/GUI/icons/filenew.png");
+		makeButton("Open", "Open a file",
+				"src/CurveEditor/GUI/icons/fileopen.png");
+		makeButton("Save", "Save a file",
+				"src/CurveEditor/GUI/icons/filesave.png");
+
+		add(Box.createHorizontalGlue());
+!!!164279.java!!!	makeToggleButton(in name : String, in tooltip : String, in icon : String, inout selected : boolean) : void
+		toggleButton = new JToggleButton(new ImageIcon(icon), selected);
+		toggleButton.setName(name);
+		toggleButton.addActionListener(listener);
+		toggleButton.setToolTipText(tooltip);
+		group.add(toggleButton);
+		add(toggleButton);
+!!!164407.java!!!	makeButton(in name : String, in tooltip : String, in icon : String) : void
+		button = new JButton(name, new ImageIcon(icon));
+		button.addActionListener(listener);
+		button.setToolTipText(tooltip);
+		add(button);

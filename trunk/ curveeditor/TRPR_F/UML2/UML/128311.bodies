@@ -1,0 +1,112 @@
+class Curve
+!!!145847.java!!!	Curve()
+		this.type = 0;
+		this.degree = 0;
+
+		input = new Vector<Point>();
+		output = new Vector<Point>();
+!!!145975.java!!!	Curve(in type : char, in degree : short)
+		this.type = type;
+		this.degree = degree;
+
+		input = new Vector<Point>();
+		output = new Vector<Point>();
+!!!146103.java!!!	getInput() : Point
+		return input;
+!!!146231.java!!!	getOutput() : Point
+		return output;
+!!!146359.java!!!	clearOutput() : void
+		this.output.clear();
+!!!146487.java!!!	clearInput() : void
+		this.input.clear();
+!!!146615.java!!!	getNbInputPoints() : int
+		return input.size();
+!!!146743.java!!!	getNbOutputPoints() : int
+		return output.size();
+!!!146871.java!!!	addOutput(inout o : Point) : void
+		this.output.add(o);
+!!!146999.java!!!	removeInput(inout o : Point) : void
+		if (o != null) {
+			// Voor elk inputpunt: controleer of het op dezelfde plaats ligt als
+			// het
+			// gegeven punt of niet.
+			for (int i = 0; i < getNbInputPoints(); ++i)
+				if (input.get(i).X() == o.X() && input.get(i).Y() == o.Y())
+					input.remove(i--);
+		}
+!!!147127.java!!!	removeInput(in i : int) : void
+		if (i < 0 || i > input.size() - 1)
+			throw new InvalidArgumentException(
+					"Curve.java - removeInput(int): Invalid Argument.");
+		input.remove(i);
+!!!147255.java!!!	addInput(inout o : Point) : void
+		if (o == null)
+			throw new InvalidArgumentException(
+					"Curve.java - addInput(Point): Invalid Argument.");
+
+		this.input.add(new Point(o.X(), o.Y()));
+!!!147383.java!!!	getType() : char
+		return type;
+!!!147511.java!!!	getTypeAsString() : String
+		return Character.toString(type);
+!!!147639.java!!!	getDegree() : short
+		return degree;
+!!!147767.java!!!	setDegree(in d : short) : void
+		degree = d;
+!!!147895.java!!!	setType(in t : char) : void
+		this.type = t;
+!!!148023.java!!!	containsInputPoint(inout p : Point) : Point
+		if (p != null)
+			for (int i = 0; i < input.size(); ++i)
+				if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
+						&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
+					return input.elementAt(i);
+		return null;
+!!!148151.java!!!	containsInputPointi(inout p : Point) : int
+		if (p != null)
+			for (int i = 0; i < input.size(); ++i)
+				if (Math.abs(input.elementAt(i).X() - p.X()) <= SEARCH_RANGE
+						&& Math.abs(input.elementAt(i).Y() - p.Y()) <= SEARCH_RANGE)
+					return i;
+		return -1;
+!!!148279.java!!!	translate(in x : int, in y : int) : void
+		output.clear();
+		for (int i = 0; i < input.size(); ++i) {
+			input.elementAt(i).increaseX(x);
+			input.elementAt(i).increaseY(y);
+		}
+!!!148407.java!!!	connectNoExtraPoint(inout c1 : Curve, inout c2 : Curve) : Curve
+		if (c1 == null || c2 == null)
+			throw new InvalidArgumentException(
+					"Curve.java - connectNoExtraPoint(Curve, Curve): Invalid Argument.");
+
+		Curve result = new Curve(c1.getType(), c1.getDegree());
+		result.input.addAll(c1.input);
+		result.input.addAll(c2.input);
+
+		return result;
+!!!148535.java!!!	connectC0(inout c1 : Curve, inout c2 : Curve) : Curve
+		if (c1 == null || c2 == null)
+			throw new InvalidArgumentException(
+					"Curve.java - connectC0(Curve, Curve): Invalid Argument.");
+
+		Curve result = new Curve(c1.getType(), c1.getDegree());
+		result.getInput().addAll(c1.getInput());
+
+		if (c2.input.size() > 0) {
+			// laatste input van c1
+			Point prevCtrl = result.input.lastElement();
+			Point first = c2.input.elementAt(0); // eerste input van c2
+
+			// Verschuivingswaarden berekenen.
+			int diffX = prevCtrl.X() - first.X();
+			int diffY = prevCtrl.Y() - first.Y();
+
+			// Alle inputpunten van c2 verschuiven en aan result toevoegen.
+			for (int i = 1; i < c2.getNbInputPoints(); ++i) {
+				result.addInput(new Point(c2.input.elementAt(i).X() + diffX,
+						c2.input.elementAt(i).Y() + diffY));
+			}
+		}
+
+		return result;

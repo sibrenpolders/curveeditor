@@ -1,0 +1,58 @@
+format 46
+
+classcanvas 128055 class_ref 128183 // Algorithm
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  color mediumgreen
+  xyz 565 5 2000
+  end
+classcanvas 128183 class_ref 128311 // Curve
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir yes show_parameter_name yes package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  color lightmediumblue
+  xyz 1065 0 2000
+  end
+classcanvas 128311 class_ref 128695 // Point
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  xyz 596 452 2004
+  end
+classcanvas 128695 class_ref 130103 // Editor
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  color gold
+  xyz 21 -1 2004
+  end
+relationcanvas 128439 relation_ref 130999 // <unidirectional association>
+  from ref 128183 z 1999 stereotype "<<Vector>>" xyz 853 517 3000 to ref 128311
+  role_a_pos 835 542 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 128567 relation_ref 131127 // <unidirectional association>
+  from ref 128183 z 1999 stereotype "<<Vector>>" xyz 893 484 3000 to ref 128311
+  role_a_pos 835 542 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 128823 relation_ref 129335 // <unidirectional association>
+  from ref 128695 z 1999 stereotype "<<Vector>>" xyz 385 269 3000 to ref 128055
+  role_a_pos 473 217 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 128951 relation_ref 129463 // <unidirectional association>
+  from ref 128695 z 1999 stereotype "<<Vector>>" xyz 618 387 3000 to ref 128183
+  role_a_pos 990 294 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 129079 relation_ref 129591 // <unidirectional association>
+  from ref 128695 z 1999 stereotype "<<Vector>>" xyz 628 339 3000 to ref 128183
+  role_a_pos 931 294 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 129207 relation_ref 129719 // <unidirectional association>
+  from ref 128695 z 1999 stereotype "<<Vector>>" xyz 621 364 3000 to ref 128183
+  role_a_pos 925 294 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 129335 relation_ref 129847 // <unidirectional association>
+  from ref 128695 z 1999 stereotype "<<Vector>>" xyz 400 577 3000 to ref 128311
+  role_a_pos 471 601 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 129463 relation_ref 129975 // <unidirectional association>
+  from ref 128695 z 1999 stereotype "<<Vector>>" xyz 396 542 3000 to ref 128311
+  role_a_pos 464 601 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 129591 relation_ref 130103 // <unidirectional association>
+  from ref 128695 z 1999 to ref 128055
+  role_a_pos 431 217 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end

@@ -1,0 +1,32 @@
+format 46
+
+classcanvas 128055 class_ref 129975 // CurveContainer
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  xyz 592 605 2000
+  end
+classcanvas 128183 class_ref 130103 // Editor
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  color mediumblue
+  xyz 19 2 2004
+  end
+classcanvas 128439 class_ref 130359 // FileIO
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  xyz 503 -1 3005
+  end
+relationcanvas 128311 relation_ref 130359 // <unidirectional association>
+  from ref 128183 z 1999 to ref 128055
+  role_a_pos 474 721 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 128567 relation_ref 130231 // <unidirectional association>
+  from ref 128183 z 1999 to ref 128439
+  role_a_pos 450 366 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 130615 relation_ref 137271 // <dependency>
+  from ref 128183 z 2003 to ref 128439
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+relationcanvas 130743 relation_ref 137399 // <dependency>
+  from ref 128183 z 1999 to ref 128055
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end

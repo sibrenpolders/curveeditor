@@ -1,0 +1,2518 @@
+format 46
+"GUI" // CurveEditor::GUI
+  revision 1
+  modified_by 55 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/GUI"
+  java_package "CurveEditor.GUI"
+  classview 128823 "GUI"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 130743 "ChoiceArea"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 131511 // <generalisation>
+	relation 131511 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131511 // <generalisation>
+	  b parent class_ref 130871 // JPanel
+      end
+
+      classrelation 131639 // <realization>
+	relation 131639 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131639 // <realization>
+	  b parent class_ref 130999 // ActionListener
+      end
+
+      attribute 132919 "serialVersionUID"
+	class_attribute const_attribute private explicit_type "long"
+	init_value "=  -844431215144101927L"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment "
+
+
+"
+      end
+
+      attribute 133047 "bezierAlgTypeNames"
+	class_attribute const_attribute private explicit_type "String"
+	multiplicity "[]"
+	init_value "=  { \"Linear\", \"Bezier C0\",
+			\"Bezier G1\", \"Bezier C1\" }"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " private Vector<Algorithm> v;
+"
+      end
+
+      attribute 133175 "hermiteAlgTypeNames"
+	class_attribute const_attribute private explicit_type "String"
+	multiplicity "[]"
+	init_value "=  { \"Hermite Normal\",
+			\"Cardinal\", \"Catmull-Rom\" }"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 133303 "TOGGLEBUTTONWIDTH"
+	class_attribute const_attribute private explicit_type "int"
+	init_value "=  250"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 133431 "TOGGLEBUTTONHEIGHT"
+	class_attribute const_attribute private explicit_type "int"
+	init_value "=  25"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 133559 "currentAlgTypeNames"
+	private explicit_type "String"
+	multiplicity "[]"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type}${multiplicity} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 133687 "type"
+	private explicit_type "JComboBox"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 133815 "checkPanel"
+	private explicit_type "JPanel"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 133943 "container"
+	private explicit_type "JPanel"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " container zal zorgen voor de uitlijning"
+      end
+
+      attribute 134071 "curveEditPanel"
+	private explicit_type "JPanel"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 134199 "pointEditPanel"
+	private explicit_type "JPanel"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 134327 "currentPanel"
+	private explicit_type "JPanel"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 134455 "x"
+	private explicit_type "JTextField"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 134583 "y"
+	private explicit_type "JTextField"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " nodig om de waarde van een punt ingegeven"
+      end
+
+      attribute 134711 "group"
+	private explicit_type "ButtonGroup"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " m.b.v
+ inputfield terug te geven
+"
+      end
+
+      attribute 134839 "listener"
+	private explicit_type "ActionListener"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 134967 "itemListener"
+	private explicit_type "ItemListener"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 151735 "ChoiceArea"
+	public explicit_return_type ""
+	nparams 2
+	  param inout name "listener" explicit_type "ActionListener"
+	  param inout name "itemListener" explicit_type "ItemListener"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 151863 "init"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 151991 "toggleEditPanel"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "value" explicit_type "boolean"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " true == curveEditPlane
+ false == pointEditPlane"
+      end
+
+      operation 152119 "deselect"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " zorgt ervoor dat zowel point als curve edit panel onzichtbaar zijn ->
+ MODE == NONE"
+      end
+
+      operation 152247 "getInputPoint"
+	public return_type class_ref 128695 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " geeft null terug indien er momenteel geen ingegeven punt is."
+      end
+
+      operation 152375 "setSize"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 152503 "createInputField"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 152631 "createInput"
+	private explicit_return_type "JTextField"
+	nparams 2
+	  param inout name "parent" explicit_type "JPanel"
+	  param in name "textString" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 152759 "createComboBox"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 152887 "createRadioPanel"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153015 "createCheckBox"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153143 "createCheckBoxItem"
+	private explicit_return_type "void"
+	nparams 1
+	  param in name "name" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153271 "createCurveEditeMode"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153399 "createButton"
+	private explicit_return_type "void"
+	nparams 4
+	  param in name "name" explicit_type "String"
+	  param in name "tooltip" explicit_type "String"
+	  param in name "icon" explicit_type "String"
+	  param inout name "selected" explicit_type "boolean"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153527 "createPointEditMode"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153655 "createEditPanel"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153783 "refresh"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 153911 "newPointInput"
+	public return_type class_ref 128695 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 154039 "goToPoint"
+	public return_type class_ref 128695 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 154167 "newPointClick"
+	public return_type class_ref 128695 // Point
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 154295 "actionPerformed"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "ActionEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 131127 "DisplaySize"
+      visibility public 
+      cpp_decl ""
+      final java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse omvat als het ware een dynamische display, specifiek voor onze GUI.
+A.h.v. de totale canvasdimensies worden de dimensies van de verschillende 
+GUI-elementen berekend. Deze kunnen dan bij een resize herberekend worden en 
+geset worden als de dimensies van die GUI-elementen.
+"
+      attribute 135095 "DRAWWIDTH"
+	class_attribute public explicit_type "int"
+	init_value "=  600"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De standaard breedtes en hoogtes van de GUI-elementen.
+ standaard breedte voor DrawArea"
+      end
+
+      attribute 135223 "DRAWHEIGHT"
+	class_attribute public explicit_type "int"
+	init_value "=  600"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " standaard hoogte voor DrawArea"
+      end
+
+      attribute 135351 "CHOICEWIDTH"
+	class_attribute const_attribute public explicit_type "int"
+	init_value "=  275"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " standaard breedte voor ChoiceArea
+"
+      end
+
+      attribute 135479 "CHOICEHEIGHT"
+	class_attribute public explicit_type "int"
+	init_value "=  DRAWHEIGHT"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " hoogte voor ChoiceArea"
+      end
+
+      attribute 135607 "SCREENWIDTH"
+	class_attribute public explicit_type "int"
+	init_value "=  DRAWWIDTH + CHOICEWIDTH"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " breedte voor de totale GUI
+"
+      end
+
+      attribute 135735 "MENUHEIGHT"
+	class_attribute const_attribute public explicit_type "int"
+	init_value "=  20"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " standaard hoogte voor Menu"
+      end
+
+      attribute 135863 "TOOLBARHEIGHT"
+	class_attribute const_attribute public explicit_type "int"
+	init_value "=  MENUHEIGHT + 5"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " hoogte voor Toolbar
+"
+      end
+
+      attribute 135991 "SCREENHEIGHT"
+	class_attribute public explicit_type "int"
+	init_value "=  CHOICEHEIGHT + MENUHEIGHT + TOOLBARHEIGHT"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 136119 "frameSize"
+	private explicit_type "Dimension"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Huidige schermgrootte van de applicatie.
+"
+      end
+
+      operation 154423 "frameSize"
+	public explicit_return_type "Dimension"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 154551 "setCurrentSize"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "d" explicit_type "Dimension"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 154679 "DisplaySize"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 154807 "recalculate"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "d" explicit_type "Dimension"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Gegeven een nieuwe schermgrootte van de applicatie,
+ herbereken de dimensies van de GUI-elementen."
+      end
+
+      operation 154935 "changeFrameSize"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "d" explicit_type "Dimension"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verander de schermgrootte en herbereken de dimensies
+ van alle GUI-elementen."
+      end
+    end
+
+    class 131255 "DrawArea"
+      visibility public 
+      cpp_decl ""
+      final java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze klasse stelt het tekencanvas voor, alwaar inputpunten en 
+curves kunnen uitgetekend worden. Deze houdt referenties bij 
+naar de verschillende Vectoren van Points en Curves. Afhankelijk
+van het type van die Vector (hoovered, selected, niet-selected) 
+worden de elementen anders uitgetekend.
+"
+      classrelation 131767 // <generalisation>
+	relation 131767 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131767 // <generalisation>
+	  b parent class_ref 130871 // JPanel
+      end
+
+      attribute 136247 "serialVersionUID"
+	class_attribute const_attribute private explicit_type "long"
+	init_value "=  1L"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 136375 "CONTROLPOINTWIDTH"
+	class_attribute private explicit_type "int"
+	init_value "=  2"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De dikte van een inputpunt.
+"
+      end
+
+      attribute 136503 "HOOVEREDCURVEWIDTH"
+	class_attribute private explicit_type "int"
+	init_value "=  1"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De dikte van een hoovered Curve.
+"
+      end
+
+      attribute 136631 "DEFAULTCURVEWIDTH"
+	class_attribute private explicit_type "int"
+	init_value "=  0"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De standaard dikte van een Curve, enkel de outpunten
+ zelf worden dus uitgetekend, geen punten daarrond.
+"
+      end
+
+      attribute 136759 "curveWidth"
+	private explicit_type "int"
+	init_value "=  DEFAULTCURVEWIDTH"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 136887 "coords"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Flags om bij te houden of iets al dan niet
+ dient uitgetekend te worden.
+"
+      end
+
+      attribute 137015 "nrs"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 137143 "tangents"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 137271 "drawRectangle"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      classrelation 131895 // curves (<unidirectional association>)
+	relation 131895 --->
+	  stereotype "Vector"
+	  a role_name "curves" private
+	    comment " Referenties naar Vectoren uit GUI.java.
+ De inhoud zal uiteindelijk op het canvas uitgetekend worden.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 131895 // curves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 132023 // selectedCurves (<unidirectional association>)
+	relation 132023 --->
+	  stereotype "Vector"
+	  a role_name "selectedCurves" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 132023 // selectedCurves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 132151 // hooveredCurves (<unidirectional association>)
+	relation 132151 --->
+	  stereotype "Vector"
+	  a role_name "hooveredCurves" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 132151 // hooveredCurves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 132279 // selectedPoints (<unidirectional association>)
+	relation 132279 --->
+	  stereotype "Vector"
+	  a role_name "selectedPoints" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 132279 // selectedPoints (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      classrelation 132407 // hooveredPoints (<unidirectional association>)
+	relation 132407 --->
+	  stereotype "Vector"
+	  a role_name "hooveredPoints" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 132407 // hooveredPoints (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      attribute 137399 "g"
+	private explicit_type "Graphics"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      classrelation 132535 // runPoint (<unidirectional association>)
+	relation 132535 --->
+	  a role_name "runPoint" private
+	    comment " De huidige positie van het rechthoekje, horende
+ bij de pathsimulationtool.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 132535 // runPoint (<unidirectional association>)
+	  b parent class_ref 128695 // Point
+      end
+
+      attribute 137527 "xBegin"
+	private explicit_type "int"
+	init_value "=  -1"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Variabelen voor selectierechthoekje dat aangemaakt wordt
+ wanneer met m.b.v. dragging elementen wilt selecteren.
+"
+      end
+
+      attribute 137655 "yBegin"
+	private explicit_type "int"
+	init_value "=  -1"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Variabelen voor selectierechthoekje dat aangemaakt wordt
+ wanneer met m.b.v. dragging elementen wilt selecteren.
+"
+      end
+
+      attribute 137783 "xEnd"
+	private explicit_type "int"
+	init_value "=  -1"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Variabelen voor selectierechthoekje dat aangemaakt wordt
+ wanneer met m.b.v. dragging elementen wilt selecteren.
+"
+      end
+
+      attribute 137911 "yEnd"
+	private explicit_type "int"
+	init_value "=  -1"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " Variabelen voor selectierechthoekje dat aangemaakt wordt
+ wanneer met m.b.v. dragging elementen wilt selecteren.
+"
+      end
+
+      operation 155063 "DrawArea"
+	public explicit_return_type ""
+	nparams 5
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	  param inout name "hooveredCurves" explicit_type "Vector<Curve>"
+	  param inout name "selectedPoints" explicit_type "Vector<Point>"
+	  param inout name "hooveredPoints" explicit_type "Vector<Point>"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155191 "init"
+	public explicit_return_type "void"
+	nparams 8
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "selectedCurves" explicit_type "Vector<Curve>"
+	  param inout name "hooveredCurves" explicit_type "Vector<Curve>"
+	  param inout name "selectedPoints" explicit_type "Vector<Point>"
+	  param inout name "hooveredPoints" explicit_type "Vector<Point>"
+	  param inout name "coords" explicit_type "boolean"
+	  param inout name "nrs" explicit_type "boolean"
+	  param inout name "tangents" explicit_type "boolean"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}, ${t5} ${p5}, ${t6} ${p6}, ${t7} ${p7}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155319 "coords"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155447 "nrs"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155575 "tangents"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155703 "toggleCoords"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155831 "toggleNrs"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 155959 "toggleTangents"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 156087 "update"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 156215 "drawRunner"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "p" type class_ref 128695 // Point
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verander de positie van het rechthoekje horende bij
+ de pathsimulationtool en herteken."
+      end
+
+      operation 156343 "paintComponent"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "g" explicit_type "Graphics"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Deze methode wordt impliciet aangeroepen als je ergens DrawArea.repaint()
+ uitvoert. Dit hertekent het vollédige tekencanvas."
+      end
+
+      operation 156471 "emptyField"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 156599 "drawSelectionRectangle"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Teken het draggingrechthoekje a.h.v. zijn begin- en
+ eindposities, indien deze geset zijn."
+      end
+
+      operation 156727 "drawArrow"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Teken het draggingpijltje a.h.v. zijn begin- en
+ eindpositie, indien deze geset zijn."
+      end
+
+      operation 156855 "resetDragging"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Reset de dragging-functie --> ongesette begin- en
+ eindpositie --> er zal niks getekend worden."
+      end
+
+      operation 156983 "beginSelectionRectangle"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Start de dragging-functie --> beginpositie
+ wordt geset --> rechthoekje zal getekend worden."
+      end
+
+      operation 157111 "beginMovingArrow"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Start de dragging-functie --> beginpositie
+ wordt geset --> pijltje zal getekend worden."
+      end
+
+      operation 157239 "updateDragging"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "x" explicit_type "int"
+	  param in name "y" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Update de eindpositie van het draggingelement."
+      end
+
+      operation 157367 "draggingStarted"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Controleer of de dragging-functie gestart is."
+      end
+
+      operation 157495 "getXBegin"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Vraag de coördinatie van de posities van het
+ draggingelement."
+      end
+
+      operation 157623 "getYBegin"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 157751 "getXEnd"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 157879 "getYEnd"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 158007 "drawOutput"
+	private explicit_return_type "void"
+	nparams 3
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	  param inout name "coords" explicit_type "boolean"
+	  param inout name "nrs" explicit_type "boolean"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Teken een Vector van Curves uit a.h.v. meegegeven flags."
+      end
+
+      operation 158135 "drawTangents"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Teken de raakvectoren uit van de Curves in een Vector van
+ Curves."
+      end
+
+      operation 158263 "drawSelectedPoints"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "v" explicit_type "Vector<Point>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Teken de geselecteerde inputpunten uit --> iets groter rechthoekje
+ dan niet-geselecteerd."
+      end
+
+      operation 158391 "setSize"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Verander de grootte van DrawArea en herteken."
+      end
+    end
+
+    class 131383 "GUI"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "
+Deze van Editor afgeleide klasse verbindt de mogelijke fysieke acties van de gebruiker
+(selecteren, hooveren, klikken, menuselecties) met de juiste methodes van Editor.
+Kortom: deze klasse implementeert al de Editor-functionaliteit in een GUI.
+"
+      classrelation 132663 // <generalisation>
+	relation 132663 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 132663 // <generalisation>
+	  b parent class_ref 130103 // Editor
+      end
+
+      classrelation 132791 // <realization>
+	relation 132791 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 132791 // <realization>
+	  b parent class_ref 131511 // MouseListener
+      end
+
+      classrelation 132919 // <realization>
+	relation 132919 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 132919 // <realization>
+	  b parent class_ref 131639 // MouseMotionListener
+      end
+
+      classrelation 133047 // <realization>
+	relation 133047 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 133047 // <realization>
+	  b parent class_ref 131767 // ComponentListener
+      end
+
+      classrelation 133175 // choice (<unidirectional association>)
+	relation 133175 --->
+	  a role_name "choice" protected
+	    comment " De GUI-elementen.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133175 // choice (<unidirectional association>)
+	  b parent class_ref 130743 // ChoiceArea
+      end
+
+      classrelation 133303 // draw (<unidirectional association>)
+	relation 133303 --->
+	  a role_name "draw" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133303 // draw (<unidirectional association>)
+	  b parent class_ref 131255 // DrawArea
+      end
+
+      classrelation 133431 // menu (<unidirectional association>)
+	relation 133431 --->
+	  a role_name "menu" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133431 // menu (<unidirectional association>)
+	  b parent class_ref 131895 // Menu
+      end
+
+      classrelation 133559 // toolbar (<unidirectional association>)
+	relation 133559 --->
+	  a role_name "toolbar" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133559 // toolbar (<unidirectional association>)
+	  b parent class_ref 132023 // Toolbar
+      end
+
+      class 132151 "ToolBarListener"
+	visibility private 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	classrelation 134199 // <realization>
+	  relation 134199 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 134199 // <realization>
+	    b parent class_ref 130999 // ActionListener
+	end
+
+	operation 160823 "actionPerformed"
+	  public explicit_return_type "void"
+	  nparams 1
+	    param inout name "e" explicit_type "ActionEvent"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	  
+	  
+	end
+      end
+
+      classrelation 133687 // tBListener (<unidirectional association>)
+	relation 133687 --->
+	  a role_name "tBListener" protected
+	    comment " Listeners.
+"
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133687 // tBListener (<unidirectional association>)
+	  b parent class_ref 132151 // ToolBarListener
+      end
+
+      class 132279 "MenuListener"
+	visibility private 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	classrelation 134327 // <realization>
+	  relation 134327 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 134327 // <realization>
+	    b parent class_ref 130999 // ActionListener
+	end
+
+	operation 160951 "actionPerformed"
+	  public explicit_return_type "void"
+	  nparams 1
+	    param inout name "e" explicit_type "ActionEvent"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	  
+	  
+	end
+      end
+
+      classrelation 133815 // mListener (<unidirectional association>)
+	relation 133815 --->
+	  a role_name "mListener" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133815 // mListener (<unidirectional association>)
+	  b parent class_ref 132279 // MenuListener
+      end
+
+      class 132407 "ChoiceAreaListener"
+	visibility private 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	classrelation 134455 // <realization>
+	  relation 134455 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 134455 // <realization>
+	    b parent class_ref 132535 // ItemListener
+	end
+
+	classrelation 134583 // <realization>
+	  relation 134583 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 134583 // <realization>
+	    b parent class_ref 130999 // ActionListener
+	end
+
+	operation 161079 "actionPerformed"
+	  public explicit_return_type "void"
+	  nparams 1
+	    param inout name "e" explicit_type "ActionEvent"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	  
+	  
+	end
+
+	operation 161207 "itemStateChanged"
+	  public explicit_return_type "void"
+	  nparams 1
+	    param inout name "e" explicit_type "ItemEvent"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	  
+	  
+	end
+      end
+
+      classrelation 133943 // cListener (<unidirectional association>)
+	relation 133943 --->
+	  a role_name "cListener" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 133943 // cListener (<unidirectional association>)
+	  b parent class_ref 132407 // ChoiceAreaListener
+      end
+
+      classrelation 134071 // displaySize (<unidirectional association>)
+	relation 134071 --->
+	  a role_name "displaySize" protected
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 134071 // displaySize (<unidirectional association>)
+	  b parent class_ref 131127 // DisplaySize
+      end
+
+      attribute 138039 "container"
+	protected explicit_type "JPanel"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+	comment " De container bevat choiceArea en drawArea, en de container wordt
+ aan de container van het frame/window toegevoegd. Op deze manier hebben
+ we de GUI opgesplitst in twee delen: menu- en toolbar enerzijds
+ (horizontaal onder elkaar), choice- en drawarea anderzijds (verticaal
+ langs elkaar, en samen horizontaal onder de rest).
+"
+      end
+
+      attribute 138167 "frame"
+	protected explicit_type "JFrame"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 158519 "GUI"
+	public explicit_return_type ""
+	nparams 0
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 158647 "GUI"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "file" explicit_type "String"
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Constructor die m.b.v. een bestand reeds al wat curves inlaadt."
+      end
+
+      operation 158775 "loadComponents"
+	private explicit_return_type "void"
+	nparams 0
+	nexceptions 1
+	  exception class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Initialiseren van alle GUI-elementen."
+      end
+
+      operation 158903 "mouseClicked"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________MOUSE EVENTS_______________________
+ Methode die reageert op een click-event in DrawArea.
+ Afhankelijk van de MODE die in Editor geset is, wordt een
+ actie uitgevoerd."
+      end
+
+      operation 159031 "mouseEntered"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "arg0" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Indien de cursor drawArea binnenkomt --> van cursorweergave veranderen."
+      end
+
+      operation 159159 "mouseExited"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "arg0" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Indien de cursor drawArea verlaat --> van cursorweergave veranderen
+ en alles dehooveren."
+      end
+
+      operation 159287 "mousePressed"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Methode die reageert op een press-event in DrawArea.
+ Afhankelijk van de MODE die in Editor geset is, wordt een
+ actie uitgevoerd."
+      end
+
+      operation 159415 "mouseReleased"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Methode die reageert op een release-event in DrawArea.
+ Afhankelijk van de MODE die in Editor geset is, wordt een
+ actie uitgevoerd."
+      end
+
+      operation 159543 "mouseDragged"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Methode die reageert op een drag-event in DrawArea.
+ Afhankelijk van de MODE die in Editor geset is, wordt een
+ actie uitgevoerd."
+      end
+
+      operation 159671 "mouseMoved"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "MouseEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Methode die reageert op een move-event in DrawArea.
+ Afhankelijk van de MODE die in Editor geset is, wordt een
+ actie uitgevoerd. In curveselectiemodie worden curves al dan niet
+ gehooverd, in puntselectiemode punten."
+      end
+
+      operation 159799 "open"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________FILE I/O_______________________
+ Een nieuw venster openen dat een mappenstructuur voorstelt.
+ Als op \"OK\" geklikt wordt, wordt a.h.v. de gekozen bestandsnaam
+ en -locatie het desbetreffende bestand ingeladen."
+      end
+
+      operation 159927 "save"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Methode die uitgevoerd wordt indien de gebruiker op \"Save\" klikt."
+      end
+
+      operation 160055 "saveAs"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Een nieuw venster openen dat een mappenstructuur voorstelt.
+ Als op \"OK\" geklikt wordt, wordt a.h.v. de gekozen bestandsnaam
+ en -locatie alles naar het desbetreffende bestand opgeslaan."
+      end
+
+      operation 160183 "newFile"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Een volledig nieuwe file starten: alle Vectoren clearen."
+      end
+
+      operation 160311 "fileEvent"
+	private explicit_return_type "boolean"
+	nparams 1
+	  param in name "actionCommand" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " _______________________Listeners_______________________
+
+deze functies zullen bepaalde gemeenschappelijk events opgevangen, door
+de 3 klassen die volgen: ToolbarListener, MenuListener en
+ChoiceAreaListener, herkennen en afhandelen Om zodoende minder grote
+if-else if - .. - else structuren te krijgen in de 3 genoemde klassen De
+functie zal true teruggeven als het event afgehandeld is, false anders.
+
+ Alles wat te maken heeft met FILE, wordt gebruikt door Menu EN Toolbar"
+      end
+
+      operation 160439 "algorithmEvent"
+	private explicit_return_type "boolean"
+	nparams 1
+	  param in name "actionCommand" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 160567 "curveEvent"
+	private explicit_return_type "boolean"
+	nparams 1
+	  param in name "actionCommand" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 160695 "pointEvent"
+	private explicit_return_type "boolean"
+	nparams 1
+	  param in name "actionCommand" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 161335 "componentResized"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "ComponentEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " cleared de output van alle geslecteerde punten en herberekend ze in
+ functie van het
+ nieuwe geselecteerde algorithme. Weet niet juist wat uw functie doet
+ dus heb deze meer even
+ hier gezet.
+ Methode die uitgevoerd wordt indien het frame geresized wordt.
+ De dimensies van alle GUI-elementen worden dan herberekend en geset."
+      end
+
+      operation 161463 "componentShown"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "ComponentEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 161591 "componentHidden"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "ComponentEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 161719 "componentMoved"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "ComponentEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      classrelation 135607 // <dependency>
+	relation 135607 -_->
+	  a default
+	    classrelation_ref 135607 // <dependency>
+	  b parent class_ref 133303 // HandleExceptions
+      end
+
+      classrelation 136247 // <dependency>
+	relation 136247 -_->
+	  a default
+	    classrelation_ref 136247 // <dependency>
+	  b parent class_ref 130743 // ChoiceArea
+      end
+
+      classrelation 136375 // <dependency>
+	relation 136375 -_->
+	  a default
+	    classrelation_ref 136375 // <dependency>
+	  b parent class_ref 131255 // DrawArea
+      end
+
+      classrelation 136503 // <dependency>
+	relation 136503 -_->
+	  a default
+	    classrelation_ref 136503 // <dependency>
+	  b parent class_ref 131127 // DisplaySize
+      end
+
+      classrelation 136631 // <dependency>
+	relation 136631 -_->
+	  a default
+	    classrelation_ref 136631 // <dependency>
+	  b parent class_ref 132023 // Toolbar
+      end
+
+      classrelation 136759 // <dependency>
+	relation 136759 -_->
+	  a default
+	    classrelation_ref 136759 // <dependency>
+	  b parent class_ref 131895 // Menu
+      end
+
+      classrelation 136887 // <dependency>
+	relation 136887 -_->
+	  a default
+	    classrelation_ref 136887 // <dependency>
+	  b parent class_ref 130103 // Editor
+      end
+
+      classrelation 137143 // <dependency>
+	relation 137143 -_->
+	  a default
+	    classrelation_ref 137143 // <dependency>
+	  b parent class_ref 130103 // Editor
+      end
+    end
+
+    class 131895 "Menu"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 134711 // <generalisation>
+	relation 134711 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 134711 // <generalisation>
+	  b parent class_ref 132663 // JMenuBar
+      end
+
+      classrelation 134839 // <realization>
+	relation 134839 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 134839 // <realization>
+	  b parent class_ref 130999 // ActionListener
+      end
+
+      attribute 138295 "serialVersionUID"
+	class_attribute const_attribute private explicit_type "long"
+	init_value "=  -2717014108067514961L"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 138423 "menu"
+	private explicit_type "JMenu"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 138551 "menuItem"
+	private explicit_type "JMenuItem"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 138679 "group"
+	private explicit_type "ButtonGroup"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 138807 "listener"
+	private explicit_type "ActionListener"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 161847 "Menu"
+	public explicit_return_type ""
+	nparams 1
+	  param inout name "listener" explicit_type "ActionListener"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 161975 "setSize"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 162103 "actionPerformed"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "e" explicit_type "ActionEvent"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 162231 "CreateMenuBar"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " Zal de menuBar opstellen"
+      end
+
+      operation 162359 "CreateMenu"
+	private explicit_return_type "void"
+	nparams 3
+	  param in name "name" explicit_type "String"
+	  param in name "keyEvent" explicit_type "int"
+	  param in name "description" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " maakt een JMenu object aan ( m.a.w. de categorienamen van de menubar )"
+      end
+
+      operation 162487 "CreateMenuItem"
+	private explicit_return_type "void"
+	nparams 4
+	  param in name "name" explicit_type "String"
+	  param in name "keyEvent" explicit_type "int"
+	  param in name "description" explicit_type "String"
+	  param in name "icon" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+	comment " maakt een JMenuItem object aan. Deze stellen de verschillende keuzes voor
+ die in de menubalk staan"
+      end
+
+      operation 162615 "makeFile"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 162743 "makeEdit"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 162871 "makeTools"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 162999 "createPointPanel"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "menu" explicit_type "JMenu"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 163127 "createCurvePanel"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "menu" explicit_type "JMenu"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 163255 "makeAlgorithms"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 163383 "createBezierPanel"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "menu" explicit_type "JMenu"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 163511 "createHermitePanel"
+	private explicit_return_type "void"
+	nparams 1
+	  param inout name "menu" explicit_type "JMenu"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 163639 "makeHelp"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 163767 "about"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 132023 "Toolbar"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 134967 // <generalisation>
+	relation 134967 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 134967 // <generalisation>
+	  b parent class_ref 132791 // JToolBar
+      end
+
+      attribute 138935 "serialVersionUID"
+	class_attribute const_attribute private explicit_type "long"
+	init_value "=  -1280389982796296645L"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 139063 "listener"
+	private explicit_type "ActionListener"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 139191 "button"
+	private explicit_type "JButton"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 139319 "toggleButton"
+	private explicit_type "JToggleButton"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 139447 "group"
+	private explicit_type "ButtonGroup"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 163895 "Toolbar"
+	public explicit_return_type ""
+	nparams 1
+	  param inout name "listener" explicit_type "ActionListener"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 164023 "setSize"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 164151 "addButtons"
+	private explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 164279 "makeToggleButton"
+	protected explicit_return_type "void"
+	nparams 4
+	  param in name "name" explicit_type "String"
+	  param in name "tooltip" explicit_type "String"
+	  param in name "icon" explicit_type "String"
+	  param inout name "selected" explicit_type "boolean"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 164407 "makeButton"
+	private explicit_return_type "void"
+	nparams 3
+	  param in name "name" explicit_type "String"
+	  param in name "tooltip" explicit_type "String"
+	  param in name "icon" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+
+    class 133303 "HandleExceptions"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 165047 "HandleExceptions"
+	public explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 165175 "print"
+	package explicit_return_type "void"
+	nparams 1
+	  param inout name "npe" explicit_type "NullPointerException"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 165303 "print"
+	package explicit_return_type "void"
+	nparams 1
+	  param inout name "dbze" type class_ref 129591 // DivisionByZeroException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 165431 "print"
+	package explicit_return_type "void"
+	nparams 1
+	  param inout name "iae" type class_ref 128439 // InvalidArgumentException
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+  end
+
+  deploymentview 128695 "GUI"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 130231 "ChoiceArea"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import CurveEditor.Curves.Point;
+${definition}"
+      associated_classes
+	class_ref 130743 // ChoiceArea
+      end
+    end
+
+    artifact 130359 "DisplaySize"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.awt.Dimension;
+${definition}"
+      associated_classes
+	class_ref 131127 // DisplaySize
+      end
+    end
+
+    artifact 130487 "DrawArea"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Vector;
+import javax.swing.JPanel;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.Exceptions.*;
+${definition}"
+      associated_classes
+	class_ref 131255 // DrawArea
+      end
+    end
+
+    artifact 130615 "GUI"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.Vector;
+import javax.swing.Box;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import CurveEditor.Core.*;
+import CurveEditor.Curves.*;
+import CurveEditor.Exceptions.*;
+import CurveEditor.Tools.PathSimulation;
+${definition}"
+      associated_classes
+	class_ref 131383 // GUI
+      end
+    end
+
+    artifact 130743 "Menu"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
+${definition}"
+      associated_classes
+	class_ref 131895 // Menu
+      end
+    end
+
+    artifact 130871 "Toolbar"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+${definition}"
+      associated_classes
+	class_ref 132023 // Toolbar
+      end
+    end
+
+    artifact 131255 "HandleExceptions"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import javax.swing.JOptionPane;
+import CurveEditor.Exceptions.DivisionByZeroException;
+import CurveEditor.Exceptions.InvalidArgumentException;
+${definition}"
+      associated_classes
+	class_ref 133303 // HandleExceptions
+      end
+    end
+  end
+end

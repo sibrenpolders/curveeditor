@@ -1,0 +1,19 @@
+class MenuListener
+!!!160951.java!!!	actionPerformed(inout e : ActionEvent) : void
+			String actionCommand = e.getActionCommand();
+
+			if (fileEvent(actionCommand) || algorithmEvent(actionCommand)
+					|| pointEvent(actionCommand) || curveEvent(actionCommand))
+				return;
+			else if (actionCommand.equals("Path Simulation")) {
+				(new Thread(new PathSimulation(draw, selectedCurves))).start();
+			} else if (actionCommand.equals("Undo")) {
+				undo();
+				draw.repaint();
+			} else if (actionCommand.equals("Redo")) {
+				redo();
+				draw.repaint();
+			} else if (actionCommand.equals("Preferrences"))
+				System.out.println("PREF");
+			else if (actionCommand.equals("Save As ..."))
+				saveAs();

@@ -1,0 +1,42 @@
+class Point
+!!!148663.java!!!	Point()
+		X = -1;
+		Y = -1;
+!!!148791.java!!!	Point(in X : int, in Y : int)
+		this.X = X;
+		this.Y = Y;
+!!!148919.java!!!	X() : int
+		return X;
+!!!149047.java!!!	setX(in X : int) : void
+		this.X = X;
+!!!149175.java!!!	increaseX(in x : int) : void
+		this.X += x;
+!!!149303.java!!!	Y() : int
+		return Y;
+!!!149431.java!!!	setY(in Y : int) : void
+		this.Y = Y;
+!!!149559.java!!!	increaseY(in y : int) : void
+		this.Y += y;
+!!!149687.java!!!	toString() : String
+		return "X: " + X + ", Y: " + Y;
+!!!149815.java!!!	equals(inout obj : Object) : boolean
+		if (obj instanceof Point) {
+			Point p = (Point) obj;
+			return (this.X == p.X && this.Y == p.Y);
+		} else {
+			return false;
+		}
+!!!149943.java!!!	hashCode() : int
+		return toString().hashCode();
+!!!150071.java!!!	minus(inout other : Point) : Point
+		return new Point(X - other.X, Y - other.Y);
+!!!150199.java!!!	plus(inout other : Point) : Point
+		return new Point(X + other.X, Y + other.Y);
+!!!150327.java!!!	times(in d : double) : Point
+		return new Point((int) Math.floor(X * d + 0.5), (int) Math.floor(Y * d
+				+ 0.5));
+!!!150455.java!!!	length() : int
+		return (int) Math.sqrt((double) X * X + Y * Y);
+!!!150583.java!!!	distance(inout a : Point, inout b : Point) : int
+		return (int) Math.sqrt(Math.pow((double) Math.abs(a.X() - b.X()), 2.0)
+				+ Math.pow((double) Math.abs(a.Y() - b.Y()), 2.0));

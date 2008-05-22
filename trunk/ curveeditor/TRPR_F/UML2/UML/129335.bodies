@@ -1,0 +1,11 @@
+class HermiteCatmullRom
+!!!133175.java!!!	HermiteCatmullRom(in type : char, in degree : short)
+		super(type, degree);
+!!!133303.java!!!	HermiteCatmullRom(in degree : short)
+		this('R', degree);
+!!!133431.java!!!	HermiteCatmullRom()
+		this('R', (short) 0);
+!!!133559.java!!!	calculate(inout cv : Curve) : void
+		cardinal(cv, (float) d);
+!!!133687.java!!!	calculateComplete(inout cv : Curve) : void
+		cardinalComplete(cv, (float) d);

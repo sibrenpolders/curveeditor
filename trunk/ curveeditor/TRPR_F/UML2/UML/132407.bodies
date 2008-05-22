@@ -1,0 +1,65 @@
+class ChoiceAreaListener
+!!!161079.java!!!	actionPerformed(inout e : ActionEvent) : void
+			String actionCommand = e.getActionCommand();
+
+			if (actionCommand.equals("comboBoxChanged"))
+				actionCommand = (String) ((JComboBox) e.getSource())
+						.getSelectedItem();
+
+			if (algorithmEvent(actionCommand) || pointEvent(actionCommand)
+					|| curveEvent(actionCommand) || fileEvent(actionCommand))
+				return;
+			else if (actionCommand.equals("ADD")) {
+				Point a = choice.getInputPoint();
+				if (a != null) {
+					changeMode(MODE.ADD_INPUT);
+					try {
+						addPoint(a);
+					} catch (InvalidArgumentException e1) {
+						e1.printStackTrace();
+					}
+					draw.repaint();
+				} else
+					JOptionPane.showMessageDialog(draw, "No point is given",
+							"Curve Editor: ERROR", JOptionPane.ERROR_MESSAGE);
+
+			} else if (actionCommand.equals("Select All Curves")) {
+				selectAllCurves();
+				draw.repaint();
+			} else if (actionCommand.equals("Deselect All Curves")) {
+				deselectAllCurves();
+				changeMode(MODE.SELECT_CURVE);
+				draw.repaint();
+			} else if (actionCommand.equals("Move Curves")) {
+				changeMode(MODE.MOVE_CURVES);
+				draw.repaint();
+			} else if (actionCommand.equals("Deselect All Control Points")) {
+				deselectAll();
+				changeMode(MODE.SELECT_CONTROL_POINT);
+				draw.repaint();
+			} else if (actionCommand.equals("Move Control Points")) {
+				changeMode(MODE.MOVE_CONTROL_POINTS);
+				draw.repaint();
+			} else if (actionCommand.equals("Delete Control Points")) {
+				deleteSelectedControlPoints();
+				changeMode(MODE.SELECT_CONTROL_POINT);
+				draw.repaint();
+			} else if (actionCommand.equals("Connect Curves (No Extra Points)")) {
+				connectNoExtraPoint();
+				mode = MODE.SELECT_CURVE;
+				draw.repaint();
+			} else if (actionCommand.equals("Connect Curves (C0)")) {
+				connectCurvesC0();
+				mode = MODE.SELECT_CURVE;
+				draw.repaint();
+			}
+!!!161207.java!!!	itemStateChanged(inout e : ItemEvent) : void
+			String eventName = e.getItemSelectable().toString();
+
+			if (eventName.contains("Coordinates"))
+				draw.toggleCoords();
+			else if (eventName.contains("Tangents"))
+				draw.toggleTangents();
+			else if (eventName.contains("Numbers"))
+				draw.toggleNrs();
+			draw.repaint();

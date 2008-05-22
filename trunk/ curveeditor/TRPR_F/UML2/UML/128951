@@ -1,0 +1,215 @@
+format 46
+"Tools" // CurveEditor::Tools
+  revision 1
+  modified_by 55 "sibrand"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default
+  
+  java_dir "CurveEditor/Tools"
+  java_package "CurveEditor.Tools"
+  classview 128951 "Tools"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_infonote default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    class 132919 "PathSimulation"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135095 // <realization>
+	relation 135095 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 135095 // <realization>
+	  b parent class_ref 133047 // Runnable
+      end
+
+      classrelation 135223 // curves (<unidirectional association>)
+	relation 135223 --->
+	  stereotype "Vector"
+	  a role_name "curves" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 135223 // curves (<unidirectional association>)
+	  b parent class_ref 128311 // Curve
+      end
+
+      classrelation 135351 // draw (<unidirectional association>)
+	relation 135351 --->
+	  a role_name "draw" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 135351 // draw (<unidirectional association>)
+	  b parent class_ref 131255 // DrawArea
+      end
+
+      operation 164535 "PathSimulation"
+	public explicit_return_type ""
+	nparams 2
+	  param inout name "draw" type class_ref 131255 // DrawArea
+	  param inout name "curves" explicit_type "Vector<Curve>"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 164663 "run"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      classrelation 137911 // <dependency>
+	relation 137911 -_->
+	  a default
+	    classrelation_ref 137911 // <dependency>
+	  b parent class_ref 132919 // PathSimulation
+      end
+
+      classrelation 138039 // <dependency>
+	relation 138039 -_->
+	  a default
+	    classrelation_ref 138039 // <dependency>
+	  b parent class_ref 131255 // DrawArea
+      end
+    end
+
+    class 133431 "PathSimulationKeys"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135479 // <generalisation>
+	relation 135479 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 135479 // <generalisation>
+	  b parent class_ref 133559 // Thread
+      end
+
+      attribute 139575 "step"
+	package explicit_type "Integer"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      attribute 139703 "input"
+	package explicit_type "Scanner"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	idl_decl ""
+      end
+
+      operation 165559 "PathSimulationKeys"
+	public explicit_return_type ""
+	nparams 1
+	  param inout name "step" explicit_type "Integer"
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+
+      operation 165687 "run"
+	public explicit_return_type "void"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+${body}}
+"
+	
+	
+      end
+    end
+  end
+
+  deploymentview 128823 "Tools"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default
+    artifact 130999 "PathSimulation"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Vector;
+import CurveEditor.Curves.Curve;
+import CurveEditor.Curves.Point;
+import CurveEditor.GUI.DrawArea;
+${definition}"
+      associated_classes
+	class_ref 132919 // PathSimulation
+      end
+    end
+
+    artifact 131383 "PathSimulationKeys"
+      stereotype "source"
+      java_src "${comment}
+${package}
+${imports}
+import java.util.Scanner;
+${definition}"
+      associated_classes
+	class_ref 133431 // PathSimulationKeys
+      end
+    end
+  end
+end
