@@ -4,10 +4,14 @@ import CurveEditor.Curves.Point;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Exceptions.InvalidArgumentException;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.EmptyStackException;
+import java.util.Stack;
 import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -24,7 +28,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-//tekstueel opslaan: type | orde | controlepunt1 | controlepunt2 | ... | \n
 public class FileIO extends DefaultHandler {
 
 	private String currentFilename;
@@ -184,5 +187,124 @@ public class FileIO extends DefaultHandler {
 		// point.setZ(Integer.parseInt(tempVal));
 
 		++lineNumber; // volgende regel
+	}
+
+	private Stack<byte[]> stack = new Stack<byte[]>();
+	private Stack<byte[]> stackRedo = new Stack<byte[]>();
+
+	public void push(Vector<Curve> curves, Vector<Curve> selectedCurves)
+			throws InvalidArgumentException {
+		if (curves == null || selectedCurves == null)
+			throw new InvalidArgumentException(
+					"FileIO.java - push(Vector, Vector): Invalid Argument.");
+		pushCurve(curves, stack);
+		pushCurve(selectedCurves, stack);
+		stackRedo.clear();
+	}
+
+	public void undo(Vector<Curve> curves, Vector<Curve> selectedCurves)
+			throws EmptyStackException, InvalidArgumentException {
+		if (stack.size() > 1) {
+			byte[] selCur = stack.pop();
+			byte[] cur = stack.peek();
+			stack.push(selCur);
+
+			stackRedo.push(cur);
+			stackRedo.push(selCur);
+		}
+
+		pop(curves, selectedCurves, stack);
+	}
+
+	public void redo(Vector<Curve> curves, Vector<Curve> selectedCurves)
+			throws EmptyStackException, InvalidArgumentException {
+		if (stackRedo.size() > 1) {
+			byte[] selCur = stackRedo.pop();
+			byte[] cur = stackRedo.peek();
+			stackRedo.push(selCur);
+
+			stack.push(cur);
+			stack.push(selCur);
+		}
+
+		pop(curves, selectedCurves, stackRedo);
+	}
+
+	private void pop(Vector<Curve> curves, Vector<Curve> selectedCurves,
+			Stack<byte[]> stack) throws InvalidArgumentException,
+			EmptyStackException {
+		if (curves == null || selectedCurves == null)
+			throw new InvalidArgumentException(
+					"FileIO.java - pop(Vector, Vector): Invalid Argument.");
+		if (stack.size() <= 1)
+			throw new EmptyStackException();
+
+		popCurve(selectedCurves, stack);
+		popCurve(curves, stack);
+	}
+
+	private void pushCurve(Vector<Curve> v, Stack<byte[]> stack) {
+		try {
+			ByteArrayOutputStream temp;
+
+			pw = new PrintWriter(temp = new ByteArrayOutputStream());
+			StreamResult streamResult = new StreamResult(pw);
+			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
+					.newInstance();
+			hd = tf.newTransformerHandler();
+			Transformer serializer = hd.getTransformer();
+			serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			serializer.setOutputProperty(OutputKeys.METHOD, "xml");
+			serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+			hd.setResult(streamResult);
+			hd.startDocument();
+			hd.startElement("", "", "curveEditor", null);
+			String curTitle;
+
+			++indentLevel;
+			for (int i = 0; i < v.size(); ++i) {
+				hd.startElement("", "", "curve", null);
+				hd.startElement("", "", "type", null);
+				curTitle = v.get(i).getTypeAsString();
+				hd.characters(curTitle.toCharArray(), 0, curTitle.length());
+				hd.endElement("", "", "type");
+				Vector<Point> vp = v.get(i).getInput();
+				for (int j = 0; j < vp.size(); ++j) {
+					hd.startElement("", "", "point", null);
+					writeCo("" + vp.get(j).X(), "x");
+					writeCo("" + vp.get(j).Y(), "y");
+					hd.endElement("", "", "point");
+				}
+				hd.endElement("", "", "curve");
+			}
+			hd.endElement("", "", "curveEditor");
+			hd.endDocument();
+
+			stack.push(temp.toByteArray());
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void popCurve(Vector<Curve> v, Stack<byte[]> stack) {
+		Vector<Curve> prev = curves;
+		this.curves = v;
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		try {
+
+			SAXParser sp = spf.newSAXParser();
+			sp.parse(new ByteArrayInputStream(stack.pop()), this);
+			curves = prev;
+		} catch (SAXException se) {
+			se.printStackTrace();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 }
