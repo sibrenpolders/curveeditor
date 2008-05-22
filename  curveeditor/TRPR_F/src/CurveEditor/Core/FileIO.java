@@ -219,9 +219,10 @@ public class FileIO extends DefaultHandler {
 			stack.push(selCur);
 
 			stackRedo.push(cur);
-			stackRedo.push(selCur);
-			pop(curves, selectedCurves, stack);
+			stackRedo.push(selCur);			
 		}
+		
+		pop(curves, selectedCurves, stack);
 	}
 
 	public void redo(Vector<Curve> curves, Vector<Curve> selectedCurves)
@@ -232,9 +233,9 @@ public class FileIO extends DefaultHandler {
 			stackRedo.push(selCur);
 
 			stack.push(cur);
-			stack.push(selCur);
-			pop(curves, selectedCurves, stackRedo);
+			stack.push(selCur);			
 		}
+		pop(curves, selectedCurves, stackRedo);
 	}
 
 	private void pop(Vector<Curve> curves, Vector<Curve> selectedCurves,

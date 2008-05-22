@@ -234,7 +234,6 @@ public class Editor {
 	// De huidige situatie aanpassen opdat men één nieuwe lege
 	// curve zou kunnen gaan aanpassen.
 	protected void startNewCurve() {
-		push();
 		deselectAll();
 		// selectedCurves bevat slechts één curve, een voorlopig lege.
 		selectedCurves.add(new Curve(currentAlgorithm.getType(),
