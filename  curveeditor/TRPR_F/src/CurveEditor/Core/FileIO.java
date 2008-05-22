@@ -202,6 +202,15 @@ public class FileIO extends DefaultHandler {
 		stackRedo.clear();
 	}
 
+	public void pushNew(Vector<Curve> curves, Vector<Curve> selectedCurves)
+			throws InvalidArgumentException {
+		if (curves == null || selectedCurves == null)
+			throw new InvalidArgumentException(
+					"FileIO.java - push(Vector, Vector): Invalid Argument.");
+		pushCurve(curves, stackRedo);
+		pushCurve(selectedCurves, stackRedo);
+	}
+
 	public void undo(Vector<Curve> curves, Vector<Curve> selectedCurves)
 			throws EmptyStackException, InvalidArgumentException {
 		if (stack.size() > 1) {
@@ -211,9 +220,8 @@ public class FileIO extends DefaultHandler {
 
 			stackRedo.push(cur);
 			stackRedo.push(selCur);
+			pop(curves, selectedCurves, stack);
 		}
-
-		pop(curves, selectedCurves, stack);
 	}
 
 	public void redo(Vector<Curve> curves, Vector<Curve> selectedCurves)
@@ -225,25 +233,24 @@ public class FileIO extends DefaultHandler {
 
 			stack.push(cur);
 			stack.push(selCur);
+			pop(curves, selectedCurves, stackRedo);
 		}
-
-		pop(curves, selectedCurves, stackRedo);
 	}
 
 	private void pop(Vector<Curve> curves, Vector<Curve> selectedCurves,
-			Stack<byte[]> stack) throws InvalidArgumentException,
+			Stack<byte[]> stack1) throws InvalidArgumentException,
 			EmptyStackException {
 		if (curves == null || selectedCurves == null)
 			throw new InvalidArgumentException(
 					"FileIO.java - pop(Vector, Vector): Invalid Argument.");
-		if (stack.size() <= 1)
+		if (stack1.size() <= 1)
 			throw new EmptyStackException();
 
-		popCurve(selectedCurves, stack);
-		popCurve(curves, stack);
+		popCurve(selectedCurves, stack1);
+		popCurve(curves, stack1);
 	}
 
-	private void pushCurve(Vector<Curve> v, Stack<byte[]> stack) {
+	private void pushCurve(Vector<Curve> v, Stack<byte[]> stack1) {
 		try {
 			ByteArrayOutputStream temp;
 
@@ -280,7 +287,7 @@ public class FileIO extends DefaultHandler {
 			hd.endElement("", "", "curveEditor");
 			hd.endDocument();
 
-			stack.push(temp.toByteArray());
+			stack1.push(temp.toByteArray());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
@@ -288,14 +295,14 @@ public class FileIO extends DefaultHandler {
 		}
 	}
 
-	private void popCurve(Vector<Curve> v, Stack<byte[]> stack) {
+	private void popCurve(Vector<Curve> v, Stack<byte[]> stack1) {
 		Vector<Curve> prev = curves;
 		this.curves = v;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			curves.clear();
+			v.clear();
 			SAXParser sp = spf.newSAXParser();
-			sp.parse(new ByteArrayInputStream(stack.pop()), this);
+			sp.parse(new ByteArrayInputStream(stack1.pop()), this);
 			curves = prev;
 		} catch (SAXException se) {
 			se.printStackTrace();

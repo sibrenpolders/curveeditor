@@ -274,6 +274,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				translateSelectedCurves(diffX, diffY);
 			else
 				translateSelectedControlPoints(diffX, diffY);
+
+			pushNew();
 		}
 
 		draw.resetDragging();
