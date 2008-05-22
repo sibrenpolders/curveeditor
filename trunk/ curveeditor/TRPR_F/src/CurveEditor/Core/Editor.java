@@ -765,6 +765,8 @@ public class Editor {
 	protected void undo() {
 		try {
 			file.undo(curves, selectedCurves);
+			recalculateCurves();
+			recalculateSelectedCurves();
 		} catch (EmptyStackException e) {
 			e.printStackTrace();
 		} catch (InvalidArgumentException e) {
@@ -783,6 +785,8 @@ public class Editor {
 	protected void redo() {
 		try {
 			file.redo(curves, selectedCurves);
+			recalculateCurves();
+			recalculateSelectedCurves();
 		} catch (EmptyStackException e) {
 			e.printStackTrace();
 		} catch (InvalidArgumentException e) {
