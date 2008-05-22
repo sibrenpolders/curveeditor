@@ -1,5 +1,9 @@
 package CurveEditor.GUI;
 
+/*
+ * Deze klasse zal een toolbar aanmaken, waar bepaalde veel gebrukte functies worden gezet.
+ * Dit om het gemak van de gebruiker te verhogen.
+ */
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -29,34 +33,31 @@ public class Toolbar extends JToolBar {
 	public void setSize() {
 		setBounds(0, DisplaySize.MENUHEIGHT, DisplaySize.SCREENWIDTH,
 				DisplaySize.TOOLBARHEIGHT);
-		// setMinimumSize( d );
-		// setMaximumSize( d );
-		// setPreferredSize( d );
 	}
 
 	private void addButtons() {
 		group = new ButtonGroup();
 
-		makeButton("New C", "Start a new curve",
+		makeButton("New File", "Create a new file",
+			"src/CurveEditor/GUI/icons/filenew.png");
+		makeButton("Open File", "Open a file",
+			"src/CurveEditor/GUI/icons/fileopen.png");
+		makeButton("Save File", "Save a file",
+			"src/CurveEditor/GUI/icons/filesave.png");
+
+		addSeparator();		
+
+		makeButton("New Curve", "Start a new curve",
 				"src/CurveEditor/GUI/icons/curvenew.png");
-		makeButton("Clr", "Remove all curves",
+		makeButton("Clear", "Remove all curves",
 				"src/CurveEditor/GUI/icons/curvenew.png");
 
 		addSeparator();
 
-		makeButton("Sel C", "Select a curve.",
+		makeButton("Select Curve", "Select a curve.",
 				"src/CurveEditor/GUI/icons/ganttSelect.png");
-		makeButton("Sel P", "Select a point.",
+		makeButton("Select Point", "Select a point.",
 				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
-
-		addSeparator();
-
-		makeButton("New", "Create a new file",
-				"src/CurveEditor/GUI/icons/filenew.png");
-		makeButton("Open", "Open a file",
-				"src/CurveEditor/GUI/icons/fileopen.png");
-		makeButton("Save", "Save a file",
-				"src/CurveEditor/GUI/icons/filesave.png");
 
 		add(Box.createHorizontalGlue());
 	}
