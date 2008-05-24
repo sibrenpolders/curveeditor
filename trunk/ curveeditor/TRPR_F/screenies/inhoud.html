@@ -455,6 +455,104 @@
 				</li>				
 			</ul>
 		</li>
+		<li id="algos" class="titelLi"><span class="bold">Beschikbare algoritmen</span><br />
+			<ul>
+				<li id="L"><span class="underline">Lineair (figuur 15)</span><br />
+					Dit interpolatiealgoritme is de simpelste: per twee opeenvolgende controlepunten wordt het tussenliggend lijnstukje berekend en uitgetekend.
+					Zo zal de curve bestaan uit de lijnstukjes van het eerste naar het tweede, van het tweede naar het derde,... en van het voorlaatste naar het laatste controlepunt.<br /><br />
+				</li>
+				<li id="BC0"><span class="underline">Bezier C0 (figuur 16)</span><br />
+					Dit interpolatiealgoritme is de primitieve vorm van het Bezier-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend als volgt: de curve start in het eerste punt in de richting van het tweede, om dan in het vierde punt te eindigen in de richting van het derde. Een curve a.h.v.
+					het volgend viertal controlepunten wordt weer op dezelfde manier berekend, volledig onafhankelijk van het voorgaande viertal.	<br /><br />	
+				</li>
+				<li id="BG1"><span class="underline">Bezier G1 (figuur 17)</span><br />
+					Dit interpolatiealgoritme is een uitgebreide vorm van het Bezier-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend zoals bij de primitieve vorm. Maar de ligging van het tweede en het derde controlepunt wordt nu echter herberekend zodanig dat de berekende curve vloeiend aansluit
+					op  de berekende curve voor het vorige en het volgende viertal. Dit wordt bekomen als volgt: <br />
+					Stel viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders 
+					zouden we niet tot een aaneengesloten curve kunnen komen. M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2
+					kunnen we nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 berekenen (het gemeenschappelijke blijft ongewijzigd). Dit doen we door de vector tussen het voorlaatste controlepunt van v1 
+					en het tweede controlepunt van v2 te beschouwen; die vector verschuiven we dan zodanig dat het gemeenschappelijke controlepunt op die vector komt te liggen. De twee uiteinden van deze verschoven vector
+					zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2.
+					Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende curve.<br /><br />
+				</li>
+				<li id="BC1"><span class="underline">Bezier C1 (figuur 18)</span><br />
+					Dit interpolatiealgoritme is een uitgebreide vorm van het Bezier-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend zoals bij de primitieve vorm. Maar de ligging van het tweede en het derde controlepunt wordt nu echter herberekend zodanig dat de berekende curve vloeiend aansluit
+					op  de berekende curve voor het vorige en het volgende viertal, &eacute;n zodanig dat de berekende curve een controlepunt even snel &quot;binnenkomt&quot; als &quot;verlaat&quot;, met dezelfde versnelling als het ware. Dit wordt bekomen als volgt: <br />
+					Stel viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders 
+					zouden we niet tot een aaneengesloten curve kunnen komen. M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2
+					kunnen we nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 berekenen (het gemeenschappelijke blijft ongewijzigd). Dit doen we door de vector tussen het voorlaatste controlepunt van v1 
+					en het tweede controlepunt van v2 te beschouwen; die vector verschuiven we dan zodanig dat het gemeenschappelijke controlepunt in het midden van die vector komt te liggen. De twee uiteinden van deze verschoven vector
+					zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2.
+					Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende en een in elk controlepunt even snel ingaand als uitgaand versnellende curve.<br /><br />
+				</li>
+				<li id="HN"><span class="underline">Hermite normaal (figuur 19)</span><br /> 
+ 					Dit interpolatiealgoritme is de primitieve vorm van het Hermite-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend als volgt: de curve start in het eerste punt in de richting van het tweede, om dan in het derde punt te eindigen in de richting van het vierde. Een curve a.h.v.
+					het volgend viertal controlepunten wordt weer op dezelfde manier berekend, volledig onafhankelijk van het voorgaande viertal. Het eerste controlepunt van het volgende viertal
+					valt uiteraard samen met het derde controlepunt van het huidige viertal, om alzo een aaneengesloten curve te verkrijgen.			
+					<br /><br />
+				</li>
+				<li id="HC"><span class="underline">Hermite Cardinal (figuur 20)</span><br />					
+					<br /><br />
+				</li>
+				<li id="HCR"><span class="underline">Hermite Catmull-Rom (figuur 21)</span><br />
+					<br /><br />
+				</li>
+			</ul>	
+			<br /><br />	
+			<table border="0">
+				<tr><td>
+					<img src="linear.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 15: Curve Editor: Lineair</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="bezierC0.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 16: Curve Editor: Bezier C0</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="bezierG1.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 17: Curve Editor: Bezier G1</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="bezierC1.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 18: Curve Editor: Bezier C1</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />			
+			<table border="0">
+				<tr><td>
+					<img src="hermite.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 19: Curve Editor: Hermite Normaal</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="cardinal.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 20: Curve Editor: Hermite Cardinal</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="catmull.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 21: Curve Editor: Hermite Catmull-Rom</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+		</li>
 		<li id="ontwikkelaars" class="titelLi"><span class="bold">Ontwikkelaars</span><br />
 			<table border="0">
 				<tr>
@@ -468,8 +566,7 @@
 		
 			</table><br /><br />
 		</li>
-	</ol>
-	
+	</ol>	
 	
 	
 </div>
