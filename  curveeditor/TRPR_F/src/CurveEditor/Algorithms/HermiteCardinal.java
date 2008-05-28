@@ -1,6 +1,6 @@
 package CurveEditor.Algorithms;
 
-import java.util.LinkedList;
+import java.util.Vector;
 import java.util.Vector;
 
 import CurveEditor.Curves.Curve;
@@ -31,7 +31,7 @@ public class HermiteCardinal extends Hermite {
 
 	protected void cardinal(Curve cv, float c) {
 		Vector<Point> vip = cv.getInput();
-		LinkedList<Point> vop = cv.getOutput();
+		Vector<Point> vop = cv.getOutput();
 		float t;
 
 		int size = vip.size();
@@ -88,7 +88,7 @@ public class HermiteCardinal extends Hermite {
 
 	protected void cardinalComplete(Curve cv, float c) {
 		Vector<Point> vip = cv.getInput();
-		LinkedList<Point> vop = cv.getOutput();
+		Vector<Point> vop = cv.getOutput();
 		cv.clearOutput();
 
 		float t;

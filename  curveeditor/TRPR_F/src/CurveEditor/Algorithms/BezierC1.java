@@ -1,6 +1,6 @@
 package CurveEditor.Algorithms;
 
-import java.util.LinkedList;
+import java.util.Vector;
 import java.util.Vector;
 import CurveEditor.Curves.Point;
 import CurveEditor.Exceptions.InvalidArgumentException;
@@ -32,7 +32,7 @@ public class BezierC1 extends Bezier {
 
 	// Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
 	// outpunten m.b.v. het geïmplementeerde interpolatiealgoritme.
-	public void calculate(Vector<Point> input, LinkedList<Point> output)
+	public void calculate(Vector<Point> input, Vector<Point> output)
 			throws InvalidArgumentException {
 		if (input == null || output == null)
 			throw new InvalidArgumentException(

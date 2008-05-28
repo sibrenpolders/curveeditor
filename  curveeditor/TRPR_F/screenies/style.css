@@ -1,7 +1,7 @@
 span.bold
 {
 	font-weight: bold; 
-	font-size: large; 
+	font-size: large; 	
 }
 
 span.underline
@@ -23,6 +23,7 @@ a.linkA:link, a.linkA:visited, a.linkA:hover, a.linkA:active   {
 body
 {
 	background-color: #FFFFCC;
+	font-familiy: courier;
 }
 
 li.linkLiSubSub

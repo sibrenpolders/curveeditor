@@ -201,7 +201,7 @@ public class FileIO extends DefaultHandler {
 	private Stack<byte[]> stackRedo = new Stack<byte[]>();
 
 	public void push(Vector<Curve> curves, Vector<Curve> selectedCurves)
-			throws InvalidArgumentException {
+			throws InvalidArgumentException {		
 		if (curves == null || selectedCurves == null)
 			throw new InvalidArgumentException(
 					"FileIO.java - push(Vector, Vector): Invalid Argument.");

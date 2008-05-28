@@ -57,7 +57,7 @@ public class Hermite extends Algorithm {
 	}
 	
 	// Zal de interpolatie berekenen tussen de 4 laatste punten
-	public void calculate(Vector<Point> vip, LinkedList<Point> vop) {
+	public void calculate(Vector<Point> vip, Vector<Point> vop) {
 		float t;
 
 		int size = vip.size();
@@ -85,7 +85,7 @@ public class Hermite extends Algorithm {
 	// berekend de interpolatie tussen alle opgegeven punten
 	public void calculateComplete(Curve cv) {
 		Vector<Point> vip = cv.getInput();
-		LinkedList<Point> vop = cv.getOutput();
+		Vector<Point> vop = cv.getOutput();
 		cv.clearOutput();
 
 		float t;

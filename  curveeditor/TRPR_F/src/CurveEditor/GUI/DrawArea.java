@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.Vector;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -275,7 +275,7 @@ public final class DrawArea extends JPanel {
 
 	// Teken een Vector van Curves uit a.h.v. meegegeven flags.
 	private void drawOutput(Vector<Curve> curves, boolean coords, boolean nrs) {
-		LinkedList<Point> out;
+		Vector<Point> out;
 		Vector<Point>in;
 		for (int i = 0; i < curves.size(); ++i) {
 			// De outputpunten uittekenen.
