@@ -1,6 +1,6 @@
 package CurveEditor.Tools;
 
-import java.util.LinkedList;
+import java.util.Vector;
 import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -17,7 +17,7 @@ public class PathSimulation implements Runnable {
 
 	public void run() {
 		for (int i = 0; i < curves.size(); ++i) {
-			LinkedList<Point> out = curves.get(i).getOutput();
+			Vector<Point> out = curves.get(i).getOutput();
 
 			for (int j = 0; j < out.size(); j += 10) {
 				draw.drawRunner(out.get(j));
