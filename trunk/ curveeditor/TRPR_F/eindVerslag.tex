@@ -7,7 +7,7 @@
 \usepackage{graphicx}
 \usepackage[colorlinks,urlcolor=blue,filecolor=magenta]{hyperref}
 \usepackage{url}
-\parindent 0pt	
+\parindent 0pt
 \hyphenation{Hermite deze Monitor-Pool}
 \fontfamily{times}
 \begin{document}
@@ -24,20 +24,21 @@ De interpolatie van een gegeven set van controlepunten is een uitgebreide en int
 op vele vlakken in de informatica/wiskunde zijn nut kan bewijzen. Curve Editor geeft er de 
 basistoepassing van, namelijk die van de wiskundige berekening en grafische voorstelling van de gevraagde curve. \newline \newline \newline \newline
 \newline \newline \newline \newline
-%\begin{center}
-%\textit{``If the path be beautiful, let us not ask where it leads.''} - Anatole France \newpage
-%\end{center}
+\begin{center}
+\textit{``If the path be beautiful, let us not ask where it leads.''} - Anatole France \newpage
+\end{center}
 \newpage
-\section{Wiskundige voorkennis \label{wv}}
-\subsection{Lineaire interpolatie}
-\subsubsection{Na\"ieve poging (brute force)}
+\section{Wiskundige voorkennis\label{swv}}
+\subsection{Lineaire interpolatie \label{sli}}
+(zie figuur \ref{iL})
+\subsubsection{Na\"ieve poging (brute force) \label{snp1}}
 Een eerste poging om een lineaire interpolatie te berekenen is die waarbij tussen elk paar van controlepunten
 de vergelijking \begin{math}y = mx + b\end{math} wordt uitgerekend.
 Hierbij geldt: \begin{math}m = (y_1-y_0)/(x_1-x_0)\end{math}, en b is het
 startpunt op de y-as. De grote nadelen van dit algoritme zijn dat er voor iedere nieuwe
 pixel opnieuw berekend en getekend moet worden en dat er behoefte is aan een floating-point optelling en 
 vermenigvuldiging (vermits m een floating-point getal is).
-\subsubsection{DDA-interpolatie (Digital Differential Analyzer)}
+\subsubsection{DDA-interpolatie (Digital Differential Analyzer) \label{sdda}}
 Bij deze methode wordt nog steeds m als een floating-point getal voorgesteld, maar de berekening van
 de volgende y-waarde wordt als volgt vereenvoudigd:
 \begin{math}
@@ -45,25 +46,25 @@ y_{i+1} = m.x_{i+1} + b\newline
 = m.(x_i + \Delta x) + b\newline
 = m.x_i + m.\Delta x + b\newline
 = y_i + m.\Delta x\newline
-= y_i + m \textrm{ aangezien } \Delta x = 1 \textrm{ als we 1 pixel verder gaan.} \newline
+= y_i + m \textrm{ aangezien } \Delta x = 1 \textrm{ als we 1 pixel verder gaan } \newline
 \end{math}
-Dit algoritme is duidelijk effici\"enter vermits we geen floating-point vermenigvuldiging hebben 
+Dit algoritme is duidelijk effici\"enter vermits we een floating-point vermenigvuldiging hebben 
 verwijderd. 
-\subsection{B\'ezier}
+\subsection{B\'ezier \label{sb}}
 Het cubic Bézier-algoritme construeert een curve als volgt: per vier opeenvolgende controlepunten wordt een deel van de totale curve berekend.
 Die deelcurve start in het eerste controlepunt, in de richting van het tweede, om dan in het vierde controlepunt te eindigen in de richting van het derde. Een volgende 
 deelcurve heeft als eerste controlepunt het laatste controlepunt van de vorige deelcurve om alzo C0-continu\"iteit te garanderen.
-\subsubsection{Na\"ieve poging (brute force)}
+\subsubsection{Na\"ieve poging (brute force) \label{snp2}}
 Bij een eerste poging kunnen we het algoritme implementeren a.h.v. de meetkundige constructie en de parametrische voorstelling van de curve.
 Deze is als volgt:\newline
 \begin{center}
-\includegraphics[scale=0.5]{bezier.png}
+\includegraphics[scale=0.45]{bezier.png}
 \end{center}
 Indien we nu voor een eindig aantal t-waarden tussen 0 en 1, de B-waarde berekenen, dan hebben we een eindig aantal punten berekend die op de gevraagde curve
 liggen. Gebruiken we nadien lineaire interpolatie om de berekende punten met elkaar te verbinden, dan hebben een eerste benadering van de cubic B\'ezier-curve.
 Het spreekt voor zich dat deze implementatie verre van effici\"ent is: voor elke t-waarde moeten we de machten uitrekenen, vermenigvuldigen met de co\"ordinaten van de controlepunten
 en daarna alles optellen. Dit is tijdsintensief rekenwerk, daarom is in Curve Editor het incrementeel aloritme, dat in de volgende sectie besproken wordt, ge\"implementeerd.
-\subsubsection{Forward differences}
+\subsubsection{Forward differences \label{sfd}}
 Deze implementatie is een incrementeel algoritme: de volgende berekening wordt gedaan a.h.v. wat in de vorige berekening werd gevonden. Op deze manier moet men voor elk gevraagd punt niet
 helemaal van nul beginnen en minder rekenwerk uitvoeren. Hoe we tot de implementatie komen, gebeurt als volgt:
 
@@ -91,18 +92,18 @@ Nu hebben we alles wat we nodig hebben, en kunnen we de interpolatiepunten z\'el
 \begin{center}
 \includegraphics[scale=0.6]{diff6.png}
 \end{center}
-\subsubsection{C0-continu\"iteit}
+\subsubsection{C0-continu\"iteit \label{sc0}}
 C0-continue curves zijn de standaard curves, vermits C0-continu\"iteit enkel de eis oplegt dat de curve ononderbroken moet zijn.
 Indien we als eerste controlepunt van een viertal het laatste controlepunt van het vorige viertal nemen, dan bekomen we automatisch C0-continu\"iteit. Deze eis vraagt dus geen veranderingen aan de controlepunten: het primitieve
-B\'ezier-algoritme voldoet.
-\subsubsection{G1-continu\"iteit}
+B\'ezier-algoritme voldoet (zie figuur \ref{iC0}).
+\subsubsection{G1-continu\"iteit \label{sG1}}
 G1-continu\"iteit eist dat de curves naast ononderbroken ook overal vloeiend ogen. Dit wordt dus bekomen door in elk controlepunt dat op de curve komt te liggen, de curve z\'o te berekenen dat de ingaande en de uitgaande raakvector
-in dat controlepunt op \'e\'en lijn liggen. In Curve Editor is dit opgelost als volgt:
+in dat controlepunt op \'e\'en lijn liggen (zie figuur \ref{iG1}). In Curve Editor is dit opgelost als volgt:
 
 De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-controlepunten wordt herberekend, zodanig dat de berekende curve vloeiend aansluit op de berekende curve voor het vorige en het volgende viertal. Stel het viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders zouden we niet tot een aaneengesloten curve kunnen komen (zie C0-continu\"iteit). M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2 berekent Curve Editor nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 (het gemeenschappelijke blijft ongewijzigd). Dit doet het door de vector tussen het voorlaatste controlepunt van v1 en het tweede controlepunt van v2 te beschouwen; die vector wordt dan zodanig verschoven dat het gemeenschappelijke controlepunt op die vector komt te liggen. De twee uiteinden van deze verschoven vector zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2. Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende curve.
-\subsubsection{C1-continu\"iteit}
+\subsubsection{C1-continu\"iteit \label{sC1}}
 C1-continu\"iteit eist dat de curves naast ononderbroken zijn en overal vloeiend ogen, ook nog eens in elk controlepunt een gelijkmatig toe- en afnemende kromming hebben. Dit wordt dus bekomen door in elk controlepunt dat op de curve komt te liggen, de curve z\'o te berekenen dat de ingaande en de uitgaande raakvector
-in dat controlepunt op \'e\'en lijn liggen \'en even groot zijn. In Curve Editor is dit opgelost als volgt:
+in dat controlepunt op \'e\'en lijn liggen \'en even groot zijn (zie figuur \ref{iC1}). In Curve Editor is dit opgelost als volgt:
 
 De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-controlepunten wordt herberekend, zodanig dat de berekende curve vloeiend aansluit op de berekende curve voor het vorige en het volgende viertal \'en zodanig dat de berekende curve een controlepunt even snel "binnenkomt" als "verlaat", met dezelfde versnelling als het ware. Stel het viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders zouden we niet tot een aaneengesloten curve kunnen komen (zie C0-continu\"iteit). M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2 berekent Curve Editor nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 (het gemeenschappelijke blijft ongewijzigd). Dit doet het door de vector tussen het voorlaatste controlepunt van v1 en het tweede controlepunt van v2 te beschouwen; die vector wordt dan zodanig verschoven dat het gemeenschappelijke controlepunt midden op die vector komt te liggen. De twee uiteinden van deze verschoven vector zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2. Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende en een in elk controlepunt even snel ingaand als uitgaand versnellende curve.
 \subsection{Hermite}
@@ -118,7 +119,7 @@ in functionele categorie\"en, wat het geheel overzichtelijker maakt. En verder k
 verschillende klassen \'e\'enzelfde naam krijgen en toch uniek bepaald worden door er zijn
 package name voor te zetten. Dit is zeker handig als de programmeur een klasse dezelfde naam
 heeft gegeven als een klasse uit een library die hij wilt gaan gebruiken.\newline \newline
-Voor Curve Editor zijn verschillende packages gemaakt, die zijn te zien op figuur \ref{packages}.
+Voor Curve Editor zijn verschillende packages gemaakt, die zijn te zien op figuur \ref{iTot}.
 In wat volgt wordt een korte beschrijving gegeven van al deze packages, zonder \'al teveel op de technische details in
 te gaan.
 \subsubsection{CurveEditor}
@@ -131,14 +132,14 @@ Dit pakket voorziet de verschillende klassen die voor de interpolatiealgoritmen 
 Elke klasse in dit pakket implementeert de Algorithm-interface. Dit is handig voor latere uitbreidingen en groepswerk: deze interface 
 legt immers vast welke functies de programmeur zal moeten implementeren, die functies worden immers elders in de applicatie gebruikt. \newline
 De klassenamen zijn triviaal gekozen: ``Lineair, Bezier, BezierC1, BezierG1, Hermite, 
-HermiteCardinal, HermiteCatmullRom''(zie figuur \ref{algorithms}). 
+HermiteCardinal, HermiteCatmullRom'' (zie figuur \ref{iAlg}).
 Zoals de namen al doen vermoeden, zullen deze klassen de verschillende
-interpolatiemethodes besproken in het deel 'Wiskundige voorkennis' (\ref{wv}) implementeren.
+interpolatiemethodes besproken in het deel 'Wiskundige voorkennis' (\ref{swv}) implementeren.
 Hierbij werd natuurlijk altijd geopteerd voor de meest optimale implementatie van degene die 
 besproken werden.
 \subsubsection{Core}
 \label{tcore}
-Dit pakket bevat enkele noodzakelijk klassen (zie figuur \ref{core}).\newline \newline
+Dit pakket bevat enkele noodzakelijk klassen (zie figuur \ref{iCore}).\newline \newline
 De klasse CurveContainer zal ervoor zorgen dat ingegeven punten kunnen opgeslagen worden, samen
 met hun door interpolatie berekende punten. \newline \newline
 Een eerste implementatie gebruikte het subdivision principe. In de beginsituatie is het tekenveld
@@ -169,7 +170,7 @@ Een laatste klasse van dit pakket is de FileIO-klasse, deze zal niet alleen best
 inladen, maar ook zal hij de undo/redo-functionaliteit, vermits deze van
 dezelfde functies gebruik maakt. Er wordt dan gewoon een stack van bestanden in het geheugen bijgehouden.
 \subsubsection{Curves}
-Dit pakket bevat de twee datatypes die doorheen het programma gebruikt worden. Point verzorgt, zoals
+Dit pakket bevat de twee datatypes die doorheen het programma gebruikt worden (zie figuur \ref{iCurv}). Point verzorgt, zoals
 de naam doet vermoeden, de datastructuur die punten voorstelt. Curve geeft dan weer de
 mogelijkheid om een verzameling van punten (lees: een kromme of curve) op te slaan. De
 technische details van deze laatste klasse worden beter uitgelegd verder in de tekst (zie ). 
@@ -179,14 +180,14 @@ basisvoorzieningen voorziet (punten opvragen, toevoegen, transleren, \ldots).
 Een foutloos programma schrijven is op zich al een opgave, vermits er altijd wel kleine bugs
 kunnen opduiken na langdurig en gevari\"eerd gebruik. Foolproof code schrijven daarentegen is een
 onmogelijke opgave. Daarom hebben we gebruik gemaakt van exceptions om ``verkeerd'' gebruik van
-CurveEditor-functies op te vangen. Onder verkeerd gebruik valt bijvoorbeeld het inladen van een
+CurveEditor-functies op te vangen (zie figuur \ref{iExc}). Onder verkeerd gebruik valt bijvoorbeeld het inladen van een
 onbestaande file of een verkeerd bestandsformaat, het toevoegen van een punt zonder er de 
 co\"ordinaten van op te geven, \ldots. Maar ook met toekomstige uitbreidingen in gedachte zijn exceptions een handig middel,
 niet elke programmeur hanteert immers dezelfde logica. Vindt de \'e\'en dat aan een methode bijvoorbeeld geen null-waarden kunnen worden meegegeven omdat 't nonsens lijkt, dan kan een ander vinden dat het wel mogelijk moet zijn om dat te doen. Exceptions laten die andere dan weten dat zo'n parameters nooit mogen meegegeven worden wil hij een resultaat verkrijgen, zonder dat hij naar de broncode van die ene methode hoeft te kijken.\newline \newline
-Er zijn ook twee HandleException-klassen voorzien: eentje in dit pakket, deze zal gewoon 
+Er zijn ook twee HandleException-klassen voorzien (zie figuur \ref{iHExc}): eentje in dit pakket, deze zal gewoon 
 het exceptie bericht in de console uitprinten, en eentje in het GUI-pakket, die in een dialoogvenstertje de exceptie zal uitprinten.
 \subsubsection{GUI}
-De GUI is vrij grondig opgesplitst (zie figuur \ref{gui}). Elk groot deel heeft zo zijn eigen klasse; 
+De GUI is vrij grondig opgesplitst (zie figuur \ref{iGui}). Elk groot deel heeft zo zijn eigen klasse; 
 zo heb je een menubalk-klasse, een snelknopbalk-klasse, een tekengebied-klasse en een keuzegebied-klasse. \newline
 De GUI-klasse zal op zijn beurt het centrale orgaan spelen die al deze klassen met elkaar verbindt.
 Het is daarom ook logisch dat deze is afgeleid van de klasse Editor,
@@ -201,35 +202,35 @@ doen. Het is dus voldoende om deze EventHandling-klassen in GUI aan te maken en 
 aan de juiste componenten (menubalk, tekengebied, \ldots). Meer uitleg hierover vind je verder in
 de tekst.
 \subsubsection{Tools}
-Dit bevat een curvesimulator. In principe is het een ``chique'' naam voor een bolletje
+Dit bevat een curvesimulator (zie figuur \ref{iTools}). In principe is het een ``chique'' naam voor een bolletje
 dat over het pad dat de curve voorstelt loopt. Dit kan bijvoorbeeld door de gebruiker gebruikt worden om de stijging en daling
 van de curve te bestuderen. Zodoende kan hij de getekende curve visueel evalueren.
 \subsection{Uitwerking van de GUI}
 \subsubsection{Overzicht}
-Zoals in screenshot \ref{scr_gui} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
+Zoals in figuur \ref{scrTot} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
 \begin{enumerate}
-\item Menubalk
+\item Menubalk\newline
 Hierin kan de gebruiker elke actie terugvinden die door Curve Editor kan gedaan worden.
 Bijna elke actie is ook aan te roepen met behulp van sneltoetscombinaties ( Alt-F, Ctrl-O, \ldots ), zodat
 elke gebruiker op zijn favoriete manier kan navigeren doorheen de verschillende uitvoerbare taken.
 Er is overigens aandacht geschonken aan de nesting van de menu-items: die mogen niet te diep noch te breed zijn.
-Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzien van een icoontje.
+Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzien van een icoontje (zie figuur \ref{screMenTo}).
 \item Snelknopbalk
 Hierin vind je enkele veelgebruikte taken terug (nieuw bestand beginnen, bestand openen, 
 nieuwe curve starten, \ldots). Dit is voorzien opdat de gebruiker deze taken snel en en dus effici\"enter kan
 afhandelen dan wanneer hij dat telkens vanuit de menubalk zou moeten doen.
-\item Keuzegebied
+\item Keuzegebied\newline
 In dit gebied zal de gebruiker snel kunnen kiezen welk type curve hij wilt tekenen (B\'ezier, 
 Hermite, \ldots) en kan hij ten alle tijden een punt aan de op dat moment geselecteerde curves toevoegen door 
 de co\"ordinaten in te geven. Verder kan de gebruiker hier ook kiezen of hij de co\"ordinaten, raakvectoren en 
-puntnummers van de geselecteerde curves wilt laten uittekenen. \newline
+puntnummers van de geselecteerde curves wilt laten uittekenen (zie figuur \ref{scrTog}). \newline
 Het Edit-veld van dit gebied hangt af van de mode waarin je bezig bent. Er zijn voor de gebruiker
 twee grote modi "voelbaar". De eerste is curve-modus: hier bewerk je de curves op zich (selecteren, 
 deselecteren, nieuwe curve maken, \ldots); de tweede is controlepunt-modus (punt verslepen, selecteren, toevoegen).
 Naargelang de modus waarin je zit zullen andere mogelijkheden zichtbaar worden in het Edit-veld.
 Dit leidt tot een groter gebruiksgemak vermits de taken die verschijnen meestal ook gebruikt
 worden wanneer je in die modus werkt.
-\item Tekengebied
+\item Tekengebied\newline
 Dit gebied is waarschijnlijk wel het interessantste voor de gebruiker. Met behulp van muisinteractie
 kan de gebruiker controlepunten aan dit veld toevoegen en deze punten laten connecteren
 door een interpolatiealgoritme. De gebruiker kan tevens in dit veld punten en curves selecteren,
@@ -237,7 +238,8 @@ verwijderen en zelfs verslepen. Het tekengebied maakt gebruik van double bufferi
 beeldflikkering te vermijden en ook van clipping zodat alleen getekend wordt wat ook echt
 op het scherm k\'an verschijnen.
 \end{enumerate}
-\subsection{Listeners in Java}
+\subsection{Listeners in Java }
+(zie figuur \ref{iLis})
 Java heeft een aparte stijl om events op te vangen (signalen gestuurd door buttons, menu-items,
 \ldots). De taal bezit hiervoor zogenaamde EventListener-interfaces. De programmeur
 moet een klasse aanmaken die een dergelijke interface zal implementeren. Deze klasse wordt dan
@@ -261,6 +263,7 @@ instanti\"eren en deze instanties zullen alle membervariabelen en -functies van 
 gebruiken. Dit zorgt ervoor dat er geen extra connectie moet gelegd worden tussen de 
 EventHandle-klassen en GUI. Je kan dit dus bekijken als een soort van friendly class die niet ge\"instantieerd kan worden.
 \subsection{Datastructuren}
+(zie figuur \ref{iCurv})
 \subsubsection{Point}
 Deze datastructuur heeft niet zoveel uitleg nodig, een Point bestaat namelijk uit zijn x- en y-waarde en is daarmee
 volledig gedefini\"eerd. De nodige get()- en set()-functies zijn ook voorzien, uiteraard.
@@ -284,7 +287,7 @@ hun algoritme te kunnen uitvoeren.
 
 Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve behoort, \ldots.
 \subsection{Extra's}
-Echte extra's hebben we niet ge\"implementeerd, onderstaande uitgezonderd. Bestanden opslaan naar meerdere formaten (*.xml en *.gif/*.png), bestanden inladen, oneindige undo/redo-stack, meer performante code verkiezen, selectietooltje m.b.v. dragging, \ldots beschouwen we gewoon als "nodig" voor Curve Editor.
+Echte extra's hebben we niet ge\"implementeerd, onderstaande uitgezonderd. Bestanden opslaan naar meerdere formaten (*.xml en *.gif/*.png), bestanden inladen, oneindige undo/redo-stack, meer performante code verkiezen, selectietooltje m.b.v. dragging (zie figuur \ref{scrSel}), \ldots beschouwen we gewoon als "nodig" voor Curve Editor.
 \subsubsection{Path Simulation Tool}
 Dit tooltje loopt de geselecteerde curves \'e\'en voor \'e\'en af, en laat een bolletje verschijnen dat als het ware "loopt" van het begin naar het einde van de curve. Het starten van deze tool, laat een nieuwe thread starten, zodat men \'en de tool kan laten runnen \'en men terwijl de geselecteerde curves zelf nog kan aanpassen (verslepen e.d.). 
 \subsection{Interessante problemen}
@@ -314,6 +317,42 @@ Een foute configuratie van de Xorg-server in Linux zorgt ook voor problemen. Zo 
 wanneer je dan op menu-items klikt, ze direct terug "wegspringen".
 \newpage
 \section{Planning}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.55, page=1]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=2]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=3]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=4]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=5]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=6]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=7]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=8]{./planning.pdf}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.8, page=9]{./planning.pdf}
+\end{figure}
 \newpage
 \section{Taakverdeling}
 \begin{enumerate}
@@ -325,12 +364,120 @@ wanneer je dan op menu-items klikt, ze direct terug "wegspringen".
 \newpage
 \section{Appendix}
 \appendix
-\section{Handleiding}
-Had gij dacht ik?
-\section{Screenshot}
-Gij ook? Alleja ik ga kijken welke gij al hebt en dan bijmaken wat ik nodig heb. Zodoende gaan
-we geen dubbel werk leveren \ldots. ``Stel niet uit tot morgen wat je vandaag door een ander
-kan laten doen''
+\section{Screenshots}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./mockup.png}
+\caption{Mock-up}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/start.jpg}
+\caption{Curve Editor-omgeving}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/startMarked.jpg}
+\caption{Curve Editor-omgeving, aangeduid}\label{scrTot}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/toggled.jpg}
+\caption{Curve Editor-omgeving, alle weergaveopties getoggled}\label{scrTog}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/selectPoint.jpg}
+\caption{Curve Editor-omgeving, dragging selectietooltje}\label{scrSel}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/menuTools.jpg}
+\caption{Curve Editor-omgeving, Menu - Tools}\label{scrMenTo}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/linear.jpg}
+\caption{Lineair}\label{iL}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/bezierC0.jpg}
+\caption{B\'ezier, C0-continu}\label{iC0}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/bezierG1.jpg}
+\caption{B\'ezier, G1-continu}\label{iG1}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/bezierC1.jpg}
+\caption{B\'ezier, C1-continu}\label{iC1}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/hermite.jpg}
+\caption{Hermite}\label{iH}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/cardinal.jpg}
+\caption{Hermite Cardinal}\label{iHC}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/catmull.jpg}
+\caption{Hermite Catmull-Rom}\label{iHCR}
+\end{figure}
+\newpage
+\section{UML-diagrammen}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.6]{./UML2/Total.png}
+\caption{Totaal diagram}\label{iTot}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.45]{./UML2/Alg.png}
+\caption{Algorithm}\label{iAlg}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.42]{./UML2/Core.png}
+\caption{Core}\label{iCore}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.5]{./UML2/Gen.png}
+\caption{Curves (ADT's + interacties daartussen)}\label{iCurv}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./UML2/Exc.png}
+\caption{Exceptions}\label{iExc}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./UML2/HandleExc.png}
+\caption{HandleExceptions}\label{iHExc}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./UML2/GUI.png}
+\caption{GUI}\label{iGui}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./UML2/Path.png}
+\caption{Path Simulation Tool + interactie met DrawArea}\label{iTools}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./UML2/Listeners.png}
+\caption{Event Listeners}\label{iLis}
+\end{figure}
+\newpage
 \section{Referenties}
 Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics\newline
 \url{http://en.wikipedia.org/wiki/Bezier\_curve} (Bezier)\newline
@@ -342,4 +489,6 @@ Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics\newli
 \url{http://www.w3schools.com/dtd/default.asp} (DTD)\newline
 \url{http://www.totheriver.com/learn/xml/xmltutorial.html} (XML)\newline
 \url{http://www.kde.org/} (icoontjes)\newline
+\section{Handleiding}
+\newpage
 \end{document}
