@@ -524,8 +524,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		} else if (actionCommand.equals("Save File")) {
 			save();
 			return true;
-		}
-		else if (actionCommand.equals("Save As...")) {
+		} else if (actionCommand.equals("Save As...")) {
 			saveAs();
 			return true;
 		} else if (actionCommand.equals("New File")) {
@@ -807,7 +806,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 				e1.printStackTrace();
 			}
 		}
-		frame.repaint();
+		frame.repaint();		
 	}
 
 	public void componentShown(ComponentEvent e) {
