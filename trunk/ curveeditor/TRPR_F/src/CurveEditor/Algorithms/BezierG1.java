@@ -1,7 +1,6 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
-import java.util.Vector;
 import CurveEditor.Curves.Point;
 import CurveEditor.Exceptions.InvalidArgumentException;
 

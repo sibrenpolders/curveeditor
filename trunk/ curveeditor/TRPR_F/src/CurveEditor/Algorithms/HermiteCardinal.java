@@ -1,7 +1,6 @@
 package CurveEditor.Algorithms;
 
 import java.util.Vector;
-import java.util.Vector;
 
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;

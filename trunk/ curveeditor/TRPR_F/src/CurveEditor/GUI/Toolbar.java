@@ -6,6 +6,8 @@ package CurveEditor.GUI;
  */
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.net.URL;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -39,32 +41,34 @@ public class Toolbar extends JToolBar {
 		group = new ButtonGroup();
 
 		makeButton("New File", "Create a new file",
-			"src/CurveEditor/GUI/icons/filenew.png");
+			"CurveEditor/GUI/icons/filenew.png");
 		makeButton("Open File", "Open a file",
-			"src/CurveEditor/GUI/icons/fileopen.png");
+			"CurveEditor/GUI/icons/fileopen.png");
 		makeButton("Save File", "Save a file",
-			"src/CurveEditor/GUI/icons/filesave.png");
+			"CurveEditor/GUI/icons/filesave.png");
 
 		addSeparator();		
 
 		makeButton("New Curve", "Start a new curve",
-				"src/CurveEditor/GUI/icons/curvenew.png");
+				"CurveEditor/GUI/icons/curvenew.png");
 		makeButton("Clear", "Remove all curves",
-				"src/CurveEditor/GUI/icons/curvenew.png");
+				"CurveEditor/GUI/icons/curvenew.png");
 
 		addSeparator();
 
 		makeButton("Select Curve", "Select a curve.",
-				"src/CurveEditor/GUI/icons/ganttSelect.png");
+				"CurveEditor/GUI/icons/ganttSelect.png");
 		makeButton("Select Point", "Select a point.",
-				"src/CurveEditor/GUI/icons/ganttSelecttask.png");
+				"CurveEditor/GUI/icons/ganttSelecttask.png");
 
 		add(Box.createHorizontalGlue());
 	}
 
 	protected void makeToggleButton(String name, String tooltip, String icon,
 			boolean selected) {
-		toggleButton = new JToggleButton(new ImageIcon(icon), selected);
+		URL imgURL = ClassLoader.getSystemResource( icon );
+		ImageIcon imageIcon = new ImageIcon( imgURL );
+		toggleButton = new JToggleButton( imageIcon, selected);
 		toggleButton.setName(name);
 		toggleButton.addActionListener(listener);
 		toggleButton.setToolTipText(tooltip);

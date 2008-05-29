@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -360,6 +359,7 @@ public final class DrawArea extends JPanel {
 		setBounds(DisplaySize.CHOICEWIDTH, 0, DisplaySize.DRAWWIDTH,
 				DisplaySize.DRAWHEIGHT);
 		repaint();
+		updateUI();
 	}
 
 	// Sla het canvas op naar het gegeven bestand in het gegeven formaat, indien

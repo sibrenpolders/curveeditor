@@ -466,23 +466,37 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	private void saveAs() {
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CurveEditor files (*.xml) + Image files (*.png/gif)", "xml",
-				"png", "gif");
+				"CurveEditor files (*.xml)", "xml" );
 		jfc.setFileFilter(filter);
 		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
 			Vector<Curve> tmp = curves;
 			tmp.addAll(selectedCurves);
 			String path = jfc.getSelectedFile().getAbsolutePath();
 
-			if (path.endsWith("png") || path.endsWith("PNG"))
-				draw.saveToFile(path, "PNG");
-			else if (path.endsWith("gif") || path.endsWith("GIF"))
-				draw.saveToFile(path, "GIF");
-			else
-				saveFile(path, tmp); // opslaan
+//			if (path.endsWith("png") || path.endsWith("PNG"))
+//				draw.saveToFile(path, "PNG");
+//			else if (path.endsWith("gif") || path.endsWith("GIF"))
+//				draw.saveToFile(path, "GIF");
+//			else
+			saveFile(path, tmp); // opslaan
 		}
 	}
 
+	private void screenShot() {
+		JFileChooser jfc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"CurveEditor Image (*.png, *gif)", "png", "gif" );
+		jfc.setFileFilter(filter);
+		if (JFileChooser.APPROVE_OPTION == jfc.showSaveDialog(draw)) {
+			String path = jfc.getSelectedFile().getAbsolutePath();
+			
+			if (path.endsWith("gif") || path.endsWith("GIF"))
+				draw.saveToFile(path, "GIF");
+			else
+				draw.saveToFile(path, "PNG");
+		}
+	}
+	
 	// Een volledig nieuwe file starten: alle Vectoren clearen.
 	private void newFile() {
 		reset();
@@ -510,10 +524,14 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		} else if (actionCommand.equals("Save File")) {
 			save();
 			return true;
+		}
+		else if (actionCommand.equals("Save As...")) {
+			saveAs();
+			return true;
 		} else if (actionCommand.equals("New File")) {
 			newFile();
 			return true;
-		}
+		} 
 		// 2 verschillende namen, maar hetzelfde beestje
 		else if (actionCommand.equals("New C")
 				|| actionCommand.equals("New Curve")
@@ -527,7 +545,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			reset();
 			choice.deselect();
 			draw.repaint();
+		} else if ( actionCommand.equals( "Screen Shot")) {
+			screenShot();
 		}
+		
 		return false;
 	}
 

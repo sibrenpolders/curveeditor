@@ -1,7 +1,6 @@
 package CurveEditor.Curves;
 
 import java.util.Vector;
-import java.util.Vector;
 import CurveEditor.Exceptions.*;
 
 /*

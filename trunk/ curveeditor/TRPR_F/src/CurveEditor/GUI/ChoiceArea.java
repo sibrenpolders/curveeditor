@@ -123,6 +123,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 
 	public void setSize() {
 		setBounds(0, 0, DisplaySize.CHOICEWIDTH, DisplaySize.CHOICEHEIGHT);
+		updateUI();
 	}
 
 

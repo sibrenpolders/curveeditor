@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -77,7 +78,7 @@ public class FileIO extends DefaultHandler {
 			Transformer serializer = hd.getTransformer();
 			serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");//
 			// TODO DTD online zetten of relatief pad zoeken
-			// serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,"");
+			serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,"../Saves/curveEditor.dtd");
 			serializer.setOutputProperty(OutputKeys.METHOD, "xml");
 			serializer.setOutputProperty(OutputKeys.INDENT, "yes");
 			hd.setResult(streamResult);
@@ -124,6 +125,9 @@ public class FileIO extends DefaultHandler {
 
 	private void parseXmlFile(String filename) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
+		spf.setValidating( true );
+		spf.setNamespaceAware( true );
+		
 		try {
 
 			SAXParser sp = spf.newSAXParser();
