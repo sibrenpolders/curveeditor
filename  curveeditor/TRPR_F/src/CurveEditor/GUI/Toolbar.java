@@ -65,7 +65,7 @@ public class Toolbar extends JToolBar {
 	}
 
 	protected void makeToggleButton(String name, String tooltip, String icon,
-			boolean selected) {
+		boolean selected) {
 		URL imgURL = ClassLoader.getSystemResource( icon );
 		ImageIcon imageIcon = new ImageIcon( imgURL );
 		toggleButton = new JToggleButton( imageIcon, selected);
@@ -77,7 +77,9 @@ public class Toolbar extends JToolBar {
 	}
 
 	private void makeButton(String name, String tooltip, String icon) {
-		button = new JButton(name, new ImageIcon(icon));
+		URL imgURL = ClassLoader.getSystemResource( icon );
+		ImageIcon imageIcon = new ImageIcon( imgURL );
+		button = new JButton(name, imageIcon );
 		button.addActionListener(listener);
 		button.setToolTipText(tooltip);
 		add(button);
