@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE curveEditor SYSTEM "/home/sibren/school/TRPR/src/CurveEditor/Saves">
+<!DOCTYPE curveEditor SYSTEM "../Saves/curveEditor.dtd">
 <curveEditor>
   <curve>
     <type>bezier</type>

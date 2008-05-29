@@ -1,8 +1,11 @@
 package CurveEditor.GUI;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -31,6 +34,7 @@ public class Menu extends JMenuBar implements ActionListener {
 	public void setSize() {
 		setBounds(0, 0, DisplaySize.SCREENWIDTH, DisplaySize.MENUHEIGHT);
 		repaint();
+		updateUI();
 		// de menubar zijn breedte is variabel, zijn hoogte niet.
 		// als de gebruiker zijn displaywindow vergroot mag dus enkel de breedte
 		// worden aangepast
@@ -70,11 +74,16 @@ public class Menu extends JMenuBar implements ActionListener {
 	// die in de menubalk staan
 	private void CreateMenuItem(String name, int keyEvent, String description,
 			String icon) {
+		menuItem = new JMenuItem(name, keyEvent);
+		
 		if (icon != null) {
-			ImageIcon a = new ImageIcon(icon);
-			menuItem = new JMenuItem(name, a);
-		} else
-			menuItem = new JMenuItem(name, keyEvent);
+//			ImageIcon a = new ImageIcon(icon);
+//			menuItem = new JMenuItem(name, a);
+			URL imgURL = ClassLoader.getSystemResource( icon );
+			ImageIcon imgIcon = new ImageIcon( Toolkit.getDefaultToolkit().getImage( imgURL ) );
+			menuItem.setIcon( imgIcon );
+		}
+		
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(keyEvent,
 				ActionEvent.CTRL_MASK));
 		menuItem.getAccessibleContext().setAccessibleDescription(description);
@@ -85,33 +94,38 @@ public class Menu extends JMenuBar implements ActionListener {
 		// menu object aanmaken
 		CreateMenu("File", KeyEvent.VK_F, "");
 		CreateMenuItem("New File", KeyEvent.VK_N, "Create a new file",
-				"src/CurveEditor/GUI/icons/filenew.png");
+				"CurveEditor/GUI/icons/filenew.png");
 		menuItem.addActionListener(listener);
 
 		CreateMenuItem("Open File", KeyEvent.VK_O, "Open a file",
-				"src/CurveEditor/GUI/icons/fileopen.png");
+				"CurveEditor/GUI/icons/fileopen.png");
 		menuItem.addActionListener(listener);
 
 		menu.addSeparator();
 
 		CreateMenuItem("Save File", KeyEvent.VK_S, "Save a file",
-				"src/CurveEditor/GUI/icons/filesave.png");
+				"CurveEditor/GUI/icons/filesave.png");
 		menuItem.addActionListener(listener);
 
 		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...",
-				"src/CurveEditor/GUI/icons/filesaveas.png");
+				"CurveEditor/GUI/icons/filesaveas.png");
+		menuItem.addActionListener(listener);
+
+		menu.addSeparator();
+
+		CreateMenuItem("Screen Shot", KeyEvent.VK_H, "Make a screen shot", null );		
 		menuItem.addActionListener(listener);
 
 		menu.addSeparator();
 
 		CreateMenuItem("New Curve", KeyEvent.VK_C, "Start a new curve",
-				"src/CurveEditor/GUI/icons/curvenew.png");
+				"CurveEditor/GUI/icons/curvenew.png");
 		menuItem.addActionListener(listener);
 
 		menu.addSeparator();
 
 		CreateMenuItem("Quit Program", KeyEvent.VK_Q, "Quit Curve Editor",
-				"src/CurveEditor/GUI/icons/exit.png");
+				"CurveEditor/GUI/icons/exit.png");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int n = JOptionPane.showConfirmDialog(null,
@@ -128,11 +142,11 @@ public class Menu extends JMenuBar implements ActionListener {
 		CreateMenu("Edit", KeyEvent.VK_E, "");
 
 		CreateMenuItem("Undo", KeyEvent.VK_U, "Undo last action.",
-				"src/CurveEditor/GUI/icons/undo.png");
+				"CurveEditor/GUI/icons/undo.png");
 		menuItem.addActionListener(listener);
 
 		CreateMenuItem("Redo", KeyEvent.VK_R, "Redo last action.",
-				"src/CurveEditor/GUI/icons/redo.png");
+				"CurveEditor/GUI/icons/redo.png");
 		menuItem.addActionListener(listener);
 
 		menu.addSeparator();
@@ -382,7 +396,7 @@ public class Menu extends JMenuBar implements ActionListener {
 	private void about() {
 		Box hbox = Box.createHorizontalBox();
 		hbox.add(new JLabel(
-				new ImageIcon("src/CurveEditor/GUI/icons/about.jpg")));
+				new ImageIcon("CurveEditor/GUI/icons/about.jpg")));
 		hbox
 				.add(new JLabel(
 						"<html>"
