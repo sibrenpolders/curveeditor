@@ -125,8 +125,7 @@ public class FileIO extends DefaultHandler {
 
 	private void parseXmlFile(String filename) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
-		spf.setValidating( true );
-		spf.setNamespaceAware( true );
+		spf.setValidating( false );
 		
 		try {
 
