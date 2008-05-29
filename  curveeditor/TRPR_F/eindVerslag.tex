@@ -107,6 +107,78 @@ in dat controlepunt op \'e\'en lijn liggen \'en even groot zijn (zie figuur \ref
 
 De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-controlepunten wordt herberekend, zodanig dat de berekende curve vloeiend aansluit op de berekende curve voor het vorige en het volgende viertal \'en zodanig dat de berekende curve een controlepunt even snel "binnenkomt" als "verlaat", met dezelfde versnelling als het ware. Stel het viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders zouden we niet tot een aaneengesloten curve kunnen komen (zie C0-continu\"iteit). M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2 berekent Curve Editor nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 (het gemeenschappelijke blijft ongewijzigd). Dit doet het door de vector tussen het voorlaatste controlepunt van v1 en het tweede controlepunt van v2 te beschouwen; die vector wordt dan zodanig verschoven dat het gemeenschappelijke controlepunt midden op die vector komt te liggen. De twee uiteinden van deze verschoven vector zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2. Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende en een in elk controlepunt even snel ingaand als uitgaand versnellende curve.
 \subsection{Hermite}
+Het cubic Hermite-algoritme construeert een curve als volgt: 
+per twee controlepunten en hun respectievelijke tangens wordt een deel van de curve berekend.
+De deelcurve start in het eerste controlepunt, gaat in de richting van zijn tangens om
+tenslotte te eindigen in het tweede controle punt in de richting van zijn tangens.
+\subsection{Na\"ieve aanpak}
+De na\"ieve methode bestaat erin de expliciete vergelijking van een ``cubic spline''
+op te lossen, met de opgegeven punten.\newline
+Stel hiervoor dat het volgende is gegeven:\newline
+$p_0 = (x_0,y_0), p_1 = (x_1,y_1), m_0 = (x'_0, y'_0), m_1 = (x'_1, y'_1)$\newline
+hierbij zijn $p_0,p_1$ controlepunten en $m_0, m_1$ hun respectievelijke tangens.\newline
+\newline
+De bedoeling is nu van in de vergelijking\newline
+$P(X) = ax^3 + bx^2 + cx + d (1)$\newline
+a, b, c en d te vinden in functie van de opgegeven punten.\newline
+
+Je weet het volgende:
+$y_0 = ax_0^3 + bx_0^2 + cx_0 + d (2)$\newline
+$y_1 = ax_1^3 + bx_1^2 + cx_1 + d (3)$\newline
+(dit volgt rechtstreeks uit het gegeven)\newline
+
+verder is duidelijk dat de tangens van een punt op deze polynoom gelijk is aan de 
+eerste afgeleide van de polynoom ge\'evalueerd naar dat punt.\newline
+
+Symbolische afleiding van de polynoom geeft:
+$P'(X) = 3ax^2 + 2bx + c$
+en dus
+$y'_0 = 3a{x'}_0^2 + 2bx'_0 + c (4)$\newline
+$y'_1 = 3a{x'}_1^2 + 2bx'_1 + c (5)$\newline
+(dit volgt weer rechtstreeks uit het gegeven)\newline
+
+Het stelsel opgebouwd uit formules (1) - (4) kan je vervolgens oplossen naar a, b, c en d
+om het volgende te krijgen:
+
+Om de interpolatie te kunnen doen moet je tussen elke 2 controlepunten a,b,c en d invullen
+zodat je deze in formule (1) kan invullen. Deze formule stelt dan juist de interpolatie 
+voor die je wilt verkrijgen. Door de x in formule (1) dan te laten vari\'eren tussen 
+$x_0$ en $x_1$ met een bepaalde stapgrootte kan je de lijn pixel per pixel berekenen.
+\subsubsection{Hermite m.b.v. basisfuncties}
+Een betere methode om de Hermite polynoom uit te rekenen is gebruik te maken van de vier 
+eerste hermite basisfuncties en de polynoom parametrisch op te schrijven.
+
+De formule om deze berekening te kunnen uitvoeren is:\newline
+$P(t) = h_{00}p_0 + h_{10}m_0 + h_{01}p_0 + h_{11}m_1$\newline
+met\newline
+$h_{00} = 2t^3 - 3t^2 + 1$\newline
+$h_{10} = t^3 - 2t^2 + t$\newline
+$h_{01} = -2t^3 + 3t^2$\newline
+$h_{11} = t^3 - t^2$\newline
+
+In deze formule zijn $h_{00}$ tot $h_{11}$ de Hermite basisfuncties, $p_0$, $p_1$ 
+de controlepunten en $m_0$, $m_1$ hun respectievelijke tangens. t gaat hier van 0 tot 1.
+
+Zo sla je het berekenen van a,b,c en d over en zal de curve gladder lijken vermits je
+met parametrische beschreven polynoom werkt.
+\subsection{Hermite - Cardinal}
+De methode van punten berekenen is hier net hetzelfde als besproken in hermite m.b.v. 
+basisfuncties.
+Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
+berekend worden uit de opgegeven controlepunten. 
+De tangens wordt door de volgende formule uitgerekend:\newline 
+$m_k = (1 - c)(p_{k+1} -p_{k-1})/2$
+
+hierbij is c een willekeurig getal tussen 0 en 1.
+
+Uit deze formule is duidelijk af te leiden dat er geen lijn getrokken kan worden 
+tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt. 
+Omdat hun tangens niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
+om de verdere berekeningen te volbrengen.
+\subsection{Hermite - Catmull-Rom}
+Deze methode kom volledig overeen met de methode van Cardinal, met het enige verschil dat
+de toen random waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
+worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt.
 \newpage
 \section{Implementatie}
 \subsection{Packages}
