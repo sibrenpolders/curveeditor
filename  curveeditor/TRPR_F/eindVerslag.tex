@@ -14,43 +14,97 @@
 \maketitle \newpage
 \tableofcontents \newpage
 \section{Voorwoord}
-Op welke manieren kan je een set van punten op een gladde wijze met elkaar verbinden? Dat was
-de vraag achter Curve Editor. Het gemakkelijkste pad dat getekend kan worden tussen de punten
-is natuurlijk lineair. Maar er zijn nog zoveel andere mogelijkheden, waarvan we er
-slechts twee hebben verwerkt in curve editor (nl. Bezier en Hermite). Deze algoritmes zullen
-vlakke kromme maken tussen de interpolatiepunten. De toepassingen van de algoritmes die we 
-gebruikt hebben beperken zich niet enkel tot het tekenen van ``lijntjes'' tussen punten, 
-maar ook op bijvoorbeeld camerabeweging of ``AI''-beweging in games.
-De interpolatie tussen een gegeven set punten is een uitgebreide en interessante studie die 
-op vele vlakken in de informatica/wiskunde zijn nut kan bewijzen. Curve editor geeft er de 
-basistoepassing ( ofwel de toegepaste wiskundige ) ervan. \newline \newline \newline \newline
+Op welke manieren kan je een set van punten op een vloeiende wijze met elkaar verbinden en hoe ziet het bekomen pad er dan uit ? Dat is
+de vraag waarvoor Curve Editor een gedeeltelijke oplossing biedt. Het meest voor de hand liggende pad dat tussen de punten getekend kan worden 
+is uiteraard dat pad dat bekomen wordt m.b.v. lineaire interpolatie. Maar er zijn nog zoveel andere mogelijkheden, waarvan er in Curve Editor twee verwerkt 
+zijn (nl. Bézier- en Hermite-curves). Deze algoritmes zullen in vgl. met lineaire interpolatie vloeiende krommen
+tussen de interpolatiepunten cre\"eren. De toepassingen van de door Curve Editor gebruikte algoritmes beperken zich niet enkel 
+tot het tekenen van ``lijntjes'' tussen punten, maar worden bijvoorbeeld ook veelvuldig gebruikt voor vloeiende camerabewegingen of ``AI''-bewegingen in games.
+De interpolatie van een gegeven set van controlepunten is een uitgebreide en interessante studie die 
+op vele vlakken in de informatica/wiskunde zijn nut kan bewijzen. Curve Editor geeft er de 
+basistoepassing van, namelijk die van de wiskundige berekening en grafische voorstelling van de gevraagde curve. \newline \newline \newline \newline
 \newline \newline \newline \newline
 %\begin{center}
 %\textit{``If the path be beautiful, let us not ask where it leads.''} - Anatole France \newpage
 %\end{center}
 \newpage
-\section{Wiskundige Voorkennis}
-\subsection{lineair}
-\subsubsection{Na\"ieve poging}
-Een eerste poging om lineaire interpolatie uit te rekenen bestaat er in tussen elk puntenpaar
-de vergelijking \begin{math}y = mx + b\end{math} uit te rekenen. 
-Waarbij \begin{math}m = (y_1-y_0)/(x_1-x_0)\end{math} en b het
-startpunt is op de y-as. De grote nadelen van dit algoritme zijn dat er voor iedere nieuwe
-pixel opnieuw getekend moet worden en er behoefte is aan een floating point optelling en 
-vermenigvuldiging ( vermits m een floating point is.
-\subsubsection{DDA}
-Bij deze methode wordt nog steeds m als floating point voorgesteld, maar de berekening van
+\section{Wiskundige voorkennis \label{wv}}
+\subsection{Lineaire interpolatie}
+\subsubsection{Na\"ieve poging (brute force)}
+Een eerste poging om een lineaire interpolatie te berekenen is die waarbij tussen elk paar van controlepunten
+de vergelijking \begin{math}y = mx + b\end{math} wordt uitgerekend.
+Hierbij geldt: \begin{math}m = (y_1-y_0)/(x_1-x_0)\end{math}, en b is het
+startpunt op de y-as. De grote nadelen van dit algoritme zijn dat er voor iedere nieuwe
+pixel opnieuw berekend en getekend moet worden en dat er behoefte is aan een floating-point optelling en 
+vermenigvuldiging (vermits m een floating-point getal is).
+\subsubsection{DDA-interpolatie (Digital Differential Analyzer)}
+Bij deze methode wordt nog steeds m als een floating-point getal voorgesteld, maar de berekening van
 de volgende y-waarde wordt als volgt vereenvoudigd:
 \begin{math}
 y_{i+1} = m.x_{i+1} + b\newline
-=m.(x_i + \Delta x) + b\newline
-=m.x_i + m.\Delta x) + b\newline
-=y_i + m.\Delta x)\newline
-=y_i + m) aangezien \Delta x = 1 als we 1 pixel verder gaan. \newline
-\end{math} 
-Dit algorithme is duidelijk efficienter vermits we een float vermenigvuldiging hebben 
-uitgschakeld.
-\subsection{Bezier}
+= m.(x_i + \Delta x) + b\newline
+= m.x_i + m.\Delta x + b\newline
+= y_i + m.\Delta x\newline
+= y_i + m \textrm{ aangezien } \Delta x = 1 \textrm{ als we 1 pixel verder gaan.} \newline
+\end{math}
+Dit algoritme is duidelijk effici\"enter vermits we geen floating-point vermenigvuldiging hebben 
+verwijderd. 
+\subsection{B\'ezier}
+Het cubic Bézier-algoritme construeert een curve als volgt: per vier opeenvolgende controlepunten wordt een deel van de totale curve berekend.
+Die deelcurve start in het eerste controlepunt, in de richting van het tweede, om dan in het vierde controlepunt te eindigen in de richting van het derde. Een volgende 
+deelcurve heeft als eerste controlepunt het laatste controlepunt van de vorige deelcurve om alzo C0-continu\"iteit te garanderen.
+\subsubsection{Na\"ieve poging (brute force)}
+Bij een eerste poging kunnen we het algoritme implementeren a.h.v. de meetkundige constructie en de parametrische voorstelling van de curve.
+Deze is als volgt:\newline
+\begin{center}
+\includegraphics[scale=0.5]{bezier.png}
+\end{center}
+Indien we nu voor een eindig aantal t-waarden tussen 0 en 1, de B-waarde berekenen, dan hebben we een eindig aantal punten berekend die op de gevraagde curve
+liggen. Gebruiken we nadien lineaire interpolatie om de berekende punten met elkaar te verbinden, dan hebben een eerste benadering van de cubic B\'ezier-curve.
+Het spreekt voor zich dat deze implementatie verre van effici\"ent is: voor elke t-waarde moeten we de machten uitrekenen, vermenigvuldigen met de co\"ordinaten van de controlepunten
+en daarna alles optellen. Dit is tijdsintensief rekenwerk, daarom is in Curve Editor het incrementeel aloritme, dat in de volgende sectie besproken wordt, ge\"implementeerd.
+\subsubsection{Forward differences}
+Deze implementatie is een incrementeel algoritme: de volgende berekening wordt gedaan a.h.v. wat in de vorige berekening werd gevonden. Op deze manier moet men voor elk gevraagd punt niet
+helemaal van nul beginnen en minder rekenwerk uitvoeren. Hoe we tot de implementatie komen, gebeurt als volgt:
+
+We evalueren de polynoom in een aantal even ver van elkaar liggende punten. Stel dat we $f(t) = a t^3 + b t^2 + c t + d$ willen evalueren voor de punten $t_0, t_1, ... , t_m$ met $t_{i+1} = t_i + \epsilon$ voor $i = 0, 1, ..., m-1$. Dan bekomen we:
+\begin{center}
+\includegraphics[scale=0.6]{diff1.png}
+\end{center}
+We noemen $\Delta f_i$ de voorwaartse differentie. Mer op dat $\Delta f_i$ een 2e-graadspolynoom is, een graad lager dan de originele polynoom. We passen hetzelfde toe voor $\Delta f_i$:
+\begin{center}
+\includegraphics[scale=0.6]{diff2.png}
+\end{center}
+En voor $\Delta^2 f_i$:
+\begin{center}
+\includegraphics[scale=0.6]{diff3.png}
+\end{center}
+Samengevat hebben we dus:
+\begin{center}
+\includegraphics[scale=0.6]{diff4.png}
+\end{center}
+We moeten de startwaarden berekenen m.b.v. $t_0 = 0$:
+\begin{center}
+\includegraphics[scale=0.6]{diff5.png}
+\end{center}
+Nu hebben we alles wat we nodig hebben, en kunnen we de interpolatiepunten z\'elf gaan berekenen als volgt:
+\begin{center}
+\includegraphics[scale=0.6]{diff6.png}
+\end{center}
+\subsubsection{C0-continu\"iteit}
+C0-continue curves zijn de standaard curves, vermits C0-continu\"iteit enkel de eis oplegt dat de curve ononderbroken moet zijn.
+Indien we als eerste controlepunt van een viertal het laatste controlepunt van het vorige viertal nemen, dan bekomen we automatisch C0-continu\"iteit. Deze eis vraagt dus geen veranderingen aan de controlepunten: het primitieve
+B\'ezier-algoritme voldoet.
+\subsubsection{G1-continu\"iteit}
+G1-continu\"iteit eist dat de curves naast ononderbroken ook overal vloeiend ogen. Dit wordt dus bekomen door in elk controlepunt dat op de curve komt te liggen, de curve z\'o te berekenen dat de ingaande en de uitgaande raakvector
+in dat controlepunt op \'e\'en lijn liggen. In Curve Editor is dit opgelost als volgt:
+
+De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-controlepunten wordt herberekend, zodanig dat de berekende curve vloeiend aansluit op de berekende curve voor het vorige en het volgende viertal. Stel het viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders zouden we niet tot een aaneengesloten curve kunnen komen (zie C0-continu\"iteit). M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2 berekent Curve Editor nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 (het gemeenschappelijke blijft ongewijzigd). Dit doet het door de vector tussen het voorlaatste controlepunt van v1 en het tweede controlepunt van v2 te beschouwen; die vector wordt dan zodanig verschoven dat het gemeenschappelijke controlepunt op die vector komt te liggen. De twee uiteinden van deze verschoven vector zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2. Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende curve.
+\subsubsection{C1-continu\"iteit}
+C1-continu\"iteit eist dat de curves naast ononderbroken zijn en overal vloeiend ogen, ook nog eens in elk controlepunt een gelijkmatig toe- en afnemende kromming hebben. Dit wordt dus bekomen door in elk controlepunt dat op de curve komt te liggen, de curve z\'o te berekenen dat de ingaande en de uitgaande raakvector
+in dat controlepunt op \'e\'en lijn liggen \'en even groot zijn. In Curve Editor is dit opgelost als volgt:
+
+De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-controlepunten wordt herberekend, zodanig dat de berekende curve vloeiend aansluit op de berekende curve voor het vorige en het volgende viertal \'en zodanig dat de berekende curve een controlepunt even snel "binnenkomt" als "verlaat", met dezelfde versnelling als het ware. Stel het viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders zouden we niet tot een aaneengesloten curve kunnen komen (zie C0-continu\"iteit). M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2 berekent Curve Editor nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 (het gemeenschappelijke blijft ongewijzigd). Dit doet het door de vector tussen het voorlaatste controlepunt van v1 en het tweede controlepunt van v2 te beschouwen; die vector wordt dan zodanig verschoven dat het gemeenschappelijke controlepunt midden op die vector komt te liggen. De twee uiteinden van deze verschoven vector zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2. Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende en een in elk controlepunt even snel ingaand als uitgaand versnellende curve.
 \subsection{Hermite}
 \newpage
 \section{Implementatie}
@@ -59,194 +113,185 @@ uitgschakeld.
 Een Java package is een mechanisme binnen Java om klassen te organiseren in namespaces. 
 Java broncode die binnen eenzelfde categorie of functie vallen kunnen hierdoor gegroepeerd 
 worden. Dit kan door middel van een package statement bovenaan het beginbestand om aan te 
-geven waartoe ze behoren. Dit is om twee redenen handig omdat de sources gegroepeerd zijn
-onder hun categorie, wat het geheel overzichtelijker maakt. Verder kunnen er nu twee 
-verschillende klassen eenzelfde naam krijgen en toch uniek bepaald worden door er zijn
-package name voor te zetten. Wat zeker handig is als de programmeur een klasse dezelfde naam
-heeft gegeven als een klasse uit een library die hij wil gaan gebruiken.\newline \newline
-Voor ons project hebben we een algemeen pakket src gemaakt die verschillende sub-pakketten bevat.
-Wat duidelijk zichtbaar is in figuur BLAH.
-In wat volgt wordt een korte beschrijving gegeven van al deze pakketten. Zonder al teveel in
-te gaan op de technische details. 
+geven waartoe ze behoren. Dit is omwille van twee redenen handig: de klassen zijn dan gegroepeerd
+in functionele categorie\"en, wat het geheel overzichtelijker maakt. En verder kunnen er nu twee 
+verschillende klassen \'e\'enzelfde naam krijgen en toch uniek bepaald worden door er zijn
+package name voor te zetten. Dit is zeker handig als de programmeur een klasse dezelfde naam
+heeft gegeven als een klasse uit een library die hij wilt gaan gebruiken.\newline \newline
+Voor Curve Editor zijn verschillende packages gemaakt, die zijn te zien op figuur \ref{packages}.
+In wat volgt wordt een korte beschrijving gegeven van al deze packages, zonder \'al teveel op de technische details in
+te gaan.
 \subsubsection{CurveEditor}
-Dit is wellicht het kleinste pakket van de reeks (figuur BLAH). Het bevat slechts een klasse, 
-namelijk de 
-main klasse. Deze klasse zal, zoals wellicht duidelijk is, als bootstrap dienen voor de 
-applicatie curve editor. Er wordt ook de mogelijkheid geboden om al rechtstreeks vanuit
-de commandline een file mee te geven. Dit is enkel ter volledigheid vermits de gebruiker tijdens
-de loop van het programma zeer makkelijk bestanden kan inladen en opslaan.
+Dit is wellicht de kleinste package van de reeks. Het bevat slechts \'e\'en klasse, 
+namelijk die klasse die de main-methode bevat. Deze klasse zal, zoals wellicht duidelijk is, als bootstrap dienen voor Curve Editor. 
+Er wordt ook de mogelijkheid geboden om rechtstreeks vanuit
+de command line een bestand mee te geven. Dit is enkel ter volledigheid, vermits de gebruiker in de applicatie zelf zeer makkelijk bestanden kan inladen en opslaan.
 \subsubsection{Algorithms}
-Dit pakket voorziet allerlei klassen die voor de interpolatie tussen punten zullen zorgen.
-Elke klasse in dit pakket implementeert de Algorithme interface. Dit is handig voor  
-groepswerk vermits deze interface vastlegt welke functies de programmeur zal implementeren.
-Zodoende weet je al op voorhand welke methodes je moet aanroepen om een bepaald resultaat
-te verkrijgen. \newline
+Dit pakket voorziet de verschillende klassen die voor de interpolatiealgoritmen zullen zorgen.
+Elke klasse in dit pakket implementeert de Algorithm-interface. Dit is handig voor latere uitbreidingen en groepswerk: deze interface 
+legt immers vast welke functies de programmeur zal moeten implementeren, die functies worden immers elders in de applicatie gebruikt. \newline
 De klassenamen zijn triviaal gekozen: ``Lineair, Bezier, BezierC1, BezierG1, Hermite, 
-Hermite Cardinaal, Hermite Catmull Rom''(figuur BLAH). 
-Zoals de namen al veraden zullen deze de verschillende
-interpolatie methodes die besproken werden in het deel 'Wiskundige voorkennis' implementeren.
-Hiervoor werd natuurlijk altijd geoogd op de meeste optimale implementatie van degene die 
+HermiteCardinal, HermiteCatmullRom''(zie figuur \ref{algorithms}). 
+Zoals de namen al doen vermoeden, zullen deze klassen de verschillende
+interpolatiemethodes besproken in het deel 'Wiskundige voorkennis' (\ref{wv}) implementeren.
+Hierbij werd natuurlijk altijd geopteerd voor de meest optimale implementatie van degene die 
 besproken werden.
 \subsubsection{Core}
-Dit pakket bevat enkele noodzakelijk klassen(figuur BLAH).\newline \newline
+Dit pakket bevat enkele noodzakelijk klassen (zie figuur \ref{core}).\newline \newline
 De klasse CurveContainer zal ervoor zorgen dat ingegeven punten kunnen opgeslagen worden, samen
 met hun door interpolatie berekende punten. \newline \newline
-Een eerste idee was het subdivsion principe toe te passen. In de beginsituatie is het tekenveld
-dan een grote rechthoek. Van zodra de gebruiker een curve begint te tekenen worden de secties
-waar punten geplaatst zijn onderverdeeld in steeds kleiner wordende rechthoekjes. In elk zo'n
-rechthoekje zat dan juist een punt van een curve. Zodat er gemakkelijk gezegd kon worden
-welk punt waar stond en tot welke curve het behoorde.\newline
-Dit algorithme bleek echter niet zo effici\"ent te zijn wanneer we te maken hadden met een groot
-aantal input punten. Dit kwam voornamelijk doordat er telkens opnieuw een kleinere rechthoek
-moest berekend worden bij ingeven van een nieuw punt. En een grotere wanneer er punten verwijderd
-werden. Uiteindelijk was de applicatie meer bezig met het berekenen van rechthoekjes dan met zijn
-doel: voorstellen van curves.\newline \newline
-De tweede poging leek beter te lukken. We stelden een veld op waarvan elke pixel een mogelijke
-houder kon zijn van een punt. De houders werden ge\"initialiseerd met de waarde null zodat ze 
-geen
-plaats innamen. Het toevoegen van punten is zo simpel uit te voeren door het new commando toe
-te passen. Verwijderen is dan gewoon de juist holder op null zetten ( de garbage collection van
-java lost de rest op ). Het zoeken gaat simpelweg door de positie van de muisklik om te 
-zetten naar co\"ordinaten die gebruikt kunnen worden op de vector waarin alle punten worden 
-opgeslagen. Om daarna in een bepaalde vooraf bepaalde range te kijken of een punt houder niet
-op null staat, is dat zo dan zal de informatie van dat punt teruggeven worden, zoniet is er op
-die plaats in het veld geen punt beschikbaar.\newline \newline
-De klasse Editor is het hart van de curve editor. Deze zal zorgen dat de data die uitgewisseld
-moet worden kan en ook in de juiste richting zal stromen. De uitwisseling van data zal 
-voornamelijk bestaan uit het zoeken of verwijderen van punten uit de CurveContainer klasse.
-Maar ook het opvangen en afhandelen van excepties. Deze klasse zorgt er dus voor dat de 
-verschillende andere klassen zo autonoom als mogelijk kunnen werken. Dit verhoogd natuurlijk
-enkel de leesbaarheid en onderhoudbaarheid van de code.\newline \newline
-Een laatste klasse van dit pakket is de FileIO klasse, deze zal niet alleen files opslaan en
-inladen, maar ook zal hij de functionialiteit van undo en redo implementeren, vermits deze van
-dezelfde functies gebruik maakt.
-\subsubsection{Curve}
-Dit pakket bevat de de twee datatypes die doorheen het programma gebruikt worden. Point zoals
-de naam doet vermoeden geeft de mogelijkheid een punt op te slaan. Curve geeft dan weer de
-mogelijkheid om een verzameling van punten ( lees een kromme of curve ) op te slaan. De
-technische details van deze laatste klasse wordt beter uitgelegd verder in de tekst. 
-Voorlopig is het voldoende om te weten dat Curve een vector van Point's bijhoudt en enkele
-basisvoorzieningen voorziet ( punten opvragen, toevoeg, transleren, \ldots ).
+Een eerste implementatie gebruikte het subdivision principe. In de beginsituatie is het tekenveld
+dan \'e\'en grote rechthoek. Van zodra de gebruiker een curve begint te tekenen worden de secties,
+waar nieuwe punten geplaatst zijn, onderverdeeld in steeds kleiner wordende rechthoekjes. In elk zo'n
+rechthoekje zat dan juist \'e\'en punt van een curve. Nagaan welke curve op een bepaalde pixel lag, was op deze manier
+makkelijk te achterhalen m.b.v. een quadtree.\newline
+Deze implementatie bleek echter niet zo effici\"ent te zijn wanneer we te maken hadden met een groot
+aantal controlepunten. Dit kwam voornamelijk doordat er telkens opnieuw kleinere rechthoekjes
+moesten aangemaakt worden bij het ingeven van een nieuw punt, en een grotere wanneer er punten verwijderd
+werden. Uiteindelijk was de applicatie meer bezig met het bepalen van rechthoekjes dan met zijn
+doel: bijhouden en picken van curves. De gebruike datastructuur gaf wel mooie resultaten voor het zoeken van curves a.h.v.
+een geklikt of gehooverd punt, maar wanneer de gebruiker de curves ging aanpassen (nieuwe punten, verplaatsen, connecteren, \ldots), dan ging de 
+herberekening en aanpassing van de datastructuur echter tergend langzaam. Wij achtten het dan ook noodzakelijk dat we een andere manier
+zouden vinden, die een betere balans tussen "aanpassen" en "informatie halen uit". \newline \newline
+De tweede door ons ge\"implementeerde datastructuur leek ons direct bruikbaarder. Het aanpassen van de datastructuur ging immers direct een pak sneller in vgl.
+met de vorige implementatie, de gebruiker kan nu bvb. redelijk vlug nieuwe controlepunten vlak achter elkaar ingeven. Ook het halen van informatie uit de datastructuur heeft een aanvaardbare snelheid.
+Wat stelt die datastructuur nu precies voor ? We stellen een tweedimensionale matrix op waarvan elk element een referentie kan bevatten naar een curve-instantie.
+Het toevoegen van curves is op deze manier zeer simpel te doen: voor elk punt van de curve plaatsen we in de overeenkomstige cel van de matrix een referentie naar de curve.
+Curves verwijderen is dan gewoon het tegenovergestelde: al die cellen weer naar null laten wijzen. Het zoeken naar een curve a.h.v. een punt (a.h.v. co\"ordinaten van een muisevent, bijvoorbeeld) 
+gaat nog vrij snel omdat we enkel maar in een bepaalde range in de matrix de inhoud van de cellen moeten bekijken. Indien een niet-null referentie in die range aanwezig is, dan weten we welke curve
+daar ligt.\newline \newline
+De klasse Editor is het hart van Curve Editor. Deze zal zorgen dat gegevens tussen de verschillende datastructuren (Point, Curve, Algorithm) kan doorgegeven worden.
+De uitwisseling van data zal voornamelijk bestaan uit het zoeken/verwijderen van punten uit de CurveContainer-klasse en het veranderen van Curves (verplaatsen, punten toevoegen/verwijderen, type veranderen, \ldots).
+Maar ook het opvangen en afhandelen van excepties gebeurt grotendeels in Editor. Deze klasse zorgt er m.a.w. voor dat de 
+verschillende andere klassen zo autonoom mogelijk kunnen werken, Editor is dan de klasse die alles samenbrengt. Dit verhoogt natuurlijk ook de leesbaarheid en onderhoudbaarheid van de code.\newline \newline
+Een laatste klasse van dit pakket is de FileIO-klasse, deze zal niet alleen bestanden opslaan en
+inladen, maar ook zal hij de undo/redo-functionaliteit, vermits deze van
+dezelfde functies gebruik maakt. Er wordt dan gewoon een stack van bestanden in het geheugen bijgehouden.
+\subsubsection{Curves}
+Dit pakket bevat de twee datatypes die doorheen het programma gebruikt worden. Point verzorgt, zoals
+de naam doet vermoeden, de datastructuur die punten voorstelt. Curve geeft dan weer de
+mogelijkheid om een verzameling van punten (lees: een kromme of curve) op te slaan. De
+technische details van deze laatste klasse worden beter uitgelegd verder in de tekst (zie ). 
+Voorlopig is het voldoende om te weten dat Curve een vector van Point-instanties bijhoudt en enkele
+basisvoorzieningen voorziet (punten opvragen, toevoegen, transleren, \ldots).
 \subsubsection{Exceptions}
-Een foutloos programma schrijven is al een hele opgave, vermits er altijd wel kleine bugs
-kunnen opduiken na langdurig gebruik. Een fool proof programma schrijven daarentegen is een
+Een foutloos programma schrijven is op zich al een opgave, vermits er altijd wel kleine bugs
+kunnen opduiken na langdurig en gevari\"eerd gebruik. Foolproof code schrijven daarentegen is een
 onmogelijke opgave. Daarom hebben we gebruik gemaakt van exceptions om ``verkeerd'' gebruik van
-curve editor op te vangen. Onder verkeerd gebruik valt bijvoorbeeld het inladen van een
-onbestaande file, of een verkeerd fileformat. Het toevoegen van een punt zonder er de 
-co\"ordinaten van op te geven, \ldots.\newline \newline
-Er zijn ook twee HandleException klassen voorzien. Eentje in dit pakket, deze zal gewoon 
-het exceptie bericht in de console uitprinten. In het GUI pakket is een HandleException klasse
-voorzien die in een dialog scherm de exceptie zal uitprinten.
+CurveEditor-functies op te vangen. Onder verkeerd gebruik valt bijvoorbeeld het inladen van een
+onbestaande file of een verkeerd bestandsformaat, het toevoegen van een punt zonder er de 
+co\"ordinaten van op te geven, \ldots. Maar ook met toekomstige uitbreidingen in gedachte zijn exceptions een handig middel,
+niet elke programmeur hanteert immers dezelfde logica. Vindt de \'e\'en dat aan een methode bijvoorbeeld geen null-waarden kunnen worden meegegeven omdat 't nonsens lijkt, dan kan een ander vinden dat het wel mogelijk moet zijn om dat te doen. Exceptions laten die andere dan weten dat zo'n parameters nooit mogen meegegeven worden wil hij een resultaat verkrijgen, zonder dat hij naar de broncode van die ene methode hoeft te kijken.\newline \newline
+Er zijn ook twee HandleException-klassen voorzien: eentje in dit pakket, deze zal gewoon 
+het exceptie bericht in de console uitprinten, en eentje in het GUI-pakket, die in een dialoogvenstertje de exceptie zal uitprinten.
 \subsubsection{GUI}
-De GUI is vrij grondig opgesplitst( zie figuur BLAH ). Elk groot deel heeft zo zijn eigen klasse.
-Zo heb je een menubalk klasse, een snelknopbalk klasse, een tekengebied klasse en een keuzegebied
-klasse. \newline
-De GUI klasse zal op zijn beurt het centrale orgaan spelen die al deze klassen 
-connecteerd. Het is daarom ook niet te verwonderen dat deze is afgeleid van de klasse Editor,
-die centrale klasse was van de core van de applicatie. 
+De GUI is vrij grondig opgesplitst (zie figuur \ref{gui}). Elk groot deel heeft zo zijn eigen klasse; 
+zo heb je een menubalk-klasse, een snelknopbalk-klasse, een tekengebied-klasse en een keuzegebied-klasse. \newline
+De GUI-klasse zal op zijn beurt het centrale orgaan spelen die al deze klassen met elkaar verbindt.
+Het is daarom ook logisch dat deze is afgeleid van de klasse Editor,
+de centrale klasse van de Core-package. Zo kunnen immers Core-functionaliteiten aan GUI-events e.d. gelinkt worden.
 \newline
 Het opdelen van de GUI in verschillende klassen heeft enorme voordelen als we spreken 
-over leesbaarheid en onderhoudbaarheid van code. Het eventhandle systeem van java is zelf
-optimaal voor dit soort afscheiding. In java worden de events opgevangen door een klasse 
-af te leiden van een van de Listener interface's (ActionListener, ItemListener, ... ). Deze 
-klasse zal dan de nodige member functies impementeren om de juiste evenafhandeling te kunnen
-doen. Het is dus voldoende om deze event handle klassen in GUI aan te maken en door te geven
-aan de juiste componenten ( menubalk, tekengebied, ... ). Meer uitleg hierover vind je verder in
+over leesbaarheid en onderhoudbaarheid van code. Het EventHandling-systeem van Java zelf is overigens
+optimaal voor dit soort afscheiding. In Java worden de events immers opgevangen in een klasse,
+die afgeleid wordt van een van de Listener-interfaces (ActionListener, ItemListener, \ldots). Deze 
+klasse zal dan de door de interface opgelegde functies impementeren om alzo de juiste evenafhandeling te kunnen
+doen. Het is dus voldoende om deze EventHandling-klassen in GUI aan te maken en door te geven
+aan de juiste componenten (menubalk, tekengebied, \ldots). Meer uitleg hierover vind je verder in
 de tekst.
 \subsubsection{Tools}
-Dit bevat een curve simulator. In principe is het een ``sjieke'' naam voor een bolletje
-dat over het pad loopt. Dit kan gebruikt worden door de gebruiker om de stijging en daling
+Dit bevat een curvesimulator. In principe is het een ``chique'' naam voor een bolletje
+dat over het pad dat de curve voorstelt loopt. Dit kan bijvoorbeeld door de gebruiker gebruikt worden om de stijging en daling
 van de curve te bestuderen. Zodoende kan hij de getekende curve visueel evalueren.
 \subsection{Uitwerking van de GUI}
 \subsubsection{Overzicht}
-
-Zoals in screenshot BLAH te zien is kan de vormgeving van de GUI in 4 grote stukken opgedeeld 
-worden.
+Zoals in screenshot \ref{scr_gui} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
 \begin{enumerate}
-\item Menubalk ( fig BLAH)
-Hierin kan de gebruiker elke actie terugvinden die door het programma kan uitgevoerd worden.
-Bijna elke actie is ook te bereiken met keyboard sneltoetsen ( Alt-F, Ctrl-O, \ldots ) zodat
-elke gebruiker op zijn lievelingsmethode kan navigeren door de verschillende uitvoerbare taken.
-Er is telkens op gelet dat de nesting van de menu-items niet te diep is noch te breed, verder
-is elke naam zo triviaal mogelijk gekozen en meestal ook voorzien van een icoon. Dit alles
-om het gebruiksgemak te verhogen.
-\item Snelknopbalk ( fig BLAH)
-Hierin vind je enkele veel gebruikte taken terug ( nieuw bestand, een bestand openen, 
-nieuwe curve, \ldots ). Dit opdat de gebruiker deze taken snel en en dus effici\"enter kan
-afhandelen.
-\item Keuzegebied ( fig BLAH)
-In dit gebied zal de gebruiker snel kunnen kiezen welk soort curve hij wil tekenen (bezier, 
-hermite, \ldots ) en kan hij ten alle tijden een punt toevoegen door zijn co\"ordinaten in te
-geven. Verder kan de gebruiker hier ook altijd kiezen of hij de co\"ordinaten, tangens en 
-puntnummers wil laten zien bij het tekenen. \newline
-Het Edit-veld van dit gebied hangt af van de Modus waarin je zit. Er zijn voor de gebruiker
-twee grote modi zichtbaar. De ene is curve modus, hier bewerk je curves ( selecteren, 
-deselectere, nieuwe curve, \ldots ) en de punt modus ( punt verslepen, selecteren, toevoegen ).
-Naargelang de modus waarin je zit zulle andere mogelijkheden zichtbaar worden in het edit veld.
+\item Menubalk
+Hierin kan de gebruiker elke actie terugvinden die door Curve Editor kan gedaan worden.
+Bijna elke actie is ook aan te roepen met behulp van sneltoetscombinaties ( Alt-F, Ctrl-O, \ldots ), zodat
+elke gebruiker op zijn favoriete manier kan navigeren doorheen de verschillende uitvoerbare taken.
+Er is overigens aandacht geschonken aan de nesting van de menu-items: die mogen niet te diep noch te breed zijn.
+Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzien van een icoontje.
+\item Snelknopbalk
+Hierin vind je enkele veelgebruikte taken terug (nieuw bestand beginnen, bestand openen, 
+nieuwe curve starten, \ldots). Dit is voorzien opdat de gebruiker deze taken snel en en dus effici\"enter kan
+afhandelen dan wanneer hij dat telkens vanuit de menubalk zou moeten doen.
+\item Keuzegebied
+In dit gebied zal de gebruiker snel kunnen kiezen welk type curve hij wilt tekenen (B\'ezier, 
+Hermite, \ldots) en kan hij ten alle tijden een punt aan de op dat moment geselecteerde curves toevoegen door 
+de co\"ordinaten in te geven. Verder kan de gebruiker hier ook kiezen of hij de co\"ordinaten, raakvectoren en 
+puntnummers van de geselecteerde curves wilt laten uittekenen. \newline
+Het Edit-veld van dit gebied hangt af van de mode waarin je bezig bent. Er zijn voor de gebruiker
+twee grote modi "voelbaar". De eerste is curve-modus: hier bewerk je de curves op zich (selecteren, 
+deselecteren, nieuwe curve maken, \ldots); de tweede is controlepunt-modus (punt verslepen, selecteren, toevoegen).
+Naargelang de modus waarin je zit zullen andere mogelijkheden zichtbaar worden in het Edit-veld.
 Dit leidt tot een groter gebruiksgemak vermits de taken die verschijnen meestal ook gebruikt
-worden waneer je in de modus werkt.
-\item Tekengebied ( fig BLAH )
-Dit gebied is waarschijnlijk wel het interessantste voor de gebruiker. Met behulp van muis
-interactie kan de gebruiker punten aan dit veld toevoegen en deze punten laten connecteren
-door een interpolatie methode. De gebruiker kan tevens in dit veld punten en curves selecteren,
-verwijderen en zelf verslepen. Het tekengebied maakt gebruik van double buffering om 
+worden wanneer je in die modus werkt.
+\item Tekengebied
+Dit gebied is waarschijnlijk wel het interessantste voor de gebruiker. Met behulp van muisinteractie
+kan de gebruiker controlepunten aan dit veld toevoegen en deze punten laten connecteren
+door een interpolatiealgoritme. De gebruiker kan tevens in dit veld punten en curves selecteren,
+verwijderen en zelfs verslepen. Het tekengebied maakt gebruik van double buffering om 
 beeldflikkering te vermijden en ook van clipping zodat alleen getekend wordt wat ook echt
-op het scherm verschijnt.
+op het scherm k\'an verschijnen.
 \end{enumerate}
-\subsection{Java Listeners}
-Java heeft een aparte stijl om events op te vangen ( signalen gestuurd door buttons, menu items,
-\ldots ). De taal bezit hiervoor zogenaamde event listener interfaces. De programmeur
+\subsection{Listeners in Java}
+Java heeft een aparte stijl om events op te vangen (signalen gestuurd door buttons, menu-items,
+\ldots). De taal bezit hiervoor zogenaamde EventListener-interfaces. De programmeur
 moet een klasse aanmaken die een dergelijke interface zal implementeren. Deze klasse wordt dan
-m.b.v. een simpel commando geconnecteerd met een bepaald component ( bijvoorbeeld een button ).
-In de interface is er een eventhandle functie gedefini\"eerd die dan door de programmeur zal 
-ge\"implementeerd worden zodat, wanneer het component een signaal uitvoert,
-de opgevangen event afhandeld zal worden.\newline
+m.b.v. een simpel commando geconnecteerd met een bepaalde component (bijvoorbeeld een button).
+In de interface is er een EventHandle-functie gedefini\"eerd die door de programmeur zal 
+ge\"implementeerd worden, zodat, wanneer de component een event genereert,
+die opgevangen en afgehandeld kan worden.\newline
 
-Dit systeem is pas echt voordelig als je een event moet afhandelen in een geneste klasse 
-structuur. Stel bijvoorbeeld je hebt in een klasse A een instantie van een Klasse B zitten
-die op zijn beurt weer een instantie heeft van klasse C en je wilt dan klasse A een handeling
-doet als klasse C een event uitstuurt( figuure BLAH ). 
-Met callbacks is de properste manier (om klasse onafhankelijkheid te bewaren), een callback 
-te connecteren van klasse A naar klasse B, daarna een callback van klasse B naar klasse C. 
-Bij java kan je gewoon een event handle klasse vanuit klasse A meegeven aan B die het op zijn 
-beurt meegeeft aan klasse C. Wat de code natuurlijk wat overzichtelijker maakt.\newline \newline
+Dit systeem is pas echt voordelig als je een event moet afhandelen in een geneste klassestructuur. 
+Stel als voorbeeld: je hebt in een klasse A een instantie van een klasse B zitten
+die op zijn beurt dan weer een instantie heeft van klasse C, en je wilt dat klasse A een handeling
+doet als klasse C een event uitstuurt.
+Met callbacks is de properste manier (om klasse-onafhankelijkheid te bewaren) een callback 
+te connecteren van klasse A naar klasse B en daarna een callback van klasse B naar klasse C.
+In Java kan je gewoon een EventHandle-klasse vanuit klasse A meegeven aan B die het op zijn 
+beurt meegeeft aan klasse C. Dit maakt de structuur natuurlijk wat eenvoudiger, overzichtelijker, en makkelijker te begrijpen.\newline \newline
 
-In deze implementatie is ervoor gekozen om deze eventhandle klassen in de klasse GUI te 
-defini\"eren. Het voordeel hiervan is dat de enkel de klasse GUI de eventhandle klassen kan 
-instanti\"eren en deze instanties zulle alle member variabele en functies van GUI kunnen 
-gebruiken. Wat ervoor zorgt dat er geen extra connectie moet gelegd worden tussen de 
-eventhandle klassen en GUI (Een soort van friendly class die niet ge\"instantieerd kan worden 
-dus). 
+In deze implementatie is ervoor gekozen om deze EventHandle-klassen in de klasse GUI te 
+defini\"eren. Het voordeel hiervan is dat enkel de klasse GUI de EventHandle-klassen kan 
+instanti\"eren en deze instanties zullen alle membervariabelen en -functies van GUI zelf kunnen 
+gebruiken. Dit zorgt ervoor dat er geen extra connectie moet gelegd worden tussen de 
+EventHandle-klassen en GUI. Je kan dit dus bekijken als een soort van friendly class die niet ge\"instantieerd kan worden.
 \subsection{Datastructuren}
 \subsubsection{Point}
-Deze datastructuur heeft niet zoveel uitleg nodig, een Point bestaat uit zijn x- en y-waarde
-en de nodige get() en set() functies. Het dient, zoals de naam al doet vermoeden, om een punt
-in een vlak voor te stellen.
+Deze datastructuur heeft niet zoveel uitleg nodig, een Point bestaat namelijk uit zijn x- en y-waarde en is daarmee
+volledig gedefini\"eerd. De nodige get()- en set()-functies zijn ook voorzien, uiteraard.
 \subsubsection{Curve}
-Deze structuur heeft al iets meer uitleg nodig. Een curve is op het laagste niveau niets 
-anders dan een container van punten.\newline
-Elke curve Houdt drie essentiele dingen bij
+Deze structuur heeft al iets meer uitleg nodig. Een curve is, vanuit het laagste niveau bekeken, niets 
+anders dan een container van zijn punten.\newline
+Elke Curve houdt drie essenti\"ele dingen bij
 \begin{enumerate}
-\item Type ( bezier, hermite, \ldots )
-\item een vector van input punten
-\item een vector van output punten
+\item zijn type (B\'ezier, Hermite, \ldots)
+\item een Vector van controlepunten: deze wordt dus gevuld wanneer de gebruiker een nieuw controlepunt aan de curve toevoegt
+\item een Vector van outputpunten: deze wordt a.h.v. de Vector van controlepunten en m.b.v. een Algorithm-instantie gevuld
 \end{enumerate}
 
-Hierbij worden type en de input punten gegeven door de gebruiker. De vector van output punten
-wordt intern berekend door de verschillende interpolatie algoritmes. Daarna wordt de vector
-gebruikt om te kunnen tekenen op het tekengebied.\newline
+Hierbij worden het type en de controlepunten dus door de gebruiker ingegeven/veranderd. De vector van outputpunten
+wordt intern berekend door de verschillende interpolatiealgoritmen. Het aanroepen van deze Algorithm-functies gebeurt niet in Curve, maar in Editor, de klasse die alle datastructuren samenbrengt.
+De vectoren worden ook door de GUI gebruikt om de curve op het tekengebied te kunnen uittekenen.\newline
 
-We hebben voor een vector gekozen om de input punten op te slaan omdat de verschillende
-interpolatietechnieken gemakkelijk moeten kunnen springen tussen de gegeven input punten om
-hun algoritme te kunnen uitvoeren. Voor de output punten hebben we dan gekozen voor een 
-enkelvoudig gelinkte lijst vermits de punten maar in een richting dienen toegevoegd en gelezen
-te worden.
+Om de punten op te slaan hebben we voor een Vector gekozen, omdat de verschillende
+interpolatietechnieken gemakkelijk moeten kunnen "springen" tussen de gegeven controlepunten om
+hun algoritme te kunnen uitvoeren.
 
-Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve, \ldots
+Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve behoort, \ldots.
 \subsection{Extra's}
 TODO
 \subsection{Interessante problemen}
-TODO
+\subsubsection{Vector vs. LinkedList}
+Hoewel de collecties van outputpunten van curves enkel maar sequentiëel worden doorlopen (toevoegen achteraan, hele inhoud verwijderen, van voor naar achter uittekenen, \ldots), bleek Vector toch de betere keuze te zijn.
+Hoewel de structuur van LinkedList ook zou moeten voldoen, maar met een kleiner geheugenverbruik dan Vector, bleek deze datastructuur tergend langzaam te werken. Een reden hiervoor hebben we niet gevonden, maar door gewoon terug gebruik te maken van Vector was het probleem ook opgelost.
+\subsubsection{HashMap vs.2D Matrix}
+Voor de CurveContainer, die de picking moet afhandelen, hadden wij aanvankelijk een HashMap gebruikt. De keys van de bovenste HashMap waren de pixels/punten van het scherm, en de values waren referenties naar rechthoekjes.
+Bij initialisatie van de CurveContainer wijzen alle values naar eenzelfde rechthoek. Wordt er een extra punt toegevoegd, dan 
+
 \newpage
 \section{Planning}
 \newpage
@@ -267,5 +312,14 @@ Gij ook? Alleja ik ga kijken welke gij al hebt en dan bijmaken wat ik nodig heb.
 we geen dubbel werk leveren \ldots. ``Stel niet uit tot morgen wat je vandaag door een ander
 kan laten doen''
 \section{Referenties}
-Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics 
+Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics
+\htmladding{http://en.wikipedia.org/wiki/B\'ezier\_curve} (B\'ezier)
+\htmladding{http://home.scarlet.be/piet.verplancken3/bezier/node9.html} (B\'ezier)
+\htmladding{http://en.wikipedia.org/wiki/Catmull-Rom\_spline} (Hermite)
+\htmladding{http://java.sun.com/javase/6/docs/api/} (Java)
+\htmladding{http://java.sun.com/docs/books/tutorial/uiswing/events/intro.html} (Event en Listeners)
+\htmladding{http://www.w3schools.com/xml/default.asp} (XML)
+\htmladding{http://www.w3schools.com/dtd/default.asp} (DTD)
+\htmladding{http://www.totheriver.com/learn/xml/xmltutorial.html} (XML)
+\htmladding{http://www.kde.org/} (icoontjes)
 \end{document}
