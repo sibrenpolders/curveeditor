@@ -30,7 +30,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -844431215144101927L;
 	// private Vector<Algorithm> v;
 	private static final String[] bezierAlgTypeNames = { "Linear", "Bezier C0", "Bezier G1", "Bezier C1" };
-	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",	"Cardinal", "Catmull-Rom" };
+	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",	"Cardinal", "Catmull-Rom", "Kochanek Bartels" };
 
 	private static final int TOGGLEBUTTONWIDTH = 250;
 	private static final int TOGGLEBUTTONHEIGHT = 25;

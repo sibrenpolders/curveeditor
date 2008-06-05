@@ -81,6 +81,7 @@ public class Editor {
 		algorithms.add(new Hermite('H', (short) 0)); // 'H'
 		algorithms.add(new HermiteCardinal('A', (short) 0)); // 'A'
 		algorithms.add(new HermiteCatmullRom('R', (short) 0)); // 'R'
+		algorithms.add(new KochanekBartels('K', (short) 0)); // 'R'
 
 		// Lineair is default algoritme.
 		currentAlgorithm = getAlgorithm('L', (short) 1);
