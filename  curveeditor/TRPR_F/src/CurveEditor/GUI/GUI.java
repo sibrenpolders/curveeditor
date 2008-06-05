@@ -581,6 +581,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		} else if (actionCommand.equals("Catmull-Rom")) {
 			setCurrentAlgorithm('R');
 			eventHandled = true;
+		} else if( actionCommand.equals( "Kochanek Bartels" )) {		
+			System.out.println( "YEAH" );
+			setCurrentAlgorithm( 'K' );
+			eventHandled = true;
 		}
 
 		if (eventHandled) {

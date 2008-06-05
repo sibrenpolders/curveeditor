@@ -363,6 +363,13 @@ public class Menu extends JMenuBar implements ActionListener {
 		group.add(algName);
 		radioPanel.add(algName);
 
+		algName = new JRadioButton("Kochanek Bartels");
+		algName.setSelected(false);
+		algName.addActionListener(listener);
+
+		group.add(algName);
+		radioPanel.add(algName);
+		
 		menu.add(radioPanel);
 	}
 
