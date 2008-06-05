@@ -31,7 +31,6 @@ public class HermiteCardinal extends Hermite {
 	protected void cardinal(Curve cv, float c) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
-		float t;
 
 		int size = vip.size();
 
@@ -86,8 +85,6 @@ public class HermiteCardinal extends Hermite {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
 		cv.clearOutput();
-
-		float t;
 
 		int size = vip.size();
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen

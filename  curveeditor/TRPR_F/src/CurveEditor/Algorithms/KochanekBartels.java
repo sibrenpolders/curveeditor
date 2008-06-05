@@ -85,7 +85,6 @@ public class KochanekBartels extends Hermite {
 	private void kochanekBartels( Curve cv, float c, float b, float t ) {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
-		float s;
 
 		int size = vip.size();
 
@@ -120,8 +119,6 @@ public class KochanekBartels extends Hermite {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
 		cv.clearOutput();
-
-		float s;
 
 		int size = vip.size();
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
