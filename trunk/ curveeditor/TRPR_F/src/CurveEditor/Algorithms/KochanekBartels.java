@@ -112,10 +112,7 @@ public class KochanekBartels extends Hermite {
 			y = (int) (((1-t)*(1-c)*(1+b)*( p2.Y() - p1.Y())) / 2 + ((1-t)*(1+c)*(1-b)*( p3.Y() - p2.Y())) / 2);			
 			Point t3 = new Point(x, y);
 
-//			for (int j = 0; j < steps; ++j) {
-//				s = (float) (j / (steps - 1.0));
-				/*vop.add(*/hermite(p2, t2, p3, t3, vop ); //);
-//			}
+			hermite(p2, t2, p3, t3, vop );			
 		}
 	}
 	
@@ -150,10 +147,7 @@ public class KochanekBartels extends Hermite {
 			y = (int) (((1-t)*(1+c)*(1+b)*( p3.Y() - p2.Y())) / 2 + ((1-t)*(1-c)*(1-b)*( p4.Y() - p3.Y())) / 2);
 			Point t3 = new Point(x, y);
 
-//			for (int j = 0; j < steps; ++j) {
-//				s = (float) (j / (steps - 1.0));
-				/*vop.add(*/hermite(p2, t2, p3, t3, vop);/*);
-			}*/
+			hermite(p2, t2, p3, t3, vop );
 		}
 	}
 }
