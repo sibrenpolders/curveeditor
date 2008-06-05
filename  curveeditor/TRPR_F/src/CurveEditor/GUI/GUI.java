@@ -47,7 +47,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	protected ChoiceAreaListener cListener;
 
 	protected DisplaySize displaySize;
-
+	protected DrawAreaProperties drawProp;
+	
 	// De container bevat choiceArea en drawArea, en de container wordt
 	// aan de container van het frame/window toegevoegd. Op deze manier hebben
 	// we de GUI opgesplitst in twee delen: menu- en toolbar enerzijds
@@ -90,9 +91,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		contentPane.setLayout(null);
 
 		displaySize = new DisplaySize();
-
+		drawProp = new DrawAreaProperties( );
+		
 		mListener = new MenuListener();
-		menu = new Menu(mListener);
+		menu = new Menu( mListener, drawProp );
 		contentPane.add(menu); // toevoegen
 
 		tBListener = new ToolBarListener();
@@ -112,8 +114,8 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		choice = new ChoiceArea(cListener, cListener);
 		container.add(choice); // toevoegen
 
-		draw = new DrawArea(this.curves, this.selectedCurves,
-				this.hooveredCurves, this.selectedPoints, this.hooveredPoints);
+		draw = new DrawArea( this.curves, this.selectedCurves,
+				this.hooveredCurves, this.selectedPoints, this.hooveredPoints, drawProp );
 		draw.addMouseListener(this);
 		draw.addMouseMotionListener(this);
 		container.add(draw); // toevoegen
@@ -125,9 +127,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		frame.pack();
 		frame.setVisible(true);
 
-		frame
-				.setBounds(0, 0, DisplaySize.SCREENWIDTH,
-						DisplaySize.SCREENHEIGHT);
+		frame.setBounds(0, 0, DisplaySize.SCREENWIDTH, DisplaySize.SCREENHEIGHT);
 		displaySize.setCurrentSize(frame.getSize());
 		frame.addComponentListener(this);
 

@@ -1,7 +1,5 @@
 package CurveEditor;
 
-import CurveEditor.Exceptions.InvalidArgumentException;
-
 public class Main {
 
 	public static void main(String[] args) {
@@ -19,18 +17,14 @@ public class Main {
 					file = args[i + 1];
 				}
 
-		if (file == null) {
-			try {
+		try {
+			if (file == null)
 				new CurveEditor.GUI.GUI();
-			} catch (InvalidArgumentException e) {
-				e.printStackTrace();
-			}
-		} else {
-			try {
+			else
 				new CurveEditor.GUI.GUI(file);
-			} catch (InvalidArgumentException e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			System.out.println( e.getMessage() );
+			e.printStackTrace();
 		}
 	}
 }
