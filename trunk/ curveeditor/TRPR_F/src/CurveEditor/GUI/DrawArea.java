@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -58,9 +59,12 @@ public final class DrawArea extends JPanel {
 	// wanneer met m.b.v. dragging elementen wilt selecteren.
 	private int xBegin = -1, yBegin = -1, xEnd = -1, yEnd = -1;
 
+	private DrawAreaProperties drawProp;
+	
 	public DrawArea(Vector<Curve> curves, Vector<Curve> selectedCurves,
 			Vector<Curve> hooveredCurves, Vector<Point> selectedPoints,
-			Vector<Point> hooveredPoints) throws InvalidArgumentException {
+			Vector<Point> hooveredPoints, DrawAreaProperties drawProp ) throws InvalidArgumentException {
+		this.drawProp = drawProp;
 		init(curves, selectedCurves, hooveredCurves, selectedPoints,
 				hooveredPoints, false, false, false);
 	}
@@ -130,64 +134,70 @@ public final class DrawArea extends JPanel {
 	// Deze methode wordt impliciet aangeroepen als je ergens DrawArea.repaint()
 	// uitvoert. Dit hertekent het vollédige tekencanvas.
 	public void paintComponent(Graphics g) {
-		this.g = g;
-		super.paintComponent(g);
+		try {
+			this.g = g;
+			super.paintComponent(g);
 
-		emptyField(); // Clear het canvas.
+			emptyField(); // Clear het canvas.
 
-		this.g.setColor(Color.LIGHT_GRAY);
-		if (drawRectangle)
-			// Teken het selectierechthoekje indien nodig.
-			this.drawSelectionRectangle();
-		else
-			// Anders, teken een dragging arrow in de plaats.
-			this.drawArrow();
+			this.g.setColor(Color.LIGHT_GRAY);
+			if (drawRectangle)
+				// Teken het selectierechthoekje indien nodig.
+				this.drawSelectionRectangle();
+			else
+				// Anders, teken een dragging arrow in de plaats.
+				this.drawArrow();
 
-		this.g.setColor(Color.BLACK);
-		// Ongeselecteerde curves worden altijd zonder extra
-		// info uitgetekend.
-		this.drawOutput(curves, false, false);
-		this.g.setColor(Color.RED);
-		// Geselecteerde curves worden a.h.v. de geselecteerde
-		// opties uitgetekend.
-		drawOutput(selectedCurves, coords, nrs);
-		if (tangents) {
-			this.g.setColor(Color.BLUE);
-			drawTangents(selectedCurves);
+			this.g.setColor( drawProp.getColor( DrawAreaProperties.UNSELECTED_LINE ));
+			// Ongeselecteerde curves worden altijd zonder extra
+			// info uitgetekend.
+			this.drawOutput(curves, false, false);
+			this.g.setColor( drawProp.getColor( DrawAreaProperties.SELECTED_LINE ));
+			// Geselecteerde curves worden a.h.v. de geselecteerde
+			// opties uitgetekend.
+			drawOutput(selectedCurves, coords, nrs);
+			if (tangents) {
+				this.g.setColor( drawProp.getColor( DrawAreaProperties.TANGENS ));
+				drawTangents(selectedCurves);
+			}
+
+			this.g.setColor( drawProp.getColor( DrawAreaProperties.SELECTED_POINT ));
+			drawSelectedPoints(selectedPoints);
+
+			this.g.setColor(  drawProp.getColor( DrawAreaProperties.HOOVERED_LINE ));
+			// Verander de curvedikte en teken de gehooverde
+			// curves uit.
+			this.curveWidth =  drawProp.getTickness();
+			drawOutput(hooveredCurves, false, false);
+
+			this.g.setColor(  drawProp.getColor( DrawAreaProperties.HOOVERED_POINT ));
+			drawSelectedPoints( hooveredPoints );
+
+			// Als de pathsimulationtool actief is --> teken het vierkantje
+			// op zijn huidige positie uit.
+			if (runPoint != null) {
+				this.g.setColor( Color.CYAN );
+				g.fillRect(runPoint.X() - 3 * CONTROLPOINTWIDTH, runPoint.Y() - 3
+						* CONTROLPOINTWIDTH, 6 * CONTROLPOINTWIDTH + 1,
+						6 * CONTROLPOINTWIDTH + 1);
+				runPoint = null;
+			}
+
+			this.g.setColor(  drawProp.getColor( DrawAreaProperties.UNSELECTED_LINE ));		
+		} catch( InvalidArgumentException iae ) {
+			JOptionPane.showMessageDialog( this, iae.getMessage(), "Curve Editor - Error", JOptionPane.ERROR_MESSAGE );
 		}
-
-		this.g.setColor(Color.GREEN);
-		drawSelectedPoints(selectedPoints);
-		this.g.setColor(Color.BLACK);
-
-		this.g.setColor(Color.magenta);
-		// Verander de curvedikte en teken de gehooverde
-		// curves uit.
-		this.curveWidth = HOOVEREDCURVEWIDTH;
-		drawOutput(hooveredCurves, false, false);
-		this.curveWidth = DEFAULTCURVEWIDTH;
-
-		this.g.setColor(Color.YELLOW);
-		drawSelectedPoints(hooveredPoints);
-
-		// Als de pathsimulationtool actief is --> teken het vierkantje
-		// op zijn huidige positie uit.
-		if (runPoint != null) {
-			this.g.setColor(Color.CYAN);
-			g.fillRect(runPoint.X() - 3 * CONTROLPOINTWIDTH, runPoint.Y() - 3
-					* CONTROLPOINTWIDTH, 6 * CONTROLPOINTWIDTH + 1,
-					6 * CONTROLPOINTWIDTH + 1);
-			runPoint = null;
-		}
-
-		this.g.setColor(Color.BLACK);
 	}
 
 	private void emptyField() {
-		g.clipRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
-		g.setColor(Color.white);
-		g.fillRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
-		g.setColor(Color.black);
+		try {
+			g.clipRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+			g.setColor(  drawProp.getColor( DrawAreaProperties.BACKGROUND));
+			g.fillRect(0, 0, DisplaySize.DRAWWIDTH, DisplaySize.DRAWHEIGHT);
+			g.setColor(  drawProp.getColor( DrawAreaProperties.UNSELECTED_LINE ));
+		} catch( InvalidArgumentException iae ) {
+			JOptionPane.showMessageDialog( this, iae.getMessage(), "Curve Editor - Error", JOptionPane.ERROR_MESSAGE );
+		}
 	}
 
 	// Teken het draggingrechthoekje a.h.v. zijn begin- en

@@ -174,6 +174,16 @@ de controlepunten en $m_0$, $m_1$ hun respectievelijke tangens. t gaat hier van 
 
 Zo sla je het berekenen van a,b,c en d over en zal de curve gladder lijken vermits je
 met parametrische beschreven polynoom werkt.
+\subsection{Hermite - Forward Difference}
+De forward difference methode is al gedetailleerd beschreven in een voorgaande
+sectie bij Bezier. Om deze methode met Hermite te implementeren dien je enkel
+de volgende berekeningen te maken:\newline
+$a = 2p_1 + t_1 - 2p_2 + t_2$\newline
+$b = -3p_1 - 2t_1 + 3p_2 - t_2$\newline
+$c = t_1$\newline
+$d = p_1$\newline
+en deze in te vullen in de formules die we in in de sectie over forward difference gevonden
+hadden.
 \subsection{Hermite - Cardinal}
 De methode van punten berekenen is hier net hetzelfde als besproken in hermite m.b.v. 
 basisfuncties.
