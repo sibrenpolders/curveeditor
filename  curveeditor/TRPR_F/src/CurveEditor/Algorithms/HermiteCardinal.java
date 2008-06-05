@@ -58,10 +58,7 @@ public class HermiteCardinal extends Hermite {
 			y = (int) (c * (p4.Y() - p2.Y()));
 			Point t3 = new Point(x, y);
 
-//			for (int j = 0; j < steps; ++j) {
-//				t = (float) (j / (steps - 1.0));
-				/*vop.add(*/hermite(p2, t2, p3, t3, vop);/*);
-			}*/
+			hermite(p2, t2, p3, t3, vop );
 		}
 	}
 
@@ -116,10 +113,7 @@ public class HermiteCardinal extends Hermite {
 			y = (int) (c * (p4.Y() - p2.Y()));
 			Point t3 = new Point(x, y);
 
-//			for (int j = 0; j < steps; ++j) {
-//			t = (float) (j / (steps - 1.0));
-			/*vop.add(*/hermite(p2, t2, p3, t3, vop);/*);
-		}*/		
+			hermite(p2, t2, p3, t3, vop);
 		}
 	}
 }
