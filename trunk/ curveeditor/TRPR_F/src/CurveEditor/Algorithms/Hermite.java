@@ -101,8 +101,6 @@ public class Hermite extends Algorithm {
 	
 	// Zal de interpolatie berekenen tussen de 4 laatste punten
 	public void calculate(Vector<Point> vip, Vector<Point> vop) {
-		float t;
-
 		int size = vip.size();
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
@@ -128,8 +126,6 @@ public class Hermite extends Algorithm {
 		Vector<Point> vip = cv.getInput();
 		Vector<Point> vop = cv.getOutput();
 		cv.clearOutput();
-
-		float t;
 
 		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
 		int size = vip.size();
