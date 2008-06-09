@@ -29,9 +29,10 @@ import CurveEditor.Curves.Point;
 public class ChoiceArea extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -844431215144101927L;
 	// private Vector<Algorithm> v;
-	private static final String[] bezierAlgTypeNames = { "Linear", "Bezier C0", "Bezier G1", "Bezier C1" };
+	private static final String[] bezierAlgTypeNames = { "Bezier C0", "Bezier G1", "Bezier C1" };
 	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",	"Cardinal", "Catmull-Rom", "Kochanek Bartels" };
-
+	private static final String[] lineairAlgTypeNames = { "Lineair" };
+	
 	private static final int TOGGLEBUTTONWIDTH = 250;
 	private static final int TOGGLEBUTTONHEIGHT = 25;
 
@@ -52,7 +53,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		super(new BorderLayout());
 		this.listener = listener;
 		this.itemListener = itemListener;
-		currentAlgTypeNames = bezierAlgTypeNames;
+		currentAlgTypeNames = lineairAlgTypeNames;
 		init();
 	}
 
@@ -196,7 +197,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		// comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.Y_AXIS));
 		// comboPanel.add(Box.createHorizontalGlue());
 
-		type = new JComboBox(currentAlgTypeNames);
+		type = new JComboBox( currentAlgTypeNames );
 		type.setSelectedIndex(0);
 		type.addActionListener(this);
 		type.addActionListener(listener);
@@ -219,7 +220,15 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));
 		ButtonGroup algGroep = new ButtonGroup();
 
-		JRadioButton algName = new JRadioButton("Bezier");
+		JRadioButton algName = new JRadioButton("Lineair");
+		algName.setSelected(true);
+		algName.addActionListener(this);
+		algName.addActionListener(listener);		
+		
+		algGroep.add(algName);
+		radioPanel.add(algName);
+		
+		algName = new JRadioButton("Bezier");
 		algName.setSelected(true);
 		algName.addActionListener(this);
 		algName.addActionListener(listener);
@@ -233,10 +242,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		algName.addActionListener(listener);
 
 		algGroep.add(algName);
-
-		radioPanel.add(algName);
+		radioPanel.add(algName);				
+		
 		radioPanel.add(Box.createHorizontalGlue());
-
+		
 		container.add(radioPanel);
 		container.add(Box.createRigidArea(new Dimension(0, 5)));
 		createComboBox();
@@ -372,8 +381,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	// zet de combobox van het keuze veld op bezier of hermite
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Bezier"))
-			type.setModel(new DefaultComboBoxModel(bezierAlgTypeNames));
+			type.setModel(new DefaultComboBoxModel( bezierAlgTypeNames ));
 		else if (e.getActionCommand().equals("Hermite"))
-			type.setModel(new DefaultComboBoxModel(hermiteAlgTypeNames));
+			type.setModel(new DefaultComboBoxModel( hermiteAlgTypeNames ));
+		else if ( e.getActionCommand().equals( "Lineair" ))
+			type.setModel(new DefaultComboBoxModel( lineairAlgTypeNames ));
 	}
 }
