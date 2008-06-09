@@ -214,8 +214,7 @@ Als we dan de bekomen waardens a, b, c en d invullen in de formules verkregen in
 over forward difference bij bezier, dan krijgen we net dat wat we nodig hadden. Namelijk
 forward difference formules voor een Hermite polynoom.
 \subsection{Hermite - Cardinal}
-De methode van punten berekenen is hier net hetzelfde als besproken in hermite m.b.v. 
-basisfuncties.
+De methode van punten berekenen is hier net hetzelfde als besproken in de voorgaande secties
 Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
 berekend worden uit de opgegeven controlepunten. 
 De tangens wordt door de volgende formule uitgerekend:\newline 
@@ -415,14 +414,15 @@ van de curve te bestuderen. Zodoende kan hij de getekende curve visueel evaluere
 \end{figure}\newpage
 \subsection{Uitwerking van de GUI}
 \subsubsection{Overzicht}
-Zoals in figuur \ref{scrTot} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
+Zoals in figuur \ref{scrMenTot} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
 \begin{enumerate}
 \item Menubalk\newline
 Hierin kan de gebruiker elke actie terugvinden die door Curve Editor kan gedaan worden.
 Bijna elke actie is ook aan te roepen met behulp van sneltoetscombinaties ( Alt-F, Ctrl-O, \ldots ), zodat
 elke gebruiker op zijn favoriete manier kan navigeren doorheen de verschillende uitvoerbare taken.
 Er is overigens aandacht geschonken aan de nesting van de menu-items: die mogen niet te diep noch te breed zijn.
-Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzien van een icoontje (zie figuur \ref{screMenTo}).
+
+Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzien van een icoontje (zie figuur \ref{scrMenTo}).
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.4]{./screenies/menuTools.jpg}
@@ -436,7 +436,7 @@ afhandelen dan wanneer hij dat telkens vanuit de menubalk zou moeten doen.
 In dit gebied zal de gebruiker snel kunnen kiezen welk type curve hij wilt tekenen (B\'ezier, 
 Hermite, \ldots) en kan hij ten alle tijden een punt aan de op dat moment geselecteerde curves toevoegen door 
 de co\"ordinaten in te geven. Verder kan de gebruiker hier ook kiezen of hij de co\"ordinaten, raakvectoren en 
-puntnummers van de geselecteerde curves wilt laten uittekenen (zie figuur \ref{scrTog}). \newline
+puntnummers van de geselecteerde curves wilt laten uittekenen (zie figuur \ref{scrTot}). \newline
 Het Edit-veld van dit gebied hangt af van de mode waarin je bezig bent. Er zijn voor de gebruiker
 twee grote modi "voelbaar". De eerste is curve-modus: hier bewerk je de curves op zich (selecteren, 
 deselecteren, nieuwe curve maken, \ldots); de tweede is controlepunt-modus (punt verslepen, selecteren, toevoegen).
@@ -520,7 +520,7 @@ hun algoritme te kunnen uitvoeren.
 
 Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve behoort, \ldots.
 \subsection{Extra's}
-Bestanden kunnen opgeslaan worden naar meerdere formaten (*.xml en *.gif/*.png), oneindige undo/redo-stack, Voor de rest is er wat aandacht besteed aan het gebruiksgemak, zo zal er bijvoorbeeld tijdens het verslepen van een curve, een grijs pad te zien zijn, selecteren doe je m.b.v. een grijs kader( zie figuur \ref{scrSel}, of door te klikken op een curve. Curves en punten veranderen van kleur naargelang ze geselecteerd, gehoovered of ongeselecteerd zijn ( de gebruiker kan deze kleuren zelf bepalen ) allemaal kleine dingen die het gebruik toch aangenamer maken.
+Bestanden kunnen opgeslaan worden naar meerdere formaten (*.xml en *.gif/*.png), oneindige undo/redo-stack, Voor de rest is er wat aandacht besteed aan het gebruiksgemak, zo zal er bijvoorbeeld tijdens het verslepen van een curve, een grijs pad te zien zijn, selecteren doe je m.b.v. een grijs kader( zie figuur \ref{scrSel} ), of door te klikken op een curve. Curves en punten veranderen van kleur naargelang ze geselecteerd, gehoovered of ongeselecteerd zijn ( de gebruiker kan deze kleuren zelf bepalen ) allemaal kleine dingen die het gebruik toch aangenamer maken.
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.4]{./screenies/selectPoint.jpg}
@@ -559,6 +559,76 @@ Een foute configuratie van de Xorg-server in Linux zorgt ook voor problemen. Zo 
 wanneer je dan op menu-items klikt, ze direct terug "wegspringen".
 \newpage
 \section{Planning}
+Hier volgt een beknopte versie van de planning die we hadden opgesteld voor dit project.
+De volledige versie is terug te vinden in de appendix.
+
+\begin{itemize}
+\item \textbf{11/02/08 - 17/02/08}\newline
+Opzoekwerk van de mogelijkheden van java ( swing, eventListeners, 2D tekenen, \ldots )
+\item \textbf{18/02/08 - 24/02/08}\newline
+Feedback afwachten en verwerken, samenbrengen van opgezocht materiaal, bespreken
+van de mogelijkheden.
+\item \textbf{24/02/08 - 02/02/08}\newline
+Aanpassingen in de structuur a.d.v. de feedback, exacte taakverdeling opstellen, verdere
+taakplanningen opstellen, de gebruikte interfaces opstellen.
+\item \textbf{03/03/08 - 23/03/08}\newline
+Examens en rustperiode na de examens.
+\item \textbf{24/03/08 - 30/03/08}\newline
+Besprekingen i.v.m. de gui, waar hoort wat? Wat moet er zeker in staan en een mockup maken.
+\item \textbf{31/03/08 - 06/04/08}\newline
+Beginnen aan de implementatie van de GUI a.d.h.v. de mockup
+\item \textbf{14/04/08 - 20/04/08}\newline
+Implementatie van de interpolatie algoritmes, Bezier en Hermite.
+Connectie leggen tussen deze algoritmes en de toolbar en het tekengebied.
+\item \textbf{21/04/08 - 27/04/08}\newline
+Beginnen aan de implementatie van de datastuctuur voor het opslaan van curves en punten.
+Beginnen aand de implementatie van FileIO m.b.v. xml.
+\item \textbf{28/04/08 - 04/05/08}\newline
+De implementaties van de voorgaande week afwerken en het hele programma voldoende testen
+op bugs.
+\item \textbf{05/05/08 - 11/05/08}\newline
+Afronden van algoritmes i.v.m. curve bewerkingen en punt bewerkingen.
+Implementatie van full screen mode en prototype van het verslag maken.
+\item \textbf{12/05/08 - 18/05/08}\newline
+Afronden van het implementatie gedeelte van het project.
+\item \textbf{19/05/08 - 25/05/08}\newline
+programma debuggen en verslag verder aanvullen.
+\item \textbf{26/05/08 - 01/06/08}\newline
+verslag afwerken en eventueel beginnen aan powerpoint presentatie.
+\item \textbf{02/05/08 - 08/06/08}\newline
+stressen op andere projecten en eventueel presentatie voorbereiden.
+\item \textbf{09/05/08 - 15/06/08}\newline
+Presentatie geven 12/06/08.
+\end{itemize}
+\newpage
+\section{Taakverdeling}
+\begin{enumerate}
+\item Sibrand Staessens:
+       Bezier algorithmes, CurveContainer, Editor, DrawArea, GUI
+\item Sibren Polders
+       Hermite algorithmes, FileIO, Menu, ToolBar, ChoiceArea, GUI, PathSimulation
+\end{enumerate}
+\newpage
+\section{Appendix}
+\appendix
+\section{Screenshots}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./mockup.png}
+\caption{Mock-up}\label{mockup}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/start.jpg}
+\caption{Curve Editor-omgeving}\label{start}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{./screenies/startMarked.jpg}
+\caption{Curve Editor-omgeving, aangeduid}\label{scrTot}
+\end{figure}
+\newpage
+\section{Planning}
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.55, page=1]{./planning.pdf}
@@ -594,35 +664,7 @@ wanneer je dan op menu-items klikt, ze direct terug "wegspringen".
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.8, page=9]{./planning.pdf}
-\end{figure}
-\newpage
-\section{Taakverdeling}
-\begin{enumerate}
-\item Sibrand Staessens:
-       Bezier algorithmes, CurveContainer, Editor, DrawArea, GUI
-\item Sibren Polders
-       Hermite algorithmes, FileIO, Menu, ToolBar, ChoiceArea, GUI, PathSimulation
-\end{enumerate}
-\newpage
-\section{Appendix}
-\appendix
-\section{Screenshots}
-\begin{figure}[htbp]
-\centering
-\includegraphics[scale=0.4]{./mockup.png}
-\caption{Mock-up}\label{mockup}
-\end{figure}
-\begin{figure}[htbp]
-\centering
-\includegraphics[scale=0.4]{./screenies/start.jpg}
-\caption{Curve Editor-omgeving}\label{start}
-\end{figure}
-\begin{figure}[htbp]
-\centering
-\includegraphics[scale=0.4]{./screenies/startMarked.jpg}
-\caption{Curve Editor-omgeving, aangeduid}\label{scrTot}
-\end{figure}
-\newpage
+\end{figure}\newpage
 \section{Referenties}
 Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics\newline
 \url{http://en.wikipedia.org/wiki/Bezier\_curve} (Bezier)\newline
