@@ -87,7 +87,6 @@ public class Hermite extends Algorithm {
 		delta2 = delta * delta;
 		delta3 = delta * delta2;
 		
-		System.out.println( "A: " + a + " B: " + b + " C: " + c + " D: " + d );
 		matrix[row][F0_VALUE] = d;
 		matrix[row][DF0_VALUE] = a*delta3 + b*delta2 + c*delta;
 		matrix[row][D2F0_VALUE] = 6*a*delta3 + 2*b*delta2;

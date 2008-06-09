@@ -220,7 +220,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		ButtonGroup algGroep = new ButtonGroup();
 
 		JRadioButton algName = new JRadioButton("Bezier");
-		algName.setMnemonic(KeyEvent.VK_Z);
 		algName.setSelected(true);
 		algName.addActionListener(this);
 		algName.addActionListener(listener);
@@ -229,7 +228,6 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		radioPanel.add(algName);
 
 		algName = new JRadioButton("Hermite");
-		algName.setMnemonic(KeyEvent.VK_T);
 		algName.setSelected(false);
 		algName.addActionListener(this);
 		algName.addActionListener(listener);

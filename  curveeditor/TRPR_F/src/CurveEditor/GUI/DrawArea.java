@@ -167,7 +167,7 @@ public final class DrawArea extends JPanel {
 			this.g.setColor(  drawProp.getColor( DrawAreaProperties.HOOVERED_LINE ));
 			// Verander de curvedikte en teken de gehooverde
 			// curves uit.
-			this.curveWidth =  drawProp.getTickness();
+			this.curveWidth =  drawProp.getTickness( DrawAreaProperties.LINE );
 			drawOutput(hooveredCurves, false, false);
 
 			this.g.setColor(  drawProp.getColor( DrawAreaProperties.HOOVERED_POINT ));
@@ -290,17 +290,26 @@ public final class DrawArea extends JPanel {
 			// De outputpunten uittekenen.
 			out = curves.get(i).getOutput();
 			for (int j = 0; j < out.size() - 1; ++j) {
+				Point p = out.get( j );
+				Point p2 = out.get( j + 1 );
 				g.drawLine(out.get(j).X(), out.get(j).Y(), out.get(j + 1).X(),
 						out.get(j + 1).Y());
 				// Indien de curve dikker moet zijn dan de default dikte,
 				// kleur de nodige omliggende pixels ook in.
-				if (curveWidth != 0) {
-					for (int k = 1; k <= curveWidth; ++k) {
-						g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(
-								j + 1).X(), out.get(j + 1).Y() + k);
-						g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
-								j + 1).X(), out.get(j + 1).Y() - k);
-					}
+				if (curveWidth != 0)
+					if ( p2.X() - p.X() > p2.Y() - p.Y() )
+						for (int k = 1; k <= curveWidth; ++k) {
+							g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(
+									j + 1).X(), out.get(j + 1).Y() + k);
+							g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
+									j + 1).X(), out.get(j + 1).Y() - k);
+						}
+					else
+						for (int k = 1; k <= curveWidth; ++k) {
+							g.drawLine(out.get(j).X() + k, out.get(j).Y(), out.get(
+									j + 1).X() + k, out.get(j + 1).Y() );
+							g.drawLine(out.get(j).X() - k, out.get(j).Y(), out.get(
+									j + 1).X() - k, out.get(j + 1).Y() );
 				}
 			}
 
@@ -389,5 +398,9 @@ public final class DrawArea extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void toggleNr() {
+		nrs = !nrs;
 	}
 }

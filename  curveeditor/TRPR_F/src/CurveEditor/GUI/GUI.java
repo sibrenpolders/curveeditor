@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,7 +72,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	// Initialiseren van alle GUI-elementen.
 	private void loadComponents() throws InvalidArgumentException {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -86,7 +87,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 		frame = new JFrame("Curve Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
-		frame.setTitle("Curve Editor");
+		frame.setTitle("Curve Editor");		
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(null);
 
@@ -133,7 +134,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 
 		// selectionTool resizen naar de nieuwe dimensies.
 		selectionTool.resize(frame.getWidth(), frame.getWidth());
-
 	}
 
 	// _______________________MOUSE EVENTS_______________________
@@ -513,7 +513,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 	 */
 	// Alles wat te maken heeft met FILE, wordt gebruikt door Menu EN Toolbar
 	private boolean fileEvent(String actionCommand) {
-		System.out.println(actionCommand);
 		if (actionCommand.equals("Open File")) {
 			open();
 			return true;
@@ -582,7 +581,6 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			setCurrentAlgorithm('R');
 			eventHandled = true;
 		} else if( actionCommand.equals( "Kochanek Bartels" )) {		
-			System.out.println( "YEAH" );
 			setCurrentAlgorithm( 'K' );
 			eventHandled = true;
 		}
@@ -665,8 +663,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			eventHandled = true;
 		}
 		// ander naam, zelfde beestje
-		else if (actionCommand.equals("Add Control Point")
-				|| actionCommand.equals("Add Point")) {
+		else if (actionCommand.equals("Add Control Point")) {
 			changeMode(MODE.ADD_INPUT);
 			eventHandled = true;
 			toggle = false;
@@ -705,8 +702,10 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			} else if (actionCommand.equals("Redo")) {
 				redo();
 				draw.repaint();
-			} else if (actionCommand.equals("Preferences"))
-				System.out.println("PREF");
+			} else if (actionCommand.equals("Ok")) {
+				draw.repaint();
+				draw.updateUI();
+			}
 			else if (actionCommand.equals("Save As ..."))
 				saveAs();
 		}
@@ -777,7 +776,7 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			else if (eventName.contains("Tangents"))
 				draw.toggleTangents();
 			else if (eventName.contains("Numbers"))
-				draw.toggleNrs();
+				draw.toggleNr();
 			draw.repaint();
 		}
 
