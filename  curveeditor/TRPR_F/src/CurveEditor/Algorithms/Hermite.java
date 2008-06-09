@@ -65,8 +65,7 @@ public class Hermite extends Algorithm {
 			
 			netStep( X_ROW );
 			netStep( Y_ROW );						
-			
-			System.out.println( pNew );			
+						
 			vop.add( pNew );
 		}
 	}

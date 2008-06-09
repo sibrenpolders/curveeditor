@@ -497,10 +497,50 @@ worden. Dit gebeurt m.b.v. een pop-up dialoog dat te bereiken is via Edit-> Pref
 					valt uiteraard samen met het derde controlepunt van het huidige viertal, om alzo een aaneengesloten curve te verkrijgen.			
 					<br /><br />
 				</li>
-				<li id="HC"><span class="underline">Hermite Cardinal (figuur 20)</span><br />					
+				<li id="HC"><span class="underline">Hermite Cardinal (figuur 20)</span><br />					De methode van punten berekenen is hier net hetzelfde als besproken in hermite m.b.v. 
+basisfuncties.
+Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
+berekend worden uit de opgegeven controlepunten. 
+De tangens wordt door de volgende formule uitgerekend:\newline 
+$m_k = (1 - c)(p_{k+1} -p_{k-1})/2$
+
+hierbij is c een willekeurig getal tussen 0 en 1.
+
+Uit deze formule is duidelijk af te leiden dat er geen lijn getrokken kan worden 
+tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt. 
+Omdat hun tangens niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
+om de verdere berekeningen te volbrengen.( zie figuur \ref{cardinal} )
 					<br /><br />
 				</li>
 				<li id="HCR"><span class="underline">Hermite Catmull-Rom (figuur 21)</span><br />
+Deze methode kom volledig overeen met de methode van Cardinal, met het enige verschil dat
+de toen random waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
+worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt.( zie figuur
+					<br /><br />
+				</li>
+				<li id="HCR"><span class="underline">Hermite Kochanek–Bartels (figuur 22)</span><br />
+Deze methode maakt weer gebruik van het normale Hermite algoritme Het verschil
+met de 2 voorgaande berekeningen is dat Kochanek-Bartels rekening houdt met start en eind
+tangens.
+
+Deze methode maakt gebruik van 3 variabelen:\newline
+t = tension ( verandert de lengte van de tangens )\newline
+b = bias ( verandert de richting van de tangens )\newline
+c = continu\"iteit ( controleert de gladheid van de overgang tussen begin en eind tangens)
+\newline
+
+Al deze variabelen vari\"eren tussen -1 en 1 hoe dichter de variabelen bij -1 zitten hoe
+meer de curve lineariteit benadert. Als de variabelen dicht bij de 1 zitten dan zal de curve
+gladder zijn.\newline
+
+De formules om de tangens te berekenen zijn ( hierbij is m0 de tangens van p0 en m1 de tangens
+van p1):\newline
+$m0 = {{(1-t)(1+b)(1-c)(p_i-p_{i-1})}\over{2}} + {{(1-t)(1+b)(1+c)(p_{i+1}-p_i)}\over{2}}$\newline
+$m1 = {{(1-t)(1+b)(1+c)(p_i-p_{i-1})}\over{2}} + {{(1-t)(1+b)(1-c)(p_{i+1}-p_i)}\over{2}}$\newline
+
+Dus bij input van vier controlepunten kan je de tangens van controlepunt het tweede en derde
+punt berekenen. Net zoals bij de vorige algoritmes zal je dus niet kunnen interpoleren tussen
+de eerste en de tweede controlepunten en de voorlaatste en de laatste controlepunten.
 					<br /><br />
 				</li>
 			</ul>	
