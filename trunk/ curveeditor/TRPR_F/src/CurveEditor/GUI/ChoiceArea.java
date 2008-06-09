@@ -31,7 +31,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 	// private Vector<Algorithm> v;
 	private static final String[] bezierAlgTypeNames = { "Bezier C0", "Bezier G1", "Bezier C1" };
 	private static final String[] hermiteAlgTypeNames = { "Hermite Normal",	"Cardinal", "Catmull-Rom", "Kochanek Bartels" };
-	private static final String[] lineairAlgTypeNames = { "Lineair" };
+	private static final String[] linearAlgTypeNames = { "Linear" };
 	
 	private static final int TOGGLEBUTTONWIDTH = 250;
 	private static final int TOGGLEBUTTONHEIGHT = 25;
@@ -53,7 +53,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		super(new BorderLayout());
 		this.listener = listener;
 		this.itemListener = itemListener;
-		currentAlgTypeNames = lineairAlgTypeNames;
+		currentAlgTypeNames = linearAlgTypeNames;
 		init();
 	}
 
@@ -220,7 +220,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));
 		ButtonGroup algGroep = new ButtonGroup();
 
-		JRadioButton algName = new JRadioButton("Lineair");
+		JRadioButton algName = new JRadioButton("Linear");
 		algName.setSelected(true);
 		algName.addActionListener(this);
 		algName.addActionListener(listener);		
@@ -384,7 +384,7 @@ public class ChoiceArea extends JPanel implements ActionListener {
 			type.setModel(new DefaultComboBoxModel( bezierAlgTypeNames ));
 		else if (e.getActionCommand().equals("Hermite"))
 			type.setModel(new DefaultComboBoxModel( hermiteAlgTypeNames ));
-		else if ( e.getActionCommand().equals( "Lineair" ))
-			type.setModel(new DefaultComboBoxModel( lineairAlgTypeNames ));
+		else if ( e.getActionCommand().equals( "Linear" ))
+			type.setModel(new DefaultComboBoxModel( linearAlgTypeNames ));
 	}
 }
