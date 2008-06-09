@@ -38,6 +38,7 @@ public class Menu extends JMenuBar implements ActionListener {
 	private Container prefContainer;
 	private JPanel container;
 	private DrawAreaProperties drawProp;
+	private int thickness;
 	
 	public Menu( ActionListener listener, DrawAreaProperties drawProp ) {
 		this.listener = listener;
@@ -69,14 +70,15 @@ public class Menu extends JMenuBar implements ActionListener {
 				colorSelector( DrawAreaProperties.SELECTED_LINE, actionCommand );
 			else if ( actionCommand.equals( "Hoovered Line Color" ))
 				colorSelector( DrawAreaProperties.HOOVERED_LINE, actionCommand );
-			else if ( actionCommand.equals( "Deselected Line Color" ))
+			else if ( actionCommand.equals( "Unselected Line Color" ))
 				colorSelector( DrawAreaProperties.UNSELECTED_LINE, actionCommand );
-			else if ( actionCommand.equals( "Selected Line Color" ))
-				colorSelector( DrawAreaProperties.SELECTED_LINE, actionCommand );
-			else if ( actionCommand.equals( "Hoovered Line Color" ))
-				colorSelector( DrawAreaProperties.HOOVERED_LINE, actionCommand );
-			else if ( actionCommand.equals( "Deselected Line Color" ))
-				colorSelector( DrawAreaProperties.UNSELECTED_LINE, actionCommand );
+			else if ( actionCommand.equals( "Selected Point Color" ))
+				colorSelector( DrawAreaProperties.SELECTED_POINT, actionCommand );
+			else if ( actionCommand.equals( "Hoovered Point Color" ))
+				colorSelector( DrawAreaProperties.HOOVERED_POINT, actionCommand );
+			else if ( actionCommand.equals( "Unselected Point Color" ))
+				colorSelector( DrawAreaProperties.UNSELECTED_POINT, actionCommand );
+			
 		} catch( Exception ex ) {
 			;
 		}
@@ -136,12 +138,12 @@ public class Menu extends JMenuBar implements ActionListener {
 		menu.addSeparator();
 
 		CreateMenuItem("Save File", KeyEvent.VK_S, "Save a file",
-		"CurveEditor/GUI/icons/filesave.png");
-		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK ));
+		"CurveEditor/GUI/icons/filesave.png");		
 		menuItem.addActionListener(listener);
 
 		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...",
 		"CurveEditor/GUI/icons/filesaveas.png" );
+		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK ));
 		menuItem.addActionListener(listener);
 
 		menu.addSeparator();
@@ -207,20 +209,21 @@ public class Menu extends JMenuBar implements ActionListener {
 		button = new JRadioButton("Path Simulation");
 		button.setSelected(false);
 		button.addActionListener(listener);
+		button.addActionListener( this );
 		button.setToolTipText("Simulate a path");
 
 		group.add(button);
 		menu.add(button);
 
 		JMenu menu2 = new JMenu("Point");
-		menu2.setMnemonic(KeyEvent.VK_P);
+//		menu2.setMnemonic(KeyEvent.VK_P);
 		menu2.getAccessibleContext().setAccessibleDescription("");
 		menu2.setToolTipText("Tools for point Manipulation");
 		menu.add(menu2);
 		createPointPanel(menu2);
 
 		menu2 = new JMenu("Curve");
-		menu2.setMnemonic(KeyEvent.VK_C);
+//		menu2.setMnemonic(KeyEvent.VK_C);
 		menu2.getAccessibleContext().setAccessibleDescription("");
 		menu2.setToolTipText("Tools for curve Manipulation");
 		menu.add(menu2);
@@ -414,7 +417,8 @@ public class Menu extends JMenuBar implements ActionListener {
 		// uitgelijnd
 		add(Box.createHorizontalGlue());
 		CreateMenu("Help", KeyEvent.VK_H, "");
-
+		add( Box.createRigidArea( new Dimension( 10, 0 )));
+		
 		CreateMenuItem("Quick Howto's", KeyEvent.VK_F1, "Quick Howto's", 
 				"CurveEditor/GUI/icons/fork.png" );
 		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ));
@@ -454,18 +458,19 @@ public class Menu extends JMenuBar implements ActionListener {
 				+ "Sibrand Staessens<br />"
 				+ "Sibren Polders<br />"
 				+ "</p><br />"
+				+ "<p style='font-family: arial;font-weight: bold;margin-left: 20px'>Special thanks to: </p><br />"
 				+ "<p style='font-family: arial;font-weight: lighter;margin-left: 20px'>"
-				+ "Thanks to: <br />"
 				+ "William van Haevere" + "</p>"
 				+ "</html>"));
 		JOptionPane.showMessageDialog(null, hbox, "CurveEditor - About",
 				JOptionPane.PLAIN_MESSAGE );
 	}
 
-	private void pref() throws InvalidArgumentException {
+	private void initPref( ) {
 		preferences = new JDialog( );
 		preferences.setTitle("Curve Editor - Preferences");
 		preferences.setModal(true);
+		preferences.setResizable( false );
 		prefContainer = preferences.getContentPane();
 		prefContainer.setLayout( new BoxLayout( prefContainer, BoxLayout.Y_AXIS ));
 		Dimension d = new Dimension( 450, 200 );
@@ -473,28 +478,43 @@ public class Menu extends JMenuBar implements ActionListener {
 		prefContainer.setMaximumSize( d );
 		prefContainer.setMinimumSize( d );
 		prefContainer.setPreferredSize( d );
+	}
+	
+	private void pref() throws InvalidArgumentException {
+		Dimension dX = new Dimension( 5, 0 );
+		Dimension dY = new Dimension( 0, 5 );	
 
+		initPref( );
+		
 		JPanel hbox = new JPanel( );
 		hbox.setLayout( new BoxLayout( hbox, BoxLayout.X_AXIS ));
-
+		hbox.add( Box.createRigidArea( dX ));
+		
 		container = new JPanel( );
 		container.setLayout( new BoxLayout( container, BoxLayout.Y_AXIS ));
 		container.setBorder( BorderFactory.createTitledBorder( "Change Colors" ));
 		makeColor( "Selected Line Color", DrawAreaProperties.SELECTED_LINE );
 		makeColor( "Hoovered Line Color", DrawAreaProperties.HOOVERED_LINE );
-		makeColor( "Deselected Line Color", DrawAreaProperties.UNSELECTED_LINE );
+		makeColor( "Unselected Line Color", DrawAreaProperties.UNSELECTED_LINE );
+		container.add( Box.createRigidArea( dY ));
+		makeColor( "Selected Point Color", DrawAreaProperties.SELECTED_POINT);
+		makeColor( "Hoovered Point Color", DrawAreaProperties.HOOVERED_POINT );
+		makeColor( "Unselected Point Color", DrawAreaProperties.UNSELECTED_POINT );
 		container.add( Box.createVerticalGlue() );
 		hbox.add( container );
 
 		container = new JPanel( );
 		container.setLayout( new BoxLayout( container, BoxLayout.Y_AXIS ));
 		container.setBorder( BorderFactory.createTitledBorder( "Thickness" ));
-		makeLineThickness( );
+		makeThickness( "Line", DrawAreaProperties.LINE );
+		container.add( Box.createRigidArea( new Dimension( 0, 5 )));
+		makeThickness( "Point", DrawAreaProperties.POINT );
 		container.add( Box.createVerticalGlue() );
 		hbox.add( container );
-
+		hbox.add( Box.createRigidArea( dX ));
+		
 		prefContainer.add( hbox );
-
+		
 		hbox = new JPanel( );
 		hbox.setLayout( new BoxLayout( hbox, BoxLayout.X_AXIS ));
 		hbox.add( Box.createHorizontalGlue( ));
@@ -503,11 +523,12 @@ public class Menu extends JMenuBar implements ActionListener {
 		button.addActionListener( new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
 				drawProp.makeAdjustments();
-				preferences.dispose();
-			}
-
+				preferences.dispose();				
+			}			
 		});
-		d = new Dimension( 80, 20 );
+		
+		button.addActionListener( listener );
+		Dimension d = new Dimension( 80, 20 );
 		button.setSize( d );
 		button.setMaximumSize( d );
 		button.setMaximumSize( d );
@@ -584,7 +605,8 @@ public class Menu extends JMenuBar implements ActionListener {
 		container.add( container2 );
 	}
 
-	private void makeLineThickness() {
+	private void makeThickness( String string, int thicknessOf  ) {
+		thickness = thicknessOf;
 		JPanel container2 = new JPanel( );
 		container2.setLayout( new BoxLayout( container2, BoxLayout.X_AXIS ));
 		
@@ -592,7 +614,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		
 		JLabel label = new JLabel(
 				"<html>"
-				+ "<p style='font-family: arial;font-weight: lighter'>Line Thickness: </p>"
+				+ "<p style='font-family: arial;font-weight: lighter'>" + string + " Thickness: </p>"
 				+ "</html>" );
 
 		Dimension d = new Dimension( 150, 20 );
@@ -608,13 +630,13 @@ public class Menu extends JMenuBar implements ActionListener {
 		// comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.Y_AXIS));
 		// comboPanel.add(Box.createHorizontalGlue());
 
-		comboBox.setSelectedIndex( drawProp.getTickness() );
+		comboBox.setSelectedIndex( drawProp.getTickness( thicknessOf ) );
 		comboBox.addActionListener( new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox tmp = (JComboBox) e.getSource();
 				Integer tmp2 = (Integer)tmp.getSelectedItem( );
 				
-				drawProp.setTickness( tmp2 );
+				drawProp.setTickness( tmp2, thickness );
 			}
 			
 		});

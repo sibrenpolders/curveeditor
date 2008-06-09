@@ -14,6 +14,8 @@ public class DrawAreaProperties {
 	public static final int HOOVERED_POINT = 6;
 	public static final int BACKGROUND = 7;
 	public static final Integer THICKNESS_CHOICES[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	public static final int LINE = 8;
+	public static final int POINT = 9;
 	
 	private Color selectedLineColor;
 	private Color hooveredLineColor;
@@ -33,9 +35,12 @@ public class DrawAreaProperties {
 	private Color hooveredPointColorTmp;
 	private Color backgroundColorTmp;
 	
-	private int thicknessTmp;
-	private int thickness;
-		
+	private int lineThicknessTmp;
+	private int lineThickness;
+	
+	private int pointThicknessTmp;
+	private int pointThickness;
+	
 	public DrawAreaProperties( ) {
 		selectedLineColor = Color.red;
 		hooveredLineColor = Color.magenta;
@@ -48,7 +53,8 @@ public class DrawAreaProperties {
 		
 		backgroundColor = Color.white;
 	
-		thickness = 0;
+		lineThickness= 0;
+		pointThickness= 0;
 		
 		// hulpvariabele initialiseren
 		selectedLineColorTmp = selectedLineColor;
@@ -62,7 +68,8 @@ public class DrawAreaProperties {
 		
 		backgroundColorTmp = backgroundColor;
 		
-		thicknessTmp = thickness;
+		lineThicknessTmp = lineThickness;
+		pointThicknessTmp = pointThickness;
 	}
 	
 	public Color getColor( int getColorOf ) throws InvalidArgumentException {
@@ -143,7 +150,8 @@ public class DrawAreaProperties {
 				
 		backgroundColor= backgroundColorTmp;
 		
-		thickness = thicknessTmp;
+		lineThickness= lineThicknessTmp;
+		pointThickness= pointThicknessTmp;
 	}
 	
 	/*
@@ -161,14 +169,28 @@ public class DrawAreaProperties {
 		
 		backgroundColorTmp = backgroundColor;
 		
-		thicknessTmp = thickness;
+		lineThicknessTmp = lineThickness;
+		pointThicknessTmp = pointThickness;
 	}
 	
-	public int getTickness( ) {
-		return thickness;
+	public int getTickness( int thicknessOf ) {
+		switch ( thicknessOf ) {
+		case LINE:
+			return lineThickness;
+		case POINT:
+			return pointThickness;
+		default:
+			return -1;
+		}
 	}
 	
-	public void setTickness( int t ) {
-		thicknessTmp = t;
+	public void setTickness( int t, int thicknessOf ) {
+		switch ( thicknessOf ) {
+		case LINE:
+			lineThickness = t;
+		case POINT:
+			pointThickness = t;
+		
+		}		
 	}
 }
