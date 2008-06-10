@@ -1,3 +1,4 @@
+// auteur Sibren Polders
 package CurveEditor.Algorithms;
 
 import CurveEditor.Curves.Curve;

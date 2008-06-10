@@ -1,3 +1,4 @@
+// auteur Sibrand Staessens
 package CurveEditor.Algorithms;
 
 import CurveEditor.Curves.Point;
