@@ -1,4 +1,4 @@
-// auteur Sibrand Staessens
+// auteur Sibren Polders
 package CurveEditor.Tools;
 
 /*
