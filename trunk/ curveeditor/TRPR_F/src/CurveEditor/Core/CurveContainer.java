@@ -57,7 +57,7 @@ public class CurveContainer {
 
 	// De dimensies van de voorstelling veranderen en
 	// de vorige gegevens naar de nieuwe voorstelling kopiëren.
-	public final void resize(int MaxX, int MaxY)
+	public final void resize( int MaxX, int MaxY )
 			throws InvalidArgumentException {
 		if (MaxX < 0 || MaxY < 0)
 			throw new InvalidArgumentException(

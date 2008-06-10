@@ -159,6 +159,16 @@ public class Bezier extends Algorithm {
 		}
 	}
 
+	public void calculate( Curve c ) throws InvalidArgumentException  {
+		if (c == null) // ongeldig argument --> exception gooien
+			throw new InvalidArgumentException(
+					"Algorithm.java - calculate(Curve): Invalid Argument.");
+		else {
+			c.clearOutput();
+			calculate(c.getInput(), c.getOutput());
+		}
+	}
+	
 	// Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
 	// outpunten m.b.v. het geïmplementeerde interpolatiealgoritme.
 	public void calculate(Vector<Point> input, Vector<Point> output)
@@ -195,7 +205,7 @@ public class Bezier extends Algorithm {
 			c.clearOutput();
 
 			try {
-				calculate(c);
+				calculate( c.getInput(), c.getOutput() );
 			} catch (InvalidArgumentException e) {
 				c.clearOutput();
 				throw e;
