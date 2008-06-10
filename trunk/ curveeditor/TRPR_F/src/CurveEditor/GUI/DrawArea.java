@@ -1,5 +1,6 @@
 package CurveEditor.GUI;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -298,23 +299,20 @@ public final class DrawArea extends JPanel {
 						out.get(j + 1).Y());
 				// Indien de curve dikker moet zijn dan de default dikte,
 				// kleur de nodige omliggende pixels ook in.
-				if (curveWidth != 0)
-					if ( out.get( j + 1 ).X() - out.get( j ).X( ) > 0.01 )
-						for (int k = 1; k <= curveWidth; ++k) {
-							g.drawLine( out.get(j).X() + k, out.get(j).Y(),  out.get(
-									j + 1).X() + k, out.get(j + 1).Y( ));
-							g.drawLine(out.get(j).X() - k, out.get(j).Y(), out.get(
-									j + 1).X() - k, out.get(j + 1).Y( ));						
-						}					
-					else
-						for (int k = 1; k <= curveWidth; ++k) {
-							g.drawLine( out.get(j).X(), out.get(j).Y() + k,  out.get(
-									j + 1).X(), out.get(j + 1).Y( ) + k);
-							g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
-									j + 1).X(), out.get(j + 1).Y( ) - k);						
-						}
-			}
-
+				if (curveWidth != 0) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setStroke(new BasicStroke( curveWidth )); 
+					g2.drawLine(out.get(j).X(), out.get(j).Y(), out.get(j + 1).X(),
+							out.get(j + 1).Y());
+				}
+//					for (int k = 1; k <= curveWidth; ++k) {
+//						g.drawLine( out.get(j).X() + k, out.get(j).Y(),  out.get(
+//								j + 1).X() + k, out.get(j + 1).Y( ));
+//						g.drawLine(out.get(j).X() - k, out.get(j).Y(), out.get(
+//								j + 1).X(), out.get(j + 1).Y( ));						
+					}
+//			}
+			
 			// De inputpunten uittekenen.
 			in = curves.get(i).getInput();
 			for (int j = 0; j < in.size(); ++j) {

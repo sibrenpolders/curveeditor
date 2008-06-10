@@ -60,8 +60,9 @@ public class CurveContainer {
 	public final void resize( int MaxX, int MaxY )
 			throws InvalidArgumentException {
 		if (MaxX < 0 || MaxY < 0)
-			throw new InvalidArgumentException(
-					"CurveContainer.java - resize(int, int): Invalid Argument.");
+			return;
+//			throw new InvalidArgumentException(
+//					"CurveContainer.java - resize(int, int): Invalid Argument.");
 		else {
 			// de oude bijhouden
 			Curve[][] tmp = curves;
