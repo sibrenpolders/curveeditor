@@ -1,3 +1,4 @@
+// auteur Sibrand Staessens
 package CurveEditor.Exceptions;
 
 public class DivisionByZeroException extends Exception {

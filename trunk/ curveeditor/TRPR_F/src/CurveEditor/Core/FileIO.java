@@ -1,5 +1,12 @@
+// auteur Sibren Polders
 package CurveEditor.Core;
 
+/*
+ * Deze klasse zal voor de fileIO zorgen.
+ * In eerste instantie zal hij De opgegeven curves in xml formaat opslaan op de gebruiker zijn harde schijf.
+ * Verder zal hij ook nog voor undo redo functionaliteit zorgen. 
+ * Hierbij worden de cuves dan in een byte array weggeschreven die dan in een stack gepushed worden voor later gebruik.
+ */
 import CurveEditor.Curves.Point;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Exceptions.InvalidArgumentException;
@@ -55,40 +62,58 @@ public class FileIO extends DefaultHandler {
 	public FileIO(String filename, Vector<Curve> curves) {
 	}
 
+	/*
+	 * laad een bestand in
+	 */
 	public void load(String filename, Vector<Curve> curves) {
 		this.curves = curves;
 		parseXmlFile(filename);
 	}
 
+	/*
+	 * saved de curves naar de harde schijf
+	 */
 	public void save(String filename, Vector<Curve> curves) {
 		try {
-			if (filename.endsWith(".xml") || filename.endsWith(".XML"))
-				pw = new PrintWriter(new File(filename));
-			else if (filename.indexOf(".") != -1) {
-				pw = new PrintWriter(new File(filename.substring(0, filename
-						.indexOf("."))
-						+ ".xml"));
-			} else
-				pw = new PrintWriter(new File(filename + ".xml"));
+			// Als de gebruiker xml of XML heeft ingegeven dan bestand openen om te schrijven
+			if ( filename.endsWith( ".xml" ) || filename.endsWith( ".XML" ))
+				pw = new PrintWriter( new File( filename ));
+			// als de gebruiker een andere extentie heeft ingegeven toch maar opslaan naar xml
+			else if ( filename.indexOf( "." ) != -1 ) {
+				pw = new PrintWriter( new File( filename.substring( 0, filename
+						.indexOf( "." ))
+						+ ".xml" ));
+			} else 			// anders xml toevoegen aan de bestandsnaam
+				pw = new PrintWriter( new File( filename + ".xml" ));
 
-			StreamResult streamResult = new StreamResult(pw);
-			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
-					.newInstance();
-			hd = tf.newTransformerHandler();
-			Transformer serializer = hd.getTransformer();
-			serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");//
-			// TODO DTD online zetten of relatief pad zoeken
-			serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,"../Saves/curveEditor.dtd");
-			serializer.setOutputProperty(OutputKeys.METHOD, "xml");
-			serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+			// een nieuwe stream openen
+			StreamResult streamResult = new StreamResult( pw );			
+			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance( );
+			hd = tf.newTransformerHandler( );
+			Transformer serializer = hd.getTransformer( );
+			// eerst de eigenschappen van de eerste tag plaatsen
+			serializer.setOutputProperty( OutputKeys.ENCODING, "UTF-8" );
+//			 TODO DTD online zetten of relatief pad zoeken
+//			serializer.setOutputProperty( OutputKeys.DOCTYPE_SYSTEM,"../Saves/curveEditor.dtd" );			
+			serializer.setOutputProperty( OutputKeys.METHOD, "xml" );
+			serializer.setOutputProperty( OutputKeys.INDENT, "yes" );
 			hd.setResult(streamResult);
-			hd.startDocument();
+			hd.startDocument(); // begin te schrijven naar het document ( eerste tag zetten
 			// hd.processingInstruction("xml-stylesheet","type=\"text/xsl\"
 			// href=\"mystyle.xsl\"");
-			hd.startElement("", "", "curveEditor", null);
+			hd.startElement( "", "", "curveEditor", null ); // <curveEditor>
 			String curTitle;
 
-			++indentLevel;
+			++indentLevel; // zal zorgen voor een mooie identatie
+			/*
+			 * Deze lus zal voor elke curve het volgende geven
+			 * <curve>
+			 * 		<type>X</type>
+			 * 		<point>P</point>
+			 * </curve>
+			 * 
+			 * Waarbij er natuurlijk 1 geen of meerder <point>P</point> aanwezig zijn
+			 */
 			for (int i = 0; i < curves.size(); ++i) {
 				hd.startElement("", "", "curve", null);
 				hd.startElement("", "", "type", null);
@@ -106,8 +131,8 @@ public class FileIO extends DefaultHandler {
 				}
 				hd.endElement("", "", "curve");
 			}
-			hd.endElement("", "", "curveEditor");
-			hd.endDocument();
+			hd.endElement("", "", "curveEditor"); // </curveEditor>
+			hd.endDocument(); // einde van het document
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
@@ -123,6 +148,11 @@ public class FileIO extends DefaultHandler {
 		hd.endElement("", "", cor);
 	}
 
+	/*
+	 *  Zal een ingegeven xml file parse.
+	 *  Deze functie wordt aangeroepen door de load functie en zal gebruik maken van de SAXParse om het document in 
+	 *  te laden
+	 */
 	private void parseXmlFile(String filename) {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		spf.setValidating( false );
@@ -145,15 +175,20 @@ public class FileIO extends DefaultHandler {
 
 	}
 
-	// Event Handlers
+	/* 
+	 * Event Handlers
+	 * Als we een startElement tegenkomen ( <curveEditor>, <point>, <type>
+	 * Doe dan het volgende:
+	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		// reset
 		tempVal = "";
 		if (qName.equalsIgnoreCase("Curve"))
-			// create a new instance of employee
+			// nieuwe instantie van curve aanmaken
 			curve = new Curve();
 		else if (qName.equalsIgnoreCase("Point")) {
+			// nieuwe instantie van punt aanmaken
 			point = new Point();
 		}
 
@@ -165,6 +200,11 @@ public class FileIO extends DefaultHandler {
 		tempVal = new String(ch, start, length);
 	}
 
+	/* 
+	 * Event Handlers
+	 * Als we een eindElement tegenkomen ( </curveEditor>, </point>, </type>
+	 * Doe dan het volgende:
+	 */
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException, NumberFormatException,
 			IndexOutOfBoundsException {
@@ -174,6 +214,7 @@ public class FileIO extends DefaultHandler {
 			curves.add(curve);
 
 		else if (qName.equalsIgnoreCase("Type")) {
+			// zet het curve type
 			char c = 0;
 			c = tempVal.charAt(0);
 			curve.setType(c);
@@ -184,14 +225,17 @@ public class FileIO extends DefaultHandler {
 
 		else if (qName.equalsIgnoreCase("Point"))
 			try {
+				// nieuw punt toevegen
 				curve.addInput(point);
 			} catch (InvalidArgumentException e) {
 				e.printStackTrace();
 			}
 		else if (qName.equalsIgnoreCase("X"))
+			// x coordinaat toevoegen aan het huduige punt
 			point.setX(Integer.parseInt(tempVal));
 
 		else if (qName.equalsIgnoreCase("Y"))
+			// y coordinaat toevoegen aan het huduige punt
 			point.setY(Integer.parseInt(tempVal));
 
 		// else if (qName.equalsIgnoreCase("Z"))
@@ -203,6 +247,10 @@ public class FileIO extends DefaultHandler {
 	private Stack<byte[]> stack = new Stack<byte[]>();
 	private Stack<byte[]> stackRedo = new Stack<byte[]>();
 
+	/*
+	 * Zal ervoor zorgen dat de huidige situatie opgeslagen wordt in de stack.
+	 * Dit is nodig voor undo functionaliteit
+	 */
 	public void push(Vector<Curve> curves, Vector<Curve> selectedCurves)
 			throws InvalidArgumentException {		
 		if (curves == null || selectedCurves == null)
@@ -213,6 +261,9 @@ public class FileIO extends DefaultHandler {
 		stackRedo.clear();
 	}
 
+	/*
+	 * Zal ervoor zorgen dat ook redo mogelijk is
+	 */	
 	public void pushNew(Vector<Curve> curves, Vector<Curve> selectedCurves)
 			throws InvalidArgumentException {
 		if (curves == null || selectedCurves == null)
@@ -222,6 +273,9 @@ public class FileIO extends DefaultHandler {
 		pushCurve(selectedCurves, stackRedo);
 	}
 
+	/*
+	 * Maak de laatste bewerking ongedaan
+	 */
 	public void undo(Vector<Curve> curves, Vector<Curve> selectedCurves)
 			throws EmptyStackException, InvalidArgumentException {
 		if (stack.size() > 1) {
@@ -237,6 +291,9 @@ public class FileIO extends DefaultHandler {
 		pop(curves, selectedCurves, stack);
 	}
 
+	/*
+	 * maak de laatste undo bewerking ongedaan
+	 */
 	public void redo(Vector<Curve> curves, Vector<Curve> selectedCurves)
 			throws EmptyStackException, InvalidArgumentException {
 		if (stackRedo.size() > 1) {
@@ -251,6 +308,9 @@ public class FileIO extends DefaultHandler {
 		pop(curves, selectedCurves, stackRedo);
 	}
 
+	/*
+	 * pop het bovenste element van de stack
+	 */
 	private void pop(Vector<Curve> curves, Vector<Curve> selectedCurves,
 			Stack<byte[]> stack1) throws InvalidArgumentException,
 			EmptyStackException {
@@ -264,6 +324,10 @@ public class FileIO extends DefaultHandler {
 		popCurve(curves, stack1);
 	}
 
+	/*
+	 * Deze functie doet net hetzelfde als de save functie van hierboven
+	 * alleen zal ze naar een byte array wegschrijven i.p.v. een file
+	 */
 	private void pushCurve(Vector<Curve> v, Stack<byte[]> stack1) {
 		try {
 			ByteArrayOutputStream temp;
@@ -282,7 +346,6 @@ public class FileIO extends DefaultHandler {
 			hd.startElement("", "", "curveEditor", null);
 			String curTitle;
 
-			++indentLevel;
 			for (int i = 0; i < v.size(); ++i) {
 				hd.startElement("", "", "curve", null);
 				hd.startElement("", "", "type", null);
@@ -309,6 +372,10 @@ public class FileIO extends DefaultHandler {
 		}
 	}
 
+	/*
+	 * Deze functie doet net hetzelfde als de load functie van hierboven
+	 * alleen zal ze inlezen van een byte array i.p.v een file
+	 */
 	private void popCurve(Vector<Curve> v, Stack<byte[]> stack1) {
 		Vector<Curve> prev = curves;
 		this.curves = v;

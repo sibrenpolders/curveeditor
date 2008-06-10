@@ -1,3 +1,4 @@
+// auteur Sibren Polders
 package CurveEditor.GUI;
 
 import java.awt.BorderLayout;
@@ -6,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -165,7 +165,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		inputFieldPanel.add( row );
 		add(inputFieldPanel );
 	}
-
+	
+	/*
+	 * Zal ervoor zorgen dat de gebruiker een punt kan ingeven door de x en y coordinaten in te geven 
+	 */
 	private JTextField createInput( JPanel parent, String textString ) {
 		// label aanmaken
 		JLabel label = new JLabel( "<html><span style='font-weight: bolder'>"
@@ -191,6 +194,9 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		return text;
 	}
 
+	/*
+	 * maakt een standaard comboBoz aan en zet wat waarden
+	 */
 	private void createComboBox() {
 		JPanel comboPanel = new JPanel( );
 		// comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.Y_AXIS));
@@ -211,6 +217,10 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		container.add( type );
 	}
 
+	/*
+	 * Zal het radiopaneel bovaan in choice area zichtbaar maken, dit
+	 * zal de gebruiker de keuze geven tussen linear, bezier en hermite.
+	 */
 	private void createRadioPanel( ) {
 		container = new JPanel( ); // zorgt voor de layout
 		container.setLayout( new BoxLayout( container, BoxLayout.Y_AXIS ));
@@ -255,6 +265,9 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		add( container );
 	}
 
+	/*
+	 * Zal de checkboxen onderaan choice area zichtbaar maken.
+	 */
 	private void createCheckBox( ) {
 		JPanel container = new JPanel( ); // zorgt voor de uitlijning
 		container.setLayout( new BoxLayout( container, BoxLayout.X_AXIS ));
@@ -277,6 +290,11 @@ public class ChoiceArea extends JPanel implements ActionListener {
 		add( container );
 	}
 
+	/*
+	 *  zal een standaar checkbox item aanmaken.
+	 *  Er een listener aan toevoegen en het geheel toevoegen
+	 *  bij het klasse veld checkPanel
+	 */	
 	private void createCheckBoxItem( String name ) {
 		JCheckBox item = new JCheckBox( name );
 		item.addItemListener( itemListener );

@@ -1,5 +1,10 @@
+// auteur Sibrand Staessens
 package CurveEditor.Tools;
 
+/*
+ * Deze klasse zal voor een klein bolletje zorgen die de getekende curve zal evalueren
+ * De klasse start in een aparte thread zodat de gebruiker nog rustig verder kan werken.
+ */
 import java.util.Vector;
 import CurveEditor.Curves.Curve;
 import CurveEditor.Curves.Point;
@@ -19,7 +24,9 @@ public class PathSimulation implements Runnable {
 			Vector<Point> out = curves.get( i ).getOutput( );
 
 			for ( int j = 0; j < out.size( ); j += 10 ) {
+				// teken het bolletje op positie out.get( j )
 				draw.drawRunner( out.get( j ));
+				// doe het eigenlijke tekenwerk
 				draw.repaint( );
 				try {
 					Thread.sleep( 100 );

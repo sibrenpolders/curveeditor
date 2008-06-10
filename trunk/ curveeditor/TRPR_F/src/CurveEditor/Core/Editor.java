@@ -1,3 +1,4 @@
+// auteur Sibrand Staessens
 package CurveEditor.Core;
 
 import java.util.EmptyStackException;

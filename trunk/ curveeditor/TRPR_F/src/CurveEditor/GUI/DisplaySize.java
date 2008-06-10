@@ -1,3 +1,4 @@
+// auteur Sibren Polders
 package CurveEditor.GUI;
 
 import java.awt.Dimension;
