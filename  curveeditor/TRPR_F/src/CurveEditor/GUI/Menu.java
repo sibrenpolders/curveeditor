@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -39,6 +40,12 @@ public class Menu extends JMenuBar implements ActionListener {
 	private JPanel container;
 	private DrawAreaProperties drawProp;
 	private int thickness;
+	private JMenu tools;
+	private JMenu algorithms;
+	private JMenu toolsSub;
+	private JMenu algorithmsSub;
+	private JMenu toolsSub2;
+	private JMenu algorithmsSub2;
 	
 	public Menu( ActionListener listener, DrawAreaProperties drawProp ) {
 		this.listener = listener;
@@ -66,7 +73,7 @@ public class Menu extends JMenuBar implements ActionListener {
 				about( );
 			else if ( actionCommand.equals("Preferences"))
 				pref( );
-			else if ( actionCommand.equals( "Selecteded Line Color" ))
+			else if ( actionCommand.equals( "Selected Line Color" ))
 				colorSelector( DrawAreaProperties.SELECTED_LINE, actionCommand );
 			else if ( actionCommand.equals( "Hoovered Line Color" ))
 				colorSelector( DrawAreaProperties.HOOVERED_LINE, actionCommand );
@@ -78,363 +85,414 @@ public class Menu extends JMenuBar implements ActionListener {
 				colorSelector( DrawAreaProperties.HOOVERED_POINT, actionCommand );
 			else if ( actionCommand.equals( "Unselected Point Color" ))
 				colorSelector( DrawAreaProperties.UNSELECTED_POINT, actionCommand );
-			
+			else if ( actionCommand.equals( "Line" )) {				
+				JComboBox tmp = (JComboBox) e.getSource();
+				Integer tmp2 = (Integer)tmp.getSelectedItem( );
+				drawProp.setTickness( tmp2, DrawAreaProperties.LINE );
+			}
+			tools.setPopupMenuVisible( false );
+			algorithms.setPopupMenuVisible( false );
+			toolsSub.setPopupMenuVisible( false );
+			toolsSub2.setPopupMenuVisible( false );
+			algorithmsSub.setPopupMenuVisible( false );
+			algorithmsSub2.setPopupMenuVisible( false );
 		} catch( Exception ex ) {
 			;
 		}
 	}		
 
 	// Zal de menuBar opstellen
-	private void CreateMenuBar() {
-		setSize();
+	private void CreateMenuBar( ) {
+		setSize( );
 		// Aanmaken van de menubar.
-		makeFile();
-		makeEdit();
-		makeTools();
-		makeAlgorithms();
-		makeHelp();
+		makeFile( );
+		makeEdit( );
+		makeTools( );
+		makeAlgorithms( );
+		makeHelp( );
 	}
 
 	// maakt een JMenu object aan ( m.a.w. de categorienamen van de menubar )
-	private void CreateMenu(String name, int keyEvent, String description) {
-		menu = new JMenu(name);
-		menu.setMnemonic(keyEvent);
-		menu.getAccessibleContext().setAccessibleDescription(description);
-		add(menu);
+	private void CreateMenu( String name, int keyEvent, String description ) {
+		menu = new JMenu( name );
+		menu.setMnemonic( keyEvent );
+		menu.getAccessibleContext() .setAccessibleDescription( description );
+		add( menu );
 
 	}
 
 	// maakt een JMenuItem object aan. Deze stellen de verschillende keuzes voor
 	// die in de menubalk staan
-	private void CreateMenuItem(String name, int keyEvent, String description,
-			String icon) {
-		menuItem = new JMenuItem(name, keyEvent);
+	private void CreateMenuItem( String name, int keyEvent, String description,
+			String icon ) {
+		menuItem = new JMenuItem( name, keyEvent );
 
-		if (icon != null) {
+		if ( icon != null ) {
 //			ImageIcon a = new ImageIcon(icon);
 //			menuItem = new JMenuItem(name, a);
 			URL imgURL = ClassLoader.getSystemResource( icon );
-			ImageIcon imgIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(imgURL));
-			menuItem.setIcon(imgIcon);
+			ImageIcon imgIcon = new ImageIcon( Toolkit.getDefaultToolkit( ).getImage( imgURL ));
+			menuItem.setIcon( imgIcon );
 		}
 
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(keyEvent,
-				ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription(description);
-		menu.add(menuItem);
+		menuItem.setAccelerator( KeyStroke.getKeyStroke(keyEvent,
+				ActionEvent.CTRL_MASK ));
+		menuItem.getAccessibleContext( ).setAccessibleDescription( description );
+		menu.add( menuItem );
 	}
 
-	private void makeFile() {
+	private void makeFile( ) {
 		// menu object aanmaken
-		CreateMenu("File", KeyEvent.VK_F, "");
-		CreateMenuItem("New File", KeyEvent.VK_N, "Create a new file",
-		"CurveEditor/GUI/icons/filenew.png");
-		menuItem.addActionListener(listener);
+		CreateMenu( "File", KeyEvent.VK_F, "" );
+		CreateMenuItem( "New File", KeyEvent.VK_N, "Create a new file",
+		"CurveEditor/GUI/icons/filenew.png" );
+		menuItem.addActionListener( listener );
 
-		CreateMenuItem("Open File", KeyEvent.VK_O, "Open a file",
-		"CurveEditor/GUI/icons/fileopen.png");
-		menuItem.addActionListener(listener);
+		CreateMenuItem( "Open File", KeyEvent.VK_O, "Open a file",
+		"CurveEditor/GUI/icons/fileopen.png" );
+		menuItem.addActionListener( listener );
 
-		menu.addSeparator();
+		menu.addSeparator( );
 
-		CreateMenuItem("Save File", KeyEvent.VK_S, "Save a file",
-		"CurveEditor/GUI/icons/filesave.png");		
-		menuItem.addActionListener(listener);
+		CreateMenuItem( "Save File", KeyEvent.VK_S, "Save a file",
+		"CurveEditor/GUI/icons/filesave.png" );		
+		menuItem.addActionListener( listener );
 
-		CreateMenuItem("Save As...", KeyEvent.VK_O, "Save a file as ...",
+		CreateMenuItem( "Save As...", KeyEvent.VK_O, "Save a file as ...",
 		"CurveEditor/GUI/icons/filesaveas.png" );
 		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK ));
-		menuItem.addActionListener(listener);
+		menuItem.addActionListener( listener );
 
-		menu.addSeparator();
+		menu.addSeparator( );
 
-		CreateMenuItem("Screen Shot", KeyEvent.VK_PRINTSCREEN, "Make a screen shot", 
+		CreateMenuItem( "Screen Shot", KeyEvent.VK_M, "Make a screen shot", 
 				"CurveEditor/GUI/icons/camera.png" );		
-		menuItem.addActionListener(listener);
+		menuItem.addActionListener( listener );
 
-		menu.addSeparator();
+		menu.addSeparator( );
 
-		CreateMenuItem("New Curve", KeyEvent.VK_C, "Start a new curve",
-		"CurveEditor/GUI/icons/curvenew.png");
-		menuItem.addActionListener(listener);
+		CreateMenuItem( "New Curve", KeyEvent.VK_C, "Start a new curve",
+		"CurveEditor/GUI/icons/curvenew.png" );
+		menuItem.addActionListener( listener );
 
-		menu.addSeparator();
+		menu.addSeparator( );
 
-		CreateMenuItem("Quit Program", KeyEvent.VK_Q, "Quit Curve Editor",
-		"CurveEditor/GUI/icons/exit.png");
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		CreateMenuItem( "Quit Program", KeyEvent.VK_Q, "Quit Curve Editor",
+		"CurveEditor/GUI/icons/exit.png" );
+		menuItem.addActionListener( new ActionListener( ) {
+			public void actionPerformed( ActionEvent e ) {
 				int n = JOptionPane.showConfirmDialog(null,
 						"Do you really want to quit?", "Quit Curve Editor",
-						JOptionPane.YES_NO_OPTION);
-				if (n == 0)
-					System.exit(0);
+						JOptionPane.YES_NO_OPTION );
+				if ( n == 0 )
+					System.exit( 0 );
 			}
 
 		});
 	}
 
-	private void makeEdit() {
-		CreateMenu("Edit", KeyEvent.VK_E, "");
+	private void makeEdit( ) {
+		CreateMenu( "Edit", KeyEvent.VK_E, "" );
 
-		CreateMenuItem("Undo", KeyEvent.VK_U, "Undo last action.",
-		"CurveEditor/GUI/icons/undo.png");
-		menuItem.addActionListener(listener);
+		CreateMenuItem( "Undo", KeyEvent.VK_U, "Undo last action.",
+		"CurveEditor/GUI/icons/undo.png" );
+		menuItem.addActionListener( listener );
 
-		CreateMenuItem("Redo", KeyEvent.VK_R, "Redo last action.",
+		CreateMenuItem( "Redo", KeyEvent.VK_R, "Redo last action.",
 		"CurveEditor/GUI/icons/redo.png" );
-		menuItem.addActionListener(listener);
+		menuItem.addActionListener( listener );
 
-		menu.addSeparator();
+		menu.addSeparator( );
 
-		CreateMenuItem("Preferences", KeyEvent.VK_P,
+		CreateMenuItem( "Preferences", KeyEvent.VK_P,
 				"Make adjustments to Curve Editor", 
 				"CurveEditor/GUI/icons/edit.png" );
-		menuItem.addActionListener(listener);
-		menuItem.addActionListener(this);
+		menuItem.addActionListener( listener );
+		menuItem.addActionListener( this );
 	}
 
-	private void makeTools() {
-		CreateMenu("Tools", KeyEvent.VK_T, "");
-		group = new ButtonGroup();
+	private void makeTools( ) {
+		CreateMenu( "Tools", KeyEvent.VK_T, "" );
+		tools = menu;
+		group = new ButtonGroup( );
 
-		JRadioButton button = new JRadioButton("none");
-		button.setSelected(true);
-		button.addActionListener(listener);
-		button.setToolTipText("No tools selected");
+		JRadioButton button = new JRadioButton( "none" );
+		button.setSelected( true );
+		button.addActionListener( listener );
+		button.setToolTipText( "No tools selected" );
 
-		group.add(button);
-		menu.add(button);
+		group.add( button );
+		menu.add( button );
 
-		button = new JRadioButton("Path Simulation");
-		button.setSelected(false);
-		button.addActionListener(listener);
+		button = new JRadioButton( "Path Simulation" );
+		button.setSelected( false );
+		button.addActionListener( listener );
 		button.addActionListener( this );
-		button.setToolTipText("Simulate a path");
+		button.setToolTipText( "Simulate a path" );
 
-		group.add(button);
-		menu.add(button);
+		group.add( button );
+		menu.add( button );
 
-		JMenu menu2 = new JMenu("Point");
-//		menu2.setMnemonic(KeyEvent.VK_P);
-		menu2.getAccessibleContext().setAccessibleDescription("");
-		menu2.setToolTipText("Tools for point Manipulation");
-		menu.add(menu2);
-		createPointPanel(menu2);
+		JMenu menu2 = new JMenu( "Point" );
+		toolsSub = menu2;
+		toolsSub.addActionListener( this );
+		menu2.getAccessibleContext( ).setAccessibleDescription( "" );
+		menu2.setToolTipText( "Tools for point Manipulation" );
+		menu.add( menu2 );
+		createPointPanel( menu2 );
 
-		menu2 = new JMenu("Curve");
-//		menu2.setMnemonic(KeyEvent.VK_C);
-		menu2.getAccessibleContext().setAccessibleDescription("");
-		menu2.setToolTipText("Tools for curve Manipulation");
-		menu.add(menu2);
-		createCurvePanel(menu2);
+		menu2 = new JMenu( "Curve" );
+		toolsSub2 = menu2;
+		toolsSub.addActionListener( this );
+		menu2.getAccessibleContext( ).setAccessibleDescription( "" );
+		menu2.setToolTipText( "Tools for curve Manipulation" );
+		menu.add( menu2 );
+		createCurvePanel( menu2 );
 	}
 
-	private void createPointPanel(JMenu menu) {
-		JPanel radioPanel = new JPanel();
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+	private void createPointPanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
 
-		JRadioButton button = new JRadioButton("Select Point");
-		button.setSelected(false);
-		button.addActionListener(listener);
+		JRadioButton button = new JRadioButton( "Select Point" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		group.add(button);
-		radioPanel.add(button);
+		button = new JRadioButton( "Move Point" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		button = new JRadioButton("Move Point");
-		button.setSelected(false);
-		button.addActionListener(listener);
+		button = new JRadioButton( "Deselect All Points" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.setToolTipText( "Deselect all that was selected" );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		group.add(button);
-		radioPanel.add(button);
+		button = new JRadioButton( "Delete Point" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		button = new JRadioButton("Deselect All Points");
-		button.setSelected(false);
-		button.addActionListener(listener);
-		button.setToolTipText("Deselect all that was selected");
+		button = new JRadioButton( "Deselect Point" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		group.add(button);
-		radioPanel.add(button);
-
-		button = new JRadioButton("Delete Point");
-		button.setSelected(false);
-		button.addActionListener(listener);
-
-		group.add(button);
-		radioPanel.add(button);
-
-		button = new JRadioButton("Deselect Point");
-		button.setSelected(false);
-		button.addActionListener(listener);
-
-		group.add(button);
-		radioPanel.add(button);
-
-		menu.add(radioPanel);
+		menu.add( radioPanel );
 	}
 
-	private void createCurvePanel(JMenu menu) {
-		JPanel radioPanel = new JPanel();
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+	private void createCurvePanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout(radioPanel, BoxLayout.Y_AXIS ));
 
-		JRadioButton button = new JRadioButton("Select Curve");
-		button.setSelected(true);
-		button.addActionListener(listener);
-		button.addActionListener(this);
+		JRadioButton button = new JRadioButton( "Select Curve" );
+		button.setSelected( true );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
+		button = new JRadioButton( "Move Curve" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
+
+		button = new JRadioButton( "Connect Curve" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
 		group.add(button);
 		radioPanel.add(button);
 
-		button = new JRadioButton("Move Curve");
-		button.setSelected(false);
-		button.addActionListener(listener);
+		button = new JRadioButton( "Select All Curves" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.setToolTipText( "Select everything" );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		group.add(button);
-		radioPanel.add(button);
+		button = new JRadioButton( "Deselect All Curves" );
+		button.setSelected( true );
+		button.addActionListener( listener );
+		button.setToolTipText( "Deselect all that was selected" );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		button = new JRadioButton("Connect Curve");
-		button.setSelected(false);
-		button.addActionListener(listener);
+		button = new JRadioButton( "Delete Curve" );
+		button.setSelected( false );
+		button.addActionListener( listener );
+		button.addActionListener( this );
+		
+		group.add( button );
+		radioPanel.add( button );
 
-		group.add(button);
-		radioPanel.add(button);
-
-		button = new JRadioButton("Select All Curves");
-		button.setSelected(false);
-		button.addActionListener(listener);
-		button.setToolTipText("Select everything");
-
-		group.add(button);
-		radioPanel.add(button);
-
-		button = new JRadioButton("Deselect All Curves");
-		button.setSelected(true);
-		button.addActionListener(listener);
-		button.setToolTipText("Deselect all that was selected");
-
-		group.add(button);
-		radioPanel.add(button);
-
-		button = new JRadioButton("Delete Curve");
-		button.setSelected(false);
-		button.addActionListener(listener);
-
-		group.add(button);
-		radioPanel.add(button);
-
-		menu.add(radioPanel);
+		menu.add( radioPanel );
 	}
 
-	private void makeAlgorithms() {
-		CreateMenu("Algorithms", KeyEvent.VK_A, "");
-		group = new ButtonGroup();
+	private void makeAlgorithms( ) {
+		CreateMenu( "Algorithms", KeyEvent.VK_A, "" );
+		group = new ButtonGroup( );
+		algorithms = menu;
+		algorithms.addActionListener( this );
+		
+		JMenu menu2 = new JMenu( "Bezier" );
+		algorithmsSub = menu2;
+		algorithmsSub.addActionListener( this );
+		menu2.setMnemonic( KeyEvent.VK_B );
+		menu2.getAccessibleContext( ).setAccessibleDescription( "" );
+		menu.add( menu2 );
+		createBezierPanel( menu2 );
 
-		JMenu menu2 = new JMenu("Bezier");
-		menu2.setMnemonic(KeyEvent.VK_B);
-		menu2.getAccessibleContext().setAccessibleDescription("");
-		menu.add(menu2);
-		createBezierPanel(menu2);
-
-		menu2 = new JMenu("Hermite");
-		menu2.setMnemonic(KeyEvent.VK_H);
-		menu2.getAccessibleContext().setAccessibleDescription("");
-		menu.add(menu2);
-		createHermitePanel(menu2);
+		menu2 = new JMenu( "Hermite" );
+		algorithmsSub2 = menu2;
+		algorithmsSub2.addActionListener( this );
+		menu2.setMnemonic( KeyEvent.VK_H );
+		menu2.getAccessibleContext( ).setAccessibleDescription( "" );
+		menu.add( menu2 );
+		createHermitePanel( menu2 );
 	}
 
-	private void createBezierPanel(JMenu menu) {
-		JPanel radioPanel = new JPanel();
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+	private void createBezierPanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
 
-		JRadioButton algName = new JRadioButton("Linear");
-		algName.setSelected(true);
-		algName.addActionListener(listener);
+		JRadioButton algName = new JRadioButton( "Linear" );
+		algName.setSelected( true );
+		algName.addActionListener( listener );
+		algName.addActionListener( this );
+		
+		group.add( algName );
+		radioPanel.add( algName );
 
-		group.add(algName);
-		radioPanel.add(algName);
-
-		algName = new JRadioButton("Bezier C0");
-		algName.setSelected(false);
-		algName.addActionListener(listener);
-
-		group.add(algName);
+		algName = new JRadioButton( "Bezier C0" );
+		algName.setSelected( false );
+		algName.addActionListener( listener );
+		algName.addActionListener( this );
+		
+		group.add( algName );
 		radioPanel.add(algName);
 
 		algName = new JRadioButton("Bezier G1");
 		algName.setSelected(false);
 		algName.addActionListener(listener);
-
+		algName.addActionListener( this );
+		
 		group.add(algName);
 		radioPanel.add(algName);
 
 		algName = new JRadioButton("Bezier C1");
 		algName.setSelected(false);
 		algName.addActionListener(listener);
-
+		algName.addActionListener( this );
+		
 		group.add(algName);
 		radioPanel.add(algName);
 
 		menu.add(radioPanel);
 	}
 
-	private void createHermitePanel(JMenu menu) {
-		JPanel radioPanel = new JPanel();
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+	private void createHermitePanel( JMenu menu ) {
+		JPanel radioPanel = new JPanel( );
+		radioPanel.setLayout( new BoxLayout(radioPanel, BoxLayout.Y_AXIS ));
 
-		JRadioButton algName = new JRadioButton("Normal");
-		algName.setSelected(true);
-		algName.addActionListener(listener);
+		JRadioButton algName = new JRadioButton( "Normal" );
+		algName.setSelected( true );
+		algName.addActionListener( listener );
+		algName.addActionListener( this );
+		
+		group.add( algName );
+		radioPanel.add( algName );
 
-		group.add(algName);
-		radioPanel.add(algName);
+		algName = new JRadioButton( "Cardinal" );
+		algName.setSelected( false );
+		algName.addActionListener( listener );
+		algName.addActionListener( this );
+		
+		group.add( algName );
+		radioPanel.add( algName );
 
-		algName = new JRadioButton("Cardinal");
-		algName.setSelected(false);
-		algName.addActionListener(listener);
+		algName = new JRadioButton( "CatmullRom" );
+		algName.setSelected( false );
+		algName.addActionListener( listener );
+		algName.addActionListener( this );
+		
+		group.add( algName );
+		radioPanel.add( algName );
 
-		group.add(algName);
-		radioPanel.add(algName);
+		algName = new JRadioButton( "Kochanek Bartels" );
+		algName.setSelected( false );
+		algName.addActionListener( listener );
+		algName.addActionListener( this );
+		
+		group.add( algName );
+		radioPanel.add( algName );
 
-		algName = new JRadioButton("CatmullRom");
-		algName.setSelected(false);
-		algName.addActionListener(listener);
-
-		group.add(algName);
-		radioPanel.add(algName);
-
-		algName = new JRadioButton("Kochanek Bartels");
-		algName.setSelected(false);
-		algName.addActionListener(listener);
-
-		group.add(algName);
-		radioPanel.add(algName);
-
-		menu.add(radioPanel);
+		menu.add( radioPanel );
 	}
 
-	private void makeHelp() {
+	/*
+	 * Deze functie zal het system command opgegeven door "string" uitvoeren
+	 */
+	
+	void runCommand( String string ) {
+	 try {
+		 Process p = Runtime.getRuntime( ).exec( string );
+	 }
+	 catch ( IOException e ) {
+		 e.printStackTrace( );
+	 }
+	}
+	
+	private void makeHelp( ) {
 		// een glue element toevoegen zorgt ervoor dat help rechts wordt
 		// uitgelijnd
-		add(Box.createHorizontalGlue());
-		CreateMenu("Help", KeyEvent.VK_H, "");
+		add(Box.createHorizontalGlue( ));
+		CreateMenu( "Help", KeyEvent.VK_H, "" );
 		add( Box.createRigidArea( new Dimension( 10, 0 )));
-		
-		CreateMenuItem("Quick Howto's", KeyEvent.VK_F1, "Quick Howto's", 
-				"CurveEditor/GUI/icons/fork.png" );
+
+		CreateMenuItem( "Quick Howto's", KeyEvent.VK_F1, "Quick Howto's", 
+		"CurveEditor/GUI/icons/fork.png" );
 		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Quick Howto");
+		menuItem.addActionListener( new ActionListener( ) {
+			public void actionPerformed( ActionEvent e ) {
+				runCommand( "firefox http://student.uhasselt.be/~0522971/trpr/inhoud.html#start" );
 			}
 		});
 
 		CreateMenuItem("Documentation", KeyEvent.VK_F2,
 				"Full guide to Curve Editor", 
-				"CurveEditor/GUI/icons/help.png" );
+		"CurveEditor/GUI/icons/help.png" );
 		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ));
-		menuItem.addActionListener( new ActionListener() {
+		menuItem.addActionListener( new ActionListener( ) {
 			public void actionPerformed( ActionEvent e ) {
-				
+				runCommand( "firefox http://student.uhasselt.be/~0522971/trpr/help.html" );
 			}
 		});
 
@@ -443,7 +501,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		CreateMenuItem("About", KeyEvent.VK_F3, "About", 
 				"CurveEditor/GUI/icons/info.png" );
 		menuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ));
-		menuItem.addActionListener(this);
+		menuItem.addActionListener( this );
 	}
 
 	private void about() {
@@ -462,7 +520,7 @@ public class Menu extends JMenuBar implements ActionListener {
 				+ "<p style='font-family: arial;font-weight: lighter;margin-left: 20px'>"
 				+ "William van Haevere" + "</p>"
 				+ "</html>"));
-		JOptionPane.showMessageDialog(null, hbox, "CurveEditor - About",
+		JOptionPane.showMessageDialog( null, hbox, "CurveEditor - About",
 				JOptionPane.PLAIN_MESSAGE );
 	}
 
@@ -626,27 +684,38 @@ public class Menu extends JMenuBar implements ActionListener {
 		
 		container2.add(Box.createRigidArea(new Dimension(5, 0)));
 		
-		JComboBox comboBox= new JComboBox( DrawAreaProperties.THICKNESS_CHOICES );
+		JComboBox comboBox = new JComboBox( DrawAreaProperties.THICKNESS_CHOICES );
 		// comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.Y_AXIS));
 		// comboPanel.add(Box.createHorizontalGlue());
 
-		comboBox.setSelectedIndex( drawProp.getTickness( thicknessOf ) );
-		comboBox.addActionListener( new ActionListener( ) {
-			public void actionPerformed(ActionEvent e) {
-				JComboBox tmp = (JComboBox) e.getSource();
-				Integer tmp2 = (Integer)tmp.getSelectedItem( );
+		System.out.println( drawProp.getTickness( thicknessOf ) );
+		comboBox.setSelectedItem( new Integer( drawProp.getTickness( thicknessOf )));
+		comboBox.setActionCommand( string );
+		comboBox.addActionListener( this );
+		if ( thicknessOf == DrawAreaProperties.LINE )
+			comboBox.addActionListener( new ActionListener( ) {
+				public void actionPerformed( ActionEvent e ) {
+					JComboBox tmp = (JComboBox) e.getSource();
+					Integer tmp2 = (Integer)tmp.getSelectedItem( );
+					drawProp.setTickness( tmp2, DrawAreaProperties.LINE );
+				}			
+			});
+		else if ( thicknessOf == DrawAreaProperties.POINT )
+			comboBox.addActionListener( new ActionListener( ) {
+				public void actionPerformed( ActionEvent e ) {
+					JComboBox tmp = (JComboBox) e.getSource();
+					Integer tmp2 = (Integer)tmp.getSelectedItem( );
 				
-				drawProp.setTickness( tmp2, thickness );
-			}
-			
-		});
-		d = new Dimension(50, 20 );
-		comboBox.setMaximumSize(d);
-		comboBox.setMinimumSize(d);
-		comboBox.setPreferredSize(d);		
+					drawProp.setTickness( tmp2, DrawAreaProperties.POINT );
+				}			
+			});
+		d = new Dimension( 50, 20 );
+		comboBox.setMaximumSize( d );
+		comboBox.setMinimumSize( d );
+		comboBox.setPreferredSize( d );
 		container2.add( comboBox );
 		
-		container2.add(Box.createRigidArea(new Dimension(5, 0)));
+		container2.add( Box.createRigidArea( new Dimension(5, 0 )));
 		
 		container.add( container2 );
 	}
@@ -658,19 +727,20 @@ public class Menu extends JMenuBar implements ActionListener {
 	private void colorSelector( int colorOf, String string ) throws InvalidArgumentException {
 		Color newColor = JColorChooser.showDialog( this, "CurveEditor - Color Chooser", drawProp.getColor( colorOf ));
 		
-		switch(colorOf) {
-		case DrawAreaProperties.SELECTED_LINE:
-		case DrawAreaProperties.HOOVERED_LINE:
-		case DrawAreaProperties.UNSELECTED_LINE:
-		case DrawAreaProperties.SELECTED_POINT:
-		case DrawAreaProperties.HOOVERED_POINT:
-		case DrawAreaProperties.UNSELECTED_POINT:
-		case DrawAreaProperties.BACKGROUND:
-			drawProp.setColor( colorOf, newColor );
-			break;
-		default:
-			throw new InvalidArgumentException( "Menu: void lineColorSelector( int ): No such  option: " + 
-					colorOf );
-		}
+		if ( newColor != null )
+			switch(colorOf) {
+			case DrawAreaProperties.SELECTED_LINE:
+			case DrawAreaProperties.HOOVERED_LINE:
+			case DrawAreaProperties.UNSELECTED_LINE:
+			case DrawAreaProperties.SELECTED_POINT:
+			case DrawAreaProperties.HOOVERED_POINT:
+			case DrawAreaProperties.UNSELECTED_POINT:
+			case DrawAreaProperties.BACKGROUND:
+				drawProp.setColor( colorOf, newColor );
+				break;
+			default:
+				throw new InvalidArgumentException( "Menu: void lineColorSelector( int ): No such  option: " + 
+						colorOf );
+			}
 	}
 }

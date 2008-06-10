@@ -34,6 +34,7 @@ public final class DrawArea extends JPanel {
 	// zelf worden dus uitgetekend, geen punten daarrond.
 	private static int DEFAULTCURVEWIDTH = 0;
 	private int curveWidth = DEFAULTCURVEWIDTH;
+	private int controlWidth = CONTROLPOINTWIDTH;
 
 	// Flags om bij te houden of iets al dan niet
 	// dient uitgetekend te worden.
@@ -168,6 +169,7 @@ public final class DrawArea extends JPanel {
 			// Verander de curvedikte en teken de gehooverde
 			// curves uit.
 			this.curveWidth =  drawProp.getTickness( DrawAreaProperties.LINE );
+			this.controlWidth =  drawProp.getTickness( DrawAreaProperties.POINT);
 			drawOutput(hooveredCurves, false, false);
 
 			this.g.setColor(  drawProp.getColor( DrawAreaProperties.HOOVERED_POINT ));
@@ -177,9 +179,9 @@ public final class DrawArea extends JPanel {
 			// op zijn huidige positie uit.
 			if (runPoint != null) {
 				this.g.setColor( Color.CYAN );
-				g.fillRect(runPoint.X() - 3 * CONTROLPOINTWIDTH, runPoint.Y() - 3
-						* CONTROLPOINTWIDTH, 6 * CONTROLPOINTWIDTH + 1,
-						6 * CONTROLPOINTWIDTH + 1);
+				g.fillRect(runPoint.X() - 3 * controlWidth, runPoint.Y() - 3
+						* controlWidth, 6 * controlWidth + 1,
+						6 * controlWidth + 1);
 				runPoint = null;
 			}
 
@@ -297,29 +299,29 @@ public final class DrawArea extends JPanel {
 				// Indien de curve dikker moet zijn dan de default dikte,
 				// kleur de nodige omliggende pixels ook in.
 				if (curveWidth != 0)
-					if ( p2.X() - p.X() > p2.Y() - p.Y() )
+					if ( out.get( j + 1 ).X() - out.get( j ).X( ) > 0.01 )
 						for (int k = 1; k <= curveWidth; ++k) {
-							g.drawLine(out.get(j).X(), out.get(j).Y() + k, out.get(
-									j + 1).X(), out.get(j + 1).Y() + k);
-							g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
-									j + 1).X(), out.get(j + 1).Y() - k);
-						}
+							g.drawLine( out.get(j).X() + k, out.get(j).Y(),  out.get(
+									j + 1).X() + k, out.get(j + 1).Y( ));
+							g.drawLine(out.get(j).X() - k, out.get(j).Y(), out.get(
+									j + 1).X() - k, out.get(j + 1).Y( ));						
+						}					
 					else
 						for (int k = 1; k <= curveWidth; ++k) {
-							g.drawLine(out.get(j).X() + k, out.get(j).Y(), out.get(
-									j + 1).X() + k, out.get(j + 1).Y() );
-							g.drawLine(out.get(j).X() - k, out.get(j).Y(), out.get(
-									j + 1).X() - k, out.get(j + 1).Y() );
-				}
+							g.drawLine( out.get(j).X(), out.get(j).Y() + k,  out.get(
+									j + 1).X(), out.get(j + 1).Y( ) + k);
+							g.drawLine(out.get(j).X(), out.get(j).Y() - k, out.get(
+									j + 1).X(), out.get(j + 1).Y( ) - k);						
+						}
 			}
 
 			// De inputpunten uittekenen.
 			in = curves.get(i).getInput();
 			for (int j = 0; j < in.size(); ++j) {
 				// Een rechthoekje op de plaats van het punt uittekenen.
-				g.fillRect(in.get(j).X() - CONTROLPOINTWIDTH, in.get(j).Y()
-						- CONTROLPOINTWIDTH, 2 * CONTROLPOINTWIDTH + 1,
-						2 * CONTROLPOINTWIDTH + 1);
+				g.fillRect(in.get(j).X() - controlWidth, in.get(j).Y()
+						- controlWidth, 2 * controlWidth + 1,
+						2 * controlWidth + 1);
 
 				// Informatie weergeven, indien gevraagd.
 				if (coords)
@@ -367,9 +369,9 @@ public final class DrawArea extends JPanel {
 	// dan niet-geselecteerd.
 	private void drawSelectedPoints(Vector<Point> v) {
 		for (int j = 0; j < v.size(); ++j) {
-			g.fillRect(v.get(j).X() - (CONTROLPOINTWIDTH + 1), v.get(j).Y()
-					- (CONTROLPOINTWIDTH + 1), 2 * (CONTROLPOINTWIDTH + 1) + 1,
-					2 * (CONTROLPOINTWIDTH + 1) + 1);
+			g.fillRect(v.get(j).X() - ( controlWidth + 1), v.get(j).Y()
+					- ( controlWidth + 1), 2 * ( controlWidth + 1) + 1,
+					2 * ( controlWidth + 1) + 1);
 		}
 	}
 

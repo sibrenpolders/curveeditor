@@ -46,13 +46,7 @@ public abstract class Algorithm {
 
 	// Gegeven een Curve c, vul zijn Vector van outputpunten zodanig dat deze
 	// de geïnterpoleerde punten van de inputpunten voorstellen.
-	public void calculate(Curve c) throws InvalidArgumentException {
-		if (c == null) // ongeldig argument --> exception gooien
-			throw new InvalidArgumentException(
-					"Algorithm.java - calculate(Curve): Invalid Argument.");
-		else
-			calculate(c.getInput(), c.getOutput());
-	}
+	public abstract void calculate(Curve c) throws InvalidArgumentException;
 
 	// Gegeven een Curve c, hervul zijn Vector van outputpunten vollédig met de
 	// geïnterpoleerde punten van de inputpunten.

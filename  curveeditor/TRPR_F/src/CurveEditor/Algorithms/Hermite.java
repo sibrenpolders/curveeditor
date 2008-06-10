@@ -25,18 +25,18 @@ public class Hermite extends Algorithm {
 	private float delta3;
 	private float[][] matrix;
 	
-	public Hermite(char type, short degree) {
-		super(type, degree);
+	public Hermite( char type, short degree ) {
+		super( type, degree );
 		init( );
 	}
 
-	public Hermite(short degree) {
-		super('H', degree);
+	public Hermite( short degree ) {
+		super( 'H', degree );
 		init( );
 	}
 
-	public Hermite() {
-		super('H', (short) 0);
+	public Hermite( ) {
+		super( 'H', (short) 0 );
 		init( );
 	}
 
@@ -93,54 +93,54 @@ public class Hermite extends Algorithm {
 	}
 
 	// een overloaded functie van calculate voor het gebruiksgemak
-	public void calculate(Curve cv) {
-		calculate(cv.getInput(), cv.getOutput());
+	public void calculate( Curve cv ) {
+		calculate( cv.getInput(), cv.getOutput( ));
 	}
 	
 	// Zal de interpolatie berekenen tussen de 4 laatste punten
-	public void calculate(Vector<Point> vip, Vector<Point> vop) {
-		int size = vip.size();
+	public void calculate( Vector<Point> vip, Vector<Point> vop ) {
+		int size = vip.size( );
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
 		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
 		// interpolleren
 		// en Ri, Rj de tangens zijn van de kromme in respectievelijk Pi, Pj
-		if (size - 4 >= 0) {
+		if ( size - 4 >= 0 ) {
 			// enkel de interpolatie tussen het laatste en het voorlaatste punt
 			// moet berekend worden
-			Point p1 = vip.get(size - 4);
-			Point p2 = vip.get(size - 3);
-			Point p3 = vip.get(size - 2);
-			Point p4 = vip.get(size - 1);
-			Point r1 = new Point(p2.X() - p1.X(), p2.Y() - p1.Y());
-			Point r2 = new Point(p4.X() - p3.X(), p4.Y() - p3.Y());
+			Point p1 = vip.get( size - 4 );
+			Point p2 = vip.get( size - 3 );
+			Point p3 = vip.get( size - 2 );
+			Point p4 = vip.get( size - 1 );
+			Point r1 = new Point( p2.X() - p1.X(), p2.Y() - p1.Y( ));
+			Point r2 = new Point( p4.X() - p3.X(), p4.Y() - p3.Y( ));
 			
-			hermite(p1, r1, p2, r2, vop );
+			hermite( p1, r1, p2, r2, vop );
 		}
 	}
 
 	// berekend de interpolatie tussen alle opgegeven punten
-	public void calculateComplete(Curve cv) {
-		Vector<Point> vip = cv.getInput();
-		Vector<Point> vop = cv.getOutput();
-		cv.clearOutput();
+	public void calculateComplete( Curve cv ) {
+		Vector<Point> vip = cv.getInput( );
+		Vector<Point> vop = cv.getOutput( );
+		cv.clearOutput( );
 
 		// for ( int i = 0; i <= vip.size() - 4; i += 2 ) {
-		int size = vip.size();
+		int size = vip.size( );
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
 		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
 		// interpoleren
 		// en Ri, Rj de tangens zijn van de kromme in respectievelijk Pi, Pj
-		for (int i = 0; i < size - 3; i += 2) {
+		for ( int i = 0; i < size - 3; i += 2 ) {
 			// enkel de interpolatie tussen het laatste en het voorlaatste punt
 			// moet berekend worden
-			Point a = vip.get(i);
-			Point b = vip.get(i + 1);
-			Point c = vip.get(i + 2);
-			Point d = vip.get(i + 3);
-			Point r1 = new Point(b.X() - a.X(), b.Y() - a.Y());
-			Point r2 = new Point(d.X() - c.X(), d.Y() - c.Y());
+			Point a = vip.get( i );
+			Point b = vip.get( i + 1 );
+			Point c = vip.get( i + 2 );
+			Point d = vip.get( i + 3 );
+			Point r1 = new Point( b.X() - a.X(), b.Y() - a.Y( ));
+			Point r2 = new Point( d.X() - c.X(), d.Y() - c.Y( ));
 			
 			hermite( a, r1, c, r2, vop );
 		}

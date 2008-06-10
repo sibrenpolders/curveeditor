@@ -40,53 +40,53 @@ public class KochanekBartels extends Hermite {
 		super( type, degree );
 	}	
      
+	// zal de laatste 4 curve punten berekenen 
 	public void calculate(Curve cv) {
 		float b, c, t;
 		
 		// zoek een random b en c tussen 0 en 1 om als tangens te gebruiken		
 		do {
-			b = (float) Math.random();
-		} while (b == 0.0);
+			b = (float) Math.random( );
+		} while ( b == 0.0);
 		
 		do {
-			c = (float) Math.random();
-		} while (c == 0.0);
+			c = (float) Math.random( );
+		} while ( c == 0.0 );
 		
 		do {
-			t = (float) Math.random();
-		} while (t == 0.0);
+			t = (float) Math.random( );
+		} while ( t == 0.0 );
 		
-		kochanekBartels(cv, b, c, t);
+		kochanekBartels( cv, b, c, t );
 	}
 	
-	public void calculateComplete(Curve cv) {
+//	zal de volledige curve berekenen
+	public void calculateComplete( Curve cv ) {
 		float b, c, t;
 		// zoek een random b en c tussen 0 en 1 om als tangens te gebruiken
 		
 		do {
-			b = (float) Math.random();
-		} while (b == 0.0);
+			b = (float) Math.random( );
+		} while ( b == 0.0 );
 		
 		do {
-			c = (float) Math.random();
-		} while (c == 0.0);
+			c = (float) Math.random( );
+		} while ( c == 0.0 );
 		
 		do {
-			t = (float) Math.random();
-		} while (t == 0.0);
+			t = (float) Math.random( );
+		} while ( t == 0.0 );
 		
-		kochanekBartelsComplete(cv, b, c, t);
+		kochanekBartelsComplete( cv, b, c, t );
 	}
 	
 
-
-//  The "outgoing" Tangent equation:
-
+	// hier gebeuren de eigenlijke berekeningen voor het berekenen van de 4 laatste punten
 	private void kochanekBartels( Curve cv, float c, float b, float t ) {
-		Vector<Point> vip = cv.getInput();
-		Vector<Point> vop = cv.getOutput();
+		Vector<Point> vip = cv.getInput( );
+		Vector<Point> vop = cv.getOutput( );
 
-		int size = vip.size();
+		int size = vip.size( );
 
 		// Er zijn minstens 4 punten nodig om deze bewerking uit te kunnen
 		// voeren
@@ -102,49 +102,50 @@ public class KochanekBartels extends Hermite {
 			
 			int x, y;
 			// we interpoleren tussen p2 en p3 eerst t2 vinden
-			x = (int) (((1-t)*(1+c)*(1+b)*( p3.X() - p2.X())) / 2 + ((1-t)*(1-c)*(1-b)*( p4.X() - p3.X())) / 2);
-			y = (int) (((1-t)*(1+c)*(1+b)*( p3.Y() - p2.Y())) / 2 + ((1-t)*(1-c)*(1-b)*( p4.Y() - p3.Y())) / 2);
-			Point t2 = new Point(x, y);
+			x = (int) ((( 1-t )*( 1+c )*( 1+b )*( p3.X() - p2.X())) / 2 + (( 1-t )*( 1-c )*( 1-b )*( p4.X() - p3.X())) / 2);
+			y = (int) ((( 1-t )*( 1+c )*( 1+b )*( p3.Y() - p2.Y())) / 2 + (( 1-t )*( 1-c )*( 1-b )*( p4.Y() - p3.Y())) / 2);
+			Point t2 = new Point( x, y );
 
 			// nu t3 vinden
-			x = (int) (((1-t)*(1-c)*(1+b)*( p2.X() - p1.X())) / 2 + ((1-t)*(1+c)*(1-b)*( p3.X() - p2.X())) / 2);
-			y = (int) (((1-t)*(1-c)*(1+b)*( p2.Y() - p1.Y())) / 2 + ((1-t)*(1+c)*(1-b)*( p3.Y() - p2.Y())) / 2);			
-			Point t3 = new Point(x, y);
+			x = (int) ((( 1-t )*( 1-c )*( 1+b )*( p2.X() - p1.X())) / 2 + (( 1-t )*( 1+c )*( 1-b )*( p3.X() - p2.X())) / 2);
+			y = (int) ((( 1-t )*( 1-c )*( 1+b )*( p2.Y() - p1.Y())) / 2 + (( 1-t )*( 1+c )*( 1-b )*( p3.Y() - p2.Y())) / 2);			
+			Point t3 = new Point( x, y );
 
-			hermite(p2, t2, p3, t3, vop );			
+			hermite( p2, t2, p3, t3, vop );			
 		}
 	}
 	
+	// hier gebeuren de eigenlijke berekeningen voor het berekenen van alle punten
 	private void kochanekBartelsComplete( Curve cv, float c, float b, float t ) {
-		Vector<Point> vip = cv.getInput();
+		Vector<Point> vip = cv.getInput( );
 		Vector<Point> vop = cv.getOutput();
-		cv.clearOutput();
+		cv.clearOutput( );
 
-		int size = vip.size();
+		int size = vip.size( );
 		// Er zijn minstens 4 punten nodige om deze hermiet berekening te kunnen
 		// uitvoeren
 		// nl. Pi Ri Pj Rj waarbij Pi, Pj de punten zijn waartussen we
 		// interpoleren
 		// en Ri, Rj de zijn tangens van de kromme in respectievelijk Pi, Pj
-		for (int i = 0; i < size - 3; ++i) {
+		for ( int i = 0; i < size - 3; ++i ) {
 			// enkel de interpolatie tussen het laatste en het voorlaatste punt
 			// moet berekend worden
-			Point p1 = vip.get(i);
-			Point p2 = vip.get(i + 1);
-			Point p3 = vip.get(i + 2);
-			Point p4 = vip.get(i + 3);
+			Point p1 = vip.get( i );
+			Point p2 = vip.get( i + 1 );
+			Point p3 = vip.get( i + 2 );
+			Point p4 = vip.get( i + 3 );
 			int x, y;
 			// we interpoleren tussen p2 en p3 eerst t2 vinden
-			x = (int) (((1-t)*(1-c)*(1+b)*( p2.X() - p1.X())) / 2 + ((1-t)*(1+c)*(1-b)*( p3.X() - p2.X())) / 2);
-			y = (int) (((1-t)*(1-c)*(1+b)*( p2.Y() - p1.Y())) / 2 + ((1-t)*(1+c)*(1-b)*( p3.Y() - p2.Y())) / 2);
-			Point t2 = new Point(x, y);
+			x = (int) ((( 1-t )*( 1+c )*( 1+b )*( p3.X() - p2.X())) / 2 + (( 1-t )*( 1-c )*( 1-b )*( p4.X() - p3.X())) / 2);
+			y = (int) ((( 1-t )*( 1+c )*( 1+b )*( p3.Y() - p2.Y())) / 2 + (( 1-t )*( 1-c )*( 1-b )*( p4.Y() - p3.Y())) / 2);
+			Point t2 = new Point( x, y );
 
 			// nu t3 vinden
-			x = (int) (((1-t)*(1+c)*(1+b)*( p3.X() - p2.X())) / 2 + ((1-t)*(1-c)*(1-b)*( p4.X() - p3.X())) / 2);
-			y = (int) (((1-t)*(1+c)*(1+b)*( p3.Y() - p2.Y())) / 2 + ((1-t)*(1-c)*(1-b)*( p4.Y() - p3.Y())) / 2);
-			Point t3 = new Point(x, y);
+			x = (int) ((( 1-t )*( 1-c )*( 1+b )*( p2.X() - p1.X())) / 2 + (( 1-t )*( 1+c )*( 1-b )*( p3.X() - p2.X())) / 2);
+			y = (int) ((( 1-t )*( 1-c )*( 1+b )*( p2.Y() - p1.Y())) / 2 + (( 1-t )*( 1+c )*( 1-b )*( p3.Y() - p2.Y())) / 2);			
+			Point t3 = new Point( x, y );
 
-			hermite(p2, t2, p3, t3, vop );
+			hermite( p2, t2, p3, t3, vop );
 		}
 	}
 }

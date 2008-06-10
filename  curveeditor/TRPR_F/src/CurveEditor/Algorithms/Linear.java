@@ -51,53 +51,43 @@ public class Linear extends Algorithm {
 
 	// Gegeven een Vector van inputpunten, hervul de meegegeven Vector van
 	// outpunten m.b.v. het geïmplementeerde interpolatiealgoritme.
-	public final void calculate(Vector<Point> input, Vector<Point> output)
+	public final void calculate( Vector<Point> input, Vector<Point> output )
 			throws InvalidArgumentException {
-		if (input == null || output == null)
+		if ( input == null || output == null )
 			throw new InvalidArgumentException(
 					"Linear.java - calculate(Vector, Vector): Invalid Argument.");
 		else {
-			output.clear();
+			output.clear( );
 
 			// Voor elk paar punten de interpolatiepunten berekenen.
-			for (int i = 0; i < input.size() - 1; ++i) {
-				if (input.get(i).X() != input.get(i + 1).X()
-						|| input.get(i).Y() != input.get(i + 1).Y()) {
+			for ( int i = 0; i < input.size( ) - 1; ++i ) {
+				if ( input.get( i ).X( ) != input.get( i + 1 ).X( )
+						|| input.get( i ).Y( ) != input.get( i + 1 ).Y( )) {
 					// Positief verschil in x-waarden.
-					int diff1 = (input.get(i).X() < input.get(i + 1).X()) ? input
-							.get(i + 1).X()
-							- input.get(i).X()
-							: input.get(i).X() - input.get(i + 1).X();
+					int diff1 = ( input.get(i).X() < input.get(i + 1).X()) ? 
+							input.get( i + 1).X() - input.get( i).X() : input.get( i ).X( ) - input.get( i + 1 ).X( );
 
 					// Positief verschil in y-waarden.
-					int diff2 = (input.get(i).Y() < input.get(i + 1).Y()) ? input
-							.get(i + 1).Y()
-							- input.get(i).Y()
-							: input.get(i).Y() - input.get(i + 1).Y();
+					int diff2 = ( input.get( i ).Y( ) < input.get( i + 1 ).Y( )) ? 
+							input.get( i + 1 ).Y( )	- input.get( i ).Y() : input.get( i ).Y( ) - input.get( i + 1 ).Y( );
 
 					try {
-
 						// Lijnstuk stijgt sneller volgens X dan volgens Y
 						// --> voor elke X de Y zoeken.
-						if (diff1 > diff2) {
+						if ( diff1 > diff2 ) {
 							// Eerste controlepunt ligt links van het tweede.
-							if (input.get(i).X() < input.get(i + 1).X()) {
-								for (int x = input.get(i).X(); x <= input.get(
-										i + 1).X(); ++x) {
-									output.add(new Point(x, findYForX(x, input
-											.get(i).X(), input.get(i).Y(),
-											input.get(i + 1).X(), input.get(
-													i + 1).Y())));
+							if ( input.get( i ).X( ) < input.get( i + 1 ).X( )) {
+								for ( int x = input.get( i ).X(); x <= input.get( i + 1 ).X( ); ++x ) {
+									output.add( new Point( x, findYForX( x, input.get( i ).X( ), 
+											input.get( i ).Y( ), input.get( i + 1 ).X( ), 
+											input.get( i + 1 ).Y( ))));
 								}
 							}
 							// Eerste controlepunt ligt rechts van het tweede.
 							else {
-								for (int x = input.get(i).X(); x >= input.get(
-										i + 1).X(); --x) {
-									output.add(new Point(x, findYForX(x, input
-											.get(i).X(), input.get(i).Y(),
-											input.get(i + 1).X(), input.get(
-													i + 1).Y())));
+								for ( int x = input.get( i ).X( ); x >= input.get( i + 1 ).X( ); --x ) {
+									output.add( new Point( x, findYForX( x, input.get( i ).X( ), input.get( i ).Y( ),
+											input.get( i + 1 ).X( ), input.get(	i + 1 ).Y( ))));
 								}
 							}
 						}
@@ -105,30 +95,23 @@ public class Linear extends Algorithm {
 						// --> voor elke Y de X zoeken.
 						else {
 							// Eerste controlepunt ligt onder het tweede.
-							if (input.get(i).Y() < input.get(i + 1).Y()) {
-								for (int y = input.get(i).Y(); y <= input.get(
-										i + 1).Y(); ++y) {
-									output.add(new Point(findXForY(y, input
-											.get(i).X(), input.get(i).Y(),
-											input.get(i + 1).X(), input.get(
-													i + 1).Y()), y));
+							if ( input.get( i ).Y( ) < input.get( i + 1 ).Y( )) {
+								for (int y = input.get( i ).Y( ); y <= input.get( i + 1 ).Y(); ++y ) {
+									output.add( new Point( findXForY( y, input.get( i ).X( ), input.get( i ).Y( ),
+											input.get( i + 1 ).X( ), input.get( i + 1 ).Y( )), y ));
 								}
 							}
 							// Eerste controlepunt ligt boven het tweede.
 							else {
-								for (int y = input.get(i).Y(); y >= input.get(
-										i + 1).Y(); --y) {
-									output.add(new Point(findXForY(y, input
-											.get(i).X(), input.get(i).Y(),
-											input.get(i + 1).X(), input.get(
-													i + 1).Y()), y));
+								for ( int y = input.get( i ).Y( ); y >= input.get( i + 1 ).Y( ); --y ) {
+									output.add(  new Point( findXForY( y, input.get( i ).X( ), input.get( i ).Y( ),
+											input.get( i + 1 ).X( ), input.get( i + 1 ).Y( )), y ));
 								}
 							}
 						}
-					} catch (DivisionByZeroException e) {
-						output.clear();
-						throw new InvalidArgumentException(
-								"Linear.java - calculate(Vector, Vector): Division by zero.");
+					} catch ( DivisionByZeroException e ) {
+						output.clear( );
+						throw new InvalidArgumentException( "Linear.java - calculate(Vector, Vector): Division by zero." );
 					}
 				}
 			}
@@ -137,7 +120,7 @@ public class Linear extends Algorithm {
 
 	// Gegeven een Curve c, hervul zijn Vector van outputpunten vollédig met de
 	// geïnterpoleerde punten van de inputpunten.
-	public final void calculateComplete(Curve c)
+	public final void calculateComplete( Curve c )
 			throws InvalidArgumentException {
 		try {
 			calculate(c);
@@ -146,6 +129,17 @@ public class Linear extends Algorithm {
 				c.clearOutput();
 
 			throw e;
+		}
+	}
+
+	@Override
+	public void calculate(Curve c) throws InvalidArgumentException {
+		if (c == null) // ongeldig argument --> exception gooien
+			throw new InvalidArgumentException(
+					"Algorithm.java - calculate(Curve): Invalid Argument.");
+		else {
+			c.clearOutput();
+			calculate(c.getInput(), c.getOutput());
 		}
 	}
 }

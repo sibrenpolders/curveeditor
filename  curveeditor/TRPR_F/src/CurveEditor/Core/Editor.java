@@ -430,7 +430,7 @@ public class Editor {
 						|| c.getInput().size() % 2 == 0) {
 					try {
 						selectionTool.deleteCurve(c);
-						temp.calculateComplete(c);
+						temp.calculate(c);
 						selectionTool.addCurve(c);
 					} catch (InvalidArgumentException e) {
 						e.printStackTrace();

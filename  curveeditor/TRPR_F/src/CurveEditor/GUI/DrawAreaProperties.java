@@ -54,7 +54,7 @@ public class DrawAreaProperties {
 		backgroundColor = Color.white;
 	
 		lineThickness= 0;
-		pointThickness= 0;
+		pointThickness= 2;
 		
 		// hulpvariabele initialiseren
 		selectedLineColorTmp = selectedLineColor;
@@ -187,10 +187,12 @@ public class DrawAreaProperties {
 	public void setTickness( int t, int thicknessOf ) {
 		switch ( thicknessOf ) {
 		case LINE:
-			lineThickness = t;
+			lineThicknessTmp = t;
+			System.out.println( "P:" + t );
+			break;
 		case POINT:
-			pointThickness = t;
-		
+			pointThicknessTmp = t;
+			break;		
 		}		
 	}
 }
