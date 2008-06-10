@@ -1,3 +1,4 @@
+// auteur Sibren Polders
 package CurveEditor.GUI;
 
 import java.awt.Color;
@@ -39,13 +40,13 @@ public class Menu extends JMenuBar implements ActionListener {
 	private Container prefContainer;
 	private JPanel container;
 	private DrawAreaProperties drawProp;
-	private int thickness;
 	private JMenu tools;
 	private JMenu algorithms;
 	private JMenu toolsSub;
 	private JMenu algorithmsSub;
 	private JMenu toolsSub2;
 	private JMenu algorithmsSub2;
+	private int thickness;
 	
 	public Menu( ActionListener listener, DrawAreaProperties drawProp ) {
 		this.listener = listener;
@@ -54,6 +55,9 @@ public class Menu extends JMenuBar implements ActionListener {
 		CreateMenuBar();
 	}
 
+	/*
+	 * Zette de grootte van het menu
+	 */
 	public void setSize( ) {
 		setBounds(0, 0, DisplaySize.SCREENWIDTH, DisplaySize.MENUHEIGHT);
 		repaint();
@@ -66,6 +70,9 @@ public class Menu extends JMenuBar implements ActionListener {
 		// setPreferredSize( d );
 	}
 
+	/*
+	 * event handler
+	 */
 	public void actionPerformed( ActionEvent e ) {
 		try {
 			String actionCommand = e.getActionCommand( );
@@ -90,6 +97,7 @@ public class Menu extends JMenuBar implements ActionListener {
 				Integer tmp2 = (Integer)tmp.getSelectedItem( );
 				drawProp.setTickness( tmp2, DrawAreaProperties.LINE );
 			}
+			// zal ervoor zorgen dat het pop-up menu verdwijnt
 			tools.setPopupMenuVisible( false );
 			algorithms.setPopupMenuVisible( false );
 			toolsSub.setPopupMenuVisible( false );
@@ -141,6 +149,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		menu.add( menuItem );
 	}
 
+	/*
+	 * Maakt de menu optie file aan.
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van de menu optie file 
+	 */
 	private void makeFile( ) {
 		// menu object aanmaken
 		CreateMenu( "File", KeyEvent.VK_F, "" );
@@ -191,6 +203,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		});
 	}
 
+	/*
+	 * Maakt de menu optie edit aan.
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van de menu optie edit 
+	 */
 	private void makeEdit( ) {
 		CreateMenu( "Edit", KeyEvent.VK_E, "" );
 
@@ -211,6 +227,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		menuItem.addActionListener( this );
 	}
 
+	/*
+	 * Maakt de menu optie tools aan.
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van de menu optie tools 
+	 */
 	private void makeTools( ) {
 		CreateMenu( "Tools", KeyEvent.VK_T, "" );
 		tools = menu;
@@ -250,6 +270,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		createCurvePanel( menu2 );
 	}
 
+	/*
+	 * Creert het submenu Point van de menu optie tools
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van het submenu point 
+	 */
 	private void createPointPanel( JMenu menu ) {
 		JPanel radioPanel = new JPanel( );
 		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
@@ -298,6 +322,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		menu.add( radioPanel );
 	}
 
+	/*
+	 * Creert het submenu Curve van de menu optie tools
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van het submenu Curve 
+	 */
 	private void createCurvePanel( JMenu menu ) {
 		JPanel radioPanel = new JPanel( );
 		radioPanel.setLayout( new BoxLayout(radioPanel, BoxLayout.Y_AXIS ));
@@ -356,6 +384,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		menu.add( radioPanel );
 	}
 
+	/*
+	 * Maakt de menu optie algorithms aan.
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van de menu optie algorithms
+	 */
 	private void makeAlgorithms( ) {
 		CreateMenu( "Algorithms", KeyEvent.VK_A, "" );
 		group = new ButtonGroup( );
@@ -379,6 +411,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		createHermitePanel( menu2 );
 	}
 
+	/*
+	 * Creert het submenu Bezier van de menu optie Algorithms
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van het submenu Bezier 
+	 */
 	private void createBezierPanel( JMenu menu ) {
 		JPanel radioPanel = new JPanel( );
 		radioPanel.setLayout( new BoxLayout( radioPanel, BoxLayout.Y_AXIS ));
@@ -418,6 +454,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		menu.add(radioPanel);
 	}
 
+	/*
+	 * Creert het submenu Bezier van de menu optie Algorithms
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van het submenu Bezier 
+	 */
 	private void createHermitePanel( JMenu menu ) {
 		JPanel radioPanel = new JPanel( );
 		radioPanel.setLayout( new BoxLayout(radioPanel, BoxLayout.Y_AXIS ));
@@ -470,6 +510,10 @@ public class Menu extends JMenuBar implements ActionListener {
 	 }
 	}
 	
+	/*
+	 * Maakt de menu optie help aan.
+	 * Deze functie zal de verschillende menu items en functionaliteit aanmaken van de menu optie help
+	 */
 	private void makeHelp( ) {
 		// een glue element toevoegen zorgt ervoor dat help rechts wordt
 		// uitgelijnd
@@ -504,6 +548,10 @@ public class Menu extends JMenuBar implements ActionListener {
 		menuItem.addActionListener( this );
 	}
 
+	/*
+	 * Zal het message dialoog About aanmaken
+	 * te bereiken via de menu optie help
+	 */
 	private void about() {
 		Box hbox = Box.createHorizontalBox();
 		URL imgURL = ClassLoader.getSystemResource( "CurveEditor/GUI/icons/monkey.jpg" );
@@ -524,6 +572,9 @@ public class Menu extends JMenuBar implements ActionListener {
 				JOptionPane.PLAIN_MESSAGE );
 	}
 
+	/*
+	 * Zal de messagediallog voor preferences initialiseren
+	 */
 	private void initPref( ) {
 		preferences = new JDialog( );
 		preferences.setTitle("Curve Editor - Preferences");
@@ -538,6 +589,9 @@ public class Menu extends JMenuBar implements ActionListener {
 		prefContainer.setPreferredSize( d );
 	}
 	
+	/*
+	 * Zal een message dialoog voor preferences aanmaken
+	 */
 	private void pref() throws InvalidArgumentException {
 		Dimension dX = new Dimension( 5, 0 );
 		Dimension dY = new Dimension( 0, 5 );	
@@ -663,6 +717,11 @@ public class Menu extends JMenuBar implements ActionListener {
 		container.add( container2 );
 	}
 
+	/*
+	 * Deze functie maakt een selectieveld aan in het dialoog Preferences
+	 * meer bepaald maakt het de lijn en punt dikte selectie mogelijk
+	 * Hij zorgt hiervoor dat er een label wordt ingeladen combobox.
+	 */
 	private void makeThickness( String string, int thicknessOf  ) {
 		thickness = thicknessOf;
 		JPanel container2 = new JPanel( );
@@ -688,11 +747,11 @@ public class Menu extends JMenuBar implements ActionListener {
 		// comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.Y_AXIS));
 		// comboPanel.add(Box.createHorizontalGlue());
 
-		System.out.println( drawProp.getTickness( thicknessOf ) );
 		comboBox.setSelectedItem( new Integer( drawProp.getTickness( thicknessOf )));
 		comboBox.setActionCommand( string );
 		comboBox.addActionListener( this );
 		if ( thicknessOf == DrawAreaProperties.LINE )
+			// inline action listeer toevoegen
 			comboBox.addActionListener( new ActionListener( ) {
 				public void actionPerformed( ActionEvent e ) {
 					JComboBox tmp = (JComboBox) e.getSource();
@@ -701,6 +760,7 @@ public class Menu extends JMenuBar implements ActionListener {
 				}			
 			});
 		else if ( thicknessOf == DrawAreaProperties.POINT )
+			// inline action listeer toevoegen
 			comboBox.addActionListener( new ActionListener( ) {
 				public void actionPerformed( ActionEvent e ) {
 					JComboBox tmp = (JComboBox) e.getSource();

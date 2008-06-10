@@ -1,9 +1,10 @@
 package CurveEditor;
 
+import CurveEditor.GUI.HandleExceptions;
+
 public class Main {
 
 	public static void main(String[] args) {
-
 		// Indien een filename werd meegegeven --> inladen.
 		// Anders gewoon een lege GUI aanmaken.
 
@@ -23,8 +24,9 @@ public class Main {
 			else
 				new CurveEditor.GUI.GUI(file);
 		} catch (Exception e) {
-			System.out.println( e.getMessage() );
-			e.printStackTrace();
+//			System.out.println( e.getMessage() );
+//			e.printStackTrace();
+			HandleExceptions.print( e );
 		}
 	}
 }

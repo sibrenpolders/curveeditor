@@ -1,3 +1,4 @@
+// auteur Sibrand Staessens
 package CurveEditor.Curves;
 
 import java.util.Vector;

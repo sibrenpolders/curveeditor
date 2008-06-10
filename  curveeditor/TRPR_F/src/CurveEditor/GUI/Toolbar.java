@@ -1,3 +1,4 @@
+// auteur Sibren Polders
 package CurveEditor.GUI;
 
 /*
@@ -32,11 +33,18 @@ public class Toolbar extends JToolBar {
 		addButtons();
 	}
 
+	/*
+	 * Zet de grootte van de toolbar, dezie info wordt uit displaysize gehaald
+	 * 
+	 */
 	public void setSize() {
 		setBounds(0, DisplaySize.MENUHEIGHT, DisplaySize.SCREENWIDTH,
 				DisplaySize.TOOLBARHEIGHT);
 	}
 
+	/*
+	 * Add de verschillende toobar buttons aan de toolbar
+	 */
 	private void addButtons() {
 		group = new ButtonGroup();
 
@@ -64,18 +72,9 @@ public class Toolbar extends JToolBar {
 		add(Box.createHorizontalGlue());
 	}
 
-	protected void makeToggleButton(String name, String tooltip, String icon,
-		boolean selected) {
-		URL imgURL = ClassLoader.getSystemResource( icon );
-		ImageIcon imageIcon = new ImageIcon( imgURL );
-		toggleButton = new JToggleButton( imageIcon, selected);
-		toggleButton.setName(name);
-		toggleButton.addActionListener(listener);
-		toggleButton.setToolTipText(tooltip);
-		group.add(toggleButton);
-		add(toggleButton);
-	}
-
+	/* 
+	 * maakt een standaard button zodat deze aan de toolbar kan toegevoegd worden
+	 */
 	private void makeButton(String name, String tooltip, String icon) {
 		URL imgURL = ClassLoader.getSystemResource( icon );
 		ImageIcon imageIcon = new ImageIcon( imgURL );

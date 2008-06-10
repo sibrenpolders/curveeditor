@@ -1,3 +1,4 @@
+// auteur Sibrand Staessens
 package CurveEditor.GUI;
 
 import java.awt.BasicStroke;

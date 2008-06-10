@@ -1,5 +1,10 @@
+// auteur Sibren Polders
 package CurveEditor.GUI;
 
+/*
+ * Deze klasse houdt alle eigenschappen bij die te maken hebben met het uittekenen van de curves
+ * We spreken hier over lijn/punt dikte en de verschillende kleuren
+ */
 import java.awt.Color;
 
 import CurveEditor.Exceptions.InvalidArgumentException;
@@ -72,6 +77,7 @@ public class DrawAreaProperties {
 		pointThicknessTmp = pointThickness;
 	}
 	
+	// de functie zal de kleur geven van de gevraagde lijn of punt modus
 	public Color getColor( int getColorOf ) throws InvalidArgumentException {
 		switch( getColorOf ) {
 		case SELECTED_LINE:
@@ -173,6 +179,7 @@ public class DrawAreaProperties {
 		pointThicknessTmp = pointThickness;
 	}
 	
+	// de functie zal de kleur geven van de gevraagde lijn of punt modus
 	public int getTickness( int thicknessOf ) {
 		switch ( thicknessOf ) {
 		case LINE:
@@ -184,11 +191,17 @@ public class DrawAreaProperties {
 		}
 	}
 	
+	/*
+	 * Deze functie zal een nieuwe dikte zetten voor 1 van de onderdelen.
+	 * De nieuwe dikte wordt tijdelijk opgeslagen in een hulpvariabele en zal pas definitief worden als
+	 * de functie makeAdjustments( ) wordt aangeroepen, dit is voor het gebruiksgemak te verhogen.
+	 * Als de gebruiker nu op cancel drukt dan zal cancelAdjustments( ) worden aangeroepen die alle waarde laat staan
+	 * zoals ze zijn, en de tmpVariabele terug reset
+	 */
 	public void setTickness( int t, int thicknessOf ) {
 		switch ( thicknessOf ) {
 		case LINE:
 			lineThicknessTmp = t;
-			System.out.println( "P:" + t );
 			break;
 		case POINT:
 			pointThicknessTmp = t;

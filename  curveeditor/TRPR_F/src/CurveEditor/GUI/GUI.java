@@ -1,3 +1,4 @@
+// auteur Sibrand Staessens & Sibren Polders
 package CurveEditor.GUI;
 
 import java.awt.Container;
@@ -708,20 +709,18 @@ public class GUI extends Editor implements MouseListener, MouseMotionListener,
 			if ( algorithmEvent( actionCommand ) || pointEvent( actionCommand )
 					|| curveEvent( actionCommand ) || fileEvent( actionCommand ))
 				return;
-			else if ( actionCommand.equals( "Add Point" )) {
-				Point a = choice.getInputPoint( );
-				if ( a != null ) {
+			else if ( actionCommand.equals( "Add Point" )) {				
+				try {
+					Point a = choice.getInputPoint( );
 					changeMode( MODE.ADD_INPUT );
-					try {
-						addPoint( a );
-					} catch ( InvalidArgumentException e1 ) {
-						e1.printStackTrace( );
-					}
+					addPoint( a );
 					draw.repaint( );
-				} else
-					JOptionPane.showMessageDialog( draw, "No point is given",
-							"Curve Editor: ERROR", JOptionPane.ERROR_MESSAGE );
-
+				} catch ( NullPointerException e1 ) {
+					HandleExceptions.print( e1 );
+				}			
+				catch( InvalidArgumentException e1 ) {
+					HandleExceptions.print( e1 );
+				}
 			} else if ( actionCommand.equals( "Select All Curves" )) {
 				selectAllCurves( );
 				draw.repaint( );
