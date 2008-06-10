@@ -8,7 +8,7 @@
 \usepackage[colorlinks,urlcolor=blue,filecolor=magenta]{hyperref}
 \usepackage{url}
 \parindent 0pt
-\hyphenation{Hermite deze Monitor-Pool}
+\hyphenation{Hermite deze Monitor-Pool controle-punten Fool-proof}
 \fontfamily{times}
 \begin{document}
 \maketitle \newpage
@@ -17,7 +17,7 @@
 Op welke manieren kan je een set van punten op een vloeiende wijze met elkaar verbinden en hoe ziet het bekomen pad er dan uit ? Dat is
 de vraag waarvoor Curve Editor een gedeeltelijke oplossing biedt. Het meest voor de hand liggende pad dat tussen de punten getekend kan worden 
 is uiteraard dat pad dat bekomen wordt m.b.v. lineaire interpolatie. Maar er zijn nog zoveel andere mogelijkheden, waarvan er in Curve Editor twee verwerkt 
-zijn (nl. Bézier- en Hermite-curves). Deze algoritmes zullen in vgl. met lineaire interpolatie vloeiende krommen
+zijn (nl. B\'ezier- en Hermite-curves). Deze algoritmes zullen in vgl. met lineaire interpolatie vloeiende krommen
 tussen de interpolatiepunten cre\"eren. De toepassingen van de door Curve Editor gebruikte algoritmes beperken zich niet enkel 
 tot het tekenen van ``lijntjes'' tussen punten, maar worden bijvoorbeeld ook veelvuldig gebruikt voor vloeiende camerabewegingen of ``AI''-bewegingen in games.
 De interpolatie van een gegeven set van controlepunten is een uitgebreide en interessante studie die 
@@ -48,14 +48,14 @@ y_{i+1} = m.x_{i+1} + b\newline
 = y_i + m \textrm{ aangezien } \Delta x = 1 \textrm{ als we 1 pixel verder gaan } \newline
 \end{math}
 Dit algoritme is duidelijk effici\"enter vermits we een floating-point vermenigvuldiging hebben 
-verwijderd. Voor een voorbeeld van zie figuur \ref{lineair}
+verwijderd. Voor een voorbeeld hiervan: zie figuur \ref{lineair}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.4]{./screenies2/lineair.png}
 \caption{Lineair}\label{lineair}
 \end{figure}
 \subsection{B\'ezier \label{sb}}
-Het cubic Bézier-algoritme construeert een curve als volgt: per vier opeenvolgende controlepunten wordt een deel van de totale curve berekend.
+Het cubic B\'ezier-algoritme construeert een curve als volgt: per vier opeenvolgende controlepunten wordt een deel van de totale curve berekend.
 Die deelcurve start in het eerste controlepunt, in de richting van het tweede, om dan in het vierde controlepunt te eindigen in de richting van het derde. Een volgende 
 deelcurve heeft als eerste controlepunt het laatste controlepunt van de vorige deelcurve om alzo C0-continu\"iteit te garanderen.
 \subsubsection{Na\"ieve poging (brute force) \label{snp2}}
@@ -114,11 +114,11 @@ De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-con
 \begin{figure}
 \begin{center}
 \includegraphics[scale=0.4]{./screenies2/bezierG1.png}
-\caption{B\'ezier, G1-continu}\label{bexierG1}
+\caption{B\'ezier, G1-continu}\label{bezierG1}
 \end{center}
 \end{figure}
 \subsubsection{C1-continu\"iteit \label{sC1}}
-C1-continu\"iteit eist dat de curves naast de vereisten voor G1 contintue te zijn, ook nog eens in elk controlepunt een gelijkmatig toe- en afnemende kromming hebben. Dit wordt dus bekomen door in elk controlepunt dat op de curve komt te liggen, de curve z\'o te berekenen dat de ingaande en de uitgaande raakvector
+C1-continu\"iteit eist dat de curves naast de vereisten voor G1-continu te zijn, ook nog eens in elk controlepunt een gelijkmatig toe- en afnemende kromming hebben. Dit wordt dus bekomen door in elk controlepunt dat op de curve komt te liggen, de curve z\'o te berekenen dat de ingaande en de uitgaande raakvector
 in dat controlepunt op \'e\'en lijn liggen \'en even groot zijn (zie figuur \ref{bezierC1}). In Curve Editor is dit opgelost als volgt:
 
 De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-controlepunten wordt herberekend, zodanig dat de berekende curve vloeiend aansluit op de berekende curve voor het vorige en het volgende viertal \'en zodanig dat de berekende curve een controlepunt even snel "binnenkomt" als "verlaat", met dezelfde versnelling als het ware. Stel het viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders zouden we niet tot een aaneengesloten curve kunnen komen (zie C0-continu\"iteit). M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2 berekent Curve Editor nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 (het gemeenschappelijke blijft ongewijzigd). Dit doet het door de vector tussen het voorlaatste controlepunt van v1 en het tweede controlepunt van v2 te beschouwen; die vector wordt dan zodanig verschoven dat het gemeenschappelijke controlepunt midden op die vector komt te liggen. De twee uiteinden van deze verschoven vector zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2. Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende en een in elk controlepunt even snel ingaand als uitgaand versnellende curve.
@@ -132,26 +132,26 @@ De ligging van het tweede en het derde controlepunt van een viertal B\'ezier-con
 Het cubic Hermite-algoritme construeert een curve als volgt: 
 per twee controlepunten en hun respectievelijke tangens wordt een deel van de curve berekend.
 De deelcurve start in het eerste controlepunt, gaat in de richting van zijn tangens om
-tenslotte te eindigen in het tweede controle punt in de richting van zijn tangens. Een voorbeeld ervan vind je in figuur\ref{hermite}
+tenslotte te eindigen in het tweede controlepunt in de richting van zijn tangens. Een voorbeeld hiervan zie je in figuur \ref{hermite}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.4]{./screenies2/hermite.png}
 \caption{Hermite}\label{hermite}
 \end{figure}
-\subsection{Na\"ieve aanpak}
+\subsubsection{Na\"ieve poging}
 De na\"ieve methode bestaat erin de expliciete vergelijking van een ``cubic spline''
 op te lossen, met de opgegeven punten.\newline
-Stel hiervoor dat het volgende is gegeven:\newline
+Stel hierbij dat het volgende is gegeven:\newline
 $p_0 = (x_0,y_0), p_1 = (x_1,y_1), m_0 = (x'_0, y'_0), m_1 = (x'_1, y'_1)$\newline
-hierbij zijn $p_0,p_1$ controlepunten en $m_0, m_1$ hun respectievelijke tangens.\newline
+hierbij zijn $p_0,p_1$ controlepunten en $m_0, m_1$ hun respectievelijke tangenswaarden.\newline
 \newline
 De bedoeling is nu van in de vergelijking\newline
-$P(X) = ax^3 + bx^2 + cx + d (1)$\newline
+$P(X) = ax^3 + bx^2 + cx + d \textrm{   (1)}$\newline
 a, b, c en d te vinden in functie van de opgegeven punten.\newline
 
 Je weet het volgende:
-$y_0 = ax_0^3 + bx_0^2 + cx_0 + d (2)$\newline
-$y_1 = ax_1^3 + bx_1^2 + cx_1 + d (3)$\newline
+$y_0 = ax_0^3 + bx_0^2 + cx_0 + d \textrm{   (2)}$\newline
+$y_1 = ax_1^3 + bx_1^2 + cx_1 + d \textrm{   (3)}$\newline
 (dit volgt rechtstreeks uit het gegeven)\newline
 
 verder is duidelijk dat de tangens van een punt op deze polynoom gelijk is aan de 
@@ -160,8 +160,8 @@ eerste afgeleide van de polynoom ge\'evalueerd naar dat punt.\newline
 Symbolische afleiding van de polynoom geeft:
 $P'(X) = 3ax^2 + 2bx + c$
 en dus
-$y'_0 = 3a{x'}_0^2 + 2bx'_0 + c (4)$\newline
-$y'_1 = 3a{x'}_1^2 + 2bx'_1 + c (5)$\newline
+$y'_0 = 3a{x'}_0^2 + 2bx'_0 + c \textrm{   (4)}$\newline
+$y'_1 = 3a{x'}_1^2 + 2bx'_1 + c \textrm{   (5)}$\newline
 (dit volgt weer rechtstreeks uit het gegeven)\newline
 
 Het stelsel opgebouwd uit formules (1) - (4) kan je vervolgens oplossen naar a, b, c en d
@@ -180,29 +180,29 @@ $c = $\newline
 ${{-y'_0x'_1{x_1}^3-y'_1x'_0{x_0}^3+{x'_0}^2x'_1y_1-{x'_0}^2{x_1}^2y'_1-{x'_0}^2x'_1y_0+{x'_0}^2{x_0}^2y'_1+{x'_1}^2{x_1}^2y'_0-{x'_1}^2x'_0y_1}\over{-x'_1{x_1}^3+x'_1x_1{x'_0}^2+x'_0{x_1}^3-{x_1}^2{x'_0}^2+{x_1}^2{x'_1}^2-x_1x'_0{x'_1}^2+x'_1{x_0}^3-x'_1x_0{x'_0}^2-x'_0{x_0}^3+{x_0}^2{x'_0}^2-{x_0}^2{x'_1}^2+x_0x'_0{x'_1}^2}}$\newline
 ${{-{x'_1}^2{x_0}^2y'_0+{x'_1}^2x'_0y_0+y'_0x'_1{x_0}^3+y'_1x'_0{x_1}^3}\over{-x'_1{x_1}^3+x'_1x_1{x'_0}^2+x'_0{x_1}^3-{x_1}^2{x'_0}^2+{x_1}^2{x'_1}^2-x_1x'_0{x'_1}^2+x'_1{x_0}^3-x'_1x_0{x'_0}^2-x'_0{x_0}^3+{x_0}^2{x'_0}^2-{x_0}^2{x'_1}^2+x_0x'_0{x'_1}^2}}$\newline
 
-Om de interpolatie te kunnen doen moet je tussen elke 2 controlepunten a,b,c en d invullen
+Om de interpolatie te kunnen doen moet je tussen elke 2 controlepunten a, b, c en d invullen
 zodat je deze in formule (1) kan invullen. Deze formule stelt dan juist de interpolatie 
-voor die je wilt verkrijgen. Door de x in formule (1) dan te laten vari\'eren tussen 
+voor die je wilt verkrijgen. Door de x in formule (1) dan te laten vari\"eren tussen 
 $x_0$ en $x_1$ met een bepaalde stapgrootte kan je de lijn pixel per pixel berekenen.
-\subsubsection{Hermite m.b.v. basisfuncties}
-Een betere methode om de Hermite polynoom uit te rekenen dan degene hierboven vermeld, is gebruik te maken van de vier eerste hermite basisfuncties en de polynoom parametrisch op te schrijven.
+\subsubsection{M.b.v. basisfuncties}
+Een betere methode om de Hermite-polynoom te berekenen dan degene hierboven vermeld, is gebruik te maken van de vier eerste Hermite-basisfuncties en de polynoom parametrisch op te schrijven.
 
 De formule om deze berekening te kunnen uitvoeren is:\newline \newline
-$P(t) = h_{00}p_0 + h_{10}m_0 + h_{01}p_0 + h_{11}m_1(1)$\newline \newline
+$P(t) = h_{00}p_0 + h_{10}m_0 + h_{01}p_0 + h_{11}m_1 \textrm{   (1)}$\newline \newline
 met\newline \newline
-$h_{00} = 2t^3 - 3t^2 + 1\ (2)$\newline
-$h_{10} = t^3 - 2t^2 + t\ (3)$\newline
-$h_{01} = -2t^3 + 3t^2\ (4)$\newline
-$h_{11} = t^3 - t^2\ (5)$\newline
+$h_{00} = 2t^3 - 3t^2 + 1\ \textrm{   (2)}$\newline
+$h_{10} = t^3 - 2t^2 + t\ \textrm{   (3)}$\newline
+$h_{01} = -2t^3 + 3t^2\ \textrm{   (4)}$\newline
+$h_{11} = t^3 - t^2\ \textrm{   (5)}$\newline
 
-In deze formule zijn $h_{00}$ tot $h_{11}$ de Hermite basisfuncties, $p_0$, $p_1$ 
-de controlepunten en $m_0$, $m_1$ hun respectievelijke tangens. t gaat hier van 0 tot 1.
+In deze formule zijn $h_{00}$ tot $h_{11}$ de Hermite-basisfuncties, $p_0$, $p_1$ 
+de controlepunten en $m_0$, $m_1$ hun respectievelijke tangenswaarden. t gaat hier van 0 tot 1.
 
-Zo sla je het berekenen van a,b,c en d over en zal de curve gladder lijken vermits je
-met parametrische beschreven polynoom werkt.
-\subsection{Hermite - Forward Difference}
-De forward difference methode is al gedetailleerd beschreven in een voorgaande
-sectie bij Bezier. Om deze methode met Hermite te implementeren dien je enkel
+Zo sla je het berekenen van a, b, c en d over en zal de curve vloeiender lijken vermits je
+met een parametrisch beschreven polynoom werkt.
+\subsubsection{Forward differences}
+De forward differences-methode is al gedetailleerd beschreven in een voorgaande
+sectie bij B\'ezier. Om deze methode met Hermite te implementeren dien je enkel
 de volgende berekeningen te maken:\newline \newline
 $a = 2p_1 + t_1 - 2p_2 + t_2$\newline
 $b = -3p_1 - 2t_1 + 3p_2 - t_2$\newline
@@ -210,55 +210,54 @@ $c = t_1$\newline
 $d = p_1$\newline \newline
 
 Deze waardens voor a, b, c en d volgen uit de formule die je krijgt waneer je in formule 1 van de voorgaande sectie formules 2-4 invult.
-Als we dan de bekomen waardens a, b, c en d invullen in de formules verkregen in de sectie
-over forward difference bij bezier, dan krijgen we net dat wat we nodig hadden. Namelijk
-forward difference formules voor een Hermite polynoom.
-\subsection{Hermite - Cardinal}
+Als we dan de bekomen waarden a, b, c en d invullen in de formules verkregen in de sectie
+over forward differences bij B\'ezier, dan krijgen we net dat wat we nodig hadden. Namelijk
+forward differences-formules voor een Hermite-polynoom.
+\subsubsection{Hermite - Cardinal}
 De methode van punten berekenen is hier net hetzelfde als besproken in de voorgaande secties
-Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
+Met dat verschil dat de tangenswaarden nu niet meer expliciet gegeven dienen te worden, maar 
 berekend worden uit de opgegeven controlepunten. 
 De tangens wordt door de volgende formule uitgerekend:\newline 
 $m_k = (1 - c)(p_{k+1} -p_{k-1})/2$
 
-hierbij is c een willekeurig getal tussen 0 en 1.
+Hierbij is c een willekeurig getal tussen 0 en 1.
 
 Uit deze formule is duidelijk af te leiden dat er geen lijn getrokken kan worden 
-tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt. 
-Omdat hun tangens niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
-om de verdere berekeningen te volbrengen.( zie figuur \ref{cardinal} )
+tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt, omdat hun tangens niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
+om de verdere berekeningen te volbrengen. (zie figuur \ref{cardinal})
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[scale=0.4]{./screenies2/cardinal.png}
 \caption{Hermite - Cardinal}\label{cardinal}
 \end{center}
 \end{figure}
-\subsection{Hermite - Catmull-Rom}
-Deze methode kom volledig overeen met de methode van Cardinal, met het enige verschil dat
-de toen random waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
-worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt.( zie figuur
-\ref{catmull} )
+\subsubsection{Hermite - Catmull-Rom}
+Deze methode komt volledig overeen met de methode van Cardinal, met het enige verschil dat
+de toen random gekozen waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
+worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt. (zie figuur
+\ref{catmull})
 \begin{figure}[htbp]\
 \begin{center}
 \includegraphics[scale=0.4]{./screenies2/catmull.png}
 \caption{Hermite - Catmull-Rom}\label{catmull}
 \end{center}
 \end{figure}
-\subsection{Hermite - Kochanek–Bartels}
-Deze methode maakt weer gebruik van het normale Hermite algoritme Het verschil
-met de 2 voorgaande berekeningen is dat Kochanek-Bartels rekening houdt met start en eind
-tangens.
+\subsubsection{Hermite - Kochanek–Bartels}
+Deze methode maakt weer gebruik van het normale Hermite-algoritme. Het verschil
+met de 2 voorgaande berekeningen is dat Kochanek-Bartels rekening houdt met start- en eind-
+tangenswaarden.
 
 Deze methode maakt gebruik van 3 variabelen:\newline
-t = tension ( verandert de lengte van de tangens )\newline
-b = bias ( verandert de richting van de tangens )\newline
-c = continu\"iteit ( controleert de gladheid van de overgang tussen begin en eind tangens)
+t = tension (verandert de lengte van de tangens)\newline
+b = bias (verandert de richting van de tangens)\newline
+c = continu\"iteit (controleert de gladheid van de overgang tussen begin- en eind-tangenswaarde)
 \newline
 
-Al deze variabelen vari\"eren tussen -1 en 1 hoe dichter de variabelen bij -1 zitten hoe
+Al deze variabelen vari\"eren tussen -1 en 1, hoe dichter de variabelen bij -1 zitten hoe
 meer de curve lineariteit benadert. Als de variabelen dicht bij de 1 zitten dan zal de curve
 gladder zijn.\newline
 
-De formules om de tangens te berekenen zijn ( hierbij is m0 de tangens van p0 en m1 de tangens
+De formules om de tangens te berekenen zijn (hierbij is m0 de tangens van p0 en m1 de tangens
 van p1):\newline
 $m0 = {{(1-t)(1+b)(1-c)(p_i-p_{i-1})}\over{2}} + {{(1-t)(1+b)(1+c)(p_{i+1}-p_i)}\over{2}}$\newline
 $m1 = {{(1-t)(1+b)(1+c)(p_i-p_{i-1})}\over{2}} + {{(1-t)(1+b)(1-c)(p_{i+1}-p_i)}\over{2}}$\newline
@@ -326,7 +325,7 @@ herberekening en aanpassing van de datastructuur echter tergend langzaam. Wij ac
 zouden vinden, die een betere balans tussen "aanpassen" en "informatie halen uit". \newline \newline
 \begin{figure}[htbp]
 \centering
-\includegraphics[scale=0.42]{./UML2/Core.png}
+\includegraphics[scale=0.6]{./UML2/Core.png}
 \caption{Core}\label{iCore}
 \end{figure}
 De tweede door ons ge\"implementeerde datastructuur leek ons direct bruikbaarder. Het aanpassen van de datastructuur ging immers direct een pak sneller in vgl.
@@ -341,13 +340,13 @@ De uitwisseling van data zal voornamelijk bestaan uit het zoeken/verwijderen van
 Maar ook het opvangen en afhandelen van excepties gebeurt grotendeels in Editor. Deze klasse zorgt er m.a.w. voor dat de 
 verschillende andere klassen zo autonoom mogelijk kunnen werken, Editor is dan de klasse die alles samenbrengt. Dit verhoogt natuurlijk ook de leesbaarheid en onderhoudbaarheid van de code.\newline \newline
 Een laatste klasse van dit pakket is de FileIO-klasse, deze zal niet alleen bestanden opslaan en
-inladen, maar ook zal hij de undo/redo-functionaliteit, vermits deze van
+inladen, maar ook zal hij de undo/redo-functionaliteit verzorgen, vermits deze van
 dezelfde functies gebruik maakt. Er wordt dan gewoon een stack van bestanden in het geheugen bijgehouden.
 \subsubsection{Curves}
 Dit pakket bevat de twee datatypes die doorheen het programma gebruikt worden (zie figuur \ref{iCurv}). Point verzorgt, zoals
 de naam doet vermoeden, de datastructuur die punten voorstelt. Curve geeft dan weer de
 mogelijkheid om een verzameling van punten (lees: een kromme of curve) op te slaan. De
-technische details van deze laatste klasse worden beter uitgelegd verder in de tekst (zie ). 
+technische details van deze laatste klasse worden beter uitgelegd verder in de tekst. 
 Voorlopig is het voldoende om te weten dat Curve een vector van Point-instanties bijhoudt en enkele
 basisvoorzieningen voorziet (punten opvragen, toevoegen, transleren, \ldots).
 \begin{figure}[htbp]
@@ -376,7 +375,7 @@ het exceptie bericht in de console uitprinten, en eentje in het GUI-pakket, die 
 \caption{Exceptions}\label{iExc}
 \end{figure}
 \subsubsection{GUI}
-Een volgend pakket dat het belangrijkste lijkt in de gebruiker zijn ogen is de GUI. De GUI is vrij grondig opgesplitst (zie figuur \ref{iGui}). Elk groot deel heeft zo zijn eigen klasse; 
+Een volgend pakket dat voor de gebruiker het belangrijkste is, daar deze er het resultaat van "ziet", is de GUI. De GUI is vrij grondig opgesplitst (zie figuur \ref{iGui}). Elk groot deel heeft zo zijn eigen klasse; 
 zo heb je een menubalk-klasse, een snelknopbalk-klasse, een tekengebied-klasse en een keuzegebied-klasse. \newline
 De GUI-klasse zal op zijn beurt het centrale orgaan spelen die al deze klassen met elkaar verbindt.
 Het is daarom ook logisch dat deze is afgeleid van de klasse Editor,
@@ -390,8 +389,8 @@ klasse zal dan de door de interface opgelegde functies impementeren om alzo de j
 doen. Het is dus voldoende om deze EventHandling-klassen in GUI aan te maken en door te geven
 aan de juiste componenten (menubalk, tekengebied, \ldots). Meer uitleg hierover vind je verder in
 de tekst. Het eindresultaat van de GUI kan je aanschouwen in figuur \ref{GUI}.
-In de bijlage vind je ook een vroeg model van de GUI (figuur \ref{mockup}), m.a.w. de mockup.
-Ook is er een leeg venster (figuur \ref{start}) en een aangeduid venster (figuur \ref{scrTot})toegevoegd
+In de bijlage vind je ook een vroeg model van de GUI (figuur \ref{mockup}), m.a.w. de mock-up.
+Ook is er een leeg applicatievenster (figuur \ref{start}) en een aangeduid applicatievenster (figuur \ref{scrTot}) toegevoegd
 om zo de opbouw van de GUI wat te verduidelijken
 \begin{figure}[htbp]
 \centering
@@ -409,18 +408,18 @@ dat over het pad dat de curve voorstelt loopt. Dit kan bijvoorbeeld door de gebr
 van de curve te bestuderen. Zodoende kan hij de getekende curve visueel evalueren.
 \begin{figure}[htbp]
 \centering
-\includegraphics[scale=0.4]{./UML2/Path.png}
+\includegraphics[scale=0.5]{./UML2/Path.png}
 \caption{Path Simulation Tool + interactie met DrawArea}\label{iTools}
 \end{figure}\newpage
 \subsection{Uitwerking van de GUI}
 \subsubsection{Overzicht}
-Zoals in figuur \ref{scrMenTot} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
+Zoals in figuur \ref{scrTot} te zien is kan de vormgeving van de GUI in 4 grote stukken worden opgedeeld:
 \begin{enumerate}
 \item Menubalk\newline
 Hierin kan de gebruiker elke actie terugvinden die door Curve Editor kan gedaan worden.
 Bijna elke actie is ook aan te roepen met behulp van sneltoetscombinaties ( Alt-F, Ctrl-O, \ldots ), zodat
 elke gebruiker op zijn favoriete manier kan navigeren doorheen de verschillende uitvoerbare taken.
-Er is overigens aandacht geschonken aan de nesting van de menu-items: die mogen niet te diep noch te breed zijn.
+Er is overigens aandacht geschonken aan de nesting van de menu-items: die mogen noch te diep noch te breed zijn.
 
 Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzien van een icoontje (zie figuur \ref{scrMenTo}).
 \begin{figure}[htbp]
@@ -428,7 +427,7 @@ Verder is elke naam zo triviaal mogelijk gekozen en meestal wordt die ook voorzi
 \includegraphics[scale=0.4]{./screenies/menuTools.jpg}
 \caption{Curve Editor-omgeving, Menu - Tools}\label{scrMenTo}
 \end{figure}
-\item Snelknopbalk
+\item Snelknopbalk\newline
 Hierin vind je enkele veelgebruikte taken terug (nieuw bestand beginnen, bestand openen, 
 nieuwe curve starten, \ldots). Dit is voorzien opdat de gebruiker deze taken snel en en dus effici\"enter kan
 afhandelen dan wanneer hij dat telkens vanuit de menubalk zou moeten doen.
@@ -468,12 +467,11 @@ die opgevangen en afgehandeld kan worden.\newline
 
 Dit systeem is pas echt voordelig als je een event moet afhandelen in een geneste klassestructuur. 
 Stel als voorbeeld: je hebt in een klasse A een instantie van een klasse B zitten
-die op zijn beurt dan weer een instantie heeft van klasse C, en je wilt dat klasse A een handeling( figuur \ref{vb}
-doet als klasse C een event uitstuurt.
+die op zijn beurt dan weer een instantie heeft van klasse C, en je wilt dat klasse A een handeling (zie figuur \ref{vb}) doet als klasse C een event uitstuurt.
 Met callbacks is de properste manier (om klasse-onafhankelijkheid te bewaren) een callback 
-te connecteren van klasse A naar klasse B en daarna een callback van klasse B naar klasse C \ref{call}.
+te connecteren van klasse A naar klasse B en daarna een callback van klasse B naar klasse C (zie figuur \ref{call}).
 In Java kan je gewoon een EventHandle-klasse vanuit klasse A meegeven aan B die het op zijn 
-beurt meegeeft aan klasse C\ref{lis}. Dit maakt de structuur natuurlijk wat eenvoudiger, overzichtelijker, en makkelijker te begrijpen.\newline \newline
+beurt meegeeft aan klasse C (zie figuur \ref{lis}). Dit maakt de structuur natuurlijk wat eenvoudiger, overzichtelijker, en makkelijker te begrijpen.\newline \newline
 
 \begin{figure}[htbp]
 \centering
@@ -520,7 +518,7 @@ hun algoritme te kunnen uitvoeren.
 
 Deze klasse bevat ook nog functies om punten te verwijderen, toe te voegen, om na te gaan of een gegeven punt al dan niet tot de curve behoort, \ldots.
 \subsection{Extra's}
-Bestanden kunnen opgeslaan worden naar meerdere formaten (*.xml en *.gif/*.png), oneindige undo/redo-stack, Voor de rest is er wat aandacht besteed aan het gebruiksgemak, zo zal er bijvoorbeeld tijdens het verslepen van een curve, een grijs pad te zien zijn, selecteren doe je m.b.v. een grijs kader( zie figuur \ref{scrSel} ), of door te klikken op een curve. Curves en punten veranderen van kleur naargelang ze geselecteerd, gehoovered of ongeselecteerd zijn ( de gebruiker kan deze kleuren zelf bepalen ) allemaal kleine dingen die het gebruik toch aangenamer maken.
+Bestanden kunnen opgeslaan worden naar meerdere formaten (*.xml en *.gif/*.png), oneindige undo/redo-stack, \ldots  kunnen als extra's beschouwd worden, al zijn het niet meer dan reeds op voorhand te verwachten features van Curve Editor. Voor de rest is er wat aandacht besteed aan het gebruiksgemak: zo zal er bijvoorbeeld tijdens het verslepen van een curve, een grijs pad te zien zijn, selecteren doe je m.b.v. een grijs kader (zie figuur \ref{scrSel}), of door te klikken op een curve. Curves en punten veranderen van kleur naargelang ze geselecteerd, gehoovered of ongeselecteerd zijn (de gebruiker kan deze kleuren zelf bepalen): allemaal kleine dingen die het gebruik toch aangenamer maken.
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.4]{./screenies/selectPoint.jpg}
@@ -531,12 +529,12 @@ Dit tooltje loopt de geselecteerde curves \'e\'en voor \'e\'en af, en laat een b
 De snelheid van het bewegende bolletje zal afhangen van de de ``helling'' waarover hij loopt.
 Op een lineair pad zal de snelheid constant blijven, bij krommingen echter zal het bolletje
 trager stijgen en sneller dalen. Zodoende kan de gebruiker de resultaten beter interpreteren.
-Het starten van deze tool, laat een nieuwe thread starten, zodat men \'en de tool kan laten runnen \'en men terwijl de geselecteerde curves zelf nog kan aanpassen (verslepen e.d.). 
+Het starten van deze tool laat een nieuwe thread starten, zodat men \'en de tool kan laten runnen \'en men terwijl de geselecteerde curves zelf nog kan aanpassen (verslepen e.d.). 
 \subsection{Interessante problemen}
 \subsubsection{Vector vs. LinkedList}
-Hoewel de collecties van outputpunten van curves enkel maar sequentiëel worden doorlopen (toevoegen achteraan, hele inhoud verwijderen, van voor naar achter uittekenen, \ldots), bleek Vector toch de betere keuze te zijn.
+Hoewel de collecties van outputpunten van curves enkel maar sequenti\"eel worden doorlopen (achteraan toevoegen, hele inhoud verwijderen, van voor naar achter uittekenen, \ldots), bleek Vector toch de betere keuze te zijn.
 Hoewel de structuur van LinkedList ook zou moeten voldoen, maar met een kleiner geheugenverbruik dan Vector, bleek deze datastructuur tergend langzaam te werken. Een reden hiervoor hebben we niet gevonden, maar door gewoon terug gebruik te maken van Vector was het probleem ook opgelost.
-\subsubsection{HashMap vs.2D Matrix}
+\subsubsection{HashMap vs. 2D Matrix}
 Voor de CurveContainer, die de picking moet afhandelen, hadden wij aanvankelijk een HashMap gebruikt. De keys van de HashMap in de bovenste laag waren de pixels/punten van het scherm, en de values waren referenties naar rechthoekjes. Bij initialisatie van de CurveContainer wijzen alle values naar eenzelfde rechthoek. Elk van die rechthoekjes bevat \'e\'en referentie naar een Curve-instantie en een Point-instantie, of twee null-referenties. Zo wordt elk rechthoekje gemapt op een Curve.
 
 Wordt er een extra punt aan de container toegevoegd, dan wordt de rechthoek naarwaar de pixel momenteel verwijst opgesplitst in vier deelrechthoekjes, indien die niet naar null verwijst en indien de resulterende rechthoekjes niet t\'e klein zijn. Indien die wel naar null refereert, dan wordt de hele rechthoek gemapt op die Curve zonder de rechthoek daarvoor op te splitsen, en wordt de Point-referentie gelijkgesteld aan de referentie naar het nieuwe controlepunt. Als er vier deelrechthoekjes aangemaakt dienen te worden, dan wordt voor elk van die rechthoekjes bepaald naar welke Curve zij moeten verwijzen, die van het nieuwe controlepunt, of de Curve waarnaar de grote rechthoek refereerde. Het rechthoekje waarin het nieuwe controlepunt ligt, wordt automatisch aangepast zodat het naar de andere Curve verwijst. Voor de 3 andere wordt de afstand berekend van het middelpunt van het rechthoekje tot het punt naarwaar de Point-instantie van de omkoepelende rechthoek wijst. Is die afstand groter dan de afstand van het middelpunt tot het nieuwe controlepunt, dan zal dat rechthoekje niet de referenties van de omkoepelende rechthoek overnemen, maar naar de nieuwe Curve/Point refereren.
@@ -564,49 +562,49 @@ De volledige versie is terug te vinden in de appendix.
 
 \begin{itemize}
 \item \textbf{11/02/08 - 17/02/08}\newline
-Opzoekwerk van de mogelijkheden van java ( swing, eventListeners, 2D tekenen, \ldots )
+Opzoekwerk van de mogelijkheden van Java (Swing, EventListeners, 2D tekenen, \ldots).
 \item \textbf{18/02/08 - 24/02/08}\newline
 Feedback afwachten en verwerken, samenbrengen van opgezocht materiaal, bespreken
 van de mogelijkheden.
 \item \textbf{24/02/08 - 02/02/08}\newline
-Aanpassingen in de structuur a.d.v. de feedback, exacte taakverdeling opstellen, verdere
+Aanpassingen in de structuur a.h.v. de feedback, exacte taakverdeling opstellen, verdere
 taakplanningen opstellen, de gebruikte interfaces opstellen.
 \item \textbf{03/03/08 - 23/03/08}\newline
 Examens en rustperiode na de examens.
 \item \textbf{24/03/08 - 30/03/08}\newline
-Besprekingen i.v.m. de gui, waar hoort wat? Wat moet er zeker in staan en een mockup maken.
+Besprekingen i.v.m. de GUI, "Waar hoort wat ?", "Wat moet er zeker in staan ?", en een mock-up maken.
 \item \textbf{31/03/08 - 06/04/08}\newline
-Beginnen aan de implementatie van de GUI a.d.h.v. de mockup
+Beginnen aan de implementatie van de GUI a.h.v. de mock-up.
 \item \textbf{14/04/08 - 20/04/08}\newline
-Implementatie van de interpolatie algoritmes, Bezier en Hermite.
+Implementatie van de interpolatie-algoritmes, B\'ezier en Hermite.
 Connectie leggen tussen deze algoritmes en de toolbar en het tekengebied.
 \item \textbf{21/04/08 - 27/04/08}\newline
 Beginnen aan de implementatie van de datastuctuur voor het opslaan van curves en punten.
-Beginnen aand de implementatie van FileIO m.b.v. xml.
+Beginnen aan de implementatie van FileIO m.b.v. xml.
 \item \textbf{28/04/08 - 04/05/08}\newline
 De implementaties van de voorgaande week afwerken en het hele programma voldoende testen
 op bugs.
 \item \textbf{05/05/08 - 11/05/08}\newline
-Afronden van algoritmes i.v.m. curve bewerkingen en punt bewerkingen.
-Implementatie van full screen mode en prototype van het verslag maken.
+Afronden van algoritmes i.v.m. curvebewerkingen en puntbewerkingen.
+Implementatie van fullscreen-mode en prototype van het verslag maken.
 \item \textbf{12/05/08 - 18/05/08}\newline
-Afronden van het implementatie gedeelte van het project.
+Afronden van het implementatiegedeelte van het project.
 \item \textbf{19/05/08 - 25/05/08}\newline
-programma debuggen en verslag verder aanvullen.
+Programma debuggen en verslag verder aanvullen.
 \item \textbf{26/05/08 - 01/06/08}\newline
-verslag afwerken en eventueel beginnen aan powerpoint presentatie.
+Verslag afwerken en eventueel beginnen aan PowerPoint-presentatie.
 \item \textbf{02/05/08 - 08/06/08}\newline
-stressen op andere projecten en eventueel presentatie voorbereiden.
+Stressen op andere projecten en eventueel presentatie voorbereiden.
 \item \textbf{09/05/08 - 15/06/08}\newline
-Presentatie geven 12/06/08.
+Presentatie geven op 12/06/08.
 \end{itemize}
 \newpage
 \section{Taakverdeling}
 \begin{enumerate}
 \item Sibrand Staessens:
-       Bezier algorithmes, CurveContainer, Editor, DrawArea, GUI
+       B\'ezier-algoritmen, CurveContainer, Editor, DrawArea, GUI
 \item Sibren Polders
-       Hermite algorithmes, FileIO, Menu, ToolBar, ChoiceArea, GUI, PathSimulation
+       Hermite-algoritmen, FileIO, Menu, ToolBar, ChoiceArea, GUI, PathSimulation
 \end{enumerate}
 \newpage
 \section{Appendix}
@@ -615,7 +613,7 @@ Presentatie geven 12/06/08.
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.4]{./mockup.png}
-\caption{Mock-up}\label{mockup}
+\caption{Mock-up}\label{mock-up}
 \end{figure}
 \begin{figure}[htbp]
 \centering
@@ -677,5 +675,5 @@ Prof. dr. F. VAN REETH, Prof. dr. P. BEKAERT, 2007-2008, Computer Graphics\newli
 \url{http://www.totheriver.com/learn/xml/xmltutorial.html} (XML)\newline
 \url{http://www.kde.org/} (icoontjes)\newline
 \section{Handleiding}
-\newpage
+Zie bijgevoegde handleiding.
 \end{document}

@@ -71,6 +71,7 @@
 			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HN" target="inhoud">Hermite normaal</a></li>
 			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HC" target="inhoud">Hermite Cardinal</a></li>
 			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HCR" target="inhoud">Hermite Catmull-Rom</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HKB" target="inhoud">Hermite Kochanek-Bartels</a></li>
 		</ul>
 	</li>
 	<li class="linkLi"><a class="linkA" href="inhoud.html#ontwikkelaars" target="inhoud">Ontwikkelaars</a></li>
@@ -80,7 +81,7 @@
 	
 	<ol type="I" class="titel" style="text-align: left; padding-left: 1em;">
 		<li id="inleiding" class="titelLi"><span class="bold">Inleiding</span><br />
-			Bedankt om voor Curve Editor te kiezen! Deze handleiding zal u zo goed mogelijk proberen bij te staan met het oplossen van uw problemen met Curve Editor. 
+			Bedankt om voor Curve Editor te kiezen ! Deze handleiding zal u zo goed mogelijk proberen bij te staan met het oplossen van uw problemen met Curve Editor. 
 			Moest u echter op een probleem stuiten dat niet beschreven wordt in deze documentatie, dan kan u zich steeds beroepen op de hulp van onze medewerkers. 
 			Deze zijn te contacteren op:
 			<ul style="text-align: left;">
@@ -497,50 +498,47 @@ worden. Dit gebeurt m.b.v. een pop-up dialoog dat te bereiken is via Edit-> Pref
 					valt uiteraard samen met het derde controlepunt van het huidige viertal, om alzo een aaneengesloten curve te verkrijgen.			
 					<br /><br />
 				</li>
-				<li id="HC"><span class="underline">Hermite Cardinal (figuur 20)</span><br />					De methode van punten berekenen is hier net hetzelfde als besproken in hermite m.b.v. 
-basisfuncties.
-Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
-berekend worden uit de opgegeven controlepunten. 
-De tangens wordt door de volgende formule uitgerekend:\newline 
-$m_k = (1 - c)(p_{k+1} -p_{k-1})/2$
+				<li id="HC"><span class="underline">Hermite Cardinal (figuur 20)</span><br />	
+					De methode van punten berekenen is hier net hetzelfde als besproken in Hermite m.b.v. 
+					basisfuncties. Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
+					berekend worden uit de opgegeven controlepunten. 
+					De tangens wordt door de volgende formule uitgerekend:<br />	
+					m_k = (1 - c) * (p_{k+1} - p_{k-1}) /2<br />	
+					Hierbij is c een willekeurig getal tussen 0 en 1.<br />
 
-hierbij is c een willekeurig getal tussen 0 en 1.
-
-Uit deze formule is duidelijk af te leiden dat er geen lijn getrokken kan worden 
-tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt. 
-Omdat hun tangens niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
-om de verdere berekeningen te volbrengen.( zie figuur \ref{cardinal} )
+					Uit deze formule is duidelijk af te leiden dat er geen lijn getrokken kan worden 
+					tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt, 
+					omdat hun tangenswaarden niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
+					om de verdere berekeningen te volbrengen.
 					<br /><br />
 				</li>
 				<li id="HCR"><span class="underline">Hermite Catmull-Rom (figuur 21)</span><br />
-Deze methode kom volledig overeen met de methode van Cardinal, met het enige verschil dat
-de toen random waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
-worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt.( zie figuur
+					Deze methode komt volledig overeen met de methode van Cardinal, met het enige verschil dat
+					de toen random gekozen waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
+					worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt.
 					<br /><br />
 				</li>
-				<li id="HCR"><span class="underline">Hermite Kochanek–Bartels (figuur 22)</span><br />
-Deze methode maakt weer gebruik van het normale Hermite algoritme Het verschil
-met de 2 voorgaande berekeningen is dat Kochanek-Bartels rekening houdt met start en eind
-tangens.
+				<li id="HKB"><span class="underline">Hermite Kochanek-Bartels (figuur 22)</span><br />
+					Deze methode maakt weer gebruik van het normale Hermite-algoritme Het verschil
+					met de twee voorgaande berekeningen is dat Kochanek-Bartels rekening houdt met start- en eind-tangenswaarden.<br />
 
-Deze methode maakt gebruik van 3 variabelen:\newline
-t = tension ( verandert de lengte van de tangens )\newline
-b = bias ( verandert de richting van de tangens )\newline
-c = continu\"iteit ( controleert de gladheid van de overgang tussen begin en eind tangens)
-\newline
+					Deze methode maakt gebruik van 3 variabelen:<br />
+					t = tension (verandert de lengte van de tangens)<br />
+					b = bias (verandert de richting van de tangens)<br />
+					c = continu&iuml;teit (controleert de gladheid van de overgang tussen begin- en eindtangens)<br />
 
-Al deze variabelen vari\"eren tussen -1 en 1 hoe dichter de variabelen bij -1 zitten hoe
-meer de curve lineariteit benadert. Als de variabelen dicht bij de 1 zitten dan zal de curve
-gladder zijn.\newline
+					Al deze variabelen vari&euml;ren tussen -1 en 1, hoe dichter de variabelen bij -1 zitten hoe
+					meer de curve lineariteit benadert. Als de variabelen dicht bij de 1 zitten dan zal de curve
+					gladder zijn.<br />
 
-De formules om de tangens te berekenen zijn ( hierbij is m0 de tangens van p0 en m1 de tangens
-van p1):\newline
-$m0 = {{(1-t)(1+b)(1-c)(p_i-p_{i-1})}\over{2}} + {{(1-t)(1+b)(1+c)(p_{i+1}-p_i)}\over{2}}$\newline
-$m1 = {{(1-t)(1+b)(1+c)(p_i-p_{i-1})}\over{2}} + {{(1-t)(1+b)(1-c)(p_{i+1}-p_i)}\over{2}}$\newline
+					De formules om de tangens te berekenen zijn (hierbij is m0 de tangens van p0 en m1 de tangens
+					van p1):<br />
+					m0 = {{(1-t)(1+b)(1-c)(p_i-p_{i-1})}\2} + {{(1-t)(1+b)(1+c)(p_{i+1} - p_i)}\2}<br />
+					m1 = {{(1-t)(1+b)(1+c)(p_i-p_{i-1})}\2} + {{(1-t)(1+b)(1-c)(p_{i+1} - p_i)}\2}<br />
 
-Dus bij input van vier controlepunten kan je de tangens van controlepunt het tweede en derde
-punt berekenen. Net zoals bij de vorige algoritmes zal je dus niet kunnen interpoleren tussen
-de eerste en de tweede controlepunten en de voorlaatste en de laatste controlepunten.
+					Dus bij input van vier controlepunten kan je de tangens van controlepunt het tweede en derde
+					punt berekenen. Net zoals bij de vorige algoritmes zal je dus niet kunnen interpoleren tussen
+					de eerste en de tweede controlepunten en de voorlaatste en de laatste controlepunten.
 					<br /><br />
 				</li>
 			</ul>	
@@ -597,7 +595,7 @@ de eerste en de tweede controlepunten en de voorlaatste en de laatste controlepu
             <table border="0">
 				<tr><td>
 					<img src="bartels.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
-					<caption>Figuur 21: Curve Editor: Hermite Kochanek Bartels</caption>		
+					<caption>Figuur 22: Curve Editor: Hermite Kochanek-Bartels</caption>		
 				</td></tr>		
 			</table>
 			<br /><br />
