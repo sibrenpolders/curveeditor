@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="nl">
+<head>
+	<title>Curve Editor - Documentatie - Inhoud</title>  
+	<meta http-equiv="content-type" content="text/html" /> 
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+	<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+</head>
+<body>
+<div id="right">
+<div id="container">
+<h2 id="inhoud">Curve Editor - Documentatie</h2>
+<h3 id="linkH1" style="text-align: left;"><a class="linkA" href="#inhoud">Inhoud</a></h3>
+<ol type="I"  class="link">
+	<li class="linkLi"><a class="linkA" href="inhoud.html#inleiding" target="inhoud">Inleiding</a></li>
+	<li class="linkLi"><a class="linkA" href="inhoud.html#snel" target="inhoud">Snelle start</a>
+	<ol class="link">
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#start" target="inhoud">Curve Editor starten</a></li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#stop" target="inhoud">Curve Editor afsluiten</a></li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#omgeving" target="inhoud">Curve Editor-omgeving</a></li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#openen" target="inhoud">Canvas inladen</a></li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#opslaan" target="inhoud">Canvas opslaan</a></li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#clear" target="inhoud">Canvas clearen</a></li>
+	</ol>
+	</li>
+	<li class="linkLi"><a class="linkA" href="inhoud.html#gebruik" target="inhoud">Gebruik</a>
+	<ol class="link">
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#Curves" target="inhoud">Curves</a>
+		<ul class="link">
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#nieuwC" target="inhoud">Nieuwe curve aanmaken
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#selectC" target="inhoud">Curves (de)selecteren
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#moveC" target="inhoud">Curves verplaatsen
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#deleteC" target="inhoud">Curves verwijderen
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#connectC" target="inhoud">Curves verbinden
+			</a></li>
+		</ul>
+		</li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#Punten" target="inhoud">Controlepunten</a>
+		<ul class="link">
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#selectP" target="inhoud">Punten (de)selecteren
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#moveP" target="inhoud">Punten verplaatsen
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#deleteP" target="inhoud">Punten verwijderen
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#addP" target="inhoud">Nieuw punt toevoegen
+			</a></li>
+		</ul>
+		</li>
+		<li class="linkLiSub"><a class="linkA" href="inhoud.html#Andere" target="inhoud">Andere</a>
+		<ul class="link">
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#undo" target="inhoud">Undo/Redo
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#simu" target="inhoud">Path Simulation Tool
+			</a></li>
+			<li class="linkLiSubSub"><a class="linkA" href="inhoud.html#weergave" target="inhoud">Curveweergave wijzigen
+			</a></li>
+		</ul>
+		</li>
+	</ol></li>
+	<li class="linkLi"><a class="linkA" href="inhoud.html#algos" target="inhoud">Beschikbare algoritmen</a>
+		<ul class="link">
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#L" target="inhoud">Linear</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#BC0" target="inhoud">Bezier C0</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#BG1" target="inhoud">Bezier G1</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#BC1" target="inhoud">Bezier C1</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HN" target="inhoud">Hermite normaal</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HC" target="inhoud">Hermite Cardinal</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HCR" target="inhoud">Hermite Catmull-Rom</a></li>
+			<li class="linkLiSub"><a class="linkA" href="inhoud.html#HKB" target="inhoud">Hermite Kochanek-Bartels</a></li>
+		</ul>
+	</li>
+	<li class="linkLi"><a class="linkA" href="inhoud.html#ontwikkelaars" target="inhoud">Ontwikkelaars</a></li>
+	</ol>
+	
+	
+	
+	<ol type="I" class="titel" style="text-align: left; padding-left: 1em;">
+		<li id="inleiding" class="titelLi"><span class="bold">Inleiding</span><br />
+			Bedankt om voor Curve Editor te kiezen ! Deze handleiding zal u zo goed mogelijk proberen bij te staan met het oplossen van uw problemen met Curve Editor. 
+			Moest u echter op een probleem stuiten dat niet beschreven wordt in deze documentatie, dan kan u zich steeds beroepen op de hulp van onze medewerkers. 
+			Deze zijn te contacteren op:
+			<ul style="text-align: left;">
+				<li>CE Straat 123</li>
+				<li>CE City 897</li>
+				<li>CE Country</li>
+				<li>#$%/#$.#$.#$</li>
+			</ul><br /><br />
+		</li>
+		<li id="snel" class="titelLi"><span class="bold">Snelle start</span>
+			<ol class="titel">
+				<li id="start" class="titelLiSub">
+					<span class="underline">Curve Editor starten</span><br />
+					U heeft de volgende mogelijkheden om het programma te starten:<br />
+					<ul>
+						<li>Dubbelklik op het bestand CurveEditor.jar</li>
+						<li>Of voer uit vanuit de command line:  java -jar CurveEditor.jar</li>
+					</ul>
+				<br /><br />
+				</li>
+				<li id="stop" class="titelLiSub">
+					<span class="underline">Curve Editor afsluiten</span><br />
+					U heeft de volgende mogelijkheden om het programma te be&euml;indigen:<br />
+					<ul>
+						<li>op het kruisje rechtsboven in het applicatievenster klikken</li>
+						<li>in de menubalk: File &ndash; &gt; Quit Program</li>
+						<li>gebruik de toetsencombinatie Ctrl-Q</li>
+					</ul>
+				<br /><br />
+				</li>
+				<li id="omgeving" class="titelLiSub">
+					<span class="underline">Curve Editor-omgeving</span><br />
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="startMarked.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 1: Curve Editor: werk-omgeving</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="menuFile.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 2: Curve Editor: Menu, File</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="menuEdit.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 3: Curve Editor: Menu, Edit</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="menuTools.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 4: Curve Editor: Menu, Tools</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="menuAlg.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 5: Curve Editor: Menu, Algorithms</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="selectCurve.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 6: Curve Editor: Choice Area, Edit, Curves</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="selectPoint.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 7: Curve Editor: Choice Area, Edit, Points</caption>		
+						</td></tr>		
+					</table>
+					<br />De Curve Editor bestaat uit een menubalk (zie figuur 1) waar u de mogelijkheid wordt gegeven van allerhande taken uit te voeren en instellingen te veranderen. 
+					Kort geschetst zijn volgende acties vanuit de menubalk mogelijk:
+					<ul>		
+						<li>File &ndash; &gt; (zie figuur 2)
+							<ul>
+								<li>New File (cleart het canvas en begint met een nieuw bestand)</li>
+								<li>Open File (laadt een bestand in, zonder het canvas te clearen)</li>
+								<li>Save File (slaat het canvas op, in een *.xml-bestand, of in een *.png/gif-bestand)</li>
+								<li>Save As... (slaat het canvas op in het vorig gebruikte bestand, indien dat bestaat)</li>
+								<li>New Curve (deselecteert alle curves en begint een nieuwe curve op het canvas)</li>
+								<li>Quit Program (sluit het programma af)</li>
+							</ul>
+						</li>
+						<li>Edit &ndash; &gt; (zie figuur 3)
+							<ul>
+								<li>Undo (doet de laatste verandering teniet)</li>
+								<li>Redo (doet de laatste teniet gedane verandering opnieuw)</li>
+								<li>Preferences (geeft de mogelijkheid van de lijndiktes e.d. in te stellen)</li>
+							</ul>
+						</li>
+						<li>Tools &ndash; &gt; (zie figuur 4)
+							<ul>
+								<li>None</li>
+								<li>Path Simulation (start de wegsimulatietool)</li>				
+								<li>Point (submenu geeft de mogelijkheid bewerkingen te doen op de controlepunten ((de)selecteren, verplaatsen, deleten, ...))</li>
+								<li>Curve (submenu geeft de mogelijkheid bewerkingen te doen op de curves ((de)selecteren, verplaatsen, deleten, verbinden, ...))</li>
+							</ul>
+						</li>
+						<li>Algorithms &ndash; &gt; (zie figuur 5)
+							<ul>
+								<li>Bezier (submenu laat u kiezen uit de verschillende Bezier-varianten)</li>
+								<li>Hermite (submenu laat u kiezen uit de verschillende Hermite-varianten)</li>
+							</ul>
+						</li>
+						<li>Help &ndash; &gt;
+							<ul>		
+								<li>Quick Howto's (laat deze sectie inladen)</li>
+								<li>Documentation (laat dit document inladen)</li>
+								<li>About</li>
+							</ul>
+						</li>
+					</ul><br />
+					Voorts kunnen deze commando's ook met de volgende sneltoetscombinaties aangeroepen worden:
+					<ul>
+						<li>Ctrl-Q: de applicatie afsluiten</li>
+						<li>Ctrl-O: een bestand openen</li>
+						<li>Ctrl-S: naar een bestand opslaan</li>
+						<li>Ctrl-N: een nieuw bestand beginnen</li>
+						<li>Ctrl-C: een nieuwe curve starten</li>
+						<li>Ctrl-U: de laatst gedane actie ongedaan maken</li>
+						<li>Ctrl-R: de laatst ongedaan gemaakte actie terug gedaan maken</li>
+						<li>Ctrl-P: de instellingsmogelijkheden weergeven</li>
+					</ul><br />
+					Verder vindt u het volgende terug in de Curve Editor-omgeving (zie figuur 1):
+					<ul>
+						<li>Toolbar:
+							<ul>
+								<li>New File: een nieuw bestand beginnen</li>
+								<li>Open File: een bestand openen</li>
+								<li>Save File: naar een bestand opslaan</li>
+								<li>New Curve: een nieuwe curve beginnen</li>
+								<li>Clear: alle curves en punten verwijderen</li>
+								<li>Select Curve: een curve selecteren (nadien kan men dan curves in het canvas selecteren)</li>
+								<li>Select Point: een controlepunt selecteren (nadien kan men dan controlepunten in het canvas selecteren)</li>
+							</ul>
+						</li>
+						<li>Choice Area:
+							<ul>
+								<li>Algorithms: na selectie van Bezier of Hermite kan men in het lijstje het gewenste algoritme kiezen. Nieuwe curves zullen dan met dit algoritme berekend worden, alsook de huidige geselecteerde curves.</li>
+								<li>Input: dit geeft de mogelijkheid om een nieuw controlepunt toe te voegen a.h.v. exacte co&ouml;rdinaten. U vult de gewenste getallen in en klikt op &quot;Add Point&quot;; het punt zal dan aan de geselecteerde curves toegevoegd worden en weergegeven worden.</li>
+								<li>Show: het aanvinken van een keuze zorgt ervoor dat deze in het canvas wordt weergegeven.</li>
+								<li>Edit: dit kan twee verschillende vormen aannemen, afhangende van het feit of u curves of controlepunten geselecteerd hebt.
+									<ol>			
+										<li>Curves (zie figuur 6):
+											<ul>
+												<li>Start New Curve: een nieuwe curve starten</li>
+												<li>Select All Curves: alle curves selecteren</li>
+												<li>Deselect All Curves: alle curves deselecteren</li>
+												<li>Add Control Point: een nieuw controlepunt aan de geselecteerde curves toevoegen</li>
+												<li>Move Curves: de geselecteerde curves verplaatsen (hierna kan men door de cursor in het canvas te draggen de curves verplaatsen)</li>
+												<li>Connect Curves (No Extra Points): de geselecteerde curves verbinden en op hun oorspronkelijke plaats laten</li>
+												<li>Connect Curves (C0): de geselecteerde curves verbinden en verplaatsen naar het einde van de vorige curve</li>
+												<li>Delete Curves: alle geselecteerde curves verwijderen</li>
+											</ul>
+										</li>
+										<li>Controlepunten (zie figuur 7):
+											<ul>
+												<li>Start New Curve: een nieuwe curve starten</li>
+												<li>Add Control Point: een nieuw controlepunt aan de geselecteerde curves toevoegen</li>
+												<li>Deselect All Control Points: alle controlepunten deselecteren</li>
+												<li>Move Control Points: de geselecteerde punten verplaatsen (hierna kan men door de cursor in het canvas te draggen de punten verplaatsen)</li>
+												<li>Move Curves: de geselecteerde curves verplaatsen (hierna kan men door de cursor in het canvas te draggen de curves verplaatsen)</li>
+												<li>Delete Control Points: alle geselecteerde punten verwijderen</li>
+											</ul>
+										</li>
+									</ol>
+								</li>
+							</ul>
+						</li>
+					</ul><br /><br />
+				</li>
+				<li id="openen" class="titelLiSub">
+					<span class="underline">Canvas inladen</span><br />
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="open.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 8: Curve Editor: canvas/curve inladen</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					Een bestand inladen gebeurt door vanuit de menubalk &quot;Open File&quot; te kiezen of de sneltoetsencombinatie Ctrl-O te gebruiken.
+					Na dit gedaan te hebben, krijgt men het venster dat in figuur 8 te zien is. In dit venster navigeert men dan naar het gewenste *.xml&ndash; bestand; na selectie van
+					dat bestand klikt men op  &quot;Open&quot; om het bestand in te laden. Inladen van bestanden zorgt niet voor het clearen van het canvas; op deze manier is het mogelijk
+					curves uit meerdere bestanden tegelijkertijd te gebruiken: men laadt dan gewoon de nodige bestanden in.<br /><br />
+				</li>
+				<li id="opslaan" class="titelLiSub">
+					<span class="underline">Canvas opslaan</span><br />
+					<br />
+					<table border="0">
+						<tr><td>
+						<img src="save.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 9: Curve Editor: canvas/curves opslaan</caption>		
+						</td></tr>		
+					</table>
+					<br />
+					Een nieuw bestand aanmaken gebeurt door vanuit de menubalk &quot;Save As&quot; te kiezen of de sneltoetsencombinatie Ctrl-S te gebruiken. 
+					Om het vorig weggeschreven bestand te overschrijven met de huidige inhoud van het canvas, dan kiest men vanuit de menubalk &quot;Save File&quot;.
+					Na een van de twee acties gedaan te hebben, krijgt men het venster dat in figuur 9 te zien is. In dit venster navigeert men dan naar het gewenste bestand dat men wilt overschrijven; na selectie van
+					dat bestand klikt men op  &quot;Save&quot; om het bestand weg te schrijven. Men kan i.p.v. een reeds bestaand bestand te selecteren ook zelf een bestandsnaam in 
+					het tekstveld &quot;File Name&quot; ingeven: dit schrijft het canvas weg naar dat bestand.<br />
+					Men kan kiezen om het canvas in een *.xml-bestand op te slaan; dat geeft de mogelijkheid om het daarna terug in het programma in te laden en verder te gaan. Men kan ook kiezen
+					om het canvas als een afbeelding in een *.png- of *.gif-bestand op te slaan. Indien een ander bestandsformaat gekozen wordt, dan zal het uiteindelijke bestand de *.xml-informatie bevatten.	<br /><br />
+				</li>
+				<li id="clear" class="titelLiSub">
+					<span class="underline">Canvas clearen</span><br />
+					Het canvas clearen heeft als gevolg dat alle aangemaakte curves verwijderd worden en men terug van een lege canvas vertrekt. Dit kan op de volgende manieren
+					bekomen worden:<br />
+					<ul>
+						<li>Menu &ndash; &gt; File &ndash; &gt; New File: een nieuw bestand beginnen heeft hetzelfde effect als alle curves verwijderen</li>
+						<li>Toolbar &ndash; &gt; New File: een nieuw bestand beginnen heeft hetzelfde effect als alle curves verwijderen</li>
+						<li>Toolbar &ndash; &gt; Clear</li>												
+					</ul>
+					<br /><br />
+				</li>
+			</ol>
+		</li>
+		<li id="gebruik" class="titelLi"><span class="bold">Gebruik</span><br />
+			<ul style="text-align: left;">
+				<li id="nieuwC"><span class="underline">Nieuwe Curve Aanmaken</span><br />
+					Volgende mogelijkheden zijn beschikbaar om aan een nieuwe curve te beginnen:
+					<ul>
+						<li>Gebruik de sneltoetsen Ctrl-C</li>
+						<li>Menu &ndash; &gt; File &ndash; &gt; New Curve</li>
+						<li>Toolbar &ndash; &gt; New Curve</li>
+						<li>Indien in Choice Area het Edit&ndash;gedeelte actief is: klik op &quot;Start New Curve&quot;</li>
+					</ul><br />
+					Nadat u &eacute;&eacute;n van de vorige acties gedaan hebt, kunt u in het canvas aan een nieuwe curve beginnen door een eerste nieuw controlepunt aan te klikken 
+					of in te geven.	<br /><br />	
+				</li>	
+				<li id="selectC"><span class="underline">Curves (de)selecteren</span><br />
+				Toolbar &ndash; &gt; Select Curve zorgt ervoor dat men curves kan (de)selecteren, als dat al niet het geval was. Reeds geselecteerde curves blijven geselecteerd.<br />
+				Om curves te selecteren kan men de muiscursor draggen: men duwt de linkermuisknop in, sleept de cursor waardoor een selectierechthoek zichtbaar wordt, en men laat 
+				de linkermuisknop terug los. Alle curves die punten bevatten in dat selectierechthoekje zijn nu geselecteerd. Een andere manier is om curves aan te klikken: dit zorgt er ook voor
+				dat geselecteerde curves gedeselecteerd kunnen worden. Nog een andere mogelijkheid is om ALLE aangemaakte curves te selecteren door op Choice Area &ndash; &gt; Edit &ndash; &gt; Select All Curves te klikken. 
+				ALLE geselecteerde curves worden gedeselecteerd door op Choice Area &ndash; &gt; Edit &ndash; &gt; Deselect All Curves te klikken.
+				<br />Geselecteerde curves worden in het rood weergegeven, niet-geselecteerde in het zwart (zie figuur 10). Curves die na het loslaten van de linkermuisknop of curves die na klikken op de huidige
+				positie geselecteerd zullen worden, worden in magenta weergegeven (zie figuur 10).
+				<br /><br />
+					<table border="0">
+						<tr><td>
+						<img src="selectCurve.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 10: Curve Editor: curves selecteren</caption>		
+						</td></tr>		
+					</table>
+					<br /><br />
+				</li>		
+				<li id="moveC"><span class="underline">Curves verplaatsen</span><br />
+				Dit is enkel mogelijk indien men curves (of controlepunten met de daaraan verbonden curves) geselecteerd heeft. <br />
+				Choice Area &ndash; &gt; Edit &ndash; &gt; Move Curves activeert de move-functionaliteit. Die werkt als volgt: men houdt de linkermuisknop ingeduwd op een plaats
+				in het canvas, dit is de startpositie. Nu kan men de cursor over het canvas slepen en alle curves worden verplaatst over een afstand die gelijk is aan de afstand tussen de startpositie
+				van de cursor en de huidige positie van de cursor. Die afstand wordt weergegeven door een grijze lijn (zie figuur 11). Laat men de linkermuisknop los, dan zijn de curves definitief verplaatst.
+				<br /><br />
+					<table border="0">
+						<tr><td>
+						<img src="moveCurve.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 11: Curve Editor: curves verplaatsen</caption>		
+						</td></tr>		
+					</table>
+					<br /><br />
+				</li>	
+				<li id="deleteC"><span class="underline">Curves verwijderen</span><br />
+				Men kan uiteraard kiezen om ALLE curves te verwijderen door heel het canvas te clearen, maar men kan ook enkel de geselecteerde curves verwijderen. Dit doet men door op
+				Choice Area &ndash; &gt; Edit &ndash; &gt; Delete Curves te klikken. Dit zorgt ervoor dat het canvas enkel nog maar bestaat uit de niet-geselecteerde curves.
+				<br /><br />
+				</li>	
+				<li id="connectC"><span class="underline">Curves verbinden</span><br />
+				Indien er curves geselecteerd zijn, dan kan men ervoor kiezen om deze tot &eacute;&eacute;n lange curve te verbinden. Ongeacht de gekozen manier wordt de curve berekend a.h.v. het algoritme
+				van de eerst geselecteerde curve. Vervolgens wordt elke volgende geselecteerde curve verbonden aan de lange curve om uiteindelijk tot een grote curve te komen.<br />
+				Er zijn twee verbindingsmanieren:
+					<ul>
+						<li>Choice Area &ndash; &gt; Edit &ndash; &gt; Connect Curves (No Extra Points) <br />
+							De nieuw aangemaakte curve krijgt de eigenschappen van de eerst geselecteerde curve en AL de controlepunten van de geselecteerde curves. 
+							Het eerste controlepunt van een geselecteerde curve volgt op het laatste controlepunt van de vorige geselecteerde curve. De controlepunten behouden hun 
+							oorspronkelijke posities met andere woorden.
+						</li>
+						<li>Choice Area &ndash; &gt; Edit &ndash; &gt; Connect Curves (C0) <br />
+							De nieuw aangemaakte curve krijgt de eigenschappen van de eerst geselecteerde curve en AL de controlepunten van de geselecteerde curves. 
+							Het eerste controlepunt van een geselecteerde curve valt samen met het laatste controlepunt van de vorige geselecteerde curve. De controlepunten van die volgende te
+							verbinden curve worden verschoven over een afstand zodanig dat die twee punten samenvallen.
+						</li>
+					</ul>
+				<br /><br />
+				</li>	
+				<li id="selectP"><span class="underline">Punten (de)selecteren</span><br />
+				Toolbar &ndash; &gt; Select Point zorgt ervoor dat men controlepunten kan (de)selecteren, als dat al niet het geval was. Reeds geselecteerde controlepunten blijven geselecteerd.<br />
+				Om controlepunten te selecteren kan men de muiscursor draggen: men duwt de linkermuisknop in, sleept de cursor waardoor een selectierechthoek zichtbaar wordt, en men laat 
+				de linkermuisknop terug los. Alle controlepunten in dat selectierechthoekje zijn nu geselecteerd. Een andere manier is om controlepunten aan te klikken: dit zorgt er ook voor
+				dat geselecteerde controlepunten gedeselecteerd kunnen worden. ALLE geselecteerde controlepunten worden gedeselecteerd door op Choice Area &ndash; &gt; Edit &ndash; &gt; Deselect All Control Points
+				 te klikken.<br />
+				 Geselecteerde controlepunten worden in het groen weergegeven, niet-geselecteerde in het zwart of rood, naargelang de selectiestatus van de curve waartoe zij behoren (zie figuur 12). Controlepunten die na het loslaten van 
+				 de linkermuisknop of controlepunten die na klikken op de huidige positie ge(de)selecteerd zullen worden, worden in geel weergegeven (zie figuur 12). Geselecteerde of 
+				 gehooverde punten zorgen er ook voor dat de curves waarvan dat punt een controlepunt is, ook geselecteerd of gehooverd zijn.
+				<br /><br />
+					<table border="0">
+						<tr><td>
+						<img src="selectPoint.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 12: Curve Editor: controlepunten selecteren</caption>		
+						</td></tr>		
+					</table>
+					<br /><br />
+				</li>	
+				<li id="moveP"><span class="underline">Punten verplaatsen</span><br />
+				Dit is enkel mogelijk indien men controlepunten geselecteerd heeft, uiteraard <br />
+				Choice Area &ndash; &gt; Edit &ndash; &gt; Move Control Points activeert de move-functionaliteit. Die werkt als volgt: men houdt de linkermuisknop ingeduwd op een plaats
+				in het canvas, dit is de startpositie. Nu kan men de cursor over het canvas slepen en alle geselecteerde controlepunten worden verplaatst over een afstand die gelijk is aan de afstand tussen de startpositie
+				van de cursor en de huidige positie van de cursor. Die afstand wordt weergegeven door een grijze lijn (zie figuur 13). Laat men de linkermuisknop los, dan zijn de controlepunten definitief verplaatst.
+				<br /><br />
+					<table border="0">
+						<tr><td>
+						<img src="movePoint.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 13: Curve Editor: punten verplaatsen</caption>		
+						</td></tr>		
+					</table>
+					<br /><br />
+				</li>	
+				<li id="deleteP"><span class="underline">Punten verwijderen</span><br />
+				Dit doet men door op Choice Area &ndash; &gt; Edit &ndash; &gt; Delete All Control Points te klikken. 
+				Dit zorgt ervoor dat de geselecteerde controlepunten uit alle curves tot waartoe zij behoren verwijderd worden.
+				<br /><br />
+				</li>	
+				<li id="addP"><span class="underline">Nieuw punt toevoegen</span><br />
+				Dit is enkel mogelijk indien men curves geselecteerd heeft. Curves zijn geselecteerd als ten minste &eacute;&eacute;n controlepunt van de curve geselecteerd is, of wanneer de
+				curve zelf geselecteerd is. Indien men een nieuwe curve aangemaakt heeft, is die automatisch geselecteerd. Een nieuw controlepunt wordt toegevoegd aan alle
+				curves die op dat moment geselecteerd zijn.<br />
+				Choice Area &ndash; &gt; Input geeft de mogelijkheid om een controlepunt op een exacte positie toe te voegen. Men vult dan de co&ouml;rdinaten in en klikt op &quot;Add Point&quot;. De andere manier is door de add-functionaliteit 
+				te activeren, als dat al niet geval was. Dit doet men door op Choice Area &ndash; &gt; Edit &ndash; &gt; Add Control Point te klikken. Nu kan men in het canvas klikken op een plaats waar men een nieuw controlepunt
+				wilt toevoegen. Men kan punten blijven toevoegen totdat de add-functionaliteit niet meer actief is (wanneer bvb. de move- of select-functionaliteit geactiveerd is).
+				<br /><br />
+				</li>		
+				<li id="undo"><span class="underline">Undo/Redo</span><br />
+				Bepaalde veranderingen aan het canvas kan men ongedaan maken: punten toevoegen, curves verplaatsen, curves verwijderen, ..., kortom: acties die de inhoud van curves
+				echt veranderd hebben. Veranderingen van interpolatiealgoritmen kunnen bvb. niet ongedaan gemaakt worden, omdat deze makkelijk terug kunnen gezet worden via de
+				daartoe bestemde keuzemenu&apos;s. Dingen ongedaan maken kan men doen door gebruik te maken van de sneltoetscombinatie Ctrl-U of Menu &ndash; &gt; Edit &ndash; &gt; Undo.<br />
+				Indien men een ongedane verandering terug wilt gedaan maken, dan kan men gebruik maken van de sneltoetscombinatie Ctrl-R of Menu &ndash; &gt; Edit &ndash; &gt; Redo.
+				<br /><br />
+				</li>		
+				<li id="simu"><span class="underline">Path Simulation Tool</span><br />
+				Curve Editor heeft ook een tooltje aan boord: Path Simulation Tool dat men kan activeren via Menu &ndash; &gt; Tools &ndash; &gt; Path Simulation. <br />
+				Deze tool laat een bolletje zien dat zich over de eerst geselecteerde curve verplaatst, om zich daarna over de tweede geselecteerde curve te verplaatsen, enzovoort. Het bolletje vertrekt telkens van het begin van de curve
+				om te eindigen in het einde, en dit voor elke geselecteerde curve. De volgorde van curves wordt bepaald door het tijdstip van hun selectie; zo zal de eerst geselecteerde curve eerst gebruikt worden.
+				<br /><br />
+				</li>	
+				<li id="weergave"><span class="underline">Curveweergave wijzigen</span><br />
+				Men kan instellen wat wel en wat niet van de geselecteerde curves moet worden weergegeven. Zo kan men de co&ouml;ordinaten laten weergeven, de raaklijnen aan de controlepunten op de
+				curves en de gegevens van de controlepunten die duidelijk maken tot welke curve zij behoren en het hoeveelste controlepunt van die curve zij zijn. Aan- en uitzetten van die weergaven gebeurt door het aan-
+				en uitvinken van de checkboxen in Choice Area &ndash; &gt; Show. In figuur 14 zijn een aantal mogelijke extra weergaveopties te zien:
+					<ul>
+						<li>de blauwe lijnstukken stellen de raaklijnen voor, als die beschikbaar zijn en/of afgeleid kunnen worden uit de controlepunten</li>
+						<li>naast elk controlepunt geeft de bovenste regel tekst weer het hoeveelste controlepunt zij in welke curve zijn</li>
+						<li>de onderstealle regel naast elke controlepunt geeft de co&ouml;ordinaten weer</li>
+					</ul>
+Verder kan er ook aan de verschillende kleuren en lijndikte van de curve en punten gesleuteld
+worden. Dit gebeurt m.b.v. een pop-up dialoog dat te bereiken is via Edit-> Preferences. Het gebruik ervan is vrij simpel, je klikt op de kleurknop van de tekenmodus die je wilt wijzigen, daarna zal er een nieuw dialoog verschijnen waarin je de kans krijgt om een kleur te kiezen. Bij dit laatste dialoog zal cancel niets doen, reset de huidige kleurwaarde terugzetten en ok de gekozen kleurwaarde tijdelijk opslaan. De kleur zal definitief opgeslagen worden als de gebruiker in het eerste dialoogvenster op ok klikt. Op een gelijksoortige manier kan je de lijndikte veranderen m.b.v. de combobox.
+				<br /><br />
+					<table border="0">
+						<tr><td>
+						<img src="toggled.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+						<caption>Figuur 14: Curve Editor: extra weergaveopties</caption>		
+						</td></tr>		
+					</table>
+					<br /><br />
+				</li>				
+			</ul>
+		</li>
+		<li id="algos" class="titelLi"><span class="bold">Beschikbare algoritmen</span><br />
+			<ul>
+				<li id="L"><span class="underline">Lineair (figuur 15)</span><br />
+					Dit interpolatiealgoritme is de simpelste: per twee opeenvolgende controlepunten wordt het tussenliggend lijnstukje berekend en uitgetekend.
+					Zo zal de curve bestaan uit de lijnstukjes van het eerste naar het tweede, van het tweede naar het derde,... en van het voorlaatste naar het laatste controlepunt.<br /><br />
+				</li>
+				<li id="BC0"><span class="underline">Bezier C0 (figuur 16)</span><br />
+					Dit interpolatiealgoritme is de primitieve vorm van het Bezier-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend als volgt: de curve start in het eerste punt in de richting van het tweede, om dan in het vierde punt te eindigen in de richting van het derde. Een curve a.h.v.
+					het volgend viertal controlepunten wordt weer op dezelfde manier berekend, volledig onafhankelijk van het voorgaande viertal.	<br /><br />	
+				</li>
+				<li id="BG1"><span class="underline">Bezier G1 (figuur 17)</span><br />
+					Dit interpolatiealgoritme is een uitgebreide vorm van het Bezier-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend zoals bij de primitieve vorm. Maar de ligging van het tweede en het derde controlepunt wordt nu echter herberekend zodanig dat de berekende curve vloeiend aansluit
+					op  de berekende curve voor het vorige en het volgende viertal. Dit wordt bekomen als volgt: <br />
+					Stel viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders 
+					zouden we niet tot een aaneengesloten curve kunnen komen. M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2
+					kunnen we nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 berekenen (het gemeenschappelijke blijft ongewijzigd). Dit doen we door de vector tussen het voorlaatste controlepunt van v1 
+					en het tweede controlepunt van v2 te beschouwen; die vector verschuiven we dan zodanig dat het gemeenschappelijke controlepunt op die vector komt te liggen. De twee uiteinden van deze verschoven vector
+					zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2.
+					Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende curve.<br /><br />
+				</li>
+				<li id="BC1"><span class="underline">Bezier C1 (figuur 18)</span><br />
+					Dit interpolatiealgoritme is een uitgebreide vorm van het Bezier-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend zoals bij de primitieve vorm. Maar de ligging van het tweede en het derde controlepunt wordt nu echter herberekend zodanig dat de berekende curve vloeiend aansluit
+					op  de berekende curve voor het vorige en het volgende viertal, &eacute;n zodanig dat de berekende curve een controlepunt even snel &quot;binnenkomt&quot; als &quot;verlaat&quot;, met dezelfde versnelling als het ware. Dit wordt bekomen als volgt: <br />
+					Stel viertal v1 en viertal v2 opeenvolgende viertallen van controlepunten. Het laatste controlepunt van v1 en het eerste controlepunt van v2 zijn logischerwijs dezelfde: anders 
+					zouden we niet tot een aaneengesloten curve kunnen komen. M.b.v. het voorlaatste controlepunt van v1, het gemeenschappelijke controlepunt en het tweede controlepunt van v2
+					kunnen we nu een nieuw voorlaatste controlepunt voor v1 en een nieuw tweede controlepunt voor v2 berekenen (het gemeenschappelijke blijft ongewijzigd). Dit doen we door de vector tussen het voorlaatste controlepunt van v1 
+					en het tweede controlepunt van v2 te beschouwen; die vector verschuiven we dan zodanig dat het gemeenschappelijke controlepunt in het midden van die vector komt te liggen. De twee uiteinden van deze verschoven vector
+					zijn dan het nieuwe voorlaatste controlepunt voor v1 en het nieuwe tweede controlepunt voor v2.
+					Indien we nu op die manier voor elk gemeenschappelijk controlepunt twee nieuwe controlepunten berekenen, dan bekomen we een mooi vloeiende en een in elk controlepunt even snel ingaand als uitgaand versnellende curve.<br /><br />
+				</li>
+				<li id="HN"><span class="underline">Hermite normaal (figuur 19)</span><br /> 
+ 					Dit interpolatiealgoritme is de primitieve vorm van het Hermite-interpolatiealgoritme: per vier opeenvolgende controlepunten wordt een tussenliggende curve 
+					berekend als volgt: de curve start in het eerste punt in de richting van het tweede, om dan in het derde punt te eindigen in de richting van het vierde. Een curve a.h.v.
+					het volgend viertal controlepunten wordt weer op dezelfde manier berekend, volledig onafhankelijk van het voorgaande viertal. Het eerste controlepunt van het volgende viertal
+					valt uiteraard samen met het derde controlepunt van het huidige viertal, om alzo een aaneengesloten curve te verkrijgen.			
+					<br /><br />
+				</li>
+				<li id="HC"><span class="underline">Hermite Cardinal (figuur 20)</span><br />	
+					De methode van punten berekenen is hier net hetzelfde als besproken in Hermite m.b.v. 
+					basisfuncties. Met dat verschil dat de tangens nu niet meer expliciet gegeven dienen te worden, maar 
+					berekend worden uit de opgegeven controlepunten. 
+					De tangens wordt door de volgende formule uitgerekend:<br />	
+					m_k = (1 - c) * (p_{k+1} - p_{k-1}) /2<br />	
+					Hierbij is c een willekeurig getal tussen 0 en 1.<br />
+
+					Uit deze formule is duidelijk af te leiden dat er geen lijn getrokken kan worden 
+					tussen het eerste en het tweede controlepunt en het voorlaatste en het laatste controlepunt, 
+					omdat hun tangenswaarden niet uit deze formule afgeleid kan worden. Deze tangens is noodzakelijk
+					om de verdere berekeningen te volbrengen.
+					<br /><br />
+				</li>
+				<li id="HCR"><span class="underline">Hermite Catmull-Rom (figuur 21)</span><br />
+					Deze methode komt volledig overeen met de methode van Cardinal, met het enige verschil dat
+					de toen random gekozen waarde c nu altijd 0.5 is. Om dezelfde reden kan er weer geen curve getrokken
+					worden tussen het eerste en het tweede punt en het laatste en voorlaatste punt.
+					<br /><br />
+				</li>
+				<li id="HKB"><span class="underline">Hermite Kochanek-Bartels (figuur 22)</span><br />
+					Deze methode maakt weer gebruik van het normale Hermite-algoritme Het verschil
+					met de twee voorgaande berekeningen is dat Kochanek-Bartels rekening houdt met start- en eind-tangenswaarden.<br />
+
+					Deze methode maakt gebruik van 3 variabelen:<br />
+					t = tension (verandert de lengte van de tangens)<br />
+					b = bias (verandert de richting van de tangens)<br />
+					c = continu&iuml;teit (controleert de gladheid van de overgang tussen begin- en eindtangens)<br />
+
+					Al deze variabelen vari&euml;ren tussen -1 en 1, hoe dichter de variabelen bij -1 zitten hoe
+					meer de curve lineariteit benadert. Als de variabelen dicht bij de 1 zitten dan zal de curve
+					gladder zijn.<br />
+
+					De formules om de tangens te berekenen zijn (hierbij is m0 de tangens van p0 en m1 de tangens
+					van p1):<br />
+					m0 = {{(1-t)(1+b)(1-c)(p_i-p_{i-1})}\2} + {{(1-t)(1+b)(1+c)(p_{i+1} - p_i)}\2}<br />
+					m1 = {{(1-t)(1+b)(1+c)(p_i-p_{i-1})}\2} + {{(1-t)(1+b)(1-c)(p_{i+1} - p_i)}\2}<br />
+
+					Dus bij input van vier controlepunten kan je de tangens van controlepunt het tweede en derde
+					punt berekenen. Net zoals bij de vorige algoritmes zal je dus niet kunnen interpoleren tussen
+					de eerste en de tweede controlepunten en de voorlaatste en de laatste controlepunten.
+					<br /><br />
+				</li>
+			</ul>	
+			<br /><br />	
+			<table border="0">
+				<tr><td>
+					<img src="linear.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 15: Curve Editor: Lineair</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="bezierC0.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 16: Curve Editor: Bezier C0</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="bezierG1.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 17: Curve Editor: Bezier G1</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="bezierC1.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 18: Curve Editor: Bezier C1</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />			
+			<table border="0">
+				<tr><td>
+					<img src="hermite.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 19: Curve Editor: Hermite Normaal</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="cardinal.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 20: Curve Editor: Hermite Cardinal</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+			<table border="0">
+				<tr><td>
+					<img src="catmull.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 21: Curve Editor: Hermite Catmull-Rom</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+            <table border="0">
+				<tr><td>
+					<img src="bartels.jpg" width="800" height="570" border="1" alt="Curve Editor-werkomgeving" title="Curve Editor-werkomgeving" />
+					<caption>Figuur 22: Curve Editor: Hermite Kochanek-Bartels</caption>		
+				</td></tr>		
+			</table>
+			<br /><br />
+		</li>
+		<li id="ontwikkelaars" class="titelLi"><span class="bold">Ontwikkelaars</span><br />
+			<table border="0">
+				<tr>
+					<td>Sibrand Staessens:</td>
+					<td>Bezier-algoritmen, C1- en G1-continu&iuml;teit, selectie-functionaliteit, canvas-weergave, documentatie</td>	
+				</tr>
+				<tr>
+					<td>Sibren Polders:</td>
+					<td>Hermite-algoritmen, file I/O, menu- en toolbar, Choice Area, Path Simulation Tool</td>
+				</tr>
+		
+			</table><br /><br />
+		</li>
+	</ol>	
+	
+	
+</div>
+</div>
+</body>
+</html>
+		
