@@ -1,0 +1,1 @@
+This is a school work written in java. You can edit curves with it. ( subject is still under constructing, more info not possible ).
